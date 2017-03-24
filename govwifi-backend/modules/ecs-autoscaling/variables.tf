@@ -70,3 +70,5 @@ variable "registry_auth" {
 }
 
 variable "Env-Name" {}
+
+variable "critical-notifications-arn" {}

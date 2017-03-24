@@ -83,3 +83,7 @@ variable "cache-sg-list" {
 }
 
 variable "legacy-bastion-user" {}
+
+variable "critical-notifications-arn" {}
+
+variable "enable-bastion-monitoring" {}

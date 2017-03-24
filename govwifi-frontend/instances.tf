@@ -8,6 +8,7 @@ resource "aws_instance" "radius" {
   subnet_id              = "${element(aws_subnet.wifi-frontend-subnet.*.id, count.index)}"
   vpc_security_group_ids = ["${var.radius-instance-sg-ids}"]
   iam_instance_profile   = "${aws_iam_instance_profile.ecs-instance-profile.id}"
+  monitoring             = "${var.enable-detailed-monitoring}"
 
   user_data = <<DATA
 Content-Type: multipart/mixed; boundary="==BOUNDARY=="

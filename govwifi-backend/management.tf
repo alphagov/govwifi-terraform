@@ -6,6 +6,7 @@ resource "aws_instance" "management" {
   subnet_id              = "${aws_subnet.wifi-backend-subnet.0.id}"
   vpc_security_group_ids = ["${var.mgt-sg-list}"]
   iam_instance_profile   = "${aws_iam_instance_profile.bastion-instance-profile.id}"
+  monitoring             = "${var.enable-bastion-monitoring}"
 
   depends_on = [
     "aws_iam_instance_profile.bastion-instance-profile",

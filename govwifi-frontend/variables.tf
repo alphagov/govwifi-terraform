@@ -45,3 +45,5 @@ variable "backend-base-url" {}
 variable "elastic-ip-list" {
   type = "list"
 }
+
+variable "enable-detailed-monitoring" {}
