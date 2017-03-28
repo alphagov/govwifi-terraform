@@ -103,7 +103,7 @@ EOF
     "defaultHealthyRetryPolicy": {
       "minDelayTarget": 20,
       "maxDelayTarget": 20,
-      "numRetries": 3,
+      "numRetries": 0,
       "numMaxDelayRetries": 0,
       "numNoDelayRetries": 0,
       "numMinDelayRetries": 0,
