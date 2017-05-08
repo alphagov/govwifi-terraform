@@ -167,7 +167,7 @@ end script
 DATA
 
   tags {
-    Name = "${title(var.Env-Name)} Frontend Radius-${count.index + 1}"
+    Name = "${title(var.Env-Name)} Frontend Radius-${var.dns-numbering-base + count.index + 1}"
   }
 }
 
