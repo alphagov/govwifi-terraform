@@ -54,21 +54,6 @@ variable "instance-profile-id" {
   description = "The IAM Instance Profile (e.g. right side of Name=AmazonECSContainerInstanceRole)"
 }
 
-variable "registry_url" {
-  default     = "https://index.docker.io/v1/"
-  description = "Docker private registry URL, defaults to Docker index"
-}
-
-variable "registry_email" {
-  default     = ""
-  description = "Docker private registry login email address"
-}
-
-variable "registry_auth" {
-  default     = ""
-  description = "Docker private registry login auth token (from ~/.dockercgf)"
-}
-
 variable "Env-Name" {}
 
 variable "critical-notifications-arn" {}

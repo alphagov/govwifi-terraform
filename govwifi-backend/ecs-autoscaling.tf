@@ -1,4 +1,3 @@
-# TODO: review the settings here - registry???
 module "ecs-autoscaling" {
   source                     = "./modules/ecs-autoscaling"
   Env-Name                   = "${var.Env-Name}"
@@ -13,9 +12,6 @@ module "ecs-autoscaling" {
   max_size                   = "10"
   desired_capacity           = "${var.backend-instance-count}"
   instance-profile-id        = "${aws_iam_instance_profile.ecs-instance-profile.id}"
-  registry_url               = "https://index.docker.io/v1/"
-  registry_email             = "your_email@"
-  registry_auth              = "your_registry_auth_token"
   ami                        = "${var.ami}"
   critical-notifications-arn = "${var.critical-notifications-arn}"
 }
