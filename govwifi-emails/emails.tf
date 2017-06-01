@@ -23,7 +23,6 @@ resource "aws_ses_receipt_rule" "incoming-ses-rule" {
     "newsite@${var.Env-Name}${var.Env-Subdomain}.service.gov.uk",
     "logrequest@${var.Env-Name}${var.Env-Subdomain}.service.gov.uk",
     "sponsor@${var.Env-Name}${var.Env-Subdomain}.service.gov.uk",
-    "verify@${var.Env-Name}${var.Env-Subdomain}.service.gov.uk",
   ]
 
   s3_action {
