@@ -28,6 +28,7 @@ resource "aws_db_instance" "db" {
   depends_on                  = ["aws_iam_role.rds-monitoring-role"]
   monitoring_role_arn         = "${aws_iam_role.rds-monitoring-role.arn}"
   monitoring_interval         = "${var.db-monitoring-interval}"
+  maintenance_window          = "${var.db-maintenance-window}"
 
   tags {
     Name = "wifi-${var.Env-Name}-db"

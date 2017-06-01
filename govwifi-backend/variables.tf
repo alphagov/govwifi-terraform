@@ -60,6 +60,8 @@ variable "db-monitoring-interval" {}
 
 variable "db-storage-gb" {}
 
+variable "db-maintenance-window" {}
+
 variable "cache-node-type" {}
 
 variable "elb-sg-list" {
