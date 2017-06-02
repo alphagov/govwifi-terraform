@@ -3,6 +3,7 @@
 
 # CNAME for the database for this environment
 resource "aws_route53_record" "db" {
+  count   = "${var.db-instance-count}"
   zone_id = "${var.route53-zone-id}"
   name    = "db.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
   type    = "CNAME"

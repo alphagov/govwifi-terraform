@@ -11,6 +11,7 @@ resource "aws_db_subnet_group" "db-subnets" {
 resource "aws_db_instance" "db" {
   count                       = "${var.db-instance-count}"
   allocated_storage           = "${var.db-storage-gb}"
+  storage_type                = "gp2"
   engine                      = "mysql"
   engine_version              = "5.7.16"
   allow_major_version_upgrade = true
