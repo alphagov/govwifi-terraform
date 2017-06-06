@@ -187,6 +187,6 @@ EOF
 
 resource "aws_iam_instance_profile" "bastion-instance-profile" {
   name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-profile"
-  roles      = ["${aws_iam_role.bastion-instance-role.name}"]
+  role       = "${aws_iam_role.bastion-instance-role.name}"
   depends_on = ["aws_iam_role.bastion-instance-role"]
 }

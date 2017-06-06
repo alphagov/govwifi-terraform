@@ -20,6 +20,7 @@ resource "aws_cloudwatch_metric_alarm" "cpualarm" {
     AutoScalingGroupName = "${aws_autoscaling_group.ecs-cluster.name}"
   }
 
-  alarm_description = "This metric monitors ec2 cpu utilization"
-  alarm_actions     = ["${aws_autoscaling_policy.scale-policy.arn}", "${var.critical-notifications-arn}"]
+  alarm_description  = "This metric monitors ec2 cpu utilization"
+  alarm_actions      = ["${aws_autoscaling_policy.scale-policy.arn}", "${var.critical-notifications-arn}"]
+  treat_missing_data = "breaching"
 }

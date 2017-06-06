@@ -30,6 +30,7 @@ resource "aws_db_instance" "db" {
   monitoring_role_arn         = "${aws_iam_role.rds-monitoring-role.arn}"
   monitoring_interval         = "${var.db-monitoring-interval}"
   maintenance_window          = "${var.db-maintenance-window}"
+  skip_final_snapshot         = true
 
   tags {
     Name = "wifi-${var.Env-Name}-db"
