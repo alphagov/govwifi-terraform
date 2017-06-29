@@ -14,7 +14,8 @@ resource "aws_db_instance" "db" {
   storage_type                = "gp2"
   engine                      = "mysql"
   engine_version              = "5.7.16"
-  allow_major_version_upgrade = true
+  auto_minor_version_upgrade  = true
+  allow_major_version_upgrade = false
   apply_immediately           = true
   instance_class              = "${var.db-instance-type}"
   identifier                  = "wifi-${var.Env-Name}-db"
