@@ -39,6 +39,7 @@ resource "aws_db_instance" "db" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
+  count               = "${var.db-instance-count}"
   alarm_name          = "${var.Env-Name}-db-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -58,6 +59,7 @@ resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_memoryalarm" {
+  count               = "${var.db-instance-count}"
   alarm_name          = "${var.Env-Name}-db-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -77,6 +79,7 @@ resource "aws_cloudwatch_metric_alarm" "db_memoryalarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
+  count               = "${var.db-instance-count}"
   alarm_name          = "${var.Env-Name}-db-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
