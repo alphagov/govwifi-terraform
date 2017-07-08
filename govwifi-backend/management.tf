@@ -174,3 +174,8 @@ resource "aws_iam_instance_profile" "bastion-instance-profile" {
   role       = "${aws_iam_role.bastion-instance-role.name}"
   depends_on = ["aws_iam_role.bastion-instance-role"]
 }
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id = "${aws_instance.management.id}"
+  public_ip   = "${replace(var.bastion-server-ip, "/32", "")}"
+}
