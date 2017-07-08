@@ -20,14 +20,16 @@ MIME-Version: 1.0
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
+# Wait for apt list to be available
+until [[ -z `sudo lsof /var/lib/apt/lists/lock` ]] ; do echo -n "." >> /var/log/apt-list-wait.log; sleep 1; done
+# Fix for grub update bug https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1323772
+sudo rm /boot/grub/menu.lst
+sudo update-grub-legacy-ec2 -y
 sudo apt-get update \
   && sudo apt-get -y upgrade \
   && sudo apt-get -y install \
-    unattended-upgrades \
     mysql-client \
-    curl \
-    htop \
-    vim
+    htop
 
 # Allow auto-updates for everything, not just security
 sudo sed -i -e 's/\/\/\t"$${distro_id}:$${distro_codename}-updates";/\t"$${distro_id}:$${distro_codename}-updates";/g' /etc/apt/apt.conf.d/50unattended-upgrades
@@ -111,9 +113,11 @@ log_stream_name = {instance_id}
 EOF
 
 # Install awslogs
+# The install script requires the issue file to start with the string "Ubuntu"
+sudo echo "Ubuntu Linux 16.04 LTS - Authorized uses only. All activity may be monitored and reported. \d \t @ \n" > /etc/issue
+# Retrieve and run the install script
 curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
-chmod +x ./awslogs-agent-setup.py
-sudo ./awslogs-agent-setup.py -n -r ${var.aws-region} -c ./initial-awslogs.conf
+sudo python3 ./awslogs-agent-setup.py -n -r ${var.aws-region} -c ./initial-awslogs.conf
 
 --==BOUNDARY==--
 DATA
