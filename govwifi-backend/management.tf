@@ -49,43 +49,27 @@ sudo cp ./periodic-updates-setup /etc/apt/apt.conf.d/10periodic
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
-# Set up the migration script
-# This script requires the manual copy of the legacy key to the location below
-# Also make sure that the legacy bastion is in the list of known hosts for the cron user
+# Set up cron scripts for timed jobs
 
-cat <<'EOF' > ./userdata-migration
+cat <<'EOF' > ./ping-survey
 #!/bin/bash
-USER_CREATED_DAYS=1
-
-ssh -i /root/legacy.bastion.key.pem \
-  ${var.legacy-bastion-user} /home/ubuntu/usermigration/dbdump.sh $USER_CREATED_DAYS | \
-  mysql -u ${var.db-user} \
-    -p${var.db-password} \
-    -h db.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk \
-    usermigration
-
-mysql -u ${var.db-user} \
-  -p${var.db-password} \
-  -h db.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk \
-  govwifi_${var.Env-Name} \
-  -e "\
-INSERT IGNORE userdetails (username, contact, sponsor, password, mobile, created_at) \
-                  SELECT username, contact, sponsor, password, contact, created \
-  FROM usermigration.userdetails \
-  WHERE contact LIKE '+%' \
-    AND CHAR_LENGTH(contact) = 13 \
-    AND date(created) > date(NOW() - INTERVAL $USER_CREATED_DAYS DAY);\
-\
-INSERT IGNORE userdetails (username, contact, sponsor, password, email, created_at) \
-                  SELECT username, contact, sponsor, password, contact, created \
-  FROM usermigration.userdetails \
-  WHERE contact LIKE '%@%'\
-    AND date(created) > date(NOW() - INTERVAL $USER_CREATED_DAYS DAY);\
-"
+wget http://elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk/timedjobs/survey?key=${var.shared-key}
 EOF
 
-chmod +x ./userdata-migration
-sudo cp ./userdata-migration /etc/cron.hourly/
+cat <<'EOF' > ./ping-performanceplatform
+#!/bin/bash
+wget http://elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}
+EOF
+
+cat <<'EOF' > ./ping-performanceplatform-weekly
+#!/bin/bash
+wget "http://elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}&period=weekly"
+EOF
+
+chmod +x ./ping-survey ./ping-performanceplatform ./ping-performanceplatform-weekly
+sudo cp ./ping-survey /etc/cron.hourly/
+sudo cp ./ping-performanceplatform /etc/cron.daily/
+sudo cp ./ping-performanceplatform-weekly /etc/cron.weekly/
 
 --==BOUNDARY==
 MIME-Version: 1.0
