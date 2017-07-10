@@ -32,6 +32,8 @@ variable "bastion-instance-type" {}
 
 variable "bastion-server-ip" {}
 
+variable "bastion-ssh-key-name" {}
+
 variable "ssh-key-name" {}
 
 variable "backend-instance-count" {}
