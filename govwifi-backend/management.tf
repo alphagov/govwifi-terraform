@@ -51,8 +51,12 @@ sudo cp ./periodic-updates-setup /etc/apt/apt.conf.d/10periodic
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
-# Add extra authorised keys
+# Add extra authorised keys and ssh identity
 echo -n "${var.bastion-auth-keys}" >> /home/ubuntu/.ssh/authorized_keys
+
+echo -n "${var.bastion-identity}" > /home/ubuntu/.ssh/id_rsa
+chown ubuntu:ubuntu /home/ubuntu/.ssh/id_rsa
+chmod 600 /home/ubuntu/.ssh/id_rsa
 
 --==BOUNDARY==
 MIME-Version: 1.0

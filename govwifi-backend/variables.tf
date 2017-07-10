@@ -36,6 +36,8 @@ variable "bastion-ssh-key-name" {}
 
 variable "bastion-auth-keys" {}
 
+variable "bastion-identity" {}
+
 variable "ssh-key-name" {}
 
 variable "backend-instance-count" {}
