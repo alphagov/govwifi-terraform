@@ -51,6 +51,13 @@ sudo cp ./periodic-updates-setup /etc/apt/apt.conf.d/10periodic
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
+# Add extra authorised keys
+echo -n "${var.bastion-auth-keys}" >> /home/ubuntu/.ssh/authorized_keys
+
+--==BOUNDARY==
+MIME-Version: 1.0
+Content-Type: text/x-shellscript; charset="us-ascii"
+#!/bin/bash
 # Set up cron scripts for timed jobs
 
 cat <<'EOF' > ./ping-survey
