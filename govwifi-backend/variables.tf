@@ -97,3 +97,12 @@ variable "legacy-bastion-user" {}
 variable "critical-notifications-arn" {}
 
 variable "enable-bastion-monitoring" {}
+
+variable "ithc-ami" {}
+variable "ithc-backend-instance-count" {}
+variable "ithc-instance-type" {}
+variable "ithc-server-ip" {}
+variable "ithc-ssh-key-name" {}
+variable "ithc-sg-list" {
+  type = "list"
+}
