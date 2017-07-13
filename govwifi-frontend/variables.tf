@@ -48,11 +48,22 @@ variable "elastic-ip-list" {
 
 variable "enable-detailed-monitoring" {}
 
-variable "ithc-ami" {}
-variable "ithc-frontend-instance-count" {}
-variable "ithc-instance-type" {}
-variable "ithc-server-ip" {}
-variable "ithc-ssh-key-name" {}
+variable "ithc-frontend-instance-count" {
+  default = "0"
+}
+variable "ithc-ami" {
+  default = ""
+}
+variable "ithc-instance-type" {
+  default = ""
+}
+variable "ithc-server-ip" {
+  default = ""
+}
+variable "ithc-ssh-key-name" {
+  default = ""
+}
 variable "ithc-sg-list" {
-  type = "list"
+  type    = "list"
+  default = []
 }

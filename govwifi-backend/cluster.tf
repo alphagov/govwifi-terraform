@@ -6,6 +6,8 @@ resource "aws_ecs_cluster" "backend-cluster" {
 
 resource "aws_cloudwatch_log_group" "backend-log-group" {
   name = "${var.Env-Name}-backend-docker-log-group"
+  #keep the logs forever
+  retention_in_days = 0
 }
 
 resource "aws_ecs_task_definition" "backend-task" {
