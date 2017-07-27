@@ -22,9 +22,13 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 # Wait for apt list to be available
 until [[ -z `sudo lsof /var/lib/apt/lists/lock` ]] ; do echo -n "." >> /var/log/apt-list-wait.log; sleep 1; done
+# Wait for dpkg to be available
+until [[ -z `sudo lsof /var/lib/dpkg/lock` ]] ; do echo -n "." >> /var/log/dpkg-wait.log; sleep 1; done
 # Fix for grub update bug https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1323772
 sudo rm /boot/grub/menu.lst
 sudo update-grub-legacy-ec2 -y
+
+DEBIAN_FRONTEND=none
 sudo apt-get update \
   && sudo apt-get -y upgrade \
   && sudo apt-get -y install \
@@ -66,23 +70,30 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 
 cat <<'EOF' > ./ping-survey
 #!/bin/bash
-wget http://elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk/timedjobs/survey?key=${var.shared-key}
+wget -t 1 "http://elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk/timedjobs/survey?key=${var.shared-key}"
 EOF
 
 cat <<'EOF' > ./ping-performanceplatform
 #!/bin/bash
-wget http://elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}
+wget -t 1 "http://elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}"
 EOF
 
 cat <<'EOF' > ./ping-performanceplatform-weekly
 #!/bin/bash
-wget "http://elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}&period=weekly"
+wget -t 1 "http://elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}&period=weekly"
 EOF
 
 chmod +x ./ping-survey ./ping-performanceplatform ./ping-performanceplatform-weekly
-sudo cp ./ping-survey /etc/cron.hourly/
-sudo cp ./ping-performanceplatform /etc/cron.daily/
-sudo cp ./ping-performanceplatform-weekly /etc/cron.weekly/
+mkdir /home/ubuntu/backup
+sudo cp ./ping-survey /home/ubuntu/backup/
+sudo cp ./ping-performanceplatform /home/ubuntu/backup/
+sudo cp ./ping-performanceplatform-weekly /home/ubuntu/backup/
+
+if [ 1 == ${var.bastion-set-cronjobs} ] ; then
+  sudo cp ./ping-survey /etc/cron.hourly/
+  sudo cp ./ping-performanceplatform /etc/cron.daily/
+  sudo cp ./ping-performanceplatform-weekly /etc/cron.weekly/
+fi
 
 --==BOUNDARY==
 MIME-Version: 1.0
@@ -128,6 +139,7 @@ EOF
 sudo echo "Ubuntu Linux 16.04 LTS - Authorized uses only. All activity may be monitored and reported. \d \t @ \n" > /etc/issue
 # Retrieve and run the install script
 curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
+sleep 10
 sudo python3 ./awslogs-agent-setup.py -n -r ${var.aws-region} -c ./initial-awslogs.conf
 
 --==BOUNDARY==--
