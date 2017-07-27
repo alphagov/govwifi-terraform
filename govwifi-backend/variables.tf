@@ -38,6 +38,11 @@ variable "bastion-auth-keys" {}
 
 variable "bastion-identity" {}
 
+variable "bastion-set-cronjobs" {
+  type = "string"
+  default = 1
+}
+
 variable "ssh-key-name" {}
 
 variable "backend-instance-count" {}
@@ -69,6 +74,8 @@ variable "db-monitoring-interval" {}
 variable "db-storage-gb" {}
 
 variable "db-maintenance-window" {}
+
+variable "db-backup-window" {}
 
 variable "cache-node-type" {}
 
