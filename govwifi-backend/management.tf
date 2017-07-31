@@ -20,20 +20,32 @@ MIME-Version: 1.0
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
-# Wait for apt list to be available
-until [[ -z `sudo lsof /var/lib/apt/lists/lock` ]] ; do echo -n "." >> /var/log/apt-list-wait.log; sleep 1; done
+
+export DEBIAN_FRONTEND=noninteractive
+
 # Wait for dpkg to be available
 until [[ -z `sudo lsof /var/lib/dpkg/lock` ]] ; do echo -n "." >> /var/log/dpkg-wait.log; sleep 1; done
+until [[ -z `sudo lsof /var/lib/apt/lists/lock` ]] ; do echo -n "." >> /var/log/apt-list-wait.log; sleep 1; done
+
 # Fix for grub update bug https://bugs.launchpad.net/ubuntu/+source/apt/+bug/1323772
 sudo rm /boot/grub/menu.lst
 sudo update-grub-legacy-ec2 -y
 
-DEBIAN_FRONTEND=none
-sudo apt-get update \
-  && sudo apt-get -y upgrade \
-  && sudo apt-get -y install \
+# Wait for dpkg to be available
+until [[ -z `sudo lsof /var/lib/dpkg/lock` ]] ; do echo -n "." >> /var/log/dpkg-wait.log; sleep 1; done
+until [[ -z `sudo lsof /var/lib/apt/lists/lock` ]] ; do echo -n "." >> /var/log/apt-list-wait.log; sleep 1; done
+sudo apt-get update -q
+until [[ -z `sudo lsof /var/lib/dpkg/lock` ]] ; do echo -n "." >> /var/log/dpkg-wait.log; sleep 1; done
+until [[ -z `sudo lsof /var/lib/apt/lists/lock` ]] ; do echo -n "." >> /var/log/apt-list-wait.log; sleep 1; done
+# Workaround, to skip failure to update libpam-systemd. Manual update may be required.
+sudo apt-mark hold libpam-systemd:amd64
+sudo apt-get upgrade -y -qq -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
+until [[ -z `sudo lsof /var/lib/dpkg/lock` ]] ; do echo -n "." >> /var/log/dpkg-wait.log; sleep 1; done
+until [[ -z `sudo lsof /var/lib/apt/lists/lock` ]] ; do echo -n "." >> /var/log/apt-list-wait.log; sleep 1; done
+sudo apt-get install -yq --autoremove \
     mysql-client \
-    htop
+    htop \
+    mc
 
 # Allow auto-updates for everything, not just security
 sudo sed -i -e 's/\/\/\t"$${distro_id}:$${distro_codename}-updates";/\t"$${distro_id}:$${distro_codename}-updates";/g' /etc/apt/apt.conf.d/50unattended-upgrades
@@ -139,6 +151,7 @@ EOF
 sudo echo "Ubuntu Linux 16.04 LTS - Authorized uses only. All activity may be monitored and reported. \d \t @ \n" > /etc/issue
 # Retrieve and run the install script
 curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
+# Try to circumvent pip install error with waiting for 10 seconds.
 sleep 10
 sudo python3 ./awslogs-agent-setup.py -n -r ${var.aws-region} -c ./initial-awslogs.conf
 
