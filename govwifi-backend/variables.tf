@@ -38,10 +38,7 @@ variable "bastion-auth-keys" {}
 
 variable "bastion-identity" {}
 
-variable "bastion-set-cronjobs" {
-  type = "string"
-  default = 1
-}
+variable "bastion-set-cronjobs" {}
 
 variable "ssh-key-name" {}
 
