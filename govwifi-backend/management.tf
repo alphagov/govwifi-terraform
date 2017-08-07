@@ -219,3 +219,23 @@ resource "aws_eip_association" "eip_assoc" {
   instance_id = "${aws_instance.management.id}"
   public_ip   = "${replace(var.bastion-server-ip, "/32", "")}"
 }
+
+resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
+  alarm_name          = "${var.Env-Name}-bastion-status-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "StatusCheckFailed"
+  namespace           = "AWS/EC2"
+  period              = "60"
+  statistic           = "Maximum"
+  unit                = "Count"
+  threshold           = "1"
+
+  dimensions {
+    InstanceId = "${aws_instance.management.id}"
+  }
+
+  alarm_description  = "This metric monitors the status of the bastion server."
+  alarm_actions      = ["${var.critical-notifications-arn}"]
+  treat_missing_data = "breaching"
+}
