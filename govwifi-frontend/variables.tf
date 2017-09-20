@@ -67,3 +67,6 @@ variable "ithc-sg-list" {
   type    = "list"
   default = []
 }
+variable "radiusd-params" {
+  default = ""
+}
