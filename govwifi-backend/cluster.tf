@@ -55,6 +55,18 @@ resource "aws_ecs_task_definition" "backend-task" {
           "name": "DB_HOSTNAME",
           "value": "db.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
         },{
+          "name": "RR_DB_NAME",
+          "value": "govwifi_${var.Env-Name}"
+        },{
+          "name": "RR_DB_PASS",
+          "value": "${var.db-password}"
+        },{
+          "name": "RR_DB_USER",
+          "value": "${var.db-user}"
+        },{
+          "name": "RR_DB_HOSTNAME",
+          "value": "rr.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
+        },{
           "name": "CACHE_HOSTNAME",
           "value": "cache.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
         },{
