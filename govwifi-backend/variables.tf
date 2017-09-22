@@ -60,6 +60,8 @@ variable "shared-key" {}
 
 variable "db-instance-count" {}
 
+variable "db-replica-count" {}
+
 variable "db-backup-retention-days" {}
 
 variable "db-encrypt-at-rest" {}
