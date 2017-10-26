@@ -49,7 +49,7 @@ resource "aws_db_instance" "read_replica" {
   auto_minor_version_upgrade  = true
   allow_major_version_upgrade = false
   apply_immediately           = true
-  instance_class              = "${var.db-instance-type}"
+  instance_class              = "${var.rr-instance-type}"
   identifier                  = "${var.Env-Name}-db-rr"
   username                    = "${var.db-user}"
   password                    = "${var.db-password}"

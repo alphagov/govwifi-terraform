@@ -76,6 +76,8 @@ variable "db-maintenance-window" {}
 
 variable "db-backup-window" {}
 
+variable "rr-instance-type" {}
+
 variable "cache-node-type" {}
 
 variable "elb-sg-list" {
