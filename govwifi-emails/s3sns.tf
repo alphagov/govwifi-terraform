@@ -19,12 +19,33 @@ resource "aws_s3_bucket" "emailbucket" {
             "aws:Referer": "${var.aws-account-id}"
           }
         }
+    },{
+            "Sid": "S3PolicyStmt-DO-NOT-MODIFY",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "s3.amazonaws.com"
+            },
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::${var.Env-Name}-emailbucket/*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:SourceAccount": "${var.aws-account-id}",
+                    "s3:x-amz-acl": "bucket-owner-full-control"
+                },
+                "ArnLike": {
+                    "aws:SourceArn": "arn:aws:s3:::${var.Env-Name}-emailbucket"
+                }
+            }
     }]
 }
 EOF
 
   tags {
     Name = "${title(var.Env-Name)} Email Bucket"
+  }
+
+  logging {
+    target_bucket = "${var.Env-Name}-admin-accesslogs"
   }
 }
 
@@ -50,12 +71,33 @@ resource "aws_s3_bucket" "admin-emailbucket" {
             "aws:Referer": "${var.aws-account-id}"
           }
         }
+    },{
+            "Sid": "S3PolicyStmt-DO-NOT-MODIFY",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "s3.amazonaws.com"
+            },
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::${var.Env-Name}-admin-emailbucket/*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:SourceAccount": "${var.aws-account-id}",
+                    "s3:x-amz-acl": "bucket-owner-full-control"
+                },
+                "ArnLike": {
+                    "aws:SourceArn": "arn:aws:s3:::${var.Env-Name}-admin-emailbucket"
+                }
+            }
     }]
 }
 EOF
 
   tags {
     Name = "${title(var.Env-Name)} Admin Email Bucket"
+  }
+
+  logging {
+    target_bucket = "${var.Env-Name}-admin-accesslogs"
   }
 }
 
