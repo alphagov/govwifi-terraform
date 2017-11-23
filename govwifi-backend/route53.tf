@@ -34,7 +34,10 @@ resource "aws_route53_record" "cache" {
 resource "aws_route53_record" "elb" {
   zone_id = "${var.route53-zone-id}"
   name    = "elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
-  type    = "CNAME"
-  ttl     = "300"
-  records = ["${aws_elb.backend-elb.dns_name}"]
+  type    = "A"
+  alias {
+    name                   = "${aws_elb.backend-elb.dns_name}"
+    zone_id                = "${aws_elb.backend-elb.zone_id}"
+    evaluate_target_health = true
+  }
 }
