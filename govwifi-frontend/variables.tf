@@ -70,3 +70,7 @@ variable "ithc-sg-list" {
 variable "radiusd-params" {
   default = ""
 }
+
+variable "users" {
+  type   = "list"
+}

@@ -126,3 +126,7 @@ variable "ithc-sg-list" {
   type    = "list"
   default = []
 }
+
+variable "users" {
+  type = "list"
+}

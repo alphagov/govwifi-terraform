@@ -72,6 +72,32 @@ sudo cp ./security-updates /etc/cron.daily
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
+# Add extra users
+
+oldIFS=$IFS
+IFS='|' read -r -a userlist <<< "${join("|", var.users)}"
+
+for credentials in "$${userlist[@]}"; do
+  IFS=';' read -r -a credsarray <<< $credentials
+  username="$${credsarray[0]}"
+  sshkey="$${credsarray[1]}"
+
+  sudo adduser "$username"
+  sudo mkdir "/home/$username/.ssh"
+  sudo chown "$username:$username" "/home/$username/.ssh"
+  echo "$sshkey" > ./tempkey
+  sudo mv ./tempkey "/home/$username/.ssh/authorized_keys"
+  sudo chown "$username:$username" "/home/$username/.ssh/authorized_keys"
+  sudo chmod 600 "/home/$username/.ssh/authorized_keys"
+
+done
+
+IFS=$oldIFS
+
+--==BOUNDARY==
+MIME-Version: 1.0
+Content-Type: text/x-shellscript; charset="us-ascii"
+#!/bin/bash
 # Set cluster name
 echo ECS_CLUSTER=${var.cluster_name} >> /etc/ecs/ecs.config
 
