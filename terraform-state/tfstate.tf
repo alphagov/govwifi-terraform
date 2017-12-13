@@ -1,16 +1,21 @@
 # Resources for setting up s3 for terraform backend. (state storage in s3)
 resource "aws_s3_bucket" "state-bucket" {
   bucket = "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-tfstate"
-
+  region = "${var.aws-region}"
   versioning {
     enabled = true
   }
-
+  logging {
+    target_bucket = "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
+    target_prefix = "log/"
+  }
   tags {
+    Region      = "${title(var.aws-region-name)}"
     Product     = "${var.product-name}"
     Environment = "${title(var.Env-Name)}"
+    Category    = "TFstate"
   }
-  region      = "${var.aws-region}"
+
 
   policy = <<EOF
 {
@@ -31,4 +36,18 @@ resource "aws_s3_bucket" "state-bucket" {
 }
 EOF
 
+}
+
+resource "aws_s3_bucket" "accesslogs-bucket" {
+  bucket = "govwifi-${var.Env-Name}-ireland-accesslogs"
+  versioning {
+    enabled = true
+  }
+  tags {
+    Region      = "${title(var.aws-region-name)}"
+    Product     = "${var.product-name}"
+    Environment = "${title(var.Env-Name)}"
+    Category    = "Accesslogs"
+  }
+  region      = "${var.aws-region}"
 }
