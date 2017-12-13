@@ -8,6 +8,7 @@ module "ecs-autoscaling" {
   availability_zones         = "${join(",", values(var.zone-names))}"
   subnet_ids                 = "${join(",", aws_subnet.wifi-backend-subnet.*.id)}"
   security_group_ids         = "${join(",", var.backend-sg-list)}"
+  backend-cpualarm-count     = "${var.backend-cpualarm-count}"
   min_size                   = "${var.backend-min-size}"
   max_size                   = "10"
   desired_capacity           = "${var.backend-instance-count}"

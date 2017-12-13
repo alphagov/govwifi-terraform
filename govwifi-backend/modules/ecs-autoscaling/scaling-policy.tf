@@ -7,6 +7,7 @@ resource "aws_autoscaling_policy" "scale-policy" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpualarm" {
+  count               = "${var.backend-cpualarm-count}"
   alarm_name          = "${var.Env-Name}-backend-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"

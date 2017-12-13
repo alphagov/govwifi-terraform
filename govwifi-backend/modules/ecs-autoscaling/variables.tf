@@ -30,6 +30,8 @@ variable "instance_type" {
   description = "Name of the AWS instance type"
 }
 
+variable "backend-cpualarm-count" {}
+
 variable "min_size" {
   default     = "1"
   description = "Minimum number of instances to run in the group"
