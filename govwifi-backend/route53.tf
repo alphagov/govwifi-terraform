@@ -32,6 +32,7 @@ resource "aws_route53_record" "cache" {
 
 # CNAME for the elb for this environment
 resource "aws_route53_record" "elb" {
+  count   = "${var.backend-elb-count}"
   zone_id = "${var.route53-zone-id}"
   name    = "elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
   type    = "A"

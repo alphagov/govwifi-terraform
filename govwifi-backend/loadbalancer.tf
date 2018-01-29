@@ -1,5 +1,6 @@
 # Create a new load balancer
 resource "aws_elb" "backend-elb" {
+  count           = "${var.backend-elb-count}"
   name            = "wifi-backend-elb-${var.Env-Name}"
   subnets         = ["${aws_subnet.wifi-backend-subnet.*.id}"]
   security_groups = ["${var.elb-sg-list}"]

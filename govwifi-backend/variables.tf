@@ -48,6 +48,8 @@ variable "backend-min-size" {}
 
 variable "backend-cpualarm-count" {}
 
+variable "backend-elb-count" {}
+
 variable "aws-account-id" {}
 
 variable "elb-ssl-cert-arn" {}
