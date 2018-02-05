@@ -8,6 +8,53 @@ resource "aws_db_subnet_group" "db-subnets" {
   }
 }
 
+resource "aws_db_parameter_group" "db-log-parameters" {
+  count                    = "${var.db-instance-count}"
+  name                     = "${var.Env-Name}-db-log-pg"
+  family                   = "mysql5.7"
+  description              = "DB logging configuration"
+
+  parameter {
+    name  = "slow_query_log"
+    value = 1
+  }
+
+  parameter {
+    name  = "general_log"
+    value = 0
+  }
+
+  parameter {
+    name  = "log_queries_not_using_indexes"
+    value = 1
+  }
+
+  parameter {
+    name  = "log_output"
+    value = "FILE"
+  }
+
+  tags {
+    Name = "${title(var.Env-Name)} DB logs parameter group"
+  }
+}
+
+resource "aws_db_option_group" "mariadb-audit" {
+  count                    = "${var.db-instance-count}"
+  name                     = "${var.Env-Name}-db-audit"
+  option_group_description = "Mariadb audit configuration"
+  engine_name              = "mysql"
+  major_engine_version     = "5.7"
+
+  option {
+    option_name = "MARIADB_AUDIT_PLUGIN"
+  }
+
+  tags {
+    Name = "${title(var.Env-Name)} DB Audit configuration"
+  }
+}
+
 resource "aws_db_instance" "db" {
   count                       = "${var.db-instance-count}"
   allocated_storage           = "${var.db-storage-gb}"
@@ -33,6 +80,8 @@ resource "aws_db_instance" "db" {
   maintenance_window          = "${var.db-maintenance-window}"
   backup_window               = "${var.db-backup-window}"
   skip_final_snapshot         = true
+  option_group_name           = "${aws_db_option_group.mariadb-audit.name}"
+  parameter_group_name        = "${aws_db_parameter_group.db-log-parameters.name}"
 
   tags {
     Name = "${title(var.Env-Name)} DB"
