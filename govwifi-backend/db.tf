@@ -8,11 +8,11 @@ resource "aws_db_subnet_group" "db-subnets" {
   }
 }
 
-resource "aws_db_parameter_group" "db-log-parameters" {
+resource "aws_db_parameter_group" "db-parameters" {
   count                    = "${var.db-instance-count}"
-  name                     = "${var.Env-Name}-db-log-pg"
+  name                     = "${var.Env-Name}-db-parameter-group"
   family                   = "mysql5.7"
-  description              = "DB logging configuration"
+  description              = "DB parameter configuration"
 
   parameter {
     name  = "slow_query_log"
@@ -35,12 +35,43 @@ resource "aws_db_parameter_group" "db-log-parameters" {
   }
 
   tags {
-    Name = "${title(var.Env-Name)} DB logs parameter group"
+    Name = "${title(var.Env-Name)} DB parameter group"
+  }
+}
+
+resource "aws_db_parameter_group" "rr-parameters" {
+  #count                    = "${var.db-instance-count}"
+  name                     = "${var.Env-Name}-rr-parameter-group"
+  family                   = "mysql5.7"
+  description              = "DB read replica parameter configuration"
+
+  parameter {
+    name  = "slow_query_log"
+    value = 1
+  }
+
+  parameter {
+    name  = "general_log"
+    value = 0
+  }
+
+  parameter {
+    name  = "log_queries_not_using_indexes"
+    value = 1
+  }
+
+  parameter {
+    name  = "log_output"
+    value = "FILE"
+  }
+
+  tags {
+    Name = "${title(var.Env-Name)} DB read replica parameter group"
   }
 }
 
 resource "aws_db_option_group" "mariadb-audit" {
-  count                    = "${var.db-instance-count}"
+  #count                    = "${var.db-instance-count}"
   name                     = "${var.Env-Name}-db-audit"
   option_group_description = "Mariadb audit configuration"
   engine_name              = "mysql"
@@ -81,7 +112,7 @@ resource "aws_db_instance" "db" {
   backup_window               = "${var.db-backup-window}"
   skip_final_snapshot         = true
   option_group_name           = "${aws_db_option_group.mariadb-audit.name}"
-  parameter_group_name        = "${aws_db_parameter_group.db-log-parameters.name}"
+  parameter_group_name        = "${aws_db_parameter_group.db-parameters.name}"
 
   tags {
     Name = "${title(var.Env-Name)} DB"
@@ -112,6 +143,8 @@ resource "aws_db_instance" "read_replica" {
   maintenance_window          = "${var.db-maintenance-window}"
   backup_window               = "${var.db-backup-window}"
   skip_final_snapshot         = true
+  option_group_name           = "${aws_db_option_group.mariadb-audit.name}"
+  parameter_group_name        = "${aws_db_parameter_group.rr-parameters.name}"
 
   tags {
     Name = "${title(var.Env-Name)} DB Read Replica"
