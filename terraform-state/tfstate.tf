@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "state-bucket" {
   }
   logging {
     target_bucket = "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
-    target_prefix = "log/"
+    target_prefix = "${lower(var.aws-region-name)}-tfstate"
   }
   tags {
     Region      = "${title(var.aws-region-name)}"
@@ -39,7 +39,7 @@ EOF
 }
 
 resource "aws_s3_bucket" "accesslogs-bucket" {
-  bucket = "govwifi-${var.Env-Name}-ireland-accesslogs"
+  bucket = "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
   versioning {
     enabled = true
   }

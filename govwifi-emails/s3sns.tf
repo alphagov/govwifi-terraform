@@ -42,10 +42,15 @@ EOF
 
   tags {
     Name = "${title(var.Env-Name)} Email Bucket"
+    Region      = "${title(var.aws-region-name)}"
+    #Product     = "${var.product-name}"
+    Environment = "${title(var.Env-Name)}"
+    Category    = "TFstate"
   }
 
   logging {
     target_bucket = "${var.Env-Name}-admin-accesslogs"
+    target_prefix = "user-emails"
   }
 }
 
