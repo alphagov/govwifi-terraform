@@ -41,16 +41,24 @@ resource "aws_s3_bucket" "emailbucket" {
 EOF
 
   tags {
-    Name = "${title(var.Env-Name)} Email Bucket"
+    Name        = "${title(var.Env-Name)} Email Bucket"
     Region      = "${title(var.aws-region-name)}"
-    #Product     = "${var.product-name}"
+#   Product     = "${var.product-name}"
     Environment = "${title(var.Env-Name)}"
-    Category    = "TFstate"
+    Category    = "User emails"
   }
 
   logging {
-    target_bucket = "${var.Env-Name}-admin-accesslogs"
+    target_bucket = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
     target_prefix = "user-emails"
+  }
+
+  lifecycle_rule {
+    enabled = true
+
+    expiration {
+      days = 30
+    }
   }
 }
 
@@ -98,11 +106,16 @@ resource "aws_s3_bucket" "admin-emailbucket" {
 EOF
 
   tags {
-    Name = "${title(var.Env-Name)} Admin Email Bucket"
+    Name        = "${title(var.Env-Name)} Admin Email Bucket"
+    Region      = "${title(var.aws-region-name)}"
+#   Product     = "${var.product-name}"
+    Environment = "${title(var.Env-Name)}"
+    Category    = "Admin emails"
   }
 
   logging {
-    target_bucket = "${var.Env-Name}-admin-accesslogs"
+    target_bucket = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
+    target_prefix = "admin-emails"
   }
 }
 

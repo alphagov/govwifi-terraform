@@ -1,3 +1,5 @@
+variable "product-name" {}
+
 variable "Env-Name" {}
 
 variable "Env-Subdomain" {}

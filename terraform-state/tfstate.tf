@@ -2,20 +2,6 @@
 resource "aws_s3_bucket" "state-bucket" {
   bucket = "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-tfstate"
   region = "${var.aws-region}"
-  versioning {
-    enabled = true
-  }
-  logging {
-    target_bucket = "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
-    target_prefix = "${lower(var.aws-region-name)}-tfstate"
-  }
-  tags {
-    Region      = "${title(var.aws-region-name)}"
-    Product     = "${var.product-name}"
-    Environment = "${title(var.Env-Name)}"
-    Category    = "TFstate"
-  }
-
 
   policy = <<EOF
 {
@@ -36,18 +22,45 @@ resource "aws_s3_bucket" "state-bucket" {
 }
 EOF
 
-}
+  tags {
+    Region      = "${title(var.aws-region-name)}"
+    Product     = "${var.product-name}"
+    Environment = "${title(var.Env-Name)}"
+    Category    = "TFstate"
+  }
 
-resource "aws_s3_bucket" "accesslogs-bucket" {
-  bucket = "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
   versioning {
     enabled = true
   }
+
+  logging {
+    target_bucket = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
+    target_prefix = "${lower(var.aws-region-name)}-tfstate"
+  }
+}
+
+resource "aws_s3_bucket" "accesslogs-bucket" {
+  bucket = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
+  region = "${var.aws-region}"
+  acl    = "log-delivery-write"
+
+  versioning {
+    enabled = true
+  }
+
   tags {
     Region      = "${title(var.aws-region-name)}"
     Product     = "${var.product-name}"
     Environment = "${title(var.Env-Name)}"
     Category    = "Accesslogs"
   }
-  region      = "${var.aws-region}"
+
+
+  lifecycle_rule {
+    enabled = true
+
+    expiration {
+      days = 30
+    }
+  }
 }
