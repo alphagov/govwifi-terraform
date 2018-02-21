@@ -1,6 +1,8 @@
 # AWS Configuration
 
 provider "aws" {
+  # Workaround for import issue, see https://github.com/hashicorp/terraform/issues/13018#issuecomment-291547317
+  alias = "AWS region"
   region = "${var.aws-region}"
 }
 

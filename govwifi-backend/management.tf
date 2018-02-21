@@ -242,7 +242,7 @@ resource "aws_eip_association" "eip_assoc" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
-  alarm_name          = "${var.Env-Name}-bastion-status-alarm"
+  alarm_name          = "${lower(var.Env-Name)}-bastion-status-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
   metric_name         = "StatusCheckFailed"
