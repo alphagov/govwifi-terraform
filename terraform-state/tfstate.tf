@@ -1,6 +1,6 @@
 # Resources for setting up s3 for terraform backend. (state storage in s3)
 resource "aws_iam_role" "tfstate-replication" {
-  name = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-tfstate-replication-role"
+  name = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-replication-role"
 
   assume_role_policy = <<POLICY
 {
@@ -21,39 +21,37 @@ POLICY
 
 
 resource "aws_iam_policy" "tfstate-replication" {
-  name = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-tfstate-replication-policy"
+  name = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-replication-policy"
 
   policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": "s3:ListBucket",
+      "Action": [
+        "s3:GetReplicationConfiguration",
+        "s3:ListBucket"
+      ],
       "Effect": "Allow",
-      "Resource": "${aws_s3_bucket.state-bucket.arn}"
+      "Resource": [
+        "${aws_s3_bucket.state-bucket.arn}"
+      ]
     },
     {
-      "Action": "s3:GetReplicationConfiguration",
+      "Action": [
+        "s3:GetObjectVersion",
+        "s3:GetObjectVersionAcl"
+      ],
       "Effect": "Allow",
-      "Resource": "${aws_s3_bucket.state-bucket.arn}"
+      "Resource": [
+        "${aws_s3_bucket.state-bucket.arn}/*"
+      ]
     },
     {
-      "Action": "s3:GetObjectVersion",
-      "Effect": "Allow",
-      "Resource": "${aws_s3_bucket.state-bucket.arn}/*"
-    },
-    {
-      "Action": "s3:GetObjectVersionAcl",
-      "Effect": "Allow",
-      "Resource": "${aws_s3_bucket.state-bucket.arn}/*"
-    },
-    {
-      "Action": "s3:ReplicateObject",
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${lower(var.product-name)}-${var.Env-Name}-${lower(var.backup-region-name)}-tfstate/*"
-    },
-    {
-      "Action": "s3:ReplicateDelete",
+      "Action": [
+        "s3:ReplicateObject",
+        "s3:ReplicateDelete"
+      ],
       "Effect": "Allow",
       "Resource": "arn:aws:s3:::${lower(var.product-name)}-${var.Env-Name}-${lower(var.backup-region-name)}-tfstate/*"
     }
@@ -63,13 +61,13 @@ EOF
 }
 
 resource "aws_iam_policy_attachment" "tfstate-replication" {
-  name       = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-tfstate-replication"
+  name       = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-replication"
   roles      = ["${aws_iam_role.tfstate-replication.name}"]
   policy_arn = "${aws_iam_policy.tfstate-replication.arn}"
 }
 
 resource "aws_s3_bucket" "state-bucket" {
-  bucket = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-tfstate"
+  bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
   region = "${var.aws-region}"
 
   policy = <<EOF
@@ -103,7 +101,7 @@ EOF
   }
 
   logging {
-    target_bucket = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
+    target_bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-accesslogs"
     target_prefix = "${lower(var.aws-region-name)}-tfstate"
   }
 
@@ -113,7 +111,7 @@ EOF
     rules {
       # ID is necessary to prevent continuous change issue
       id     = "${lower(var.aws-region-name)}-to-${lower(var.backup-region-name)}-tfstate-backup"
-      prefix = "${lower(var.aws-region-name)}-tfstate-backup"
+      prefix = "${lower(var.aws-region-name)}-tfstate"
       status = "Enabled"
 
       destination {
@@ -187,7 +185,7 @@ EOF
 }
 
 resource "aws_iam_policy_attachment" "accesslogs-replication" {
-  name       = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs-replication"
+  name       = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-accesslogs-replication"
   roles      = ["${aws_iam_role.accesslogs-replication.name}"]
   policy_arn = "${aws_iam_policy.accesslogs-replication.arn}"
 }
@@ -210,16 +208,16 @@ resource "aws_s3_bucket" "accesslogs-bucket" {
 
 
   lifecycle_rule {
-    id = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs-lifecycle"
+    id = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-accesslogs-lifecycle"
     enabled = true
 
     transition {
-      days          = 7
+      days          = "${var.accesslogs-glacier-transition-days}"
       storage_class = "GLACIER"
     }
 
     expiration {
-      days                         = 30
+      days          = "${var.accesslogs-expiration-days}"
     }
   }
 
