@@ -5,7 +5,7 @@
 resource "aws_route53_record" "db" {
   count   = "${var.db-instance-count}"
   zone_id = "${var.route53-zone-id}"
-  name    = "db.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
+  name    = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   type    = "CNAME"
   ttl     = "300"
   records = ["${aws_db_instance.db.address}"]
@@ -15,7 +15,7 @@ resource "aws_route53_record" "db" {
 resource "aws_route53_record" "rr" {
   count   = "${var.db-replica-count}"
   zone_id = "${var.route53-zone-id}"
-  name    = "rr.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
+  name    = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   type    = "CNAME"
   ttl     = "300"
   records = ["${aws_db_instance.read_replica.address}"]
@@ -24,7 +24,7 @@ resource "aws_route53_record" "rr" {
 # CNAME for the cache for this environment
 resource "aws_route53_record" "cache" {
   zone_id = "${var.route53-zone-id}"
-  name    = "cache.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
+  name    = "cache.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   type    = "CNAME"
   ttl     = "300"
   records = ["${aws_elasticache_cluster.cache.cache_nodes.0.address}"]
@@ -34,7 +34,7 @@ resource "aws_route53_record" "cache" {
 resource "aws_route53_record" "elb" {
   count   = "${var.backend-elb-count}"
   zone_id = "${var.route53-zone-id}"
-  name    = "elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
+  name    = "elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   type    = "A"
   alias {
     name                   = "${aws_elb.backend-elb.dns_name}"

@@ -53,7 +53,7 @@ resource "aws_ecs_task_definition" "backend-task" {
           "value": "${var.db-user}"
         },{
           "name": "DB_HOSTNAME",
-          "value": "db.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
+          "value": "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
         },{
           "name": "RR_DB_NAME",
           "value": "govwifi_${var.Env-Name}"
@@ -65,16 +65,16 @@ resource "aws_ecs_task_definition" "backend-task" {
           "value": "${var.db-user}"
         },{
           "name": "RR_DB_HOSTNAME",
-          "value": "rr.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
+          "value": "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
         },{
           "name": "CACHE_HOSTNAME",
-          "value": "cache.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
+          "value": "cache.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
         },{
           "name": "RADIUS_HOSTNAME",
-          "value": "radius*n*.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
+          "value": "radius*n*.${var.Env-Subdomain}.service.gov.uk"
         },{
           "name": "RADIUS_SERVER_IPS",
           "value": "${var.radius-server-ips}"

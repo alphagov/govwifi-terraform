@@ -102,17 +102,17 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 
 cat <<'EOF' > ./ping-survey
 #!/bin/bash
-wget -t 1 "http://elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk/timedjobs/survey?key=${var.shared-key}"
+wget -t 1 "http://elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk/timedjobs/survey?key=${var.shared-key}"
 EOF
 
 cat <<'EOF' > ./ping-performanceplatform
 #!/bin/bash
-wget -t 1 "http://elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}"
+wget -t 1 "http://elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}"
 EOF
 
 cat <<'EOF' > ./ping-performanceplatform-weekly
 #!/bin/bash
-wget -t 1 "http://elb.${lower(var.aws-region-name)}.${var.Env-Name}${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}&period=weekly"
+wget -t 1 "http://elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}&period=weekly"
 EOF
 
 chmod +x ./ping-survey ./ping-performanceplatform ./ping-performanceplatform-weekly

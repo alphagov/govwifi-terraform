@@ -58,7 +58,7 @@ resource "aws_ecs_task_definition" "radius-task" {
         "value": "${var.healthcheck-radius-key}"
       },{
         "name": "SERVICE_DOMAIN",
-        "value": "${var.Env-Name}${var.Env-Subdomain}"
+        "value": "${var.Env-Subdomain}"
       },{
         "name": "RADIUSD_PARAMS",
         "value": "${var.radiusd-params}"

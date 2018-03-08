@@ -17,12 +17,12 @@ resource "aws_ses_receipt_rule" "incoming-ses-rule" {
   ]
 
   recipients = [
-    "enrol@${var.Env-Name}${var.Env-Subdomain}.service.gov.uk",
-    "enroll@${var.Env-Name}${var.Env-Subdomain}.service.gov.uk",
-    "signup@${var.Env-Name}${var.Env-Subdomain}.service.gov.uk",
-    "newsite@${var.Env-Name}${var.Env-Subdomain}.service.gov.uk",
-    "logrequest@${var.Env-Name}${var.Env-Subdomain}.service.gov.uk",
-    "sponsor@${var.Env-Name}${var.Env-Subdomain}.service.gov.uk",
+    "enrol@${var.Env-Subdomain}.service.gov.uk",
+    "enroll@${var.Env-Subdomain}.service.gov.uk",
+    "signup@${var.Env-Subdomain}.service.gov.uk",
+    "newsite@${var.Env-Subdomain}.service.gov.uk",
+    "logrequest@${var.Env-Subdomain}.service.gov.uk",
+    "sponsor@${var.Env-Subdomain}.service.gov.uk",
   ]
 
   s3_action {
@@ -40,7 +40,7 @@ resource "aws_ses_receipt_rule" "admin-ses-rule" {
   depends_on    = ["aws_s3_bucket.admin-emailbucket"]
 
   recipients = [
-    "admin@${var.Env-Name}${var.Env-Subdomain}.service.gov.uk",
+    "admin@${var.Env-Subdomain}.service.gov.uk",
   ]
 
   s3_action {

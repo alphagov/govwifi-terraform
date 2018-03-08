@@ -4,7 +4,7 @@
 # MX record for this environment
 resource "aws_route53_record" "mx" {
   zone_id = "${var.route53-zone-id}"
-  name    = "${var.Env-Name}${var.Env-Subdomain}.service.gov.uk"
+  name    = "${var.Env-Subdomain}.service.gov.uk"
   type    = "MX"
   ttl     = "300"
   records = ["${var.mail-exchange-server}"]
