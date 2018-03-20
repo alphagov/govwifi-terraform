@@ -113,6 +113,4 @@ resource "aws_s3_bucket" "accesslogs-bucket" {
       }
     }
   }
-
-
 }

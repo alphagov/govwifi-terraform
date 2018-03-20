@@ -59,6 +59,7 @@ variable "instance-profile-id" {
 variable "Env-Name" {}
 
 variable "critical-notifications-arn" {}
+variable "capacity-notifications-arn" {}
 
 variable "users" {
   type = "list"

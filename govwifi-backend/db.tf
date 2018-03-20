@@ -207,7 +207,7 @@ resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
   }
 
   alarm_description  = "This metric monitors the storage space available for the DB."
-  alarm_actions      = ["${var.critical-notifications-arn}"]
+  alarm_actions      = ["${var.capacity-notifications-arn}"]
   treat_missing_data = "breaching"
 }
 
@@ -227,7 +227,7 @@ resource "aws_cloudwatch_metric_alarm" "rr_cpualarm" {
   }
 
   alarm_description  = "This metric monitors the cpu utilization of the DB read replica."
-  alarm_actions      = ["${var.critical-notifications-arn}"]
+  alarm_actions      = ["${var.capacity-notifications-arn}"]
   treat_missing_data = "breaching"
 }
 
@@ -247,7 +247,7 @@ resource "aws_cloudwatch_metric_alarm" "rr_memoryalarm" {
   }
 
   alarm_description  = "This metric monitors the freeable memory available for the DB read replica."
-  alarm_actions      = ["${var.critical-notifications-arn}"]
+  alarm_actions      = ["${var.capacity-notifications-arn}"]
   treat_missing_data = "breaching"
 }
 
@@ -267,6 +267,6 @@ resource "aws_cloudwatch_metric_alarm" "rr_storagealarm" {
   }
 
   alarm_description  = "This metric monitors the storage space available for the DB read replica."
-  alarm_actions      = ["${var.critical-notifications-arn}"]
+  alarm_actions      = ["${var.capacity-notifications-arn}"]
   treat_missing_data = "breaching"
 }

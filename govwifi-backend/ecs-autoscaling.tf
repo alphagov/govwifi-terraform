@@ -15,5 +15,6 @@ module "ecs-autoscaling" {
   instance-profile-id        = "${aws_iam_instance_profile.ecs-instance-profile.id}"
   ami                        = "${var.ami}"
   critical-notifications-arn = "${var.critical-notifications-arn}"
+  capacity-notifications-arn = "${var.capacity-notifications-arn}"
   users                      = "${var.users}"
 }

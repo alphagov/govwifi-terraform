@@ -110,6 +110,8 @@ variable "legacy-bastion-user" {}
 
 variable "critical-notifications-arn" {}
 
+variable "capacity-notifications-arn" {}
+
 variable "enable-bastion-monitoring" {}
 
 variable "ithc-backend-instance-count" {

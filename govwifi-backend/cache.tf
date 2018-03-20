@@ -13,5 +13,5 @@ resource "aws_elasticache_cluster" "cache" {
   parameter_group_name   = "default.memcached1.4"
   subnet_group_name      = "wifi-${var.Env-Name}-subnets"
   security_group_ids     = ["${var.cache-sg-list}"]
-  notification_topic_arn = "${var.critical-notifications-arn}"
+  notification_topic_arn = "${var.capacity-notifications-arn}"
 }
