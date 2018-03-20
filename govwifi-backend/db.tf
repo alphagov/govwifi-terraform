@@ -40,6 +40,7 @@ resource "aws_db_parameter_group" "db-parameters" {
 }
 
 resource "aws_db_parameter_group" "rr-parameters" {
+  # No harm in keeping the parameter group even if there are no read replica(s) currently
   #count                    = "${var.db-instance-count}"
   name                     = "${var.Env-Name}-rr-parameter-group"
   family                   = "mysql5.7"
@@ -71,6 +72,7 @@ resource "aws_db_parameter_group" "rr-parameters" {
 }
 
 resource "aws_db_option_group" "mariadb-audit" {
+  # No harm in keeping the parameter group even if there is DB instance currently
   #count                    = "${var.db-instance-count}"
   name                     = "${var.Env-Name}-db-audit"
   option_group_description = "Mariadb audit configuration"
@@ -121,7 +123,7 @@ resource "aws_db_instance" "db" {
 
 resource "aws_db_instance" "read_replica" {
   count                       = "${var.db-replica-count}"
-  allocated_storage           = "${var.db-storage-gb}"
+  allocated_storage           = "${var.rr-storage-gb}"
   replicate_source_db         = "${aws_db_instance.db.identifier}"
   storage_type                = "gp2"
   engine                      = "mysql"
