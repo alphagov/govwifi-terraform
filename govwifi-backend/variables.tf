@@ -84,6 +84,8 @@ variable "db-backup-window" {}
 
 variable "rr-instance-type" {}
 
+variable "rr-storage-gb" {}
+
 variable "cache-node-type" {}
 
 variable "elb-sg-list" {
