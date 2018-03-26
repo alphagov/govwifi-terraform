@@ -213,6 +213,66 @@ resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
   treat_missing_data = "breaching"
 }
 
+resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
+  count               = "${var.db-instance-count}"
+  alarm_name          = "${var.Env-Name}-db-burstbalanace-alarm"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "BurstBalance"
+  namespace           = "AWS/RDS"
+  period              = "60"
+  statistic           = "Minimum"
+  threshold           = "45"
+
+  dimensions {
+    DBInstanceIdentifier = "${aws_db_instance.db.identifier}"
+  }
+
+  alarm_description  = "This metric monitors the IOPS burst balance available for the DB."
+  alarm_actions      = ["${var.critical-notifications-arn}"]
+  treat_missing_data = "breaching"
+}
+
+resource "aws_cloudwatch_metric_alarm" "rr_burstbalancealarm" {
+  count               = "${var.db-replica-count}"
+  alarm_name          = "${var.Env-Name}-rr-burstbalanace-alarm"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "BurstBalance"
+  namespace           = "AWS/RDS"
+  period              = "60"
+  statistic           = "Minimum"
+  threshold           = "45"
+
+  dimensions {
+    DBInstanceIdentifier = "${aws_db_instance.read_replica.identifier}"
+  }
+
+  alarm_description  = "This metric monitors the IOPS burst balance available for the DB read replica."
+  alarm_actions      = ["${var.capacity-notifications-arn}"]
+  treat_missing_data = "breaching"
+}
+
+resource "aws_cloudwatch_metric_alarm" "rr_laggingalarm" {
+  count               = "${var.db-replica-count}"
+  alarm_name          = "${var.Env-Name}-rr-lagging-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "ReplicaLag"
+  namespace           = "AWS/RDS"
+  period              = "60"
+  statistic           = "Minimum"
+  threshold           = "300"
+
+  dimensions {
+    DBInstanceIdentifier = "${aws_db_instance.read_replica.identifier}"
+  }
+
+  alarm_description  = "This metric monitors the Replication Lag for the DB read replica."
+  alarm_actions      = ["${var.capacity-notifications-arn}"]
+  treat_missing_data = "breaching"
+}
+
 resource "aws_cloudwatch_metric_alarm" "rr_cpualarm" {
   count               = "${var.db-replica-count}"
   alarm_name          = "${var.Env-Name}-rr-cpu-alarm"
