@@ -5,7 +5,7 @@ resource "aws_elasticache_subnet_group" "cache-subnets" {
 }
 
 resource "aws_elasticache_cluster" "cache" {
-  cluster_id             = "cache-${var.Env-Name}-wifi"
+  cluster_id             = "cache-${length(var.Env-Name)}-wifi"
   engine                 = "memcached"
   node_type              = "${var.cache-node-type}"
   port                   = 11211
