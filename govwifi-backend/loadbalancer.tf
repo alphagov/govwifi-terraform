@@ -24,7 +24,7 @@ resource "aws_elb" "backend-elb" {
     instance_protocol  = "http"
     lb_port            = 443
     lb_protocol        = "https"
-    ssl_certificate_id = "${var.elb-ssl-cert-arn}"
+#    ssl_certificate_id = "${var.elb-ssl-cert-arn}"
   }
 
   listener {
@@ -32,7 +32,7 @@ resource "aws_elb" "backend-elb" {
     instance_protocol  = "http"
     lb_port            = 8443
     lb_protocol        = "https"
-    ssl_certificate_id = "${var.elb-ssl-cert-arn}"
+#    ssl_certificate_id = "${var.elb-ssl-cert-arn}"
   }
 
   health_check {
