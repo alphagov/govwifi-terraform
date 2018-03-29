@@ -1,0 +1,9 @@
+resource "aws_key_pair" "govwifi-bastion-key" {
+  key_name   = "govwifi-bastion-key-20180329"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDS8Z/5bTMf0ZlM2GuQZOC0abBUxj92QNvdperEEyu+cwZOJ6f2pWX+xzXE9DQnpNvFLIhnizUM0UM4hHMfbnDCiNUzxOOvXARUtf30hzaiyLc3KKiy3rLIsIuESUgiiEwC2EftPLe2RyZ3QdIjR9PI4ug87yw3/DkUodLTEVWMGkGkYI6aZDfhJ2Dj+wEMcOH+pff7fR9gRx9Wc3Eb0oQLZmCqmBewrem00U97JNPwMQnQmlYv7YQDgGzpuddyVQC7Rw3QcSGrU495NYY1FjqVBpBv0q1bruHNRq9jd6qwP8xNeORRXVLtdQQQK0qaye2KdhogBpx0AkeKD2XWl5C/ bastion@govwifi"
+}
+
+resource "aws_key_pair" "govwifi-staging-bastion-key" {
+  key_name   = "govwifi-staging-bastion-key-20180329"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD4NQie8YhcGAxPkGCnESicWe7MpRPg7MhKKZi85XY76USMiH6OzCHtfts3vqh+bmlJXIfH8fXQlFJFcls6+aKCiUMB1QbgyiULPSuggYZ6U1Ar7yjHSOyVdbUe90sXvJ9/QzODsEmHcTZGf0uD5oWqkWxwbrDpgtMQzcHVDquex27yi/wGacN8gH2qtfoYbJwJdFE0P7AcRXJ9eyMjXqFzuk7GJ8LVJ1mRvy118nMn/EVMNr/p4KQhAZ0Qv//1dhB8JBZ1Y4++n8fW8MIDvxCfWw/rvNN1htB7J47YpI5DPqSlOsdm4vV+LYvcqgt93FryE9BhWTPsN2pjtpOjNytf staging-bastion@govwifi"
+}
