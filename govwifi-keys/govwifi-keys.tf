@@ -1,0 +1,9 @@
+resource "aws_key_pair" "govwifi-key" {
+  key_name   = "govwifi-key-20180329"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7ZlpMO21vo1BbDNVONTdReGkjds8BD4FMpT03KohvBvzUAtf5essM38lXuYHkYKT31EJkdhXXv7/uO2dhbPbMXTLyFPsXOgULQYU12n3sjo43Thtp1qHj3fF/2mgI8FREC7Kb9G9ZinXPSwFGWyZDjzkVCAQjoJwYDY6m9PlxbNOVP/IJI+f+IYgSFFDm59nN+uoWWbqmj7fNUhqUEUb3tTZ1pZAltMh5xVL6PKb3OVuUXD6AS8LezA04LJNwmshHSVMatuPcxAXP+NYeS4JSqoG57/o6sW7BSBXIzDbycFhUQo/entoojT7x1mV8puds3g4ISCjVKyv6hVE3siYL govwifi@govwifi"
+}
+
+resource "aws_key_pair" "govwifi-staging-key" {
+  key_name   = "govwifi-staging-key-20180329"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDMyFQXNZ3KFaPDI7sUdz5+4vSTZbpJmJv27XX6QplrBI2HC0jieClRVoYZRd0U0cY5WTYAChXdWgJjvgepemRLN2Ba7T8hNX6mcQQ/zvSlY6LqmBg6cUlofw1enElWdVP401/jRt/Dwv5pHgAxgWT72U4QKiGA37JN/M4RqNOZZy41zpxZxIykHBWJmu2qgxP4CwrEdiahOQtV2WJmUwjAXKMqNU6kxp8wRJzKH9pQcKPfFYGTaawf8f1QtwBBoP/o5iAVD5jVc6wME/O6jvsVKYovW9nYqkHyVjtY1dxIYPVQ/x6NmtrdJfFUpqyKPzA4rbf5DuCy79ARz0u62eeb staging@govwifi"
+}
