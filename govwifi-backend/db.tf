@@ -220,7 +220,7 @@ resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
   evaluation_periods  = "1"
   metric_name         = "BurstBalance"
   namespace           = "AWS/RDS"
-  period              = "60"
+  period              = "180"
   statistic           = "Minimum"
   threshold           = "45"
 
@@ -230,7 +230,7 @@ resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
 
   alarm_description  = "This metric monitors the IOPS burst balance available for the DB."
   alarm_actions      = ["${var.critical-notifications-arn}"]
-  treat_missing_data = "breaching"
+  treat_missing_data = "missing"
 }
 
 resource "aws_cloudwatch_metric_alarm" "rr_burstbalancealarm" {
@@ -240,7 +240,7 @@ resource "aws_cloudwatch_metric_alarm" "rr_burstbalancealarm" {
   evaluation_periods  = "1"
   metric_name         = "BurstBalance"
   namespace           = "AWS/RDS"
-  period              = "60"
+  period              = "180"
   statistic           = "Minimum"
   threshold           = "45"
 
@@ -250,7 +250,7 @@ resource "aws_cloudwatch_metric_alarm" "rr_burstbalancealarm" {
 
   alarm_description  = "This metric monitors the IOPS burst balance available for the DB read replica."
   alarm_actions      = ["${var.capacity-notifications-arn}"]
-  treat_missing_data = "breaching"
+  treat_missing_data = "missing"
 }
 
 resource "aws_cloudwatch_metric_alarm" "rr_laggingalarm" {
