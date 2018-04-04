@@ -26,6 +26,14 @@ variable "ami" {
   description = "AMI id to launch, must be in the region specified by the region variable"
 }
 
+variable "performance-ami" {}
+
+variable "performance-instance-type" {}
+
+variable "performance-server-ip" {}
+
+variable "performance-ssh-key-name" {}
+
 variable "bastion-ami" {}
 
 variable "bastion-instance-type" {}
@@ -108,6 +116,10 @@ variable "cache-sg-list" {
   type = "list"
 }
 
+variable "performance-sg-list" {
+  type = "list"
+}
+
 variable "legacy-bastion-user" {}
 
 variable "critical-notifications-arn" {}
@@ -149,3 +161,4 @@ variable "save-pp-data" {
 variable "pp-domain-name" {
   default = ""
 }
+
