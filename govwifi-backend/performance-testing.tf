@@ -1,4 +1,5 @@
 resource "aws_instance" "performance-testing" {
+  count                  = "${var.performance-instance-count}"
   ami                    = "${var.performance-ami}"
   instance_type          = "${var.performance-instance-type}"
   key_name               = "${var.performance-ssh-key-name}"
@@ -10,6 +11,10 @@ resource "aws_instance" "performance-testing" {
   depends_on = [
     "aws_iam_instance_profile.performance-instance-profile",
   ]
+
+  tags {
+    Name = "${title(var.Env-Name)} - Stress testing instance"
+  }
 
   user_data = <<DATA
 Content-Type: multipart/mixed; boundary="==BOUNDARY=="
@@ -49,7 +54,8 @@ DATA
 }
 
 resource "aws_iam_role" "performance-instance-role" {
-  name = "${var.aws-region-name}-${var.Env-Name}-backend-performance-instance-role"
+  count = "${var.performance-instance-count}"
+  name  = "${var.aws-region-name}-${var.Env-Name}-backend-performance-instance-role"
 
   assume_role_policy = <<EOF
 {
@@ -69,12 +75,14 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "performance-instance-profile" {
+  count      = "${var.performance-instance-count}"
   name       = "${var.aws-region-name}-${var.Env-Name}-backend-performance-instance-profile"
   role       = "${aws_iam_role.performance-instance-role.name}"
   depends_on = ["aws_iam_role.performance-instance-role"]
 }
 
-resource "aws_eip_association" "eip_assoc" {
-  instance_id = "${aws_instance.performance.id}"
+resource "aws_eip_association" "performance_eip_assoc" {
+  count       = "${var.performance-instance-count}"
+  instance_id = "${aws_instance.performance-testing.id}"
   public_ip   = "${replace(var.performance-server-ip, "/32", "")}"
 }
