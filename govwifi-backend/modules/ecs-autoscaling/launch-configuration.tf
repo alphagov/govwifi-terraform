@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/cloud-config; charset="us-ascii"
 #cloud-config
 repo_update: true
-repo_upgrade: all
+# temporary disable repo_upgrade: all
 
 --==BOUNDARY==
 MIME-Version: 1.0
@@ -55,7 +55,7 @@ sudo cp ./crontab /etc/crontab
 cat <<'EOF' > ./security-updates
 #!/bin/bash
 sudo yum update -y --security
-sudo yum update -y ecs-init
+# temporary disable sudo yum update -y ecs-init
 sudo service docker restart
 sleep 5
 sudo start ecs
