@@ -17,4 +17,6 @@ module "ecs-autoscaling" {
   critical-notifications-arn = "${var.critical-notifications-arn}"
   capacity-notifications-arn = "${var.capacity-notifications-arn}"
   users                      = "${var.users}"
+  aws-cloudwatch-access-key  = "${var.aws-cloudwatch-access-key}"
+  aws-cloudwatch-secret-key  = "${var.aws-cloudwatch-secret-key}"
 }
