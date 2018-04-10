@@ -29,7 +29,6 @@ curl https://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScrip
 unzip CloudWatchMonitoringScripts-1.2.2.zip
 rm CloudWatchMonitoringScripts-1.2.2.zip
 mv aws-scripts-mon /home/ec2-user/scripts/mon
-cd /home/ec2-user/scripts/mon
 
 --==BOUNDARY==
 MIME-Version: 1.0
