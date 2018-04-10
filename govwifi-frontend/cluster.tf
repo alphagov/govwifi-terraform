@@ -6,8 +6,8 @@ resource "aws_ecs_cluster" "frontend-cluster" {
 
 resource "aws_cloudwatch_log_group" "frontend-log-group" {
   name = "${var.Env-Name}-frontend-docker-log-group"
-  #keep the logs forever
-  retention_in_days = 0
+
+  retention_in_days = 90
 }
 
 resource "aws_ecs_task_definition" "radius-task" {
