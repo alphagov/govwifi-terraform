@@ -34,6 +34,16 @@ resource "aws_iam_role_policy" "ecs-instance-policy" {
       "Resource": [
         "arn:aws:logs:*:*:*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:PutMetricData",
+        "cloudwatch:GetMetricStatistics",
+        "cloudwatch:ListMetrics",
+        "ec2:DescribeTags"
+      ],
+      "Resource": "*"
     }
   ]
 }
