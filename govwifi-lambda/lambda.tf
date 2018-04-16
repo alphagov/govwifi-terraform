@@ -27,10 +27,10 @@ resource "aws_lambda_function" "test_lambda" {
 
   environment {
     variables = {
-      DATABASE_HOST     = ""
-      DATABASE_USER     = ""
-      DATABASE_PASSWORD = ""
-      DATABASE          = ""
+      DATABASE_HOST     = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+      DATABASE_USER     = "${var.db-user}"
+      DATABASE_PASSWORD = "${var.db-password}"
+      DATABASE          = "govwifi_${var.Env-Name}"
     }
   }
 }
