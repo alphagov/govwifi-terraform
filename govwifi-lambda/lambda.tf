@@ -43,7 +43,7 @@ resource "aws_cloudwatch_event_rule" "every_five_minutes" {
 
 resource "aws_cloudwatch_event_target" "delete_users_every_five_minutes" {
   rule      = "${aws_cloudwatch_event_rule.every_five_minutes.name}"
-  target_id = "check_foo"
+  target_id = "test_lambda"
   arn       = "${aws_lambda_function.test_lambda.arn}"
 }
 
