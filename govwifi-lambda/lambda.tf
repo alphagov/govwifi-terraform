@@ -20,10 +20,10 @@ EOF
 
 resource "aws_lambda_function" "test_lambda" {
   filename      = "deletion-payload.zip"
-  function_name = "Deletion Spike"
+  function_name = "test_lambda"
   role          = "${aws_iam_role.iam_for_lambda.arn}"
   handler       = "user_deletion.delete_old_users"
-  runtime       = "python3"
+  runtime       = "python3.6"
 
   environment {
     variables = {
@@ -33,4 +33,24 @@ resource "aws_lambda_function" "test_lambda" {
       DATABASE          = "govwifi_${var.Env-Name}"
     }
   }
+}
+
+resource "aws_cloudwatch_event_rule" "every_five_minutes" {
+  name                = "every-five-minutes"
+  description         = "Fires every five minutes"
+  schedule_expression = "rate(5 minutes)"
+}
+
+resource "aws_cloudwatch_event_target" "delete_users_every_five_minutes" {
+  rule      = "${aws_cloudwatch_event_rule.every_five_minutes.name}"
+  target_id = "check_foo"
+  arn       = "${aws_lambda_function.test_lambda.arn}"
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_to_call_delete_users" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = "${aws_lambda_function.test_lambda.function_name}"
+  principal     = "events.amazonaws.com"
+  source_arn    = "${aws_cloudwatch_event_rule.every_five_minutes.arn}"
 }
