@@ -18,12 +18,24 @@ resource "aws_iam_role" "iam_for_lambda" {
 EOF
 }
 
+resource "aws_iam_policy_attachment" "lambda-execute-policy-attachment" {
+  name       = "Lamba cloudwatch and VPC execution policy"
+  roles      = ["${aws_iam_role.iam_for_lambda.name}"]
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+
 resource "aws_lambda_function" "test_lambda" {
-  filename      = "deletion-payload.zip"
-  function_name = "test_lambda"
-  role          = "${aws_iam_role.iam_for_lambda.arn}"
-  handler       = "user_deletion.delete_old_users"
-  runtime       = "python3.6"
+  filename         = "deletion-payload.zip"
+  function_name    = "test_lambda"
+  role             = "${aws_iam_role.iam_for_lambda.arn}"
+  handler          = "user_deletion.delete_old_users"
+  source_code_hash = "${base64sha256(file("deletion-payload.zip"))}"
+  runtime          = "python3.6"
+
+  vpc_config {
+    security_group_ids = ["${var.db-sg-list}"]
+    subnet_ids         = ["${var.db-subnet-ids}"]
+  }
 
   environment {
     variables = {
