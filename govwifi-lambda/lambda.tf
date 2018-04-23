@@ -88,3 +88,46 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_delete_users" {
   principal     = "events.amazonaws.com"
   source_arn    = "${aws_cloudwatch_event_rule.every_morning_at_one.arn}"
 }
+
+resource "aws_lambda_function" "session_deletion" {
+  filename         = "session-deletion.zip"
+  function_name    = "session_deletion"
+  role             = "${aws_iam_role.iam_for_lambda.arn}"
+  handler          = "session_deletion.delete_old_sessions"
+  source_code_hash = "${base64sha256(file("session-deletion.zip"))}"
+  runtime          = "python3.6"
+
+  vpc_config {
+    security_group_ids = ["${var.db-sg-list}"]
+    subnet_ids         = ["${var.db-subnet-ids}"]
+  }
+
+  environment {
+    variables = {
+      DATABASE_HOST     = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+      DATABASE_USER     = "${var.db-user}"
+      DATABASE_PASSWORD = "${var.db-password}"
+      DATABASE          = "govwifi_${var.Env-Name}"
+    }
+  }
+}
+
+resource "aws_cloudwatch_event_rule" "every_morning_at_two" {
+  name                = "every-morning-at-two"
+  description         = "Triggers every morning at 2AM"
+  schedule_expression = "cron(0 2 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "delete_users_every_morning_at_two" {
+  rule      = "${aws_cloudwatch_event_rule.every_morning_at_two.name}"
+  target_id = "session_deletion"
+  arn       = "${aws_lambda_function.session_deletion.arn}"
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_to_call_delete_sessions" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = "${aws_lambda_function.session_deletion.function_name}"
+  principal     = "events.amazonaws.com"
+  source_arn    = "${aws_cloudwatch_event_rule.every_morning_at_two.arn}"
+}
