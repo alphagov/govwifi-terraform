@@ -69,14 +69,14 @@ resource "aws_lambda_function" "user_deletion" {
   }
 }
 
-resource "aws_cloudwatch_event_rule" "every_five_minutes" {
-  name                = "every-five-minutes"
-  description         = "Fires every five minutes"
-  schedule_expression = "rate(5 minutes)"
+resource "aws_cloudwatch_event_rule" "every_morning_at_one" {
+  name                = "every-morning-at-one"
+  description         = "Triggers every morning at 1AM"
+  schedule_expression = "cron(0 1 * * ? *)"
 }
 
-resource "aws_cloudwatch_event_target" "delete_users_every_five_minutes" {
-  rule      = "${aws_cloudwatch_event_rule.every_five_minutes.name}"
+resource "aws_cloudwatch_event_target" "delete_users_every_morning_at_one" {
+  rule      = "${aws_cloudwatch_event_rule.every_morning_at_one.name}"
   target_id = "user_deletion"
   arn       = "${aws_lambda_function.user_deletion.arn}"
 }
@@ -86,5 +86,5 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_delete_users" {
   action        = "lambda:InvokeFunction"
   function_name = "${aws_lambda_function.user_deletion.function_name}"
   principal     = "events.amazonaws.com"
-  source_arn    = "${aws_cloudwatch_event_rule.every_five_minutes.arn}"
+  source_arn    = "${aws_cloudwatch_event_rule.every_morning_at_one.arn}"
 }
