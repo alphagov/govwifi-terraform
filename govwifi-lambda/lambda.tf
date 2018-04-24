@@ -24,28 +24,6 @@ resource "aws_iam_policy_attachment" "lambda-execute-policy-attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
-resource "aws_lambda_function" "test_lambda" {
-  filename      = "deletion-payload.zip"
-  function_name = "test_lambda"
-  role          = "${aws_iam_role.iam_for_lambda.arn}"
-  handler       = "user_deletion.delete_old_users"
-  runtime       = "python3.6"
-
-  vpc_config {
-    security_group_ids = ["${var.db-sg-list}"]
-    subnet_ids         = ["${var.db-subnet-ids}"]
-  }
-
-  environment {
-    variables = {
-      DATABASE_HOST     = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-      DATABASE_USER     = "${var.db-user}"
-      DATABASE_PASSWORD = "${var.db-password}"
-      DATABASE          = "govwifi_${var.Env-Name}"
-    }
-  }
-}
-
 resource "aws_lambda_function" "user_deletion" {
   filename         = "deletion-payload.zip"
   function_name    = "user_deletion"
