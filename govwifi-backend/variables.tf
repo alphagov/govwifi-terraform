@@ -145,3 +145,7 @@ variable "save-pp-data" {
   description = "Whether or not to save Performance Platform backup data. Value must be 0 or 1."
   default     = "0"
 }
+
+variable "pp-domain-name" {
+  default = ""
+}

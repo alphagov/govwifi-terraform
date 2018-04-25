@@ -115,16 +115,41 @@ cat <<'EOF' > ./ping-performanceplatform-weekly
 wget -t 1 "http://elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}&period=weekly"
 EOF
 
-chmod +x ./ping-survey ./ping-performanceplatform ./ping-performanceplatform-weekly
+cat <<'EOF' > ./backup-performanceplatform
+#!/bin/bash
+
+today=`date  +"%F"`
+mkdir tmp
+
+wget -O tmp/account-usage.json "https://${var.pp-domain-name}/data/gov-wifi/account-usage?collect=count%3Asum&group_by=type&period=day&filter_by=dataType%3Aaccount-usage&start_at=2016-11-01T00%3A00%3A00Z&end_at="$today"T10%3A55%3A06Z&format=json"
+wget -O tmp/number-of-transactions.json "https://${var.pp-domain-name}/data/gov-wifi/account-usage?flatten=true&collect=count%3Asum&group_by=dataType&filter_by=type%3Atransactions&format=json"
+wget -O tmp/registrations-volumetrics.json "https://${var.pp-domain-name}/data/gov-wifi/volumetrics?collect=cumulative_count%3Amean&group_by=channel&start_at=2016-08-01T00%3A00%3A00Z&period=day&end_at="$today"T11%3A49%3A25Z&format=json"
+wget -O tmp/number-of-registrations.json "https://${var.pp-domain-name}/data/gov-wifi/volumetrics?flatten=true&sort_by=_timestamp%3Adescending&limit=1&filter_by=channel%3Aall-sign-ups&format=json"
+wget -O tmp/unique-users-week.json "https://${var.pp-domain-name}/data/gov-wifi/unique-users?flatten=true&collect=count%3Asum&start_at=2016-11-01T00%3A00%3A00Z&period=week&end_at="$today"T11%3A53%3A49Z&format=json"
+wget -O tmp/unique-users-month.json "https://${var.pp-domain-name}/data/gov-wifi/unique-users?flatten=true&collect=month_count%3Asum&start_at=2016-11-01T00%3A00%3A00Z&period=month&end_at="$today"T11%3A54%3A38Z&format=json"
+wget -O tmp/completion-rate.json "https://${var.pp-domain-name}/data/gov-wifi/completion-rate?flatten=true&collect=count%3Asum&group_by=stage&period=week&start_at=2016-10-31T00%3A00%3A00Z&end_at="$today"T23%3A59%3A59Z&format=json"
+
+aws s3 sync tmp s3://${var.Env-Name}-${lower(var.aws-region-name)}-pp-data/
+
+rm -r tmp
+EOF
+
+
+chmod +x ./ping-survey ./ping-performanceplatform ./ping-performanceplatform-weekly ./backup-performanceplatform
 mkdir /home/ubuntu/backup
 sudo cp ./ping-survey /home/ubuntu/backup/
 sudo cp ./ping-performanceplatform /home/ubuntu/backup/
 sudo cp ./ping-performanceplatform-weekly /home/ubuntu/backup/
+sudo cp ./backup-performanceplatform /home/ubuntu/backup/
 
 if [ 1 == ${var.bastion-set-cronjobs} ] ; then
   sudo cp ./ping-survey /etc/cron.hourly/
   sudo cp ./ping-performanceplatform /etc/cron.daily/
   sudo cp ./ping-performanceplatform-weekly /etc/cron.weekly/
+fi
+
+if [ 1 == ${var.save-pp-data} ] ; then
+  sudo cp ./backup-performanceplatform /etc/cron.daily/
 fi
 
 --==BOUNDARY==
