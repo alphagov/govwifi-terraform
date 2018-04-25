@@ -205,6 +205,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "bastion-instance-policy" {
+  count      = "${1 - (var.save-pp-data)}"
   name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-policy"
   role       = "${aws_iam_role.bastion-instance-role.id}"
   depends_on = ["aws_iam_role.bastion-instance-role"]
@@ -224,6 +225,43 @@ resource "aws_iam_role_policy" "bastion-instance-policy" {
       "Resource": [
         "arn:aws:logs:*:*:*"
       ]
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "bastion-instance-policy-pp" {
+  count      = "${var.save-pp-data}"
+  name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-policy"
+  role       = "${aws_iam_role.bastion-instance-role.id}"
+  depends_on = ["aws_iam_role.bastion-instance-role", "aws_s3_bucket.pp-data-bucket"]
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DescribeLogStreams"
+      ],
+      "Resource": [
+        "arn:aws:logs:*:*:*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::${var.Env-Name}-${lower(var.aws-region-name)}-pp-data/*",
+      "Condition": {
+        "StringEquals": {
+          "aws:Referer": "${var.aws-account-id}"
+        }
+      }
     }
   ]
 }
