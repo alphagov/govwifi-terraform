@@ -37,15 +37,17 @@ until [[ -z `sudo lsof /var/lib/apt/lists/lock` ]] ; do echo -n "." >> /var/log/
 sudo apt-get update -q
 until [[ -z `sudo lsof /var/lib/dpkg/lock` ]] ; do echo -n "." >> /var/log/dpkg-wait.log; sleep 1; done
 until [[ -z `sudo lsof /var/lib/apt/lists/lock` ]] ; do echo -n "." >> /var/log/apt-list-wait.log; sleep 1; done
-# Workaround, to skip failure to update libpam-systemd. Manual update may be required.
-sudo apt-mark hold libpam-systemd:amd64
+# Workaround, to skip failure to update libpam-systemd and libpam-runtime. Manual update may be required.
+# See https://bugs.launchpad.net/ubuntu/+source/pam/+bug/682662
+sudo apt-mark hold libpam-systemd:amd64 libpam-runtime
 sudo apt-get upgrade -y -qq -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
 until [[ -z `sudo lsof /var/lib/dpkg/lock` ]] ; do echo -n "." >> /var/log/dpkg-wait.log; sleep 1; done
 until [[ -z `sudo lsof /var/lib/apt/lists/lock` ]] ; do echo -n "." >> /var/log/apt-list-wait.log; sleep 1; done
 sudo apt-get install -yq --autoremove \
     mysql-client \
     htop \
-    mc
+    mc \
+    awscli
 
 # Allow auto-updates for everything, not just security
 sudo sed -i -e 's/\/\/\t"$${distro_id}:$${distro_codename}-updates";/\t"$${distro_id}:$${distro_codename}-updates";/g' /etc/apt/apt.conf.d/50unattended-upgrades
@@ -129,7 +131,7 @@ wget -O tmp/unique-users-week.json "https://${var.pp-domain-name}/data/gov-wifi/
 wget -O tmp/unique-users-month.json "https://${var.pp-domain-name}/data/gov-wifi/unique-users?flatten=true&collect=month_count%3Asum&start_at=2016-11-01T00%3A00%3A00Z&period=month&end_at="$today"T11%3A54%3A38Z&format=json"
 wget -O tmp/completion-rate.json "https://${var.pp-domain-name}/data/gov-wifi/completion-rate?flatten=true&collect=count%3Asum&group_by=stage&period=week&start_at=2016-10-31T00%3A00%3A00Z&end_at="$today"T23%3A59%3A59Z&format=json"
 
-aws s3 sync tmp s3://${var.Env-Name}-${lower(var.aws-region-name)}-pp-data/
+aws s3 cp tmp s3://${var.Env-Name}-${lower(var.aws-region-name)}-pp-data/ --recursive --region ${var.aws-region}
 
 rm -r tmp
 EOF
@@ -280,13 +282,10 @@ resource "aws_iam_role_policy" "bastion-instance-policy-pp" {
     },
     {
       "Effect": "Allow",
-      "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::${var.Env-Name}-${lower(var.aws-region-name)}-pp-data/*",
-      "Condition": {
-        "StringEquals": {
-          "aws:Referer": "${var.aws-account-id}"
-        }
-      }
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Resource": "arn:aws:s3:::${var.Env-Name}-${lower(var.aws-region-name)}-pp-data/*"
     }
   ]
 }
