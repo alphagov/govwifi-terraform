@@ -36,10 +36,11 @@ resource "aws_lambda_function" "session_deletion" {
 
   environment {
     variables = {
-      DATABASE_HOST     = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-      DATABASE_USER     = "${var.db-user}"
-      DATABASE_PASSWORD = "${var.db-password}"
-      DATABASE          = "govwifi_${var.Env-Name}"
+      DATABASE_HOST         = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+      DATABASE_USER         = "${var.db-user}"
+      DATABASE_PASSWORD     = "${var.db-password}"
+      DATABASE              = "govwifi_${var.Env-Name}"
+      DISABLE_DATA_DELETION = "true"
     }
   }
 }
