@@ -6,7 +6,7 @@ resource "aws_cloudwatch_event_rule" "every_day_at_midnight" {
 
 resource "aws_cloudwatch_event_target" "delete_users_every_day_at_midnight" {
   rule      = "${aws_cloudwatch_event_rule.every_day_at_midnight.name}"
-  target_id = "user_deletion"
+  target_id = "user_deletion_${var.Env-Name}-${lower(var.aws-region-name)}"
   arn       = "${aws_lambda_function.user_deletion.arn}"
 }
 
@@ -26,7 +26,7 @@ resource "aws_cloudwatch_event_rule" "every_day_at_ten_past_midnight" {
 
 resource "aws_cloudwatch_event_target" "delete_sessions_every_day_at_ten_past_midnight" {
   rule      = "${aws_cloudwatch_event_rule.every_day_at_ten_past_midnight.name}"
-  target_id = "session_deletion"
+  target_id = "session_deletion_${var.Env-Name}-${lower(var.aws-region-name)}"
   arn       = "${aws_lambda_function.session_deletion.arn}"
 }
 
