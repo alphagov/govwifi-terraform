@@ -164,11 +164,3 @@ variable "pp-domain-name" {
   default = ""
 }
 
-variable "aws-cloudwatch-access-key" {
-  description = "The access key for cloudwatch monitoring memory"
-}
-
-variable "aws-cloudwatch-secret-key" {
-  description = "The secret key for cloudwatch monitoring memory"
-}
-
