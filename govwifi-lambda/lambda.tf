@@ -41,7 +41,6 @@ resource "aws_lambda_function" "session_deletion" {
       DATABASE_USER         = "${var.db-user}"
       DATABASE_PASSWORD     = "${var.db-password}"
       DATABASE              = "govwifi_${var.Env-Name}"
-      DISABLE_DATA_DELETION = "true"
     }
   }
 }
