@@ -5,6 +5,7 @@ resource "aws_lambda_function" "user_deletion" {
   handler          = "user_deletion.delete_old_users"
   source_code_hash = "${base64sha256(file("user_deletion.zip"))}"
   runtime          = "python3.6"
+  timeout          = "240"
 
   vpc_config {
     security_group_ids = ["${var.db-sg-list}"]
@@ -29,6 +30,7 @@ resource "aws_lambda_function" "session_deletion" {
   handler          = "session_deletion.delete_old_sessions"
   source_code_hash = "${base64sha256(file("session_deletion.zip"))}"
   runtime          = "python3.6"
+  timeout          = "240"
 
   vpc_config {
     security_group_ids = ["${var.db-sg-list}"]
