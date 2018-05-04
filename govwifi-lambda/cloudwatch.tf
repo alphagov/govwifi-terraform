@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_event_rule" "every_day_at_midnight" {
   name                = "every-day-at-midnight"
-  description         = "Triggers every morning at Midnight"
+  description         = "Triggers every morning at Midnight UTC"
   schedule_expression = "cron(0 0 * * ? *)"
 }
 
@@ -18,14 +18,15 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_delete_users" {
   source_arn    = "${aws_cloudwatch_event_rule.every_day_at_midnight.arn}"
 }
 
-resource "aws_cloudwatch_event_rule" "every_day_at_ten_past_midnight" {
-  name                = "every-day-at-ten-past-midnight"
-  description         = "Triggers every morning at 10 past midnight"
-  schedule_expression = "cron(10 0 * * ? *)"
+
+resource "aws_cloudwatch_event_rule" "delete_sessions_frequency" {
+  name                = "delete-sessions-frequency"
+  description         = "Triggers every 5 minutes between 2200-2300 UTC"
+  schedule_expression = "cron(0/5 22-23 * * ? *)"
 }
 
-resource "aws_cloudwatch_event_target" "delete_sessions_every_day_at_ten_past_midnight" {
-  rule      = "${aws_cloudwatch_event_rule.every_day_at_ten_past_midnight.name}"
+resource "aws_cloudwatch_event_target" "delete_sessions_every_day" {
+  rule      = "${aws_cloudwatch_event_rule.delete_sessions_frequency.name}"
   target_id = "session_deletion_${var.Env-Name}-${lower(var.aws-region-name)}"
   arn       = "${aws_lambda_function.session_deletion.arn}"
 }
@@ -35,5 +36,5 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_delete_sessions" {
   action        = "lambda:InvokeFunction"
   function_name = "${aws_lambda_function.session_deletion.function_name}"
   principal     = "events.amazonaws.com"
-  source_arn    = "${aws_cloudwatch_event_rule.every_day_at_ten_past_midnight.arn}"
+  source_arn    = "${aws_cloudwatch_event_rule.delete_sessions_frequency.arn}"
 }
