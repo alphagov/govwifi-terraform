@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_event_rule" "every_day_at_midnight" {
-  name                = "every-day-at-midnight"
+  name                = "every-day-at-midnight-${var.Env-Name}-${lower(var.aws-region-name)}"
   description         = "Triggers every morning at Midnight UTC"
   schedule_expression = "cron(0 0 * * ? *)"
 }
@@ -20,7 +20,7 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_call_delete_users" {
 
 
 resource "aws_cloudwatch_event_rule" "delete_sessions_frequency" {
-  name                = "delete-sessions-frequency"
+  name                = "delete-sessions-frequency-${var.Env-Name}-${lower(var.aws-region-name)}"
   description         = "Triggers every 5 minutes between 2200-2300 UTC"
   schedule_expression = "cron(0/5 22-23 * * ? *)"
 }
