@@ -18,8 +18,7 @@ resource "aws_iam_role" "iam_for_lambda" {
 EOF
 }
 
-resource "aws_iam_policy_attachment" "lambda-execute-policy-attachment" {
-  name       = "Lamba cloudwatch and VPC execution policy"
-  roles      = ["${aws_iam_role.iam_for_lambda.name}"]
+resource "aws_iam_role_policy_attachment" "lambda-execute-role-policy-attachment" {
+  role       = "${aws_iam_role.iam_for_lambda.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
