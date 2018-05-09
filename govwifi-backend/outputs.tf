@@ -5,3 +5,11 @@ output "backend-vpc-id" {
 output "backend-subnet-ids" {
   value = ["${aws_subnet.wifi-backend-subnet.*.id}"]
 }
+
+output "ecs-instance-profile-id" {
+  value = "${aws_iam_instance_profile.ecs-instance-profile.id}"
+}
+
+output "ecs-service-role" {
+  value = "${aws_iam_role.ecs-service-role.arn}"
+}
