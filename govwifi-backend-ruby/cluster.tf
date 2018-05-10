@@ -88,7 +88,7 @@ resource "aws_ecs_task_definition" "backend-ruby-task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${format("%s:latest", aws_ecr_repository.govwifi-backend-ruby-ecr.repository_url)}",
+      "image": "${var.docker-image}",
       "command": null,
       "user": null,
       "dockerLabels": null,

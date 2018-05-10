@@ -30,6 +30,8 @@ variable "db-user" {}
 
 variable "db-password" {}
 
+variable "docker-image" {}
+
 variable "radius-server-ips" {}
 
 variable "shared-key" {}
