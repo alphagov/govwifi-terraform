@@ -1,4 +1,3 @@
-# CNAME for the elb for this environment
 resource "aws_route53_record" "elb" {
   count   = "${var.backend-elb-count}"
   zone_id = "${var.route53-zone-id}"
