@@ -1,7 +1,7 @@
 module "ecs-autoscaling" {
   source                     = "./modules/ecs-autoscaling"
   Env-Name                   = "${var.Env-Name}"
-  cluster_name               = "${var.Env-Name}-backend-ruby-cluster"
+  cluster_name               = "${var.Env-Name}-allowed-sites-api-cluster"
   key_name                   = "${var.ssh-key-name}"
   instance_type              = "t2.medium"
   region                     = "${var.aws-region}"

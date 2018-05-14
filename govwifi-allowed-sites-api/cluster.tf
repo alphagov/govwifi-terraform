@@ -1,19 +1,19 @@
-resource "aws_ecs_cluster" "backend-ruby-cluster" {
-  name = "${var.Env-Name}-backend-ruby-cluster"
+resource "aws_ecs_cluster" "allowed-sites-api-cluster" {
+  name = "${var.Env-Name}-allowed-sites-api-cluster"
 }
 
-resource "aws_cloudwatch_log_group" "backend-ruby-log-group" {
-  name = "${var.Env-Name}-backend-ruby-docker-log-group"
+resource "aws_cloudwatch_log_group" "allowed-sites-api-log-group" {
+  name = "${var.Env-Name}-allowed-sites-api-docker-log-group"
 
   retention_in_days = 90
 }
 
-resource "aws_ecr_repository" "govwifi-backend-ruby-ecr" {
-  name = "govwifi/backend-ruby"
+resource "aws_ecr_repository" "govwifi-allowed-sites-api-ecr" {
+  name = "govwifi/allowed-sites-api"
 }
 
-resource "aws_ecs_task_definition" "backend-ruby-task" {
-  family = "backend-ruby-task-${var.Env-Name}"
+resource "aws_ecs_task_definition" "allowed-sites-api-task" {
+  family = "allowed-sites-api-task-${var.Env-Name}"
 
   container_definitions = <<EOF
 [
@@ -45,18 +45,6 @@ resource "aws_ecs_task_definition" "backend-ruby-task" {
       "dockerSecurityOptions": null,
       "environment": [
         {
-          "name": "DB_NAME",
-          "value": "govwifi_${var.Env-Name}"
-        },{
-          "name": "DB_PASS",
-          "value": "${var.db-password}"
-        },{
-          "name": "DB_USER",
-          "value": "${var.db-user}"
-        },{
-          "name": "DB_HOSTNAME",
-          "value": "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-        },{
           "name": "RR_DB_NAME",
           "value": "govwifi_${var.Env-Name}"
         },{
@@ -69,17 +57,8 @@ resource "aws_ecs_task_definition" "backend-ruby-task" {
           "name": "RR_DB_HOSTNAME",
           "value": "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
         },{
-          "name": "CACHE_HOSTNAME",
-          "value": "cache.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-        },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
-        },{
-          "name": "RADIUS_HOSTNAME",
-          "value": "radius*n*.${var.Env-Subdomain}.service.gov.uk"
-        },{
-          "name": "RADIUS_SERVER_IPS",
-          "value": "${var.radius-server-ips}"
         },{
           "name": "FRONTEND_API_KEY",
           "value": "${var.shared-key}"
@@ -95,9 +74,9 @@ resource "aws_ecs_task_definition" "backend-ruby-task" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.backend-ruby-log-group.name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.allowed-sites-api-log-group.name}",
           "awslogs-region": "${var.aws-region}",
-          "awslogs-stream-prefix": "${var.Env-Name}-ruby-docker-logs"
+          "awslogs-stream-prefix": "${var.Env-Name}-allowed-sites-api-docker-logs"
         }
       },
       "cpu": 0,
@@ -108,15 +87,15 @@ resource "aws_ecs_task_definition" "backend-ruby-task" {
 EOF
 }
 
-resource "aws_ecs_service" "backend-ruby-service" {
-  name            = "backend-ruby-service-${var.Env-Name}"
-  cluster         = "${aws_ecs_cluster.backend-ruby-cluster.id}"
-  task_definition = "${aws_ecs_task_definition.backend-ruby-task.arn}"
+resource "aws_ecs_service" "allowed-sites-api-service" {
+  name            = "allowed-sites-api-service-${var.Env-Name}"
+  cluster         = "${aws_ecs_cluster.allowed-sites-api-cluster.id}"
+  task_definition = "${aws_ecs_task_definition.allowed-sites-api-task.arn}"
   desired_count   = "${var.backend-instance-count}"
   iam_role        = "${var.ecs-service-role}"
 
   load_balancer {
-    elb_name       = "${aws_elb.backend-ruby-elb.name}"
+    elb_name       = "${aws_elb.allowed-sites-api-elb.name}"
     container_name = "backend"
     container_port = 80
   }

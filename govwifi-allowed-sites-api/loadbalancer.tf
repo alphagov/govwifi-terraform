@@ -1,7 +1,6 @@
-# Create a new load balancer
-resource "aws_elb" "backend-ruby-elb" {
+resource "aws_elb" "allowed-sites-api-elb" {
   count           = "${var.backend-elb-count}"
-  name            = "wifi-ruby-elb-${var.Env-Name}"
+  name            = "allowed-sites-api-elb-${var.Env-Name}"
   subnets         = ["${var.subnet-ids}"]
   security_groups = ["${var.elb-sg-list}"]
 
@@ -49,6 +48,6 @@ resource "aws_elb" "backend-ruby-elb" {
   connection_draining_timeout = 30
 
   tags {
-    Name = "backend-ruby-elb-${var.Env-Name}"
+    Name = "allowed-sites-api-elb-${var.Env-Name}"
   }
 }

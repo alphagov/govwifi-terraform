@@ -1,4 +1,4 @@
-resource "aws_autoscaling_group" "ecs-ruby-cluster" {
+resource "aws_autoscaling_group" "ecs-allowed-sites-api-cluster" {
   vpc_zone_identifier       = ["${split(",", var.subnet_ids)}"]
   name                      = "${var.cluster_name}"
   min_size                  = "${var.min_size}"
@@ -30,7 +30,7 @@ resource "aws_autoscaling_group" "ecs-ruby-cluster" {
 
   tag {
     key                 = "Name"
-    value               = "${title(var.Env-Name)} Ruby Backend"
+    value               = "${title(var.Env-Name)} Allowed Sites API"
     propagate_at_launch = true
   }
 }

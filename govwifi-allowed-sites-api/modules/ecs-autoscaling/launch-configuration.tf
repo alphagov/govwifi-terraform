@@ -1,5 +1,5 @@
 resource "aws_launch_configuration" "ecs" {
-  name_prefix          = "tf-${var.Env-Name}-ruby-lc-"
+  name_prefix          = "tf-${var.Env-Name}-allowed-sites-api-lc-"
   image_id             = "${var.ami}"
   instance_type        = "${var.instance_type}"
   iam_instance_profile = "${var.instance-profile-id}"
