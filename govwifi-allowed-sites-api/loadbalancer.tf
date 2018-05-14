@@ -5,7 +5,7 @@ resource "aws_elb" "allowed-sites-api-elb" {
   security_groups = ["${var.elb-sg-list}"]
 
   listener {
-    instance_port      = 80
+    instance_port      = 8080
     instance_protocol  = "http"
     lb_port            = 443
     lb_protocol        = "https"
