@@ -15,3 +15,13 @@ variable "db-sg-list" {
 variable "db-subnet-ids" {
   type = "list"
 }
+
+variable "enable-user-del-cron" {
+  description = "Whether to enable user deletion trigger."
+  default     = false
+}
+
+variable "enable-session-del-cron" {
+  description = "Whether to enable session deletion trigger."
+  default     = false
+}
