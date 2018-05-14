@@ -45,17 +45,17 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
       "dockerSecurityOptions": null,
       "environment": [
         {
-          "name": "RR_DB_NAME",
+          "name": "DB_NAME",
           "value": "govwifi_${var.Env-Name}"
         },{
-          "name": "RR_DB_PASS",
+          "name": "DB_PASS",
           "value": "${var.db-password}"
         },{
-          "name": "RR_DB_USER",
+          "name": "DB_USER",
           "value": "${var.db-user}"
         },{
-          "name": "RR_DB_HOSTNAME",
-          "value": "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+          "name": "DB_HOSTNAME",
+          "value": "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
@@ -97,6 +97,6 @@ resource "aws_ecs_service" "allowed-sites-api-service" {
   load_balancer {
     elb_name       = "${aws_elb.allowed-sites-api-elb.name}"
     container_name = "backend"
-    container_port = 80
+    container_port = 8080
   }
 }
