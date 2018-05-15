@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "radius-task" {
   family = "radius-task-${var.Env-Name}"
 
   container_definitions = <<EOF
-[ 
+[
   {
     "volumesFrom": [],
     "memory": 2000,
@@ -50,6 +50,9 @@ resource "aws_ecs_task_definition" "radius-task" {
       {
         "name": "BACKEND_BASEURL",
         "value": "${var.backend-base-url}"
+      },{
+        "name": "ALLOWED_SITES_API_BASE_URL",
+        "value": "${var.allowed-sites-api-base-url}"
       },{
         "name": "BACKEND_API_KEY",
         "value": "${var.shared-key}"
