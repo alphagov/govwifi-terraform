@@ -9,6 +9,7 @@ resource "aws_cloudwatch_log_group" "allowed-sites-api-log-group" {
 }
 
 resource "aws_ecr_repository" "govwifi-allowed-sites-api-ecr" {
+  count = "${var.ecr-repository-count}"
   name = "govwifi/allowed-sites-api"
 }
 
