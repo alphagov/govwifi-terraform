@@ -7,7 +7,7 @@ resource "aws_elb" "allowed-sites-api-elb" {
   listener {
     instance_port      = 8080
     instance_protocol  = "http"
-    lb_port            = 443
+    lb_port            = 8443
     lb_protocol        = "https"
     ssl_certificate_id = "${var.elb-ssl-cert-arn}"
   }
