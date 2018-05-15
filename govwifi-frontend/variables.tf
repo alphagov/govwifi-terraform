@@ -42,6 +42,8 @@ variable "dns-numbering-base" {}
 
 variable "backend-base-url" {}
 
+variable "allowed-sites-api-base-url" {}
+
 variable "elastic-ip-list" {
   type = "list"
 }
