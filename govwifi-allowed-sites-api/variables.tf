@@ -62,3 +62,8 @@ variable "subnet-ids" {
 
 variable "ecs-instance-profile-id" {}
 variable "ecs-service-role" {}
+
+variable "ecr-repository-count" {
+  default = 0
+  description = "Whether or not to create ECR repository"
+}
