@@ -1,10 +1,10 @@
 resource "aws_launch_configuration" "ecs" {
   name_prefix          = "tf-${var.Env-Name}-allowed-sites-api-lc-"
   image_id             = "${var.ami}"
-  instance_type        = "${var.instance_type}"
-  iam_instance_profile = "${var.instance-profile-id}"
-  key_name             = "${var.key_name}"
-  security_groups      = ["${split(",", var.security_group_ids)}"]
+  instance_type        = "t2.medium"
+  iam_instance_profile = "${var.ecs-instance-profile-id}"
+  key_name             = "${var.ssh-key-name}"
+  security_groups      = ["${var.backend-sg-list}"]
 
   user_data = <<DATA
 Content-Type: multipart/mixed; boundary="==BOUNDARY=="
@@ -127,7 +127,7 @@ MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 # Set cluster name
-echo ECS_CLUSTER=${var.cluster_name} >> /etc/ecs/ecs.config
+echo ECS_CLUSTER=${var.Env-Name}-allowed-sites-api-cluster >> /etc/ecs/ecs.config
 
 --==BOUNDARY==
 MIME-Version: 1.0
@@ -184,7 +184,7 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 # Set the region to send CloudWatch Logs data to (the region where the container instance is located)
 # region=$(curl 169.254.169.254/latest/meta-data/placement/availability-zone | sed s'/.$//')
-region=${var.region}
+region=${var.aws-region}
 sed -i -e "s/region = us-east-1/region = $region/g" /etc/awslogs/awscli.conf
 
 --==BOUNDARY==
