@@ -1,9 +1,9 @@
 resource "aws_autoscaling_group" "ecs-allowed-sites-api-cluster" {
-  vpc_zone_identifier       = ["${split(",", var.subnet_ids)}"]
-  name                      = "${var.cluster_name}"
-  min_size                  = "${var.min_size}"
-  max_size                  = "${var.max_size}"
-  desired_capacity          = "${var.desired_capacity}"
+  vpc_zone_identifier       = ["${var.subnet-ids}"]
+  name                      = "${var.Env-Name}-allowed-sites-api-cluster"
+  min_size                  = "${var.backend-min-size}"
+  max_size                  = "10"
+  desired_capacity          = "${var.backend-instance-count}"
   health_check_type         = "EC2"
   launch_configuration      = "${aws_launch_configuration.ecs.name}"
   health_check_grace_period = "${var.health_check_grace_period}"
