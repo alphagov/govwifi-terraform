@@ -34,20 +34,6 @@ mv aws-scripts-mon /home/ec2-user/scripts/mon
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
-sudo yum install perl-Switch perl-DateTime perl-Sys-Syslog perl-LWP-Protocol-https -y
-sudo yum -y install perl-Digest-SHA perl-URI perl-libwww-perl perl-MIME-tools perl-Crypt-SSLeay perl-XML-LibXML unzip
-mkdir -p /home/ec2-user/scripts
-cd /home/ec2-user/scripts
-curl https://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.2.zip -O
-unzip CloudWatchMonitoringScripts-1.2.2.zip
-rm CloudWatchMonitoringScripts-1.2.2.zip
-mv aws-scripts-mon /home/ec2-user/scripts/mon
-cd /home/ec2-user/scripts/mon
-
---==BOUNDARY==
-MIME-Version: 1.0
-Content-Type: text/x-shellscript; charset="us-ascii"
-#!/bin/bash
 # Set up daily security updates
 # Stagger restart time based on local IP (assigned randomly)
 # Restarting all backends before the frontends start their staggered nighly restarts
