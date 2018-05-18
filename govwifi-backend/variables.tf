@@ -26,16 +26,6 @@ variable "ami" {
   description = "AMI id to launch, must be in the region specified by the region variable"
 }
 
-variable "performance-instance-count" {}
-
-variable "performance-ami" {}
-
-variable "performance-instance-type" {}
-
-variable "performance-server-ip" {}
-
-variable "performance-ssh-key-name" {}
-
 variable "bastion-ami" {}
 
 variable "bastion-instance-type" {}
@@ -115,10 +105,6 @@ variable "db-sg-list" {
 }
 
 variable "cache-sg-list" {
-  type = "list"
-}
-
-variable "performance-sg-list" {
   type = "list"
 }
 

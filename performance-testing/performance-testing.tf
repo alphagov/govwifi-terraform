@@ -3,8 +3,8 @@ resource "aws_instance" "performance-testing" {
   ami                    = "${var.performance-ami}"
   instance_type          = "${var.performance-instance-type}"
   key_name               = "${var.performance-ssh-key-name}"
-  subnet_id              = "${aws_subnet.wifi-backend-subnet.0.id}"
-  vpc_security_group_ids = ["${var.mgt-sg-list}", "${var.performance-sg-list}"]
+  subnet_id              = "${var.performance-subnet-id}"
+  vpc_security_group_ids = ["${var.performance-sg-list}"]
   iam_instance_profile   = "${aws_iam_instance_profile.performance-instance-profile.id}"
   monitoring             = 0
 
@@ -55,7 +55,7 @@ DATA
 
 resource "aws_iam_role" "performance-instance-role" {
   count = "${var.performance-instance-count}"
-  name  = "${var.aws-region-name}-${var.Env-Name}-backend-performance-instance-role"
+  name  = "${var.aws-region-name}-${var.Env-Name}-performance-instance-role"
 
   assume_role_policy = <<EOF
 {
@@ -76,7 +76,7 @@ EOF
 
 resource "aws_iam_instance_profile" "performance-instance-profile" {
   count      = "${var.performance-instance-count}"
-  name       = "${var.aws-region-name}-${var.Env-Name}-backend-performance-instance-profile"
+  name       = "${var.aws-region-name}-${var.Env-Name}-performance-instance-profile"
   role       = "${aws_iam_role.performance-instance-role.name}"
   depends_on = ["aws_iam_role.performance-instance-role"]
 }
