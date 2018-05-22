@@ -1,4 +1,4 @@
-resource "aws_autoscaling_group" "ecs-backend-ruby-cluster" {
+resource "aws_autoscaling_group" "backend-ruby-asg" {
   vpc_zone_identifier       = ["${var.subnet-ids}"]
   name                      = "${var.Env-Name}-backend-ruby-cluster"
   min_size                  = "${var.backend-min-size}"
@@ -30,7 +30,7 @@ resource "aws_autoscaling_group" "ecs-backend-ruby-cluster" {
 
   tag {
     key                 = "Name"
-    value               = "${title(var.Env-Name)} Backend Ruby API"
+    value               = "${title(var.Env-Name)} Backend Ruby APIs"
     propagate_at_launch = true
   }
 }

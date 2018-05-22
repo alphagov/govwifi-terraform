@@ -30,7 +30,9 @@ variable "db-user" {}
 
 variable "db-password" {}
 
-variable "docker-image" {}
+variable "api-docker-image" {}
+
+variable "auth-docker-image" {}
 
 variable "radius-server-ips" {}
 

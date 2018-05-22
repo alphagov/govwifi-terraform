@@ -3,7 +3,7 @@ resource "aws_autoscaling_policy" "scale-policy" {
   scaling_adjustment     = 1
   adjustment_type        = "ChangeInCapacity"
   cooldown               = 300
-  autoscaling_group_name = "${aws_autoscaling_group.ecs-backend-ruby-cluster.name}"
+  autoscaling_group_name = "${aws_autoscaling_group.backend-ruby-asg.name}"
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpualarm" {
@@ -18,7 +18,7 @@ resource "aws_cloudwatch_metric_alarm" "cpualarm" {
   threshold           = "70"
 
   dimensions {
-    AutoScalingGroupName = "${aws_autoscaling_group.ecs-backend-ruby-cluster.name}"
+    AutoScalingGroupName = "${aws_autoscaling_group.backend-ruby-asg.name}"
   }
 
   alarm_description  = "This metric monitors ec2 cpu utilization"

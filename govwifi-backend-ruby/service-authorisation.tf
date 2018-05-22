@@ -64,7 +64,7 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.docker-image}",
+      "image": "${var.auth-docker-image}",
       "command": null,
       "user": null,
       "dockerLabels": null,
