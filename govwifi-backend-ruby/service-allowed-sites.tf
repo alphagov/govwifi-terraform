@@ -4,11 +4,6 @@ resource "aws_cloudwatch_log_group" "allowed-sites-api-log-group" {
   retention_in_days = 90
 }
 
-resource "aws_ecr_repository" "govwifi-allowed-sites-api-ecr" {
-  count = "${var.ecr-repository-count}"
-  name = "govwifi/allowed-sites-api"
-}
-
 resource "aws_ecs_task_definition" "allowed-sites-api-task" {
   family = "allowed-sites-api-task-${var.Env-Name}"
 
