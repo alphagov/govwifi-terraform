@@ -23,8 +23,8 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
           "protocol": "tcp"
         },
         {
-          "hostPort": 8080,
-          "containerPort": 8080,
+          "hostPort": 9080,
+          "containerPort": 9080,
           "protocol": "tcp"
         }
       ],
