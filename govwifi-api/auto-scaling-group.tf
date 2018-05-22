@@ -1,6 +1,6 @@
-resource "aws_autoscaling_group" "backend-ruby-asg" {
+resource "aws_autoscaling_group" "api-asg" {
   vpc_zone_identifier       = ["${var.subnet-ids}"]
-  name                      = "${var.Env-Name}-backend-ruby-cluster"
+  name                      = "${var.Env-Name}-api-cluster"
   min_size                  = "${var.backend-min-size}"
   max_size                  = "10"
   desired_capacity          = "${var.backend-instance-count}"

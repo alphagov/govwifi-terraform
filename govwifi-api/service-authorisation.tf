@@ -1,11 +1,11 @@
-resource "aws_cloudwatch_log_group" "allowed-sites-api-log-group" {
-  name = "${var.Env-Name}-allowed-sites-api-docker-log-group"
+resource "aws_cloudwatch_log_group" "authorisation-api-log-group" {
+  name = "${var.Env-Name}-authorisation-api-docker-log-group"
 
   retention_in_days = 90
 }
 
-resource "aws_ecs_task_definition" "allowed-sites-api-task" {
-  family = "allowed-sites-api-task-${var.Env-Name}"
+resource "aws_ecs_task_definition" "authorisation-api-task" {
+  family = "authorisation-api-task-${var.Env-Name}"
 
   container_definitions = <<EOF
 [
@@ -59,16 +59,16 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.api-docker-image}",
+      "image": "${var.auth-docker-image}",
       "command": null,
       "user": null,
       "dockerLabels": null,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.allowed-sites-api-log-group.name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.authorisation-api-log-group.name}",
           "awslogs-region": "${var.aws-region}",
-          "awslogs-stream-prefix": "${var.Env-Name}-allowed-sites-api-docker-logs"
+          "awslogs-stream-prefix": "${var.Env-Name}-authorisation-api-docker-logs"
         }
       },
       "cpu": 0,
@@ -79,16 +79,16 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
 EOF
 }
 
-resource "aws_ecs_service" "allowed-sites-api-service" {
-  name            = "allowed-sites-api-service-${var.Env-Name}"
-  cluster         = "${aws_ecs_cluster.backend-ruby-cluster.id}"
-  task_definition = "${aws_ecs_task_definition.allowed-sites-api-task.arn}"
+resource "aws_ecs_service" "authorisation-api-service" {
+  name            = "authorisation-api-service-${var.Env-Name}"
+  cluster         = "${aws_ecs_cluster.api-cluster.id}"
+  task_definition = "${aws_ecs_task_definition.authorisation-api-task.arn}"
   desired_count   = "${var.backend-instance-count}"
   iam_role        = "${var.ecs-service-role}"
 
   //TODO: think about port separation
   load_balancer {
-    elb_name       = "${aws_elb.backend-ruby-elb.name}"
+    elb_name       = "${aws_elb.api-elb.name}"
     container_name = "backend"
     container_port = 8080
   }

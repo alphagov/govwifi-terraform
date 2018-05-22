@@ -1,5 +1,5 @@
 resource "aws_launch_configuration" "ecs" {
-  name_prefix          = "tf-${var.Env-Name}-backend-ruby-lc-"
+  name_prefix          = "tf-${var.Env-Name}-api-lc-"
   image_id             = "${var.ami}"
   instance_type        = "t2.medium"
   iam_instance_profile = "${var.ecs-instance-profile-id}"
@@ -127,7 +127,7 @@ MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 # Set cluster name
-echo ECS_CLUSTER=${var.Env-Name}-backend-ruby-cluster >> /etc/ecs/ecs.config
+echo ECS_CLUSTER=${var.Env-Name}-api-cluster >> /etc/ecs/ecs.config
 
 --==BOUNDARY==
 MIME-Version: 1.0
