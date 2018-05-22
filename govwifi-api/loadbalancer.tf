@@ -5,14 +5,22 @@ resource "aws_elb" "api-elb" {
   security_groups = ["${var.elb-sg-list}"]
 
   listener {
-    instance_port      = 8080
+    instance_port      = "${var.api-instance-port}" #8080
     instance_protocol  = "http"
-    lb_port            = 8443
+    lb_port            = "${var.api-elb-port}" #8443
     lb_protocol        = "https"
     ssl_certificate_id = "${var.elb-ssl-cert-arn}"
   }
 
-  health_check {
+  listener {
+    instance_port      = "${var.auth-instance-port}"
+    instance_protocol  = "http"
+    lb_port            = "${var.auth-elb-port}"
+    lb_protocol        = "https"
+    ssl_certificate_id = "${var.elb-ssl-cert-arn}"
+  }
+
+  health_check { #CRAP
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3

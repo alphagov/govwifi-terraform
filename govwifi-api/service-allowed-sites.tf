@@ -90,6 +90,6 @@ resource "aws_ecs_service" "allowed-sites-api-service" {
   load_balancer {
     elb_name       = "${aws_elb.api-elb.name}"
     container_name = "backend"
-    container_port = 8080
+    container_port = "${var.api-instance-port}"
   }
 }

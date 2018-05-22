@@ -30,10 +30,6 @@ variable "db-user" {}
 
 variable "db-password" {}
 
-variable "api-docker-image" {}
-
-variable "auth-docker-image" {}
-
 variable "radius-server-ips" {}
 
 variable "shared-key" {}
@@ -69,3 +65,12 @@ variable "health_check_grace_period" {
   default     = "300"
   description = "Time after instance comes into service before checking health"
 }
+
+# Service-specific settings
+variable "api-docker-image" {}
+variable "auth-docker-image" {}
+
+variable "api-elb-port" {}
+variable "api-instance-port" {}
+variable "auth-elb-port" {}
+variable "auth-instance-port" {}
