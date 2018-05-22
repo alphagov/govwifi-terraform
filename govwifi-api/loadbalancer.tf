@@ -5,9 +5,9 @@ resource "aws_elb" "api-elb" {
   security_groups = ["${var.elb-sg-list}"]
 
   listener {
-    instance_port      = "${var.api-instance-port}" #8080
+    instance_port      = "${var.clients-instance-port}" #8080
     instance_protocol  = "http"
-    lb_port            = "${var.api-elb-port}" #8443
+    lb_port            = "${var.clients-elb-port}" #8443
     lb_protocol        = "https"
     ssl_certificate_id = "${var.elb-ssl-cert-arn}"
   }

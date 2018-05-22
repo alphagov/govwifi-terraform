@@ -59,7 +59,7 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.api-docker-image}",
+      "image": "${var.clients-docker-image}",
       "command": null,
       "user": null,
       "dockerLabels": null,
@@ -90,6 +90,6 @@ resource "aws_ecs_service" "allowed-sites-api-service" {
   load_balancer {
     elb_name       = "${aws_elb.api-elb.name}"
     container_name = "backend"
-    container_port = "${var.api-instance-port}"
+    container_port = "${var.clients-instance-port}"
   }
 }
