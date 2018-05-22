@@ -1,5 +1,5 @@
 resource "aws_autoscaling_group" "ecs-cluster" {
-  availability_zones        = ["${split(",", var.availability_zones)}"]
+#  availability_zones        = ["${split(",", var.availability_zones)}"]
   vpc_zone_identifier       = ["${split(",", var.subnet_ids)}"]
   name                      = "${var.cluster_name}"
   min_size                  = "${var.min_size}"
