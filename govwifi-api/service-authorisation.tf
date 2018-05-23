@@ -23,8 +23,8 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
           "protocol": "tcp"
         },
         {
-          "hostPort": 9080,
-          "containerPort": 9080,
+          "hostPort": "${var.auth-instance-port}",
+          "containerPort": "${var.auth-instance-port}",
           "protocol": "tcp"
         }
       ],
@@ -54,6 +54,9 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
         },{
           "name": "FRONTEND_API_KEY",
           "value": "${var.shared-key}"
+        },{
+          "name": "INSTANCE_PORT",
+          "value": "${var.clients-instance-port}"
         }
       ],
       "links": null,

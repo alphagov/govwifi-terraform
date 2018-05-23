@@ -23,8 +23,8 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
           "protocol": "tcp"
         },
         {
-          "hostPort": 8080,
-          "containerPort": 8080,
+          "hostPort": "${var.clients-instance-port}",
+          "containerPort": "${var.clients-instance-port}",
           "protocol": "tcp"
         }
       ],
@@ -54,6 +54,9 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
         },{
           "name": "FRONTEND_API_KEY",
           "value": "${var.shared-key}"
+        },{
+          "name": "INSTANCE_PORT",
+          "value": "${var.clients-instance-port}"
         }
       ],
       "links": null,
