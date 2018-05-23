@@ -56,7 +56,7 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
           "value": "${var.shared-key}"
         },{
           "name": "INSTANCE_PORT",
-          "value": "${var.clients-instance-port}"
+          "value": "${var.auth-instance-port}"
         }
       ],
       "links": null,
