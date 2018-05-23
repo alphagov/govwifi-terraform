@@ -11,17 +11,12 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
 [
     {
       "volumesFrom": [],
-      "memory": 2000,
+      "memory": 1900,
       "extraHosts": null,
       "dnsServers": null,
       "disableNetworking": null,
       "dnsSearchDomains": null,
       "portMappings": [
-        {
-          "hostPort": 80,
-          "containerPort": 80,
-          "protocol": "tcp"
-        },
         {
           "hostPort": ${var.auth-instance-port},
           "containerPort": ${var.auth-instance-port},
