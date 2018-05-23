@@ -23,8 +23,8 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
           "protocol": "tcp"
         },
         {
-          "hostPort": "${var.auth-instance-port}",
-          "containerPort": "${var.auth-instance-port}",
+          "hostPort": ${var.auth-instance-port},
+          "containerPort": ${var.auth-instance-port},
           "protocol": "tcp"
         }
       ],

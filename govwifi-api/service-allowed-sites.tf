@@ -23,8 +23,8 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
           "protocol": "tcp"
         },
         {
-          "hostPort": "${var.clients-instance-port}",
-          "containerPort": "${var.clients-instance-port}",
+          "hostPort": ${var.clients-instance-port},
+          "containerPort": ${var.clients-instance-port},
           "protocol": "tcp"
         }
       ],

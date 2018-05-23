@@ -54,6 +54,9 @@ resource "aws_ecs_task_definition" "radius-task" {
         "name": "ALLOWED_SITES_API_BASE_URL",
         "value": "${var.allowed-sites-api-base-url}"
       },{
+        "name": "AUTH_API_BASE_URL",
+        "value": "${var.auth-api-base-url}"
+      },{
         "name": "BACKEND_API_KEY",
         "value": "${var.shared-key}"
       },{
