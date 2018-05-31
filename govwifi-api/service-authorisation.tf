@@ -18,8 +18,8 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
       "dnsSearchDomains": null,
       "portMappings": [
         {
-          "hostPort": ${var.auth-instance-port},
-          "containerPort": ${var.auth-instance-port},
+          "hostPort": 0,
+          "containerPort": 8080,
           "protocol": "tcp"
         }
       ],

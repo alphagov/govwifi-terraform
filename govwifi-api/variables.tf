@@ -69,8 +69,3 @@ variable "health_check_grace_period" {
 # Service-specific settings
 variable "clients-docker-image" {}
 variable "auth-docker-image" {}
-
-variable "clients-elb-port" {}
-variable "clients-instance-port" {}
-variable "auth-elb-port" {}
-variable "auth-instance-port" {}

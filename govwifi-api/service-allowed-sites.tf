@@ -18,8 +18,8 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
       "dnsSearchDomains": null,
       "portMappings": [
         {
-          "hostPort": ${var.clients-instance-port},
-          "containerPort": ${var.clients-instance-port},
+          "hostPort": 0,
+          "containerPort": 8080,
           "protocol": "tcp"
         }
       ],
