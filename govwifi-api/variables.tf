@@ -30,8 +30,6 @@ variable "db-user" {}
 
 variable "db-password" {}
 
-variable "docker-image" {}
-
 variable "radius-server-ips" {}
 
 variable "shared-key" {}
@@ -63,12 +61,11 @@ variable "subnet-ids" {
 variable "ecs-instance-profile-id" {}
 variable "ecs-service-role" {}
 
-variable "ecr-repository-count" {
-  default = 0
-  description = "Whether or not to create ECR repository"
-}
-
 variable "health_check_grace_period" {
   default     = "300"
   description = "Time after instance comes into service before checking health"
 }
+
+# Service-specific settings
+variable "clients-docker-image" {}
+variable "auth-docker-image" {}

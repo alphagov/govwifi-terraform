@@ -1,14 +1,14 @@
 resource "aws_autoscaling_policy" "scale-policy" {
-  name                   = "${var.Env-Name}-allowed-sites-api-scale-policy"
+  name                   = "${var.Env-Name}-api-scale-policy"
   scaling_adjustment     = 1
   adjustment_type        = "ChangeInCapacity"
   cooldown               = 300
-  autoscaling_group_name = "${aws_autoscaling_group.ecs-allowed-sites-api-cluster.name}"
+  autoscaling_group_name = "${aws_autoscaling_group.api-asg.name}"
 }
 
 resource "aws_cloudwatch_metric_alarm" "cpualarm" {
   count               = "${var.backend-cpualarm-count}"
-  alarm_name          = "${var.Env-Name}-allowed-sites-api-cpu-alarm"
+  alarm_name          = "${var.Env-Name}-api-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
   metric_name         = "CPUUtilization"
@@ -18,7 +18,7 @@ resource "aws_cloudwatch_metric_alarm" "cpualarm" {
   threshold           = "70"
 
   dimensions {
-    AutoScalingGroupName = "${aws_autoscaling_group.ecs-allowed-sites-api-cluster.name}"
+    AutoScalingGroupName = "${aws_autoscaling_group.api-asg.name}"
   }
 
   alarm_description  = "This metric monitors ec2 cpu utilization"

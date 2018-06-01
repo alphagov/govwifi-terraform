@@ -1,6 +1,6 @@
-resource "aws_autoscaling_group" "ecs-allowed-sites-api-cluster" {
+resource "aws_autoscaling_group" "api-asg" {
   vpc_zone_identifier       = ["${var.subnet-ids}"]
-  name                      = "${var.Env-Name}-allowed-sites-api-cluster"
+  name                      = "${var.Env-Name}-api-cluster"
   min_size                  = "${var.backend-min-size}"
   max_size                  = "10"
   desired_capacity          = "${var.backend-instance-count}"
@@ -30,7 +30,7 @@ resource "aws_autoscaling_group" "ecs-allowed-sites-api-cluster" {
 
   tag {
     key                 = "Name"
-    value               = "${title(var.Env-Name)} Allowed Sites API"
+    value               = "${title(var.Env-Name)} Backend Ruby APIs"
     propagate_at_launch = true
   }
 }
