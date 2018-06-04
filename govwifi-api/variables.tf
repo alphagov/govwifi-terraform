@@ -30,7 +30,11 @@ variable "db-user" {}
 
 variable "db-password" {}
 
+variable "rack-env" {}
+
 variable "radius-server-ips" {}
+
+variable "sentry-dsn" {}
 
 variable "shared-key" {}
 

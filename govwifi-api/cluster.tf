@@ -48,6 +48,12 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
           "name": "DB_HOSTNAME",
           "value": "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
         },{
+          "name": "RACK_ENV",
+          "value": "${var.rack-env}"
+        },{
+          "name": "SENTRY_DSN",
+          "value": "${var.sentry-dsn}"
+        },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
         },{

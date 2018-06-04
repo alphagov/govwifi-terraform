@@ -32,7 +32,11 @@ variable "db-password" {}
 
 variable "docker-image" {}
 
+variable "rack-env" {}
+
 variable "radius-server-ips" {}
+
+variable "sentry-dsn" {}
 
 variable "shared-key" {}
 
@@ -64,7 +68,7 @@ variable "ecs-instance-profile-id" {}
 variable "ecs-service-role" {}
 
 variable "ecr-repository-count" {
-  default = 0
+  default     = 0
   description = "Whether or not to create ECR repository"
 }
 
