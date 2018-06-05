@@ -96,7 +96,9 @@ resource "aws_iam_role_policy" "ecs-service-policy" {
       "Action": [
         "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
         "elasticloadbalancing:Describe*",
-        "elasticloadbalancing:RegisterInstancesWithLoadBalancer"
+        "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+        "elasticloadbalancing:RegisterTargets",
+        "elasticloadbalancing:DeregisterTargets"
       ],
       "Resource": [
         "arn:aws:elasticloadbalancing:${var.aws-region}:${var.aws-account-id}:loadbalancer/wifi-backend-elb-${var.Env-Name}",
