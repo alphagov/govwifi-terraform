@@ -13,7 +13,7 @@ resource "aws_lb" "api-alb" {
 
 resource "aws_alb_listener" "alb_listener" {
   load_balancer_arn = "${aws_lb.api-alb.arn}"
-  port              = "8443"
+  port              = "8080"
   protocol          = "HTTPS"
   certificate_arn   = "${var.elb-ssl-cert-arn}"
   ssl_policy        = "ELBSecurityPolicy-2015-05"
@@ -35,11 +35,12 @@ resource "aws_alb_listener_rule" "static" {
   }
   condition {
     field  = "path-pattern"
-    values = ["/authentication/*"]
+    values = ["/authorize/*"]
   }
 }
 
 resource "aws_alb_target_group" "alb_target_group" {
+  depends_on   = ["aws_lb.api-alb"]
   name     = "api-lb-tg-${var.Env-Name}"
   port     = "8080"
   protocol = "HTTP"
@@ -53,8 +54,7 @@ resource "aws_alb_target_group" "alb_target_group" {
     unhealthy_threshold = 10
     timeout             = 5
     interval            = 10
-    path                = "/health"
-    port                = "8080"
+    path                = "/authorize/user/HEALTH"
   }
 }
 
