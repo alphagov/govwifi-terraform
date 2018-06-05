@@ -1,6 +1,6 @@
 resource "aws_lb" "api-alb" {
   name            = "api-alb-${var.Env-Name}"
-  internal        = true
+  internal        = false
   count           = "${var.backend-elb-count}"
   subnets         = ["${var.subnet-ids}"]
   security_groups = ["${var.elb-sg-list}"]
@@ -16,7 +16,7 @@ resource "aws_alb_listener" "alb_listener" {
   port              = "8080"
   protocol          = "HTTPS"
   certificate_arn   = "${var.elb-ssl-cert-arn}"
-  ssl_policy        = "ELBSecurityPolicy-2015-05"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
 
   default_action {
     target_group_arn = "${aws_alb_target_group.alb_target_group.arn}"
@@ -45,6 +45,7 @@ resource "aws_alb_target_group" "alb_target_group" {
   port     = "8080"
   protocol = "HTTP"
   vpc_id   = "${var.vpc-id}"
+
   tags {
     Name = "api-alb-tg-${var.Env-Name}"
   }
@@ -56,9 +57,4 @@ resource "aws_alb_target_group" "alb_target_group" {
     interval            = 10
     path                = "/authorize/user/HEALTH"
   }
-}
-
-resource "aws_autoscaling_attachment" "svc_asg_external2" {
-  alb_target_group_arn   = "${aws_alb_target_group.alb_target_group.arn}"
-  autoscaling_group_name = "${aws_autoscaling_group.api-asg.id}"
 }

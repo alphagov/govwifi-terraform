@@ -15,7 +15,7 @@ resource "aws_cloudwatch_metric_alarm" "cpualarm" {
   namespace           = "AWS/EC2"
   period              = "60"
   statistic           = "Average"
-  threshold           = "70"
+  threshold           = "50"
 
   dimensions {
     AutoScalingGroupName = "${aws_autoscaling_group.api-asg.name}"

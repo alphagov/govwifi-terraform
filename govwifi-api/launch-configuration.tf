@@ -83,7 +83,7 @@ sudo cp ./crontab /etc/crontab
 cat <<'EOF' > ./security-updates
 #!/bin/bash
 sudo yum update -y --security
-# temporary disable sudo yum update -y ecs-init
+sudo yum update -y ecs-init
 sudo service docker restart
 sleep 5
 sudo start ecs

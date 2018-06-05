@@ -50,10 +50,6 @@ variable "users" {
   type = "list"
 }
 
-variable "zone-names" {
-  type = "map"
-}
-
 variable "subnet-ids" {
   type = "list"
 }
