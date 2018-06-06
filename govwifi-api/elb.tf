@@ -13,7 +13,7 @@ resource "aws_lb" "api-alb" {
 
 resource "aws_alb_listener" "alb_listener" {
   load_balancer_arn = "${aws_lb.api-alb.arn}"
-  port              = "8080"
+  port              = "8443"
   protocol          = "HTTPS"
   certificate_arn   = "${var.elb-ssl-cert-arn}"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
