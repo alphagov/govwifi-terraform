@@ -15,7 +15,7 @@ MIME-Version: 1.0
 Content-Type: text/cloud-config; charset="us-ascii"
 #cloud-config
 repo_update: true
-# temporary disable repo_upgrade: all
+repo_upgrade: all
 
 --==BOUNDARY==
 MIME-Version: 1.0
