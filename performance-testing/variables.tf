@@ -10,8 +10,6 @@ variable "performance-ami" {}
 
 variable "performance-instance-type" {}
 
-variable "performance-server-ip" {}
-
 variable "performance-ssh-key-name" {}
 
 variable "performance-subnet-id" {}
