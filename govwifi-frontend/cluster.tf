@@ -48,6 +48,9 @@ resource "aws_ecs_task_definition" "radius-task" {
     "dockerSecurityOptions": null,
     "environment": [
       {
+        "name": "API_BASE_URL",
+        "value": "${var.api-base-url}"
+      },{
         "name": "BACKEND_BASEURL",
         "value": "${var.backend-base-url}"
       },{
