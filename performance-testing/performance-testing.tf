@@ -46,10 +46,34 @@ sudo apt-mark hold libpam-systemd:amd64
 sudo apt-get upgrade -y -qq -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
 until [[ -z `sudo lsof /var/lib/dpkg/lock` ]] ; do echo -n "." >> /var/log/dpkg-wait.log; sleep 1; done
 until [[ -z `sudo lsof /var/lib/apt/lists/lock` ]] ; do echo -n "." >> /var/log/apt-list-wait.log; sleep 1; done
+sudo apt-get -y update
 sudo apt-get install -yq --autoremove \
+    make \
+    wget \
+    gcc \
+    wget \
+    openssl \
+    libssl-dev \
+    libnl-3-dev \
     ruby-full \
+    build-essential \
+    libnl-utils \
     htop \
     mc
+
+sudo rm -rf /var/lib/apt/lists/*
+
+wget http://w1.fi/releases/wpa_supplicant-2.6.tar.gz
+tar -xvzf wpa_supplicant-2.6.tar.gz
+
+cp -pr wpa_supplicant-2.6/wpa_supplicant/defconfig wpa_supplicant-2.6/wpa_supplicant/.config
+
+cd wpa_supplicant-2.6/wpa_supplicant
+sed -i '/CONFIG_DRIVER_NL80211=y/d' ./.config
+sed -i -e 's/#CONFIG_EAPOL_TEST=y/CONFIG_EAPOL_TEST=y/g' ./.config
+
+make eapol_test
+sudo cp eapol_test /usr/bin
 DATA
 }
 
@@ -79,10 +103,4 @@ resource "aws_iam_instance_profile" "performance-instance-profile" {
   name       = "${var.aws-region-name}-${var.Env-Name}-performance-instance-profile"
   role       = "${aws_iam_role.performance-instance-role.name}"
   depends_on = ["aws_iam_role.performance-instance-role"]
-}
-
-resource "aws_eip_association" "performance_eip_assoc" {
-  count       = "${var.performance-instance-count}"
-  instance_id = "${aws_instance.performance-testing.id}"
-  public_ip   = "${replace(var.performance-server-ip, "/32", "")}"
 }
