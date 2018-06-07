@@ -10,7 +10,7 @@ resource "aws_cloudwatch_log_group" "allowed-sites-api-log-group" {
 
 resource "aws_ecr_repository" "govwifi-allowed-sites-api-ecr" {
   count = "${var.ecr-repository-count}"
-  name = "govwifi/allowed-sites-api"
+  name  = "govwifi/allowed-sites-api"
 }
 
 resource "aws_ecs_task_definition" "allowed-sites-api-task" {
@@ -57,6 +57,12 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
         },{
           "name": "DB_HOSTNAME",
           "value": "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+        },{
+          "name": "RACK_ENV",
+          "value": "${var.rack-env}"
+        },{
+          "name": "SENTRY_DSN",
+          "value": "${var.sentry-dsn}"
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
