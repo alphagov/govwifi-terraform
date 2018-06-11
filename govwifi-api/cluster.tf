@@ -56,9 +56,6 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
-        },{
-          "name": "FRONTEND_API_KEY",
-          "value": "${var.shared-key}"
         }
       ],
       "links": null,
