@@ -103,7 +103,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2-api-memory-alarm-high" {
     AutoScalingGroupName = "${aws_autoscaling_group.api-asg.name}"
   }
 
-  alarm_description  = "This alarm tells EC2 to scale up based on high CPU"
+  alarm_description  = "This alarm tells EC2 to scale up based on high memory usage"
   alarm_actions      = [
     "${aws_autoscaling_policy.api-ec2-scale-up-policy.arn}",
     "${var.critical-notifications-arn}"
@@ -125,7 +125,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2-api-memory-alarm-low" {
     AutoScalingGroupName = "${aws_autoscaling_group.api-asg.name}"
   }
 
-  alarm_description  = "This alarm tells EC2 to scale in"
+  alarm_description  = "This alarm tells EC2 to scale in based on low memory usage"
   alarm_actions      = [
     "${aws_autoscaling_policy.api-ec2-scale-down-policy.arn}",
     "${var.critical-notifications-arn}"
@@ -171,7 +171,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-memory-alarm-low" {
     ServiceName = "${aws_ecs_service.authorisation-api-service.name}"
   }
 
-  alarm_description  = "This alarm tells ECS to scale in based on memory usage"
+  alarm_description  = "This alarm tells ECS to scale in based on low memory usage"
   alarm_actions      = ["${aws_appautoscaling_policy.ecs-policy-down.arn}", "${var.critical-notifications-arn}"]
   treat_missing_data = "breaching"
 }
