@@ -1,7 +1,7 @@
 resource "aws_launch_configuration" "ecs" {
   name_prefix          = "tf-${var.Env-Name}-allowed-sites-api-lc-"
   image_id             = "${var.ami}"
-  instance_type        = "t2.medium"
+  instance_type        = "t2.micro"
   iam_instance_profile = "${var.ecs-instance-profile-id}"
   key_name             = "${var.ssh-key-name}"
   security_groups      = ["${var.backend-sg-list}"]
