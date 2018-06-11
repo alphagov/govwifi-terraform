@@ -31,8 +31,8 @@ resource "aws_appautoscaling_policy" "ecs-policy-up" {
   scalable_dimension = "ecs:service:DesiredCount"
 
   step_scaling_policy_configuration {
-    adjustment_type    = "ChangeInCapacity"
-    metric_aggregation_type   = "Average"
+    adjustment_type         = "ChangeInCapacity"
+    metric_aggregation_type = "Average"
 
     step_adjustment {
       metric_interval_lower_bound = 0
