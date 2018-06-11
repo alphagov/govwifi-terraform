@@ -8,7 +8,7 @@ resource "aws_autoscaling_policy" "scale-policy" {
 
 resource "aws_cloudwatch_metric_alarm" "cpualarm" {
   count               = "${var.backend-cpualarm-count}"
-  alarm_name          = "${var.Env-Name}-api-cpu-alarm"
+  alarm_name          = "${var.Env-Name}-api-cpu-alarm-ec2"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
   metric_name         = "CPUUtilization"
@@ -27,14 +27,14 @@ resource "aws_cloudwatch_metric_alarm" "cpualarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "auth_service_high" {
-  alarm_name          = "${var.Env-Name}-api-cpu-alarm-high-30"
+  alarm_name          = "${var.Env-Name}-api-cpu-alarm-high-ecs"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
   namespace           = "AWS/ECS"
   period              = "60"
   statistic           = "Average"
-  threshold           = "30"
+  threshold           = "50"
 
   dimensions {
     ClusterName = "${aws_ecs_cluster.api-cluster.name}"
@@ -47,7 +47,7 @@ resource "aws_cloudwatch_metric_alarm" "auth_service_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "auth_service_low" {
-  alarm_name          = "${var.Env-Name}-api-cpu-alarm-low-5"
+  alarm_name          = "${var.Env-Name}-api-cpu-alarm-low-ecs"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
@@ -68,7 +68,7 @@ resource "aws_cloudwatch_metric_alarm" "auth_service_low" {
 resource "aws_appautoscaling_target" "auth_ecs_target" {
   service_namespace  = "ecs"
   resource_id        = "service/${aws_ecs_cluster.api-cluster.name}/${aws_ecs_service.authorisation-api-service.name}"
-  max_capacity       = 4
+  max_capacity       = 6
   min_capacity       = 2
   role_arn           = "${var.ecs-service-role}"
   scalable_dimension = "ecs:service:DesiredCount"
