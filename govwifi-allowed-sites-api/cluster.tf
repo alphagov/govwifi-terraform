@@ -20,7 +20,7 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
 [
     {
       "volumesFrom": [],
-      "memory": 2000,
+      "memory": 1900,
       "extraHosts": null,
       "dnsServers": null,
       "disableNetworking": null,
