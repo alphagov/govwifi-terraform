@@ -9,10 +9,10 @@ resource "aws_db_subnet_group" "db-subnets" {
 }
 
 resource "aws_db_parameter_group" "db-parameters" {
-  count                    = "${var.db-instance-count}"
-  name                     = "${var.Env-Name}-db-parameter-group"
-  family                   = "mysql5.7"
-  description              = "DB parameter configuration"
+  count       = "${var.db-instance-count}"
+  name        = "${var.Env-Name}-db-parameter-group"
+  family      = "mysql5.7"
+  description = "DB parameter configuration"
 
   parameter {
     name  = "slow_query_log"
@@ -42,9 +42,10 @@ resource "aws_db_parameter_group" "db-parameters" {
 resource "aws_db_parameter_group" "rr-parameters" {
   # No harm in keeping the parameter group even if there are no read replica(s) currently
   #count                    = "${var.db-instance-count}"
-  name                     = "${var.Env-Name}-rr-parameter-group"
-  family                   = "mysql5.7"
-  description              = "DB read replica parameter configuration"
+  name = "${var.Env-Name}-rr-parameter-group"
+
+  family      = "mysql5.7"
+  description = "DB read replica parameter configuration"
 
   parameter {
     name  = "slow_query_log"
@@ -74,7 +75,8 @@ resource "aws_db_parameter_group" "rr-parameters" {
 resource "aws_db_option_group" "mariadb-audit" {
   # No harm in keeping the parameter group even if there is DB instance currently
   #count                    = "${var.db-instance-count}"
-  name                     = "${var.Env-Name}-db-audit"
+  name = "${var.Env-Name}-db-audit"
+
   option_group_description = "Mariadb audit configuration"
   engine_name              = "mysql"
   major_engine_version     = "5.7"
@@ -113,8 +115,10 @@ resource "aws_db_instance" "db" {
   maintenance_window          = "${var.db-maintenance-window}"
   backup_window               = "${var.db-backup-window}"
   skip_final_snapshot         = true
-  option_group_name           = "${aws_db_option_group.mariadb-audit.name}"
-  parameter_group_name        = "${aws_db_parameter_group.db-parameters.name}"
+
+  enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
+  option_group_name               = "${aws_db_option_group.mariadb-audit.name}"
+  parameter_group_name            = "${aws_db_parameter_group.db-parameters.name}"
 
   tags {
     Name = "${title(var.Env-Name)} DB"

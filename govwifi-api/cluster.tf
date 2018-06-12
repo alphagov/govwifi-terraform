@@ -88,6 +88,16 @@ resource "aws_ecs_service" "authorisation-api-service" {
   desired_count   = "${var.backend-instance-count}"
   iam_role        = "${var.ecs-service-role}"
 
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
+
+  ordered_placement_strategy {
+    type  = "binpack"
+    field = "cpu"
+  }
+
   load_balancer {
     target_group_arn = "${aws_alb_target_group.alb_target_group.arn}"
     container_name   = "authorisation"
