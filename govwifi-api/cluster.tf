@@ -88,7 +88,12 @@ resource "aws_ecs_service" "authorisation-api-service" {
   desired_count   = "${var.backend-instance-count}"
   iam_role        = "${var.ecs-service-role}"
 
-  placement_strategy {
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
+
+  ordered_placement_strategy {
     type  = "binpack"
     field = "cpu"
   }
