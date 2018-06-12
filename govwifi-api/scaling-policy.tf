@@ -95,7 +95,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
 resource "aws_appautoscaling_target" "auth-ecs-target" {
   service_namespace  = "ecs"
   resource_id        = "service/${aws_ecs_cluster.api-cluster.name}/${aws_ecs_service.authorisation-api-service.name}"
-  max_capacity       = 10
+  max_capacity       = 20
   min_capacity       = 2
   role_arn           = "${var.ecs-service-role}"
   scalable_dimension = "ecs:service:DesiredCount"
