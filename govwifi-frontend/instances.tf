@@ -22,6 +22,10 @@ repo_update: true
 repo_upgrade: all
 
 --==BOUNDARY==
+# Disable anacron which runs at 3am by default each morning
+sudo chmod a-x $(which anacron)
+
+--==BOUNDARY==
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
