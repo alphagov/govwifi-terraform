@@ -216,6 +216,14 @@ script
 	service awslogs start
 	chkconfig awslogs on
 end script
+
+--==BOUNDARY==
+MIME-Version: 1.0
+Content-Type: text/x-shellscript; charset="us-ascii"
+#!/bin/bash
+# Disable anacron which runs at 3am by default each morning
+sudo chmod a-x /usr/sbin/anacron
+
 --==BOUNDARY==--
 DATA
 
