@@ -210,6 +210,10 @@ DATA
     Name = "${title(var.Env-Name)} Frontend Radius-${var.dns-numbering-base + count.index + 1}"
     Env  = "${title(var.Env-Name)}"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_eip_association" "eip_assoc" {
