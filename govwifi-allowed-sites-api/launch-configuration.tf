@@ -31,6 +31,10 @@ rm CloudWatchMonitoringScripts-1.2.2.zip
 mv aws-scripts-mon /home/ec2-user/scripts/mon
 
 --==BOUNDARY==
+# Disable anacron which runs at 3am by default each morning
+sudo chmod a-x $(which anacron)
+
+--==BOUNDARY==
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
