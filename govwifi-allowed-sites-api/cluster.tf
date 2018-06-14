@@ -56,7 +56,7 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
           "value": "${var.db-user}"
         },{
           "name": "DB_HOSTNAME",
-          "value": "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+          "value": "${var.db-hostname}"
         },{
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
