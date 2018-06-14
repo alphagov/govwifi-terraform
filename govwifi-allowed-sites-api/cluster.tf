@@ -92,6 +92,10 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
     }
 ]
 EOF
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_ecs_service" "allowed-sites-api-service" {
