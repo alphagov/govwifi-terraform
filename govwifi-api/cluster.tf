@@ -79,10 +79,6 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
     }
 ]
 EOF
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_ecs_service" "authorisation-api-service" {
