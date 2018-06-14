@@ -30,6 +30,8 @@ variable "db-user" {}
 
 variable "db-password" {}
 
+variable "db-hostname" {}
+
 variable "docker-image" {}
 
 variable "rack-env" {}
