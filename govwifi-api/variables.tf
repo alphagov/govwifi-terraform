@@ -36,7 +36,9 @@ variable "rack-env" {}
 
 variable "radius-server-ips" {}
 
-variable "sentry-dsn" {}
+variable "authentication-sentry-dsn" {}
+
+variable "user-signup-sentry-dsn" {}
 
 variable "shared-key" {}
 
@@ -69,5 +71,12 @@ variable "health_check_grace_period" {
 }
 
 variable "auth-docker-image" {}
+
+variable "user-signup-docker-image" {}
+
+variable "ecr-repository-count" {
+  default     = 0
+  description = "Whether or not to create ECR repository"
+}
 
 variable "vpc-id" {}

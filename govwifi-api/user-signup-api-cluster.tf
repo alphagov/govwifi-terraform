@@ -1,11 +1,16 @@
-resource "aws_cloudwatch_log_group" "authorisation-api-log-group" {
-  name = "${var.Env-Name}-authorisation-api-docker-log-group"
+resource "aws_cloudwatch_log_group" "user-signup-api-log-group" {
+  name = "${var.Env-Name}-user-signup-api-docker-log-group"
 
   retention_in_days = 90
 }
 
-resource "aws_ecs_task_definition" "authorisation-api-task" {
-  family = "authorisation-api-task-${var.Env-Name}"
+resource "aws_ecr_repository" "user-signup-api-ecr" {
+  count = "${var.ecr-repository-count}"
+  name  = "govwifi/user-signup-api"
+}
+
+resource "aws_ecs_task_definition" "user-signup-api-task" {
+  family = "user-signup-api-task-${var.Env-Name}"
 
   container_definitions = <<EOF
 [
@@ -27,7 +32,7 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
       "essential": true,
       "entryPoint": null,
       "mountPoints": [],
-      "name": "authorisation",
+      "name": "user-signup",
       "ulimits": null,
       "dockerSecurityOptions": null,
       "environment": [
@@ -48,7 +53,7 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
           "value": "${var.rack-env}"
         },{
           "name": "SENTRY_DSN",
-          "value": "${var.authentication-sentry-dsn}"
+          "value": "${var.user-signup-sentry-dsn}"
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
@@ -57,16 +62,16 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.auth-docker-image}",
+      "image": "${var.user-signup-docker-image}",
       "command": null,
       "user": null,
       "dockerLabels": null,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.authorisation-api-log-group.name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.user-signup-api-log-group.name}",
           "awslogs-region": "${var.aws-region}",
-          "awslogs-stream-prefix": "${var.Env-Name}-authorisation-api-docker-logs"
+          "awslogs-stream-prefix": "${var.Env-Name}-user-signup-api-docker-logs"
         }
       },
       "cpu": 0,
@@ -77,10 +82,10 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
 EOF
 }
 
-resource "aws_ecs_service" "authorisation-api-service" {
-  name            = "authorisation-api-service-${var.Env-Name}"
+resource "aws_ecs_service" "user-signup-api-service" {
+  name            = "user-signup-api-service-${var.Env-Name}"
   cluster         = "${aws_ecs_cluster.api-cluster.id}"
-  task_definition = "${aws_ecs_task_definition.authorisation-api-task.arn}"
+  task_definition = "${aws_ecs_task_definition.user-signup-api-task.arn}"
   desired_count   = "${var.backend-instance-count}"
   iam_role        = "${var.ecs-service-role}"
 
@@ -95,37 +100,21 @@ resource "aws_ecs_service" "authorisation-api-service" {
   }
 
   load_balancer {
-    target_group_arn = "${aws_alb_target_group.alb_target_group.arn}"
-    container_name   = "authorisation"
+    target_group_arn = "${aws_alb_target_group.user-signup-api-tg.arn}"
+    container_name   = "user-signup"
     container_port   = "8080"
   }
 }
 
-resource "aws_alb_listener_rule" "static" {
-  depends_on   = ["aws_alb_target_group.alb_target_group"]
-  listener_arn = "${aws_alb_listener.alb_listener.arn}"
-  priority     = 1
-
-  action {
-    type             = "forward"
-    target_group_arn = "${aws_alb_target_group.alb_target_group.id}"
-  }
-
-  condition {
-    field  = "path-pattern"
-    values = ["/authorize/*"]
-  }
-}
-
-resource "aws_alb_target_group" "alb_target_group" {
-  depends_on = ["aws_lb.api-alb"]
-  name       = "api-lb-tg-${var.Env-Name}"
-  port       = "8080"
-  protocol   = "HTTP"
-  vpc_id     = "${var.vpc-id}"
+resource "aws_alb_target_group" "user-signup-api-tg" {
+  depends_on   = ["aws_lb.api-alb"]
+  name     = "user-signup-api-${var.Env-Name}"
+  port     = "8080"
+  protocol = "HTTP"
+  vpc_id   = "${var.vpc-id}"
 
   tags {
-    Name = "api-alb-tg-${var.Env-Name}"
+    Name = "user-signup-api-tg-${var.Env-Name}"
   }
 
   health_check {
@@ -133,6 +122,21 @@ resource "aws_alb_target_group" "alb_target_group" {
     unhealthy_threshold = 10
     timeout             = 5
     interval            = 10
-    path                = "/authorize/user/HEALTH"
+    path                = "/healthcheck"
+  }
+}
+
+resource "aws_alb_listener_rule" "user-signup-api-lr" {
+  depends_on   = ["aws_alb_target_group.user-signup-api-tg"]
+  listener_arn = "${aws_alb_listener.alb_listener.arn}"
+  priority     = 2
+
+  action {
+    type             = "forward"
+    target_group_arn = "${aws_alb_target_group.user-signup-api-tg.id}"
+  }
+  condition {
+    field  = "path-pattern"
+    values = ["/user-signup/*"]
   }
 }
