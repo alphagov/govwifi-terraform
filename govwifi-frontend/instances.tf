@@ -24,6 +24,7 @@ repo_upgrade: all
 --==BOUNDARY==
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
+# This cannot be moved to Ansible as it needs to exist when the instance is created
 echo ECS_CLUSTER=${var.Env-Name}-frontend-cluster >> /etc/ecs/ecs.config
 
 --==BOUNDARY==--
