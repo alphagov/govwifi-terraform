@@ -57,6 +57,9 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
+        },{
+          "name": "AUTHORISED_EMAIL_DOMAINS_REGEX",
+          "value": ${jsonencode(var.authorised-email-domains-regex)}
         }
       ],
       "links": null,
