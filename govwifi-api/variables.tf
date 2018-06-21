@@ -74,6 +74,10 @@ variable "auth-docker-image" {}
 
 variable "user-signup-docker-image" {}
 
+variable "authorised-email-domains-regex" {
+  description = "Regex used as matcher for whether an incoming email is from a government address."
+}
+
 variable "ecr-repository-count" {
   default     = 0
   description = "Whether or not to create ECR repository"
