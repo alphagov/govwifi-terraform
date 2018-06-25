@@ -87,4 +87,14 @@ variable "ecr-repository-count" {
   description = "Whether or not to create ECR repository"
 }
 
+variable "wordlist-bucket-count" {
+  default     = 0
+  description = "Whether or not to create wordlist bucket"
+}
+
+variable "wordlist-file-path" {
+  default     = ""
+  description = "The local path of the wordlist which gets uploaded to S3"
+}
+
 variable "vpc-id" {}
