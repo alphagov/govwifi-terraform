@@ -82,6 +82,10 @@ variable "notify-api-key" {
   description = "API key used to authenticate with GOV.UK Notify"
 }
 
+variable "notify-user-signup-email-template-id" {
+  description = "GOV.UK Notify template ID for the user signup email template"
+}
+
 variable "ecr-repository-count" {
   default     = 0
   description = "Whether or not to create ECR repository"
