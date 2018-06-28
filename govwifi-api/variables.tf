@@ -32,6 +32,8 @@ variable "db-password" {}
 
 variable "db-hostname" {}
 
+variable "db-read-replica-hostname" {}
+
 variable "rack-env" {}
 
 variable "radius-server-ips" {}

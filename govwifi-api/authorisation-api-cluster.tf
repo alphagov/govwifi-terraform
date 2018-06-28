@@ -42,7 +42,7 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
           "value": "${var.db-user}"
         },{
           "name": "DB_HOSTNAME",
-          "value": "${var.db-hostname}"
+          "value": "${var.db-read-replica-hostname}"
         },{
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
