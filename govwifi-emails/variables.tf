@@ -15,3 +15,7 @@ variable "aws-region-name" {}
 variable "mail-exchange-server" {}
 
 variable "sns-endpoint" {}
+
+variable "user-signup-notifications-endpoint" {
+  description = "HTTP endpoint used by SNS to send user signup email notifications"
+}

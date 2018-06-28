@@ -119,7 +119,7 @@ EOF
   }
 }
 
-# SNS topic to notify the backend when an email arrives
+# SNS topic to notify the old backend when an email arrives
 resource "aws_sns_topic" "govwifi-email-notifications" {
   name         = "${var.Env-Name}-email-notifications"
   display_name = "${title(var.Env-Name)} GovWifi email notifications"
@@ -183,4 +183,18 @@ resource "aws_sns_topic_subscription" "email-notifications-target" {
   endpoint_auto_confirms          = true
   confirmation_timeout_in_minutes = 2
   depends_on                      = ["aws_sns_topic.govwifi-email-notifications"]
+}
+
+# SNS topic to notify the new user-signup API when an email arrives
+resource "aws_sns_topic" "user-signup-notifications" {
+  name         = "${var.Env-Name}-user-signup-notifications"
+  display_name = "${title(var.Env-Name)} user signup email notifications"
+}
+
+resource "aws_sns_topic_subscription" "user-signup-notifications-target" {
+  topic_arn                       = "${aws_sns_topic.user-signup-notifications.arn}"
+  protocol                        = "https"
+  endpoint                        = "${var.user-signup-notifications-endpoint}"
+  endpoint_auto_confirms          = true
+  depends_on                      = ["aws_sns_topic.user-signup-notifications"]
 }
