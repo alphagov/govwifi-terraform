@@ -1,18 +1,11 @@
-# SES setup to receive emails - there should be a DNS MX entry for
-# the amazon mail server in the region used.
-resource "aws_ses_receipt_rule_set" "main-ses-ruleset" {
-  rule_set_name = "${var.Env-Name}-ses-ruleset"
-}
-
-resource "aws_ses_receipt_rule" "incoming-ses-rule" {
-  name          = "${var.Env-Name}-incoming-ses-rule"
-  rule_set_name = "${var.Env-Name}-ses-ruleset"
+resource "aws_ses_receipt_rule" "user-signup-rule" {
+  name          = "${var.Env-Name}-user-signup-rule"
+  rule_set_name = "GovWifiRuleSet"
   enabled       = true
   scan_enabled  = true
 
   depends_on = [
-    "aws_ses_receipt_rule_set.main-ses-ruleset",
-    "aws_sns_topic.govwifi-email-notifications",
+    "aws_sns_topic.user-signup-notifications",
     "aws_s3_bucket.emailbucket",
   ]
 
@@ -20,9 +13,41 @@ resource "aws_ses_receipt_rule" "incoming-ses-rule" {
     "enrol@${var.Env-Subdomain}.service.gov.uk",
     "enroll@${var.Env-Subdomain}.service.gov.uk",
     "signup@${var.Env-Subdomain}.service.gov.uk",
-    "newsite@${var.Env-Subdomain}.service.gov.uk",
+  ]
+
+  s3_action {
+    bucket_name = "${var.Env-Name}-emailbucket"
+    topic_arn   = "${aws_sns_topic.user-signup-notifications.arn}"
+    position    = 1
+  }
+
+  stop_action {
+    position = 2
+    scope    = "RuleSet"
+  }
+}
+
+resource "aws_ses_receipt_rule" "all-mail-rule" {
+  name          = "${var.Env-Name}-all-mail-rule"
+  rule_set_name = "GovWifiRuleSet"
+  enabled       = true
+  scan_enabled  = true
+  after         = "${var.Env-Name}-user-signup-rule"
+
+  depends_on = [
+    "aws_sns_topic.govwifi-email-notifications",
+    "aws_s3_bucket.emailbucket",
+    "aws_ses_receipt_rule.user-signup-rule",
+  ]
+
+  recipients = [
+    "enrol@${var.Env-Subdomain}.service.gov.uk",
+    "enroll@${var.Env-Subdomain}.service.gov.uk",
     "logrequest@${var.Env-Subdomain}.service.gov.uk",
+    "signup@${var.Env-Subdomain}.service.gov.uk",
+    "newsite@${var.Env-Subdomain}.service.gov.uk",
     "sponsor@${var.Env-Subdomain}.service.gov.uk",
+    "verify@${var.Env-Subdomain}.service.gov.uk",
   ]
 
   s3_action {
@@ -32,12 +57,17 @@ resource "aws_ses_receipt_rule" "incoming-ses-rule" {
   }
 }
 
-resource "aws_ses_receipt_rule" "admin-ses-rule" {
-  name          = "${var.Env-Name}-admin-ses-rule"
-  rule_set_name = "${var.Env-Name}-ses-ruleset"
+resource "aws_ses_receipt_rule" "admin-email-rule" {
+  name          = "${var.Env-Name}-admin-email-rule"
+  rule_set_name = "GovWifiRuleSet"
   enabled       = true
   scan_enabled  = true
-  depends_on    = ["aws_s3_bucket.admin-emailbucket"]
+  after         = "${var.Env-Name}-all-mail-rule"
+
+  depends_on = [
+    "aws_s3_bucket.admin-emailbucket",
+    "aws_ses_receipt_rule.all-mail-rule",
+  ]
 
   recipients = [
     "admin@${var.Env-Subdomain}.service.gov.uk",
