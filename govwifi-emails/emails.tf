@@ -41,10 +41,7 @@ resource "aws_ses_receipt_rule" "all-mail-rule" {
   ]
 
   recipients = [
-    "enrol@${var.Env-Subdomain}.service.gov.uk",
-    "enroll@${var.Env-Subdomain}.service.gov.uk",
     "logrequest@${var.Env-Subdomain}.service.gov.uk",
-    "signup@${var.Env-Subdomain}.service.gov.uk",
     "newsite@${var.Env-Subdomain}.service.gov.uk",
     "sponsor@${var.Env-Subdomain}.service.gov.uk",
     "verify@${var.Env-Subdomain}.service.gov.uk",
