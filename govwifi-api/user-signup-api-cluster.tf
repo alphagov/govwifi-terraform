@@ -66,9 +66,6 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
         },{
           "name": "NOTIFY_USER_SIGNUP_EMAIL_TEMPLATE_ID",
           "value": "${var.notify-user-signup-email-template-id}"
-        },{
-          "name": "NOTIFY_USER_SIGNUP_SMS_TEMPLATE_ID",
-          "value": "${var.notify-user-signup-sms-template-id}"
         }
       ],
       "links": null,

@@ -88,10 +88,6 @@ variable "notify-user-signup-email-template-id" {
   description = "GOV.UK Notify template ID for the user signup email template"
 }
 
-variable "notify-user-signup-sms-template-id" {
-  description = "GOV.UK Notify template ID for the user signup SMS template"
-}
-
 variable "ecr-repository-count" {
   default     = 0
   description = "Whether or not to create ECR repository"
