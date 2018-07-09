@@ -9,8 +9,50 @@ resource "aws_ecr_repository" "user-signup-api-ecr" {
   name  = "govwifi/user-signup-api"
 }
 
+resource "aws_iam_role" "user-signup-api-task-role" {
+  name = "${var.Env-Name}-user-signup-api-task-role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "user-signup-api-task-policy" {
+  name       = "${var.Env-Name}-user-signup-api-task-policy"
+  role       = "${aws_iam_role.user-signup-api-task-role.id}"
+  depends_on = ["aws_iam_role.user-signup-api-task-role"]
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": "arn:aws:s3:::${var.Env-Name}-emailbucket/*"
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_ecs_task_definition" "user-signup-api-task" {
   family = "user-signup-api-task-${var.Env-Name}"
+  task_role_arn = "${aws_iam_role.user-signup-api-task-role.arn}"
 
   container_definitions = <<EOF
 [
