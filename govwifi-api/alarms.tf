@@ -91,3 +91,22 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
 
   treat_missing_data = "breaching"
 }
+
+resource "aws_cloudwatch_metric_alarm" "route-53-healthcheck-latency-high" {
+  alarm_name          = "${var.Env-Name}-route-53-healthcheck-latency-high"
+  alarm_description   = "High Latency on Route53 Health Check"
+
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "TimeToFirstByte"
+  namespace           = "AWS/Route53"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = "1000"
+
+  alarm_actions      = [
+    "${var.critical-notifications-arn}"
+  ]
+
+  treat_missing_data = "breaching"
+}
