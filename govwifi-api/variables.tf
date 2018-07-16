@@ -42,6 +42,8 @@ variable "authentication-sentry-dsn" {}
 
 variable "user-signup-sentry-dsn" {}
 
+variable "logging-sentry-dsn" {}
+
 variable "shared-key" {}
 
 variable "elb-sg-list" {
@@ -75,6 +77,8 @@ variable "health_check_grace_period" {
 variable "auth-docker-image" {}
 
 variable "user-signup-docker-image" {}
+
+variable "logging-docker-image" {}
 
 variable "authorised-email-domains-regex" {
   description = "Regex used as matcher for whether an incoming email is from a government address."
