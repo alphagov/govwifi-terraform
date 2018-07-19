@@ -95,7 +95,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
 resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-high" {
   alarm_name          = "${var.Env-Name}-ecs-api-memory-reservation-high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "2"
+  evaluation_periods  = "1"
   metric_name         = "MemoryReservation"
   namespace           = "AWS/ECS"
   period              = "60"
@@ -117,10 +117,10 @@ resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-high" {
 resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-low" {
   alarm_name          = "${var.Env-Name}-ecs-api-memory-reservation-low"
   comparison_operator = "LessThanThreshold"
-  evaluation_periods  = "2"
+  evaluation_periods  = "1"
   metric_name         = "MemoryReservation"
   namespace           = "AWS/ECS"
-  period              = "60"
+  period              = "300"
   statistic           = "Average"
   threshold           = "50"
 
