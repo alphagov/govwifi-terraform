@@ -132,6 +132,4 @@ resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-low" {
   alarm_actions      = [
     "${aws_autoscaling_policy.api-ec2-scale-down-policy.arn}"
   ]
-
-  treat_missing_data = "breaching"
 }
