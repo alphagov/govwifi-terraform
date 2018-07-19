@@ -3,7 +3,6 @@ resource "aws_autoscaling_group" "api-asg" {
   name                      = "${var.Env-Name}-api-cluster"
   min_size                  = "${var.backend-min-size}"
   max_size                  = "10"
-  desired_capacity          = "${var.backend-instance-count}"
   health_check_type         = "EC2"
   launch_configuration      = "${aws_launch_configuration.ecs.name}"
   health_check_grace_period = "${var.health_check_grace_period}"
