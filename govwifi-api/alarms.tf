@@ -95,15 +95,15 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
 resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-high" {
   alarm_name          = "${var.Env-Name}-ecs-api-memory-reservation-high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "1"
+  evaluation_periods  = "2"
   metric_name         = "MemoryReservation"
   namespace           = "AWS/ECS"
-  period              = "120"
+  period              = "60"
   statistic           = "Average"
   threshold           = "75"
 
   dimensions {
-    AutoScalingGroupName = "${aws_autoscaling_group.api-asg.name}"
+    ClusterName = "${aws_ecs_cluster.api-cluster.name}"
   }
 
   alarm_description  = "Cluster memory reservation above 75%"
@@ -117,15 +117,15 @@ resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-high" {
 resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-low" {
   alarm_name          = "${var.Env-Name}-ecs-api-memory-reservation-low"
   comparison_operator = "LessThanThreshold"
-  evaluation_periods  = "1"
+  evaluation_periods  = "2"
   metric_name         = "MemoryReservation"
   namespace           = "AWS/ECS"
-  period              = "120"
+  period              = "60"
   statistic           = "Average"
   threshold           = "50"
 
   dimensions {
-    AutoScalingGroupName = "${aws_autoscaling_group.api-asg.name}"
+    ClusterName = "${aws_ecs_cluster.api-cluster.name}"
   }
 
   alarm_description  = "Cluster memory reservation below 50%"
