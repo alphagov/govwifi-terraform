@@ -91,3 +91,45 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
 
   treat_missing_data = "breaching"
 }
+
+resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-high" {
+  alarm_name          = "${var.Env-Name}-ecs-api-memory-reservation-high"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "MemoryReservation"
+  namespace           = "AWS/ECS"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "75"
+
+  dimensions {
+    ClusterName = "${aws_ecs_cluster.api-cluster.name}"
+  }
+
+  alarm_description  = "Cluster memory reservation above 75%"
+  alarm_actions      = [
+    "${aws_autoscaling_policy.api-ec2-scale-up-policy.arn}"
+  ]
+
+  treat_missing_data = "breaching"
+}
+
+resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-low" {
+  alarm_name          = "${var.Env-Name}-ecs-api-memory-reservation-low"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "MemoryReservation"
+  namespace           = "AWS/ECS"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "50"
+
+  dimensions {
+    ClusterName = "${aws_ecs_cluster.api-cluster.name}"
+  }
+
+  alarm_description  = "Cluster memory reservation below 50%"
+  alarm_actions      = [
+    "${aws_autoscaling_policy.api-ec2-scale-down-policy.arn}"
+  ]
+}
