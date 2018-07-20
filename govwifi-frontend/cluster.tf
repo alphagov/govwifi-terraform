@@ -51,6 +51,9 @@ resource "aws_ecs_task_definition" "radius-task" {
         "name": "API_BASE_URL",
         "value": "${var.api-base-url}"
       },{
+        "name": "LOGGING_API_BASE_URL",
+        "value": "${var.api-base-url}"
+      },{
         "name": "BACKEND_BASEURL",
         "value": "${var.backend-base-url}"
       },{
