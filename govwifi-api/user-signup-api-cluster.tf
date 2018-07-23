@@ -105,6 +105,18 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
         },{
           "name": "NOTIFY_API_KEY",
           "value": "${var.notify-api-key}"
+        },{
+          "name": "PERFORMANCE_URL",
+          "value": "${var.performance-url}"
+        },{
+          "name": "PERFORMANCE_DATASET",
+          "value": "${var.performance-dataset}"
+        },{
+          "name": "PERFORMANCE_BEARER_VOLUMETRICS",
+          "value": "${var.performance-bearer-volumetrics}"
+        },{
+          "name": "PERFORMANCE_BEARER_COMPLETION_RATE",
+          "value": "${var.performance-bearer-completion-rate}"
         }
       ],
       "links": null,
