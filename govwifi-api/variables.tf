@@ -36,6 +36,14 @@ variable "db-read-replica-hostname" {}
 
 variable "rack-env" {}
 
+variable "performance-url" {}
+
+variable "performance-dataset" {}
+
+variable "performance-bearer-volumetrics" {}
+
+variable "performance-bearer-completion-rate" {}
+
 variable "radius-server-ips" {}
 
 variable "authentication-sentry-dsn" {}
