@@ -57,6 +57,9 @@ resource "aws_ecs_task_definition" "logging-api-task" {
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
+        },{
+          "name": "USER_SIGNUP_API_BASE_URL",
+          "value": "${var.user-signup-api-base-url}"
         }
       ],
       "links": null,
