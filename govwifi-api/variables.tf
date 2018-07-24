@@ -112,3 +112,5 @@ variable "wordlist-file-path" {
 }
 
 variable "vpc-id" {}
+
+variable "user-signup-api-base-url" {}
