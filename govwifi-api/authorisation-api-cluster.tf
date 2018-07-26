@@ -11,7 +11,7 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
 [
     {
       "volumesFrom": [],
-      "memory": 1900,
+      "memory": 950,
       "extraHosts": null,
       "dnsServers": null,
       "disableNetworking": null,
