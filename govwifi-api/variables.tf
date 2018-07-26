@@ -66,6 +66,8 @@ variable "critical-notifications-arn" {}
 
 variable "capacity-notifications-arn" {}
 
+variable "devops-notifications-arn" {}
+
 variable "users" {
   type = "list"
 }

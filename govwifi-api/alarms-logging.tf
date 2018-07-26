@@ -16,7 +16,7 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-high" {
   alarm_description  = "This alarm tells ECS to scale up based on high CPU - Logging"
   alarm_actions      = [
     "${aws_appautoscaling_policy.ecs-policy-up-logging.arn}",
-    "${var.critical-notifications-arn}"
+    "${var.devops-notifications-arn}"
   ]
 
   treat_missing_data = "breaching"
@@ -40,6 +40,6 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-low" {
   alarm_description  = "This alarm tells ECS to scale in based on low CPU usage - Logging"
   alarm_actions      = [
     "${aws_appautoscaling_policy.ecs-policy-down-logging.arn}",
-    "${var.critical-notifications-arn}"
+    "${var.devops-notifications-arn}"
   ]
 }
