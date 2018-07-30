@@ -44,6 +44,10 @@ variable "performance-bearer-volumetrics" {}
 
 variable "performance-bearer-completion-rate" {}
 
+variable "performance-bearer-account-usage" {}
+
+variable "performance-bearer-unique-users" {}
+
 variable "radius-server-ips" {}
 
 variable "authentication-sentry-dsn" {}
