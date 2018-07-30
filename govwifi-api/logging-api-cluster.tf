@@ -60,6 +60,18 @@ resource "aws_ecs_task_definition" "logging-api-task" {
         },{
           "name": "USER_SIGNUP_API_BASE_URL",
           "value": "${var.user-signup-api-base-url}"
+        },{
+          "name": "PERFORMANCE_URL",
+          "value": "${var.performance-url}"
+        },{
+          "name": "PERFORMANCE_DATASET",
+          "value": "${var.performance-dataset}"
+        },{
+          "name": "PERFORMANCE_BEARER_ACCOUNT_USAGE",
+          "value": "${var.performance-bearer-account-usage}"
+        },{
+          "name": "PERFORMANCE_BEARER_UNIQUE_USERS",
+          "value": "${var.performance-bearer-unique-users}"
         }
       ],
       "links": null,
