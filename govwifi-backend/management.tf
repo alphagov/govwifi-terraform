@@ -102,16 +102,6 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 # Set up cron scripts for timed jobs
 
-cat <<'EOF' > ./ping-performanceplatform
-#!/bin/bash
-wget -t 1 "http://elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}"
-EOF
-
-cat <<'EOF' > ./ping-performanceplatform-weekly
-#!/bin/bash
-wget -t 1 "http://elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk/timedjobs/performanceplatform?key=${var.shared-key}&period=weekly"
-EOF
-
 cat <<'EOF' > ./backup-performanceplatform
 #!/bin/bash
 
@@ -132,16 +122,9 @@ rm -r pp-backup-tmp
 EOF
 
 
-chmod +x ./ping-performanceplatform ./ping-performanceplatform-weekly ./backup-performanceplatform
+chmod +x ./backup-performanceplatform
 mkdir /home/ubuntu/backup
-sudo cp ./ping-performanceplatform /home/ubuntu/backup/
-sudo cp ./ping-performanceplatform-weekly /home/ubuntu/backup/
 sudo cp ./backup-performanceplatform /home/ubuntu/backup/
-
-if [ 1 == ${var.bastion-set-cronjobs} ] ; then
-  sudo cp ./ping-performanceplatform /etc/cron.daily/
-  sudo cp ./ping-performanceplatform-weekly /etc/cron.weekly/
-fi
 
 if [ 1 == ${var.save-pp-data} ] ; then
   sudo cp ./backup-performanceplatform /etc/cron.daily/
