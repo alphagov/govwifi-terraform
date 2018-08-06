@@ -42,7 +42,6 @@ resource "aws_ses_receipt_rule" "all-mail-rule" {
   ]
 
   recipients = [
-    "logrequest@${var.Env-Subdomain}.service.gov.uk",
     "newsite@${var.Env-Subdomain}.service.gov.uk",
     "verify@${var.Env-Subdomain}.service.gov.uk",
   ]
@@ -72,6 +71,23 @@ resource "aws_ses_receipt_rule" "admin-email-rule" {
 
   s3_action {
     bucket_name = "${var.Env-Name}-admin-emailbucket"
+    position    = 1
+  }
+}
+
+resource "aws_ses_receipt_rule" "log-request-rule" {
+  name          = "${var.Env-Name}-log-request-rule"
+  rule_set_name = "GovWifiRuleSet"
+  enabled       = true
+  scan_enabled  = true
+  after         = "${var.Env-Name}-admin-email-rule"
+
+  recipients = [
+    "logrequest@${var.Env-Subdomain}.service.gov.uk"
+  ]
+
+  sns_action {
+    topic_arn   = "${var.devops-notifications-arn}"
     position    = 1
   }
 }

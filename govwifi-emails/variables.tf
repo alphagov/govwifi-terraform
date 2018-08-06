@@ -19,3 +19,5 @@ variable "sns-endpoint" {}
 variable "user-signup-notifications-endpoint" {
   description = "HTTP endpoint used by SNS to send user signup email notifications"
 }
+
+variable "devops-notifications-arn" {}
