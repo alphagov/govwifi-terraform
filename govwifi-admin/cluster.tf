@@ -47,6 +47,12 @@ resource "aws_ecs_task_definition" "admin-task" {
           "name": "DB_PASS",
           "value": "${var.admin-db-password}"
         },{
+          "name": "DB_NAME",
+          "value": "govwifi_admin_${var.rack-env}"
+        },{
+          "name": "DB_HOST",
+          "value": "${aws_db_instance.admin_db.address}"
+        },{
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{
