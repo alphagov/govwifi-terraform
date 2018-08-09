@@ -79,3 +79,33 @@ variable "health_check_grace_period" {
   default     = "300"
   description = "Time after instance comes into service before checking health"
 }
+
+variable "critical-notifications-arn" {}
+
+variable "capacity-notifications-arn" {}
+
+variable "db-instance-count" {}
+
+variable "admin-db-user" {}
+
+variable "admin-db-password" {}
+
+variable "db-backup-retention-days" {}
+
+variable "db-encrypt-at-rest" {}
+
+variable "db-instance-type" {}
+
+variable "db-monitoring-interval" {}
+
+variable "db-storage-gb" {}
+
+variable "db-maintenance-window" {}
+
+variable "db-backup-window" {}
+
+variable "db-sg-list" {
+  type = "list"
+}
+
+variable "rds-monitoring-role" {}
