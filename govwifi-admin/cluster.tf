@@ -46,6 +46,9 @@ resource "aws_ecs_task_definition" "admin-task" {
         },{
           "name": "SECRET_KEY_BASE",
           "value": "${var.secret-key-base}"
+        },{
+          "name": "DEVISE_SECRET_KEY",
+          "value": "${var.secret-key-base}"
         }
       ],
       "links": null,
