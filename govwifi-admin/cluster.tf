@@ -49,6 +49,9 @@ resource "aws_ecs_task_definition" "admin-task" {
         },{
           "name": "DEVISE_SECRET_KEY",
           "value": "${var.secret-key-base}"
+        },{
+          "name": "RAILS_LOG_TO_STDOUT",
+          "value": "1"
         }
       ],
       "links": null,
