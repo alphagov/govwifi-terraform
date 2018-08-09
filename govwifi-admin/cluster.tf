@@ -14,7 +14,7 @@ resource "aws_ecr_repository" "govwifi-admin-ecr" {
 }
 
 resource "aws_ecs_task_definition" "admin-task" {
-  family = "allowed-sites-api-task-${var.Env-Name}"
+  family = "admin-task-${var.Env-Name}"
 
   container_definitions = <<EOF
 [
