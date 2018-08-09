@@ -41,6 +41,12 @@ resource "aws_ecs_task_definition" "admin-task" {
       "dockerSecurityOptions": null,
       "environment": [
         {
+          "name": "DB_USER",
+          "value": "${var.admin-db-user}"
+        },{
+          "name": "DB_PASS",
+          "value": "${var.admin-db-password}"
+        },{
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{
