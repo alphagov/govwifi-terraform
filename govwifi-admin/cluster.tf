@@ -14,7 +14,7 @@ resource "aws_ecr_repository" "govwifi-admin-ecr" {
 }
 
 resource "aws_ecs_task_definition" "admin-task" {
-  family = "allowed-sites-api-task-${var.Env-Name}"
+  family = "admin-task-${var.Env-Name}"
 
   container_definitions = <<EOF
 [
@@ -45,6 +45,9 @@ resource "aws_ecs_task_definition" "admin-task" {
           "value": "${var.rack-env}"
         },{
           "name": "SECRET_KEY_BASE",
+          "value": "${var.secret-key-base}"
+        },{
+          "name": "DEVISE_SECRET_KEY",
           "value": "${var.secret-key-base}"
         }
       ],
