@@ -52,6 +52,9 @@ resource "aws_ecs_task_definition" "admin-task" {
         },{
           "name": "RAILS_LOG_TO_STDOUT",
           "value": "1"
+        },{
+          "name": "RAILS_SERVE_STATIC_FILES",
+          "value": "1"
         }
       ],
       "links": null,
