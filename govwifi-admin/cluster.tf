@@ -47,6 +47,9 @@ resource "aws_ecs_task_definition" "admin-task" {
           "name": "DB_PASS",
           "value": "${var.admin-db-password}"
         },{
+          "name": "AUTHORISED_EMAIL_DOMAINS_REGEX",
+          "value": ${jsonencode(var.authorised-email-domains-regex)}
+        },{
           "name": "DB_NAME",
           "value": "govwifi_admin_${var.rack-env}"
         },{
