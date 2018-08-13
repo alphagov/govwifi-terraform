@@ -1,6 +1,6 @@
 resource "aws_db_parameter_group" "db-parameters" {
   count       = "${var.db-instance-count}"
-  name        = "${var.Env-Name}-admin-db-parameter-group"
+  name        = "${var.rack-env}-admin-db-parameter-group"
   family      = "mysql5.7"
   description = "DB parameter configuration for govwifi-admin"
 
@@ -25,14 +25,14 @@ resource "aws_db_parameter_group" "db-parameters" {
   }
 
   tags {
-    Name = "${title(var.Env-Name)} DB parameter group for govwifi-admin"
+    Name = "${title(var.rack-env)} DB parameter group for govwifi-admin"
   }
 }
 
 resource "aws_db_option_group" "mariadb-audit" {
   # No harm in keeping the parameter group even if there is DB instance currently
   #count                    = "${var.db-instance-count}"
-  name = "${var.Env-Name}-admin-db-audit"
+  name = "${var.rack-env}-admin-db-audit"
 
   option_group_description = "Mariadb audit configuration for govwifi-admin"
   engine_name              = "mysql"
@@ -43,7 +43,7 @@ resource "aws_db_option_group" "mariadb-audit" {
   }
 
   tags {
-    Name = "${title(var.Env-Name)} DB Audit configuration for govwifi-admin"
+    Name = "${title(var.rack-env)} DB Audit configuration for govwifi-admin"
   }
 }
 
@@ -57,8 +57,8 @@ resource "aws_db_instance" "admin_db" {
   allow_major_version_upgrade = false
   apply_immediately           = true
   instance_class              = "${var.db-instance-type}"
-  identifier                  = "wifi-admin-${var.Env-Name}-db"
-  name                        = "govwifi_admin_${var.Env-Name}"
+  identifier                  = "wifi-admin-${var.rack-env}-db"
+  name                        = "govwifi_admin_${var.rack-env}"
   username                    = "${var.admin-db-user}"
   password                    = "${var.admin-db-password}"
   backup_retention_period     = "${var.db-backup-retention-days}"
@@ -77,13 +77,13 @@ resource "aws_db_instance" "admin_db" {
   parameter_group_name            = "${aws_db_parameter_group.db-parameters.name}"
 
   tags {
-    Name = "${title(var.Env-Name)} DB for govwifi-admin"
+    Name = "${title(var.rack-env)} DB for govwifi-admin"
   }
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
   count               = "${var.db-instance-count}"
-  alarm_name          = "${var.Env-Name}-admin-db-cpu-alarm"
+  alarm_name          = "${var.rack-env}-admin-db-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
@@ -104,7 +104,7 @@ resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
 
 resource "aws_cloudwatch_metric_alarm" "db_memoryalarm" {
   count               = "${var.db-instance-count}"
-  alarm_name          = "${var.Env-Name}-admin-db-memory-alarm"
+  alarm_name          = "${var.rack-env}-admin-db-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "FreeableMemory"
@@ -125,7 +125,7 @@ resource "aws_cloudwatch_metric_alarm" "db_memoryalarm" {
 
 resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
   count               = "${var.db-instance-count}"
-  alarm_name          = "${var.Env-Name}-admin-db-storage-alarm"
+  alarm_name          = "${var.rack-env}-admin-db-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "FreeStorageSpace"
@@ -146,7 +146,7 @@ resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
 
 resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
   count               = "${var.db-instance-count}"
-  alarm_name          = "${var.Env-Name}-admin-db-burstbalanace-alarm"
+  alarm_name          = "${var.rack-env}-admin-db-burstbalanace-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "BurstBalance"
