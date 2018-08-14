@@ -32,6 +32,14 @@ variable "db-password" {}
 
 variable "db-hostname" {}
 
+variable "admin-db-name" {}
+
+variable "admin-db-user" {}
+
+variable "admin-db-password" {}
+
+variable "admin-db-hostname" {}
+
 variable "docker-image" {}
 
 variable "rack-env" {}

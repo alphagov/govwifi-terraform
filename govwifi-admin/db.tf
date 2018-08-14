@@ -1,5 +1,4 @@
 resource "aws_db_parameter_group" "db-parameters" {
-  count       = "${var.db-instance-count}"
   name        = "${var.Env-Name}-admin-db-parameter-group"
   family      = "mysql5.7"
   description = "DB parameter configuration for govwifi-admin"
@@ -30,8 +29,6 @@ resource "aws_db_parameter_group" "db-parameters" {
 }
 
 resource "aws_db_option_group" "mariadb-audit" {
-  # No harm in keeping the parameter group even if there is DB instance currently
-  #count                    = "${var.db-instance-count}"
   name = "${var.Env-Name}-admin-db-audit"
 
   option_group_description = "Mariadb audit configuration for govwifi-admin"
@@ -48,7 +45,6 @@ resource "aws_db_option_group" "mariadb-audit" {
 }
 
 resource "aws_db_instance" "admin_db" {
-  count                       = "${var.db-instance-count}"
   allocated_storage           = "${var.db-storage-gb}"
   storage_type                = "gp2"
   engine                      = "mysql"
@@ -82,7 +78,6 @@ resource "aws_db_instance" "admin_db" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
-  count               = "${var.db-instance-count}"
   alarm_name          = "${var.Env-Name}-admin-db-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -103,7 +98,6 @@ resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_memoryalarm" {
-  count               = "${var.db-instance-count}"
   alarm_name          = "${var.Env-Name}-admin-db-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -124,7 +118,6 @@ resource "aws_cloudwatch_metric_alarm" "db_memoryalarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
-  count               = "${var.db-instance-count}"
   alarm_name          = "${var.Env-Name}-admin-db-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -145,7 +138,6 @@ resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
-  count               = "${var.db-instance-count}"
   alarm_name          = "${var.Env-Name}-admin-db-burstbalanace-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
