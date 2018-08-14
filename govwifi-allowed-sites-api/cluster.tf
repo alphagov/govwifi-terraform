@@ -58,6 +58,18 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
           "name": "DB_HOSTNAME",
           "value": "${var.db-hostname}"
         },{
+          "name": "ADMIN_DB_NAME",
+          "value": "govwifi_admin_${var.rack-env}"
+        },{
+          "name": "ADMIN_DB_PASS",
+          "value": "${var.admin-db-password}"
+        },{
+          "name": "ADMIN_DB_USER",
+          "value": "${var.admin-db-user}"
+        },{
+          "name": "ADMIN_DB_HOSTNAME",
+          "value": "${var.admin-db-hostname}"
+        },{
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{
