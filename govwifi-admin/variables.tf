@@ -113,3 +113,5 @@ variable "rds-monitoring-role" {}
 variable "authorised-email-domains-regex" {
   description = "Regex used as matcher for whether an incoming email is from a government address."
 }
+
+variable "notify-api-key" {}
