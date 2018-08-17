@@ -79,6 +79,9 @@ resource "aws_ecs_task_definition" "radius-task" {
       },{
         "name": "RADIUSD_PARAMS",
         "value": "${var.radiusd-params}"
+      },{
+        "name": "RACK_ENV",
+        "value": "${var.rack-env}"
       }
     ],
     "links": null,

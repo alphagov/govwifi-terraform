@@ -78,3 +78,7 @@ variable "radiusd-params" {
 variable "users" {
   type   = "list"
 }
+
+variable "rack-env" {
+  default   = ""
+}
