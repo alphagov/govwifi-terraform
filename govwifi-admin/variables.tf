@@ -115,3 +115,11 @@ variable "authorised-email-domains-regex" {
 }
 
 variable "notify-api-key" {}
+
+variable "london-radius-ip-addresses" {
+  type = "list"
+}
+
+variable "dublin-radius-ip-addresses" {
+  type = "list"
+}

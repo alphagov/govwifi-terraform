@@ -73,6 +73,12 @@ resource "aws_ecs_task_definition" "admin-task" {
         },{
           "name": "RAILS_SERVE_STATIC_FILES",
           "value": "1"
+        },{
+          "name": "LONDON_RADIUS_IPS",
+          "value": "${join(",", var.london-radius-ip-addresses)}"
+        },{
+          "name": "DUBLIN_RADIUS_IPS",
+          "value": "${join(",", var.dublin-radius-ip-addresses)}"
         }
       ],
       "links": null,
