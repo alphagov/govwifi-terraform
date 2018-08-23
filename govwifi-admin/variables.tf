@@ -90,6 +90,10 @@ variable "admin-db-user" {}
 
 variable "admin-db-password" {}
 
+variable "db-user" {}
+
+variable "db-password" {}
+
 variable "db-backup-retention-days" {}
 
 variable "db-encrypt-at-rest" {}
