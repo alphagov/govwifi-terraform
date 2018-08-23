@@ -41,6 +41,18 @@ resource "aws_ecs_task_definition" "admin-task" {
       "dockerSecurityOptions": null,
       "environment": [
         {
+          "name": "RR_DB_NAME",
+          "value": "govwifi_${var.Env-Name}"
+        },{
+          "name": "RR_DB_PASS",
+          "value": "${var.db-password}"
+        },{
+          "name": "RR_DB_USER",
+          "value": "${var.db-user}"
+        },{
+          "name": "RR_DB_HOSTNAME",
+          "value": "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+        },{
           "name": "DB_USER",
           "value": "${var.admin-db-user}"
         },{
