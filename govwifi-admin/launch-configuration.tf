@@ -2,7 +2,7 @@ resource "aws_launch_configuration" "ecs" {
   name_prefix          = "${var.Env-Name}-admin-lc-"
   image_id             = "${var.ami}"
   instance_type        = "t2.small"
-  iam_instance_profile = "${var.ecs-instance-profile-id}"
+  iam_instance_profile = "${aws_iam_instance_profile.ecs-admin-instance-profile.id}"
   key_name             = "${var.ssh-key-name}"
   security_groups      = ["${var.ec2-sg-list}"]
 
