@@ -79,6 +79,9 @@ resource "aws_ecs_task_definition" "admin-task" {
         },{
           "name": "DUBLIN_RADIUS_IPS",
           "value": "${join(",", var.dublin-radius-ip-addresses)}"
+        },{
+          "name": "SENTRY_DSN",
+          "value": "${var.sentry-dsn}"
         }
       ],
       "links": null,

@@ -123,3 +123,5 @@ variable "london-radius-ip-addresses" {
 variable "dublin-radius-ip-addresses" {
   type = "list"
 }
+
+variable "sentry-dsn" {}
