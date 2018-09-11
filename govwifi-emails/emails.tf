@@ -86,8 +86,10 @@ resource "aws_ses_receipt_rule" "log-request-rule" {
     "logrequest@${var.Env-Subdomain}.service.gov.uk"
   ]
 
-  sns_action {
-    topic_arn   = "${var.devops-notifications-arn}"
-    position    = 1
+  bounce_action {
+    message         = "${var.log-request-bounce-message}"
+    sender          = "${var.support-email}"
+    smtp_reply_code = 550
+    position        = 1
   }
 }
