@@ -47,7 +47,7 @@ resource "aws_iam_role_policy" "ecs-api-instance-policy" {
     },{
       "Effect": "Allow",
       "Action": [
-        "s3:PutObject"
+        "s3:GetObject"
       ],
       "Resource": ["${aws_s3_bucket.admin-bucket.arn}/*"]
      }
