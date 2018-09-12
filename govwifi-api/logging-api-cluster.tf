@@ -102,7 +102,7 @@ resource "aws_ecs_service" "logging-api-service" {
   cluster         = "${aws_ecs_cluster.api-cluster.id}"
   task_definition = "${aws_ecs_task_definition.logging-api-task.arn}"
   desired_count   = "${var.backend-instance-count}"
-  iam_role        = "${var.ecs-service-role}"
+  iam_role        = "aws_iam_role_policy.ecs-api-instance-policy"
 
   ordered_placement_strategy {
     type  = "spread"
