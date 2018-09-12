@@ -1,6 +1,7 @@
 resource "aws_iam_role_policy" "ecs-admin-instance-policy" {
   name = "${var.aws-region-name}-ecs-admin-instance-policy-${var.Env-Name}"
   role = "${aws_iam_role.ecs-admin-instance-role.id}"
+  depends_on = ["aws_s3_bucket.admin-bucket"]
 
   policy = <<EOF
 {
@@ -51,6 +52,12 @@ resource "aws_iam_role_policy" "ecs-admin-instance-policy" {
         "route53:GetHealthCheckStatus"
       ],
       "Resource": "*"
+    },{
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Resource": ["${aws_s3_bucket.admin-bucket.arn}/*"]
     }
   ]
 }
