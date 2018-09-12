@@ -11,6 +11,7 @@ resource "aws_ecr_repository" "logging-api-ecr" {
 
 resource "aws_ecs_task_definition" "logging-api-task" {
   family   = "logging-api-task-${var.Env-Name}"
+  task_role_arn = "${aws_iam_role.logging-api-task-role.arn}"
 
   container_definitions = <<EOF
 [
@@ -154,4 +155,45 @@ resource "aws_alb_listener_rule" "logging-api-lr" {
     field  = "path-pattern"
     values = ["/logging/*"]
   }
+}
+
+resource "aws_iam_role" "logging-api-task-role" {
+  name = "${var.Env-Name}-logging-api-task-role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "logging-api-task-policy" {
+  name       = "${var.Env-Name}-logging-api-task-policy"
+  role       = "${aws_iam_role.logging-api-task-role.id}"
+  depends_on = ["aws_iam_role.logging-api-task-role"]
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": "arn:aws:s3:::govwifi-${var.Env-Name}-admin/*"
+    }
+  ]
+}
+EOF
 }
