@@ -49,7 +49,7 @@ resource "aws_iam_role_policy" "ecs-api-instance-policy" {
       "Action": [
         "s3:GetObject"
       ],
-      "Resource": ["${aws_s3_bucket.admin-bucket.arn}/*"]
+      "Resource": ["${var.admin-bucket-arn}/*"]
      }
   ]
 }
