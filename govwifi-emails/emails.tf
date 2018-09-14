@@ -42,8 +42,7 @@ resource "aws_ses_receipt_rule" "all-mail-rule" {
   ]
 
   recipients = [
-    "newsite@${var.Env-Subdomain}.service.gov.uk",
-    "verify@${var.Env-Subdomain}.service.gov.uk",
+    "verify@${var.Env-Subdomain}.service.gov.uk"
   ]
 
   s3_action {
@@ -53,12 +52,38 @@ resource "aws_ses_receipt_rule" "all-mail-rule" {
   }
 }
 
+resource "aws_ses_receipt_rule" "newsite-mail-rule" {
+  name          = "${var.Env-Name}-newsite-mail-rule"
+  rule_set_name = "GovWifiRuleSet"
+  enabled       = true
+  scan_enabled  = true
+  after         = "${var.Env-Name}-all-mail-rule"
+
+  depends_on = [
+    "aws_sns_topic.govwifi-email-notifications",
+    "aws_s3_bucket.emailbucket",
+    "aws_ses_receipt_rule.user-signup-rule",
+  ]
+
+  recipients = [
+    "newsite@${var.Env-Subdomain}.service.gov.uk"
+  ]
+
+  bounce_action {
+    message         = "THIS FEATURE IS TEMPORARILY TURNED OFF - PLEASE CONTACT support@${var.Env-Subdomain}.service.gov.uk"
+    sender          = "support@${var.Env-Subdomain}.service.gov.uk"
+    smtp_reply_code = "550"
+    status_code     = "5.1.1"
+    position        = 1
+  }
+}
+
 resource "aws_ses_receipt_rule" "admin-email-rule" {
   name          = "${var.Env-Name}-admin-email-rule"
   rule_set_name = "GovWifiRuleSet"
   enabled       = true
   scan_enabled  = true
-  after         = "${var.Env-Name}-all-mail-rule"
+  after         = "${var.Env-Name}-newsite-mail-rule"
 
   depends_on = [
     "aws_s3_bucket.admin-emailbucket",
