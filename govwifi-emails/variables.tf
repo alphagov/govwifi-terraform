@@ -21,3 +21,7 @@ variable "user-signup-notifications-endpoint" {
 }
 
 variable "devops-notifications-arn" {}
+
+variable "support-email" {}
+
+variable "log-request-bounce-message" {}
