@@ -1,6 +1,6 @@
-resource "aws_route53_record" "admin_platform" {
+resource "aws_route53_record" "admin" {
   zone_id = "${data.aws_route53_zone.zone.id}"
-  name    = "admin-platform.${var.Env-Subdomain}.service.gov.uk"
+  name    = "admin.${var.Env-Subdomain}.service.gov.uk"
   type    = "A"
   alias {
     name                   = "${aws_lb.admin-alb.dns_name}"

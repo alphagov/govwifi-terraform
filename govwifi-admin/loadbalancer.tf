@@ -14,7 +14,7 @@ resource "aws_alb_listener" "alb_listener" {
   load_balancer_arn = "${aws_lb.admin-alb.arn}"
   port              = "443"
   protocol          = "HTTPS"
-  certificate_arn   = "${aws_acm_certificate_validation.cert.certificate_arn}"
+  certificate_arn   = "${aws_acm_certificate_validation.certificate.certificate_arn}"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
 
   default_action {
@@ -22,4 +22,3 @@ resource "aws_alb_listener" "alb_listener" {
     type             = "forward"
   }
 }
-
