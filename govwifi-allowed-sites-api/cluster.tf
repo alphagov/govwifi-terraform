@@ -46,18 +46,6 @@ resource "aws_ecs_task_definition" "allowed-sites-api-task" {
       "dockerSecurityOptions": null,
       "environment": [
         {
-          "name": "DB_NAME",
-          "value": "govwifi_${var.Env-Name}"
-        },{
-          "name": "DB_PASS",
-          "value": "${var.db-password}"
-        },{
-          "name": "DB_USER",
-          "value": "${var.db-user}"
-        },{
-          "name": "DB_HOSTNAME",
-          "value": "${var.db-hostname}"
-        },{
           "name": "ADMIN_DB_NAME",
           "value": "govwifi_admin_${var.rack-env}"
         },{

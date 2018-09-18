@@ -26,12 +26,6 @@ variable "aws-account-id" {}
 
 variable "elb-ssl-cert-arn" {}
 
-variable "db-user" {}
-
-variable "db-password" {}
-
-variable "db-hostname" {}
-
 variable "admin-db-name" {}
 
 variable "admin-db-user" {}
