@@ -69,12 +69,9 @@ resource "aws_ses_receipt_rule" "newsite-mail-rule" {
     "newsite@${var.Env-Subdomain}.service.gov.uk"
   ]
 
-  bounce_action {
-    message         = "THIS FEATURE IS TEMPORARILY TURNED OFF - PLEASE CONTACT support@${var.Env-Subdomain}.service.gov.uk"
-    sender          = "support@${var.Env-Subdomain}.service.gov.uk"
-    smtp_reply_code = "550"
-    status_code     = "5.1.1"
-    position        = 1
+  sns_action {
+    topic_arn   = "${var.devops-notifications-arn}"
+    position    = 1
   }
 }
 
