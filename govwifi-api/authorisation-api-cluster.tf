@@ -95,37 +95,21 @@ resource "aws_ecs_service" "authorisation-api-service" {
   }
 
   load_balancer {
-    target_group_arn = "${aws_alb_target_group.alb_target_group.arn}"
+    target_group_arn = "${aws_alb_target_group.authorisation-api-tg.arn}"
     container_name   = "authorisation"
     container_port   = "8080"
   }
 }
 
-resource "aws_alb_listener_rule" "static" {
-  depends_on   = ["aws_alb_target_group.alb_target_group"]
-  listener_arn = "${aws_alb_listener.alb_listener.arn}"
-  priority     = 1
-
-  action {
-    type             = "forward"
-    target_group_arn = "${aws_alb_target_group.alb_target_group.id}"
-  }
-
-  condition {
-    field  = "path-pattern"
-    values = ["/authorize/*"]
-  }
-}
-
-resource "aws_alb_target_group" "alb_target_group" {
+resource "aws_alb_target_group" "authorisation-api-tg" {
   depends_on = ["aws_lb.api-alb"]
-  name       = "api-lb-tg-${var.Env-Name}"
+  name       = "authorisation-api-${var.Env-Name}"
   port       = "8080"
   protocol   = "HTTP"
   vpc_id     = "${var.vpc-id}"
 
   tags {
-    Name = "api-alb-tg-${var.Env-Name}"
+    Name = "authorisation-api-tg-${var.Env-Name}"
   }
 
   health_check {
@@ -134,5 +118,21 @@ resource "aws_alb_target_group" "alb_target_group" {
     timeout             = 5
     interval            = 10
     path                = "/authorize/user/HEALTH"
+  }
+}
+
+resource "aws_alb_listener_rule" "authorisation-api-lr" {
+  depends_on   = ["aws_alb_target_group.authorisation-api-tg"]
+  listener_arn = "${aws_alb_listener.alb_listener.arn}"
+  priority     = 1
+
+  action {
+    type             = "forward"
+    target_group_arn = "${aws_alb_target_group.authorisation-api-tg.id}"
+  }
+
+  condition {
+    field  = "path-pattern"
+    values = ["/authorize/*"]
   }
 }

@@ -19,7 +19,7 @@ resource "aws_alb_listener" "alb_listener" {
   ssl_policy        = "ELBSecurityPolicy-2016-08"
 
   default_action {
-    target_group_arn = "${aws_alb_target_group.alb_target_group.arn}"
+    target_group_arn = "${aws_alb_target_group.authorisation-api-tg.arn}"
     type             = "forward"
   }
 }
