@@ -1,4 +1,4 @@
-resource "aws_route53_record" "admin_platform" {
+resource "aws_route53_record" "admin" {
   zone_id = "${data.aws_route53_zone.zone.id}"
   name    = "admin.${var.Env-Subdomain}.service.gov.uk"
   type    = "A"
