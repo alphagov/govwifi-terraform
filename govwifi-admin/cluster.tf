@@ -88,6 +88,9 @@ resource "aws_ecs_task_definition" "admin-task" {
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
+        },{
+          "name": "S3_WHITELIST_OBJECT_KEY",
+          "value": "clients.conf"
         }
       ],
       "links": null,
