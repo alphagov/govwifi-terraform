@@ -1,5 +1,6 @@
 resource "aws_cloudwatch_metric_alarm" "ec2-api-cpu-alarm-low" {
   alarm_name          = "${var.Env-Name}-ec2-api-cpu-alarm-low"
+  count               = "${var.scheduled-task-count}"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "2"
   metric_name         = "CPUUtilization"
@@ -22,6 +23,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2-api-cpu-alarm-low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ec2-api-cpu-alarm-high" {
+  count               = "${var.scheduled-task-count}"
   alarm_name          = "${var.Env-Name}-ec2-api-cpu-alarm-high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
@@ -45,6 +47,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2-api-cpu-alarm-high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-high" {
+  count               = "${var.scheduled-task-count}"
   alarm_name          = "${var.Env-Name}-auth-ecs-cpu-alarm-high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -69,6 +72,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
+  count               = "${var.scheduled-task-count}"
   alarm_name          = "${var.Env-Name}-auth-ecs-cpu-alarm-low"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
@@ -93,6 +97,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-high" {
+  count               = "${var.scheduled-task-count}"
   alarm_name          = "${var.Env-Name}-ecs-api-memory-reservation-high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -115,6 +120,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-low" {
+  count               = "${var.scheduled-task-count}"
   alarm_name          = "${var.Env-Name}-ecs-api-memory-reservation-low"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"

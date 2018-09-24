@@ -120,3 +120,5 @@ variable "wordlist-file-path" {
 variable "vpc-id" {}
 
 variable "user-signup-api-base-url" {}
+
+variable "scheduled-task-count" {}

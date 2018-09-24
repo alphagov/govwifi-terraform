@@ -10,7 +10,7 @@ resource "aws_ecr_repository" "user-signup-api-ecr" {
 }
 
 resource "aws_iam_role" "user-signup-api-task-role" {
-  name = "${var.Env-Name}-user-signup-api-task-role"
+  name = "${var.Env-Name}-${var.aws-region-name}-user-signup-api-task-role"
 
   assume_role_policy = <<EOF
 {
@@ -30,7 +30,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "user-signup-api-task-policy" {
-  name       = "${var.Env-Name}-user-signup-api-task-policy"
+  name       = "${var.Env-Name}-${var.aws-region-name}-user-signup-api-task-policy"
   role       = "${aws_iam_role.user-signup-api-task-role.id}"
   depends_on = ["aws_iam_role.user-signup-api-task-role"]
 

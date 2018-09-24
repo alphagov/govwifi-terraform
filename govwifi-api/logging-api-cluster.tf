@@ -164,7 +164,7 @@ resource "aws_alb_listener_rule" "logging-api-lr" {
 }
 
 resource "aws_iam_role" "logging-api-task-role" {
-  name = "${var.Env-Name}-logging-api-task-role"
+  name = "${var.Env-Name}-${var.aws-region-name}-logging-api-task-role"
 
   assume_role_policy = <<EOF
 {
@@ -184,7 +184,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "logging-api-task-policy" {
-  name       = "${var.Env-Name}-logging-api-task-policy"
+  name       = "${var.Env-Name}-${var.aws-region-name}-logging-api-task-policy"
   role       = "${aws_iam_role.logging-api-task-role.id}"
   depends_on = ["aws_iam_role.logging-api-task-role"]
 
