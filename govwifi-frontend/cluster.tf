@@ -68,6 +68,9 @@ resource "aws_ecs_task_definition" "radius-task" {
         "name": "ALLOWED_SITES_API_BASE_URL",
         "value": "${var.allowed-sites-api-base-url}"
       },{
+        "name": "RADIUS_CONFIG_WHITELIST_URL",
+        "value": "https://s3.eu-west-2.amazonaws.com/govwifi-${var.rack-env}-admin/clients.conf"
+      },{
         "name": "BACKEND_API_KEY",
         "value": "${var.shared-key}"
       },{
