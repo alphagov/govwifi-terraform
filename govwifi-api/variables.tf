@@ -8,6 +8,10 @@ variable "aws-region" {}
 
 variable "aws-region-name" {}
 
+variable "alarm-count" {
+  default = 1
+}
+
 variable "ami" {
   description = "AMI id to launch, must be in the region specified by the region variable"
 }
@@ -26,6 +30,14 @@ variable "aws-account-id" {}
 
 variable "elb-ssl-cert-arn" {}
 
+variable "user-signup-enabled" {
+  default = 1
+}
+
+variable "logging-enabled" {
+  default = 1
+}
+
 variable "db-user" {}
 
 variable "db-password" {}
@@ -36,17 +48,29 @@ variable "db-read-replica-hostname" {}
 
 variable "rack-env" {}
 
-variable "performance-url" {}
+variable "performance-url" {
+  default = ""
+}
 
-variable "performance-dataset" {}
+variable "performance-dataset" {
+  default = ""
+}
 
-variable "performance-bearer-volumetrics" {}
+variable "performance-bearer-volumetrics" {
+  default = ""
+}
 
-variable "performance-bearer-completion-rate" {}
+variable "performance-bearer-completion-rate" {
+  default = ""
+}
 
-variable "performance-bearer-account-usage" {}
+variable "performance-bearer-account-usage" {
+  default = ""
+}
 
-variable "performance-bearer-unique-users" {}
+variable "performance-bearer-unique-users" {
+  default = ""
+}
 
 variable "radius-server-ips" {}
 
@@ -99,6 +123,7 @@ variable "authorised-email-domains-regex" {
 }
 
 variable "notify-api-key" {
+  default     = ""
   description = "API key used to authenticate with GOV.UK Notify"
 }
 

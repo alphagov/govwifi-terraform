@@ -1,4 +1,5 @@
 resource "aws_cloudwatch_log_group" "user-signup-api-log-group" {
+  count = "${var.user-signup-enabled}"
   name = "${var.Env-Name}-user-signup-api-docker-log-group"
 
   retention_in_days = 90
@@ -10,6 +11,7 @@ resource "aws_ecr_repository" "user-signup-api-ecr" {
 }
 
 resource "aws_iam_role" "user-signup-api-task-role" {
+  count = "${var.user-signup-enabled}"
   name = "${var.Env-Name}-user-signup-api-task-role"
 
   assume_role_policy = <<EOF
@@ -30,6 +32,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "user-signup-api-task-policy" {
+  count      = "${var.user-signup-enabled}"
   name       = "${var.Env-Name}-user-signup-api-task-policy"
   role       = "${aws_iam_role.user-signup-api-task-role.id}"
   depends_on = ["aws_iam_role.user-signup-api-task-role"]
@@ -51,6 +54,7 @@ EOF
 }
 
 resource "aws_ecs_task_definition" "user-signup-api-task" {
+  count = "${var.user-signup-enabled}"
   family = "user-signup-api-task-${var.Env-Name}"
   task_role_arn = "${aws_iam_role.user-signup-api-task-role.arn}"
 
@@ -143,6 +147,7 @@ EOF
 }
 
 resource "aws_ecs_service" "user-signup-api-service" {
+  count           = "${var.user-signup-enabled}"
   name            = "user-signup-api-service-${var.Env-Name}"
   cluster         = "${aws_ecs_cluster.api-cluster.id}"
   task_definition = "${aws_ecs_task_definition.user-signup-api-task.arn}"
@@ -167,11 +172,12 @@ resource "aws_ecs_service" "user-signup-api-service" {
 }
 
 resource "aws_alb_target_group" "user-signup-api-tg" {
-  depends_on   = ["aws_lb.api-alb"]
-  name     = "user-signup-api-${var.Env-Name}"
-  port     = "8080"
-  protocol = "HTTP"
-  vpc_id   = "${var.vpc-id}"
+  count       = "${var.user-signup-enabled}"
+  depends_on  = ["aws_lb.api-alb"]
+  name        = "user-signup-api-${var.Env-Name}"
+  port        = "8080"
+  protocol    = "HTTP"
+  vpc_id      = "${var.vpc-id}"
 
   tags {
     Name = "user-signup-api-tg-${var.Env-Name}"
@@ -187,6 +193,7 @@ resource "aws_alb_target_group" "user-signup-api-tg" {
 }
 
 resource "aws_alb_listener_rule" "user-signup-api-lr" {
+  count        = "${var.user-signup-enabled}"
   depends_on   = ["aws_alb_target_group.user-signup-api-tg"]
   listener_arn = "${aws_alb_listener.alb_listener.arn}"
   priority     = 2

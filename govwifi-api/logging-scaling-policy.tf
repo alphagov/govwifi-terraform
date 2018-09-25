@@ -1,4 +1,5 @@
 resource "aws_appautoscaling_target" "logging-ecs-target" {
+  count              = "${var.logging-enabled}"
   service_namespace  = "ecs"
   resource_id        = "service/${aws_ecs_cluster.api-cluster.name}/${aws_ecs_service.logging-api-service.name}"
   max_capacity       = 20
@@ -8,6 +9,7 @@ resource "aws_appautoscaling_target" "logging-ecs-target" {
 }
 
 resource "aws_appautoscaling_policy" "ecs-policy-up-logging" {
+  count              = "${var.logging-enabled}"
   name               = "ECS Scale Up Logging"
   service_namespace  = "ecs"
   policy_type        = "StepScaling"
@@ -28,6 +30,7 @@ resource "aws_appautoscaling_policy" "ecs-policy-up-logging" {
 }
 
 resource "aws_appautoscaling_policy" "ecs-policy-down-logging" {
+  count              = "${var.logging-enabled}"
   name               = "ECS Scale Down"
   service_namespace  = "ecs"
   resource_id        = "service/${aws_ecs_cluster.api-cluster.name}/${aws_ecs_service.logging-api-service.name}"
