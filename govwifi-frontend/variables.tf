@@ -40,8 +40,6 @@ variable "healthcheck-radius-key" {}
 
 variable "dns-numbering-base" {}
 
-variable "backend-base-url" {}
-
 variable "logging-api-base-url" {}
 
 variable "auth-api-base-url" {}
