@@ -42,7 +42,9 @@ variable "dns-numbering-base" {}
 
 variable "backend-base-url" {}
 
-variable "api-base-url" {}
+variable "logging-api-base-url" {}
+
+variable "auth-api-base-url" {}
 
 variable "elastic-ip-list" {
   type = "list"
