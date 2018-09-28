@@ -20,6 +20,10 @@ variable "ssh-key-name" {}
 
 variable "backend-instance-count" {}
 
+variable "authorisation-api-count" {
+  default = 2
+}
+
 variable "backend-min-size" {}
 
 variable "backend-cpualarm-count" {}
