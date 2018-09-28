@@ -126,7 +126,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-low" {
   evaluation_periods  = "1"
   metric_name         = "MemoryReservation"
   namespace           = "AWS/ECS"
-  period              = "300"
+  period              = "600"
   statistic           = "Average"
   threshold           = "50"
 
