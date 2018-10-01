@@ -81,7 +81,7 @@ resource "aws_ecs_service" "authorisation-api-service" {
   name            = "authorisation-api-service-${var.Env-Name}"
   cluster         = "${aws_ecs_cluster.api-cluster.id}"
   task_definition = "${aws_ecs_task_definition.authorisation-api-task.arn}"
-  desired_count   = "${var.backend-instance-count}"
+  desired_count   = "${var.authorisation-api-count}"
   iam_role        = "${var.ecs-service-role}"
 
   ordered_placement_strategy {
