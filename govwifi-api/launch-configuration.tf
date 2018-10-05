@@ -182,6 +182,13 @@ EOF
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
+# Disable Anacron
+chmod a-x $(which anacron)
+
+--==BOUNDARY==
+MIME-Version: 1.0
+Content-Type: text/x-shellscript; charset="us-ascii"
+#!/bin/bash
 # Set the region to send CloudWatch Logs data to (the region where the container instance is located)
 # region=$(curl 169.254.169.254/latest/meta-data/placement/availability-zone | sed s'/.$//')
 region=${var.aws-region}
