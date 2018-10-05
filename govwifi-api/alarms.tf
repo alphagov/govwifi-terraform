@@ -5,7 +5,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2-api-cpu-alarm-low" {
   evaluation_periods  = "2"
   metric_name         = "CPUUtilization"
   namespace           = "AWS/EC2"
-  period              = "300"
+  period              = "600"
   statistic           = "Average"
   threshold           = "1"
 
