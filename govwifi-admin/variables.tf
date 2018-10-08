@@ -125,3 +125,5 @@ variable "dublin-radius-ip-addresses" {
 }
 
 variable "sentry-dsn" {}
+
+variable "logging-api-search-url" {}
