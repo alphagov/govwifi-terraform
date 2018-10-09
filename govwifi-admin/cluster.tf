@@ -90,7 +90,10 @@ resource "aws_ecs_task_definition" "admin-task" {
           "value": "ips-and-locations.json"
         },{
           "name": "S3_WHITELIST_OBJECT_KEY",
-          "value": "clients.conf"
+          "value": "clients.conf",
+        },{
+          "name": "LOGGING_API_SEARCH_ENDPOINT",
+          "value": "${var.logging-api-search-url}"
         }
       ],
       "links": null,
