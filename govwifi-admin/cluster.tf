@@ -94,6 +94,18 @@ resource "aws_ecs_task_definition" "admin-task" {
         },{
           "name": "LOGGING_API_SEARCH_ENDPOINT",
           "value": "${var.logging-api-search-url}"
+        },{
+          "name": "RR_DB_USER",
+          "value": "${var.rr-db-user}"
+        },{
+          "name": "RR_DB_PASS",
+          "value": "${var.rr-db-password}"
+        },{
+          "name": "RR_DB_HOST",
+          "value": "${var.rr-db-host}"
+        },{
+          "name": "RR_DB_NAME",
+          "value": "${var.rr-db-name}"
         }
       ],
       "links": null,
