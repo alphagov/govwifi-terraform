@@ -92,11 +92,6 @@ variable "elb-sg-list" {
   type = "list"
 }
 
-variable "pentest-sg-list" {
-  type = "list"
-  default = []
-}
-
 variable "backend-sg-list" {
   type = "list"
 }
@@ -153,34 +148,4 @@ variable "save-pp-data" {
 
 variable "pp-domain-name" {
   default = ""
-}
-
-variable "pentest-ami" {
-  type = "string"
-  default = ""
-}
-
-variable "pentest-sg-list-admin" {
-  type = "list"
-  default = []
-}
-
-variable "pentest-sg-list-api" {
-  type = "list"
-  default = []
-}
-
-variable "subnet-admin" {
-  type = "string"
-  default = ""
-}
-
-variable "subnet-api" {
-  type = "string"
-  default = ""
-}
-
-variable "pentest-enabled" {
-  default = "0"
-  type = "string"
 }
