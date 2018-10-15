@@ -15,6 +15,23 @@ resource "aws_s3_bucket" "admin-bucket" {
   }
 }
 
+resource "aws_s3_bucket" "admin-mous-bucket" {
+  count         = 1
+  bucket        = "govwifi-${var.rack-env}-admin-mous"
+  force_destroy = true
+  acl           = "private"
+
+  tags {
+    Name        = "${title(var.Env-Name)} MOUs from Admin"
+    Region      = "${title(var.aws-region-name)}"
+    Environment = "${title(var.rack-env)}"
+  }
+
+  versioning {
+    enabled = true
+  }
+}
+
 resource "aws_s3_bucket_policy" "admin-bucket-policy" {
 bucket = "${aws_s3_bucket.admin-bucket.id}"
 policy =<<POLICY

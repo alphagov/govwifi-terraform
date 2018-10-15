@@ -83,6 +83,9 @@ resource "aws_ecs_task_definition" "admin-task" {
           "name": "SENTRY_DSN",
           "value": "${var.sentry-dsn}"
         },{
+          "name": "S3_MOUS_BUCKET",
+          "value": "govwifi-${var.rack-env}-admin-mous"
+        },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
           "value": "govwifi-${var.rack-env}-admin"
         },{
