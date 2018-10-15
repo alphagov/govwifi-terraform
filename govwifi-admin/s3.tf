@@ -15,14 +15,14 @@ resource "aws_s3_bucket" "admin-bucket" {
   }
 }
 
-resource "aws_s3_bucket" "admin-mous-bucket" {
+resource "aws_s3_bucket" "admin-mou-bucket" {
   count         = 1
-  bucket        = "govwifi-${var.rack-env}-admin-mous"
+  bucket        = "govwifi-${var.rack-env}-admin-mou"
   force_destroy = true
   acl           = "private"
 
   tags {
-    Name        = "${title(var.Env-Name)} MOUs from Admin"
+    Name        = "${title(var.Env-Name)} MOU documents from Admin"
     Region      = "${title(var.aws-region-name)}"
     Environment = "${title(var.rack-env)}"
   }

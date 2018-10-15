@@ -59,7 +59,7 @@ resource "aws_iam_role_policy" "ecs-admin-instance-policy" {
       ],
       "Resource": [
         "${aws_s3_bucket.admin-bucket.arn}/*",
-        "${aws_s3_bucket.admin-mous-bucket.arn}/*"
+        "${aws_s3_bucket.admin-mou-bucket.arn}/*"
       ]
     }
   ]
