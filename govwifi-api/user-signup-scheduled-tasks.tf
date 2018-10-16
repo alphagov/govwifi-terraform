@@ -53,7 +53,7 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-daily-statistics" {
   count     = "${var.user-signup-enabled}"
   target_id = "${var.Env-Name}-user-signup-daily-statistics"
   arn       = "${aws_ecs_cluster.api-cluster.arn}"
-  rule      = "${aws_cloudwatch_event_rule.daily_statistics_event.name}"
+  rule      = "${aws_cloudwatch_event_rule.daily_statistics_user_signup_event.name}"
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
@@ -77,7 +77,7 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-weekly-statistics" {
   count     = "${var.user-signup-enabled}"
   target_id = "${var.Env-Name}-user-signup-weekly-statistics"
   arn       = "${aws_ecs_cluster.api-cluster.arn}"
-  rule      = "${aws_cloudwatch_event_rule.weekly_statistics_event.name}"
+  rule      = "${aws_cloudwatch_event_rule.weekly_statistics_user_signup_event.name}"
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
