@@ -57,10 +57,17 @@ resource "aws_iam_role_policy" "ecs-admin-instance-policy" {
       "Action": [
         "s3:PutObject"
       ],
-      "Resource": [
-        "${aws_s3_bucket.admin-bucket.arn}/*",
-        "${aws_s3_bucket.admin-mou-bucket.arn}/*"
-      ]
+      "Resource": ["${aws_s3_bucket.admin-bucket.arn}/*"]
+    },{
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:GetObject",
+        "s3:GetObjectAcl",
+        "s3:DeleteObject"
+      ],
+      "Resource": ["${aws_s3_bucket.admin-mou-bucket.arn}/*"]
     }
   ]
 }
