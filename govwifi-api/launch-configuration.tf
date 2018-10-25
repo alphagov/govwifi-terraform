@@ -84,7 +84,13 @@ cat <<'EOF' > ./security-updates
 #!/bin/bash
 sudo yum update -y --security
 sudo yum update -y ecs-init
-sudo service docker restart
+
+for containerId in `docker ps --format '{{.ID}}'`; do
+  echo "RESTARTING $container";
+  docker restart $containerId
+  sleep 60;
+done
+
 sleep 5
 sudo start ecs
 # Forcefully restart the instance if the docker daemon has failed to restart
