@@ -261,7 +261,7 @@ resource "aws_cloudwatch_metric_alarm" "rr_laggingalarm" {
   count               = "${var.db-replica-count}"
   alarm_name          = "${var.Env-Name}-rr-lagging-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "1"
+  evaluation_periods  = "2"
   metric_name         = "ReplicaLag"
   namespace           = "AWS/RDS"
   period              = "60"
