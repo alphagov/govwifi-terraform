@@ -14,19 +14,23 @@ resource "aws_ecs_task_definition" "logging-api-task" {
   count = "${var.logging-enabled}"
   family   = "logging-api-task-${var.Env-Name}"
   task_role_arn = "${aws_iam_role.logging-api-task-role.arn}"
+  requires_compatibilities = ["FARGATE"]
+  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  memory = 512
+  cpu = "256"
+  network_mode = "awsvpc"
 
   container_definitions = <<EOF
 [
     {
       "volumesFrom": [],
-      "memory": 950,
+      "memory": 512,
       "extraHosts": null,
       "dnsServers": null,
       "disableNetworking": null,
       "dnsSearchDomains": null,
       "portMappings": [
         {
-          "hostPort": 0,
           "containerPort": 8080,
           "protocol": "tcp"
         }
@@ -112,16 +116,12 @@ resource "aws_ecs_service" "logging-api-service" {
   cluster         = "${aws_ecs_cluster.api-cluster.id}"
   task_definition = "${aws_ecs_task_definition.logging-api-task.arn}"
   desired_count   = "${var.backend-instance-count}"
-  iam_role        = "${var.ecs-service-role}"
+  launch_type     = "FARGATE"
 
-  ordered_placement_strategy {
-    type  = "spread"
-    field = "instanceId"
-  }
-
-  ordered_placement_strategy {
-    type  = "binpack"
-    field = "cpu"
+  network_configuration {
+    security_groups = ["${var.backend-sg-list}"]
+    subnets         = ["${var.subnet-ids}"]
+    assign_public_ip = true
   }
 
   load_balancer {
@@ -138,6 +138,7 @@ resource "aws_alb_target_group" "logging-api-tg" {
   port     = "8080"
   protocol = "HTTP"
   vpc_id   = "${var.vpc-id}"
+  target_type = "ip"
 
   tags {
     Name = "logging-api-tg-${var.Env-Name}"
@@ -209,4 +210,25 @@ resource "aws_iam_role_policy" "logging-api-task-policy" {
   ]
 }
 EOF
+}
+
+resource "aws_iam_role" "ecsTaskExecutionRole" {
+  name               = "logging-api-ecsTaskExecutionRole-${var.rack-env}"
+  assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
+}
+
+data "aws_iam_policy_document" "assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
+  role       = "${aws_iam_role.ecsTaskExecutionRole.name}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
