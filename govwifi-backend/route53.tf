@@ -20,12 +20,3 @@ resource "aws_route53_record" "rr" {
   ttl     = "300"
   records = ["${aws_db_instance.read_replica.address}"]
 }
-
-# CNAME for the cache for this environment
-resource "aws_route53_record" "cache" {
-  zone_id = "${var.route53-zone-id}"
-  name    = "cache.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  type    = "CNAME"
-  ttl     = "300"
-  records = ["${aws_elasticache_cluster.cache.cache_nodes.0.address}"]
-}

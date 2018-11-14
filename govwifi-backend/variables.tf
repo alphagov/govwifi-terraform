@@ -86,8 +86,6 @@ variable "rr-instance-type" {}
 
 variable "rr-storage-gb" {}
 
-variable "cache-node-type" {}
-
 variable "elb-sg-list" {
   type = "list"
 }
@@ -101,10 +99,6 @@ variable "mgt-sg-list" {
 }
 
 variable "db-sg-list" {
-  type = "list"
-}
-
-variable "cache-sg-list" {
   type = "list"
 }
 
