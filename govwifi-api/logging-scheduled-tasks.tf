@@ -58,6 +58,11 @@ resource "aws_cloudwatch_event_target" "logging-publish-daily-statistics" {
   ecs_target = {
     task_count = 1
     task_definition_arn = "${aws_ecs_task_definition.logging-api-task.arn}"
+
+    network_configuration = {
+      security_groups = ["${var.backend-sg-list}"]
+      subnets         = ["${var.subnet-ids}"]
+    }
   }
 
   input = <<EOF
@@ -82,6 +87,11 @@ resource "aws_cloudwatch_event_target" "logging-publish-weekly-statistics" {
   ecs_target = {
     task_count = 1
     task_definition_arn = "${aws_ecs_task_definition.logging-api-task.arn}"
+
+    network_configuration = {
+      security_groups = ["${var.backend-sg-list}"]
+      subnets         = ["${var.subnet-ids}"]
+    }
   }
 
   input = <<EOF
@@ -106,6 +116,11 @@ resource "aws_cloudwatch_event_target" "logging-publish-monthly-statistics" {
   ecs_target = {
     task_count = 1
     task_definition_arn = "${aws_ecs_task_definition.logging-api-task.arn}"
+
+    network_configuration = {
+      security_groups = ["${var.backend-sg-list}"]
+      subnets         = ["${var.subnet-ids}"]
+    }
   }
 
   input = <<EOF

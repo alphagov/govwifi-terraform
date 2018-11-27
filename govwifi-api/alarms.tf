@@ -126,13 +126,13 @@ resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-low" {
   namespace           = "AWS/ECS"
   period              = "300"
   statistic           = "Average"
-  threshold           = "50"
+  threshold           = "40"
 
   dimensions {
     ClusterName = "${aws_ecs_cluster.api-cluster.name}"
   }
 
-  alarm_description  = "Cluster memory reservation below 50%"
+  alarm_description  = "Cluster memory reservation below 40%"
   alarm_actions      = [
     "${aws_autoscaling_policy.api-ec2-scale-down-policy.arn}"
   ]
