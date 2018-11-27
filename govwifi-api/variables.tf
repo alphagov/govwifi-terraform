@@ -149,3 +149,8 @@ variable "wordlist-file-path" {
 variable "vpc-id" {}
 
 variable "user-signup-api-base-url" {}
+
+variable "iam-count" {
+  default     = 0
+  description = "Whether or not to iam roles"
+}
