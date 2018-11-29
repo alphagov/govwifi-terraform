@@ -94,6 +94,7 @@ done
 IFS=$oldIFS
 
 sudo sed -i -e "s/AllowUsers ubuntu/AllowUsers $allowedUsers/g" /etc/ssh/sshd_config
+sudo sed -i -e "\$a Ciphers\ aes128-ctr,aes192-ctr,aes256-ctr" /etc/ssh/sshd_config
 sudo /etc/init.d/ssh reload
 
 --==BOUNDARY==
