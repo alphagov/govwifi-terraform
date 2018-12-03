@@ -134,3 +134,31 @@ resource "aws_cloudwatch_event_target" "logging-publish-monthly-statistics" {
 }
 EOF
 }
+
+resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
+  target_id = "${var.Env-Name}-logging-daily-session-deletion"
+  arn       = "${aws_ecs_cluster.api-cluster.arn}"
+  rule      = "${aws_cloudwatch_event_rule.daily_session_deletion_event.name}"
+  role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
+
+  ecs_target = {
+    task_count = 1
+    task_definition_arn = "${aws_ecs_task_definition.logging-api-task.arn}"
+
+    network_configuration = {
+      security_groups = ["${var.backend-sg-list}"]
+      subnets         = ["${var.subnet-ids}"]
+    }
+  }
+
+  input = <<EOF
+{
+  "containerOverrides": [
+    {
+      "name": "logging",
+      "command": ["bundle", "exec", "rake", "daily_session_deletion"]
+    }
+  ]
+}
+EOF
+}
