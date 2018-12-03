@@ -39,3 +39,11 @@ resource "aws_cloudwatch_event_rule" "monthly_statistics_user_signup_event" {
   schedule_expression = "cron(30 6 1 * ? *)"
   is_enabled          = true
 }
+
+resource "aws_cloudwatch_event_rule" "daily_session_deletion_event" {
+  name                = "${var.Env-Name}-daily-session-deletion"
+  description         = "Triggers daily 22:00 pm UTC"
+  schedule_expression = "cron(0 22 * * ? *)"
+  is_enabled          = true
+}
+
