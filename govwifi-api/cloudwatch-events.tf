@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_event_rule" "daily_statistics_logging_event" {
   name                = "${var.Env-Name}-daily-statistics-frequency-logging"
-  description         = "Triggers daily 04:25 am UTC"
+  description         = "Triggers daily 04:15 am UTC"
   schedule_expression = "cron(15 4 * * ? *)"
   is_enabled          = true
 }
