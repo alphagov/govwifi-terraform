@@ -42,6 +42,10 @@ variable "logging-enabled" {
   default = 1
 }
 
+variable "safe-restart-enabled" {
+  default = 1
+}
+
 variable "db-user" {}
 
 variable "db-password" {}
@@ -121,6 +125,8 @@ variable "auth-docker-image" {}
 variable "user-signup-docker-image" {}
 
 variable "logging-docker-image" {}
+
+variable "safe-restart-docker-image" {}
 
 variable "authorised-email-domains-regex" {
   description = "Regex used as matcher for whether an incoming email is from a government address."
