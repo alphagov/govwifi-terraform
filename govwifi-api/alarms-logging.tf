@@ -41,7 +41,6 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-low" {
 
   alarm_description  = "This alarm tells ECS to scale in based on low CPU usage - Logging"
   alarm_actions      = [
-    "${aws_appautoscaling_policy.ecs-policy-down-logging.arn}",
-    "${var.devops-notifications-arn}"
+    "${aws_appautoscaling_policy.ecs-policy-down-logging.arn}"
   ]
 }
