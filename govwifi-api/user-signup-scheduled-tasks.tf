@@ -96,3 +96,31 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-weekly-statistics" {
 }
 EOF
 }
+
+resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
+  target_id = "${var.Env-Name}-user-signup-daily-user-deletion"
+  arn       = "${aws_ecs_cluster.api-cluster.arn}"
+  rule      = "${aws_cloudwatch_event_rule.daily_user_deletion_event.name}"
+  role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
+
+  ecs_target = {
+    task_count = 1
+    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-task.arn}"
+
+    network_configuration = {
+      security_groups = ["${var.backend-sg-list}"]
+      subnets         = ["${var.subnet-ids}"]
+    }
+  }
+
+  input = <<EOF
+{
+  "containerOverrides": [
+    {
+      "name": "logging",
+      "command": ["bundle", "exec", "rake", "delete_users"]
+    }
+  ]
+}
+EOF
+}
