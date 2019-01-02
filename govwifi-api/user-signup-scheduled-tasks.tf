@@ -118,7 +118,7 @@ resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
   "containerOverrides": [
     {
       "name": "logging",
-      "command": ["bundle", "exec", "rake", "delete_users"]
+      "command": ["bundle", "exec", "rake", "delete_inactive_users"]
     }
   ]
 }
