@@ -1,4 +1,3 @@
-
 resource "aws_iam_role" "user-signup-scheduled-task-role" {
   count = "${var.user-signup-enabled}"
   name = "${var.Env-Name}-user-signup-scheduled-task-role"
@@ -106,18 +105,13 @@ resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
   ecs_target = {
     task_count = 1
     task_definition_arn = "${aws_ecs_task_definition.user-signup-api-task.arn}"
-
-    network_configuration = {
-      security_groups = ["${var.backend-sg-list}"]
-      subnets         = ["${var.subnet-ids}"]
-    }
   }
 
   input = <<EOF
 {
   "containerOverrides": [
     {
-      "name": "logging",
+      "name": "user-signup",
       "command": ["bundle", "exec", "rake", "delete_inactive_users"]
     }
   ]
