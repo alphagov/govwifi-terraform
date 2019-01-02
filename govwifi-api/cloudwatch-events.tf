@@ -47,3 +47,10 @@ resource "aws_cloudwatch_event_rule" "daily_session_deletion_event" {
   is_enabled          = true
 }
 
+resource "aws_cloudwatch_event_rule" "daily_user_deletion_event" {
+  name                = "${var.Env-Name}-daily-user-deletion"
+  description         = "Triggers daily 23:00 pm UTC"
+  schedule_expression = "cron(0 23 * * ? *)"
+  is_enabled          = true
+}
+
