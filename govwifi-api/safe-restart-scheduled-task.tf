@@ -1,4 +1,5 @@
 resource "aws_cloudwatch_event_rule" "daily_safe_restart" {
+  count               = "${var.safe-restart-enabled}"
   name                = "${var.Env-Name}-daily-safe-restart"
   description         = "Triggers at midnight Daily"
   schedule_expression = "cron(0 0 * * ? *)"
@@ -6,6 +7,7 @@ resource "aws_cloudwatch_event_rule" "daily_safe_restart" {
 }
 
 resource "aws_cloudwatch_log_group" "safe-restart-log-group" {
+  count = "${var.safe-restart-enabled}"
   name = "${var.Env-Name}-safe-restart-docker-log-group"
 
   retention_in_days = 90
@@ -17,6 +19,7 @@ resource "aws_ecr_repository" "safe-restarter-ecr" {
 }
 
 resource "aws_ecs_task_definition" "safe-restart-task-definition" {
+  count = "${var.safe-restart-enabled}"
   family = "safe-restart-task-${var.Env-Name}"
   task_role_arn = "${aws_iam_role.safe-restart-task-role.arn}"
 

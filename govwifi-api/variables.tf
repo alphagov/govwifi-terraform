@@ -12,6 +12,10 @@ variable "alarm-count" {
   default = 1
 }
 
+variable "event-rule-count" {
+  default = 1
+}
+
 variable "ami" {
   description = "AMI id to launch, must be in the region specified by the region variable"
 }

@@ -97,6 +97,7 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
+  count     = "${var.user-signup-enabled}"
   target_id = "${var.Env-Name}-user-signup-daily-user-deletion"
   arn       = "${aws_ecs_cluster.api-cluster.arn}"
   rule      = "${aws_cloudwatch_event_rule.daily_user_deletion_event.name}"
