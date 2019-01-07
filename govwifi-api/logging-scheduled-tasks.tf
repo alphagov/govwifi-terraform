@@ -127,6 +127,7 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
+  count     = "${var.logging-enabled}"
   target_id = "${var.Env-Name}-logging-daily-session-deletion"
   arn       = "${aws_ecs_cluster.api-cluster.arn}"
   rule      = "${aws_cloudwatch_event_rule.daily_session_deletion_event.name}"
@@ -135,11 +136,7 @@ resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
   ecs_target = {
     task_count = 1
     task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-
-    network_configuration = {
-      security_groups = ["${var.backend-sg-list}"]
-      subnets         = ["${var.subnet-ids}"]
-    }
+    launch_type  = "EC2"
   }
 
   input = <<EOF
