@@ -214,7 +214,7 @@ EOF
 
 resource "aws_iam_role" "ecsTaskExecutionRole" {
   count              = "${var.iam-count}"
-  name               = "logging-api-ecsTaskExecutionRole-${var.rack-env}"
+  name               = "ecsTaskExecutionRole-${var.rack-env}"
   assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
 }
 

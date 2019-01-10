@@ -57,19 +57,23 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
   count = "${var.user-signup-enabled}"
   family = "user-signup-api-task-${var.Env-Name}"
   task_role_arn = "${aws_iam_role.user-signup-api-task-role.arn}"
+  requires_compatibilities = ["FARGATE"]
+  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  memory = 512
+  cpu = "256"
+  network_mode = "awsvpc"
 
   container_definitions = <<EOF
 [
     {
       "volumesFrom": [],
-      "memory": 950,
+      "memory": 512,
       "extraHosts": null,
       "dnsServers": null,
       "disableNetworking": null,
       "dnsSearchDomains": null,
       "portMappings": [
         {
-          "hostPort": 0,
           "containerPort": 8080,
           "protocol": "tcp"
         }
@@ -152,16 +156,12 @@ resource "aws_ecs_service" "user-signup-api-service" {
   cluster         = "${aws_ecs_cluster.api-cluster.id}"
   task_definition = "${aws_ecs_task_definition.user-signup-api-task.arn}"
   desired_count   = "${var.backend-instance-count}"
-  iam_role        = "${var.ecs-service-role}"
+  launch_type     = "FARGATE"
 
-  ordered_placement_strategy {
-    type  = "spread"
-    field = "instanceId"
-  }
-
-  ordered_placement_strategy {
-    type  = "binpack"
-    field = "cpu"
+  network_configuration {
+    security_groups = ["${var.backend-sg-list}"]
+    subnets         = ["${var.subnet-ids}"]
+    assign_public_ip = true
   }
 
   load_balancer {
@@ -178,6 +178,7 @@ resource "aws_alb_target_group" "user-signup-api-tg" {
   port        = "8080"
   protocol    = "HTTP"
   vpc_id      = "${var.vpc-id}"
+  target_type = "ip"
 
   tags {
     Name = "user-signup-api-tg-${var.Env-Name}"
