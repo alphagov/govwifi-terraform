@@ -6,6 +6,10 @@ variable "route53-zone-id" {}
 
 variable "vpc-cidr-block" {}
 
+variable "aws-account-id" {}
+
+variable "aws-region" {}
+
 variable "aws-region-name" {}
 
 variable "zone-count" {}
@@ -88,7 +92,14 @@ variable "ithc-sg-list" {
   default = []
 }
 
+variable "users" {
+  type = "list"
+}
 variable "save-pp-data" {
   description = "Whether or not to save Performance Platform backup data. Value must be 0 or 1."
   default     = "0"
+}
+
+variable "pp-domain-name" {
+  default = ""
 }
