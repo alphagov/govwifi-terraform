@@ -58,6 +58,7 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-daily-statistics" {
   ecs_target = {
     task_count = 1
     task_definition_arn = "${aws_ecs_task_definition.user-signup-api-task.arn}"
+    launch_type  = "EC2"
   }
 
   input = <<EOF
@@ -82,6 +83,7 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-weekly-statistics" {
   ecs_target = {
     task_count = 1
     task_definition_arn = "${aws_ecs_task_definition.user-signup-api-task.arn}"
+    launch_type  = "EC2"
   }
 
   input = <<EOF
@@ -106,6 +108,7 @@ resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
   ecs_target = {
     task_count = 1
     task_definition_arn = "${aws_ecs_task_definition.user-signup-api-task.arn}"
+    launch_type  = "EC2"
   }
 
   input = <<EOF
