@@ -29,7 +29,7 @@ resource "aws_iam_role_policy" "user-signup-scheduled-task-policy" {
         {
             "Effect": "Allow",
             "Action": "ecs:RunTask",
-            "Resource": "${replace(aws_ecs_task_definition.user-signup-api-task.arn, "/:\\d+$/", ":*")}"
+            "Resource": "${replace(aws_ecs_task_definition.user-signup-api-scheduled-task.arn, "/:\\d+$/", ":*")}"
         },
         {
           "Effect": "Allow",
@@ -57,7 +57,7 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-daily-statistics" {
 
   ecs_target = {
     task_count = 1
-    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-task.arn}"
+    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
     launch_type  = "EC2"
   }
 
@@ -82,7 +82,7 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-weekly-statistics" {
 
   ecs_target = {
     task_count = 1
-    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-task.arn}"
+    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
     launch_type  = "EC2"
   }
 
@@ -107,7 +107,7 @@ resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
 
   ecs_target = {
     task_count = 1
-    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-task.arn}"
+    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
     launch_type  = "EC2"
   }
 
@@ -120,5 +120,97 @@ resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
     }
   ]
 }
+EOF
+}
+
+resource "aws_ecs_task_definition" "user-signup-api-scheduled-task" {
+  count = "${var.user-signup-enabled}"
+  family = "user-signup-api-scheduled-task-${var.Env-Name}"
+  task_role_arn = "${aws_iam_role.user-signup-api-task-role.arn}"
+
+  container_definitions = <<EOF
+[
+    {
+      "volumesFrom": [],
+      "memory": 512,
+      "extraHosts": null,
+      "dnsServers": null,
+      "disableNetworking": null,
+      "dnsSearchDomains": null,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "hostname": null,
+      "essential": true,
+      "entryPoint": null,
+      "mountPoints": [],
+      "name": "user-signup",
+      "ulimits": null,
+      "dockerSecurityOptions": null,
+      "environment": [
+        {
+          "name": "DB_NAME",
+          "value": "govwifi_${var.Env-Name}"
+        },{
+          "name": "DB_PASS",
+          "value": "${var.db-password}"
+        },{
+          "name": "DB_USER",
+          "value": "${var.db-user}"
+        },{
+          "name": "DB_HOSTNAME",
+          "value": "${var.db-hostname}"
+        },{
+          "name": "RACK_ENV",
+          "value": "${var.rack-env}"
+        },{
+          "name": "SENTRY_DSN",
+          "value": "${var.user-signup-sentry-dsn}"
+        },{
+          "name": "ENVIRONMENT_NAME",
+          "value": "${var.Env-Name}"
+        },{
+          "name": "AUTHORISED_EMAIL_DOMAINS_REGEX",
+          "value": ${jsonencode(var.authorised-email-domains-regex)}
+        },{
+          "name": "NOTIFY_API_KEY",
+          "value": "${var.notify-api-key}"
+        },{
+          "name": "PERFORMANCE_URL",
+          "value": "${var.performance-url}"
+        },{
+          "name": "PERFORMANCE_DATASET",
+          "value": "${var.performance-dataset}"
+        },{
+          "name": "PERFORMANCE_BEARER_VOLUMETRICS",
+          "value": "${var.performance-bearer-volumetrics}"
+        },{
+          "name": "PERFORMANCE_BEARER_COMPLETION_RATE",
+          "value": "${var.performance-bearer-completion-rate}"
+        }
+      ],
+      "links": null,
+      "workingDirectory": null,
+      "readonlyRootFilesystem": null,
+      "image": "${var.user-signup-docker-image}",
+      "command": null,
+      "user": null,
+      "dockerLabels": null,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "${aws_cloudwatch_log_group.user-signup-api-log-group.name}",
+          "awslogs-region": "${var.aws-region}",
+          "awslogs-stream-prefix": "${var.Env-Name}-user-signup-api-docker-logs"
+        }
+      },
+      "cpu": 0,
+      "privileged": null,
+      "expanded": true
+    }
+]
 EOF
 }
