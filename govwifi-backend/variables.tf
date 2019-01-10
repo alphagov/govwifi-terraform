@@ -4,9 +4,9 @@ variable "Env-Subdomain" {}
 
 variable "route53-zone-id" {}
 
-variable "mail-exchange-server" {}
-
 variable "vpc-cidr-block" {}
+
+variable "aws-account-id" {}
 
 variable "aws-region" {}
 
@@ -22,10 +22,6 @@ variable "zone-subnets" {
   type = "map"
 }
 
-variable "ami" {
-  description = "AMI id to launch, must be in the region specified by the region variable"
-}
-
 variable "bastion-ami" {}
 
 variable "bastion-instance-type" {}
@@ -34,35 +30,9 @@ variable "bastion-server-ip" {}
 
 variable "bastion-ssh-key-name" {}
 
-variable "bastion-auth-keys" {}
-
-variable "bastion-identity" {}
-
-variable "bastion-set-cronjobs" {}
-
-variable "ssh-key-name" {}
-
-variable "backend-instance-count" {}
-
-variable "backend-min-size" {}
-
-variable "backend-cpualarm-count" {}
-
-variable "backend-elb-count" {}
-
-variable "aws-account-id" {}
-
-variable "elb-ssl-cert-arn" {}
-
-variable "docker-image" {}
-
 variable "db-user" {}
 
 variable "db-password" {}
-
-variable "radius-server-ips" {}
-
-variable "shared-key" {}
 
 variable "db-instance-count" {}
 
@@ -86,13 +56,6 @@ variable "rr-instance-type" {}
 
 variable "rr-storage-gb" {}
 
-variable "elb-sg-list" {
-  type = "list"
-}
-
-variable "backend-sg-list" {
-  type = "list"
-}
 
 variable "mgt-sg-list" {
   type = "list"
@@ -101,8 +64,6 @@ variable "mgt-sg-list" {
 variable "db-sg-list" {
   type = "list"
 }
-
-variable "legacy-bastion-user" {}
 
 variable "critical-notifications-arn" {}
 
@@ -134,7 +95,6 @@ variable "ithc-sg-list" {
 variable "users" {
   type = "list"
 }
-
 variable "save-pp-data" {
   description = "Whether or not to save Performance Platform backup data. Value must be 0 or 1."
   default     = "0"
