@@ -80,3 +80,8 @@ variable "users" {
 variable "rack-env" {
   default   = ""
 }
+
+variable "create-ecr" {
+  description = "Whether or not to create ECR repository"
+  default     = false
+}

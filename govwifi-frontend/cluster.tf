@@ -10,6 +10,11 @@ resource "aws_cloudwatch_log_group" "frontend-log-group" {
   retention_in_days = 90
 }
 
+resource "aws_ecr_repository" "govwifi-frontend-ecr" {
+  count = "${var.create-ecr}"
+  name  = "govwifi/frontend"
+}
+
 resource "aws_ecs_task_definition" "radius-task" {
   family = "radius-task-${var.Env-Name}"
 
