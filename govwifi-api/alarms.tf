@@ -15,8 +15,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2-api-cpu-alarm-low" {
 
   alarm_description  = "This alarm tells EC2 to scale in based on low CPU usage"
   alarm_actions      = [
-    "${aws_autoscaling_policy.api-ec2-scale-down-policy.arn}",
-    "${var.devops-notifications-arn}"
+    "${aws_autoscaling_policy.api-ec2-scale-down-policy.arn}"
   ]
 
   treat_missing_data = "breaching"
@@ -89,8 +88,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
 
   alarm_description  = "This alarm tells ECS to scale in based on low CPU usage"
   alarm_actions      = [
-    "${aws_appautoscaling_policy.ecs-policy-down.arn}",
-    "${var.devops-notifications-arn}"
+    "${aws_appautoscaling_policy.ecs-policy-down.arn}"
   ]
 
   treat_missing_data = "breaching"
