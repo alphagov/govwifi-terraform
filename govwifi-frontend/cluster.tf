@@ -73,6 +73,17 @@ resource "aws_ecs_task_definition" "radius-task" {
         "name": "HEALTH_CHECK_RADIUS_KEY",
         "value": "${var.healthcheck-radius-key}"
       },{
+        "name": "HEALTH_CHECK_SSID",
+        "value": "${var.healthcheck-ssid}"
+      },{
+      },{
+        "name": "HEALTH_CHECK_IDENTITY",
+        "value": "${var.healthcheck-identity}"
+      },{
+      },{
+        "name": "HEALTH_CHECK_PASSWORD",
+        "value": "${var.healthcheck-password}"
+      },{
         "name": "SERVICE_DOMAIN",
         "value": "${var.Env-Subdomain}"
       },{
