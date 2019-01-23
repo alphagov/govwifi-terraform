@@ -26,9 +26,10 @@ data "aws_iam_policy_document" "frontend-cert-bucket-policy-document" {
     resources = [
       "${aws_s3_bucket.frontend-cert-bucket.arn}/*"
     ]
-    principals = [
-      "${aws_instance.radius.*.arn}"
-    ]
+    principals {
+      type = "AWS"
+      identifiers = [ "${aws_iam_role.ecs-instance-role.arn}" ]
+    }
   }
 }
 
