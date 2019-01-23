@@ -47,16 +47,41 @@ resource "aws_s3_bucket_object" "radius-server-key" {
   bucket = "${aws_s3_bucket.frontend-cert-bucket.id}"
   key = "server.key"
   source = "${var.radius-server-key-path}"
+
+  #etag = "${md5(file(var.radius-server-key-path))}"
+
+  lifecycle {
+    ignore_changes = [
+      "source"
+    ]
+  }
 }
 
 resource "aws_s3_bucket_object" "radius-server-certificate" {
   bucket = "${aws_s3_bucket.frontend-cert-bucket.id}"
   key = "server.pem"
   source = "${var.radius-server-certificate-path}"
+
+  #etag = "${md5(file(var.radius-server-certificate-path))}"
+
+  lifecycle {
+    ignore_changes = [
+      "source"
+    ]
+  }
+
 }
 
 resource "aws_s3_bucket_object" "radius-certificate-authority" {
   bucket = "${aws_s3_bucket.frontend-cert-bucket.id}"
   key = "ca.pem"
   source = "${var.radius-certificate-authority-path}"
+
+  #etag = "${md5(file(var.radius-certificate-authority-path))}"
+
+  lifecycle {
+    ignore_changes = [
+      "source"
+    ]
+  }
 }
