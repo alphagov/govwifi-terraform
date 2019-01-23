@@ -88,18 +88,3 @@ variable "create-ecr" {
   description = "Whether or not to create ECR repository"
   default     = false
 }
-
-variable "radius-server-key-path" {
-  type = "string"
-  description = "path to the radius server key"
-}
-
-variable "radius-server-certificate-path" {
-  type = "string"
-  description = "path to the radius server certificate"
-}
-
-variable "radius-certificate-authority-path" {
-  type = "string"
-  description = "path to the radius certificate authority"
-}
