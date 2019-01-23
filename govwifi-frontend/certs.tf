@@ -34,5 +34,5 @@ data "aws_iam_policy_document" "frontend-cert-bucket-policy-document" {
 
 resource "aws_s3_bucket_policy" "frontend-cert-bucket-policy" {
   bucket = "${aws_s3_bucket.frontend-cert-bucket.id}"
-  policy = "${aws_iam_policy_document.frontend-cert-bucket-policy-document.json}"
+  policy = "${data.aws_iam_policy_document.frontend-cert-bucket-policy-document.json}"
 }
