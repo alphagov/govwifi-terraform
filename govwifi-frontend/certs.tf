@@ -28,9 +28,9 @@ data "aws_iam_policy_document" "frontend-cert-bucket-policy-document" {
     ]
     principals {
       type = "*"
-      identifiers = "*"
+      identifiers = [ "*" ]
     }
-    conditions {
+    condition {
       test = "IpAddress"
       variable = "aws:SourceIp"
       values = [ "${aws_eip_association.eip_assoc.*.public_ip}" ]
