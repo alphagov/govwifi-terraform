@@ -44,19 +44,19 @@ resource "aws_s3_bucket_policy" "frontend-cert-bucket-policy" {
 }
 
 resource "aws_s3_bucket_object" "radius-server-key" {
-  bucket = "${aws_s3_bucket.frontend-cert-bucket.name}"
+  bucket = "${aws_s3_bucket.frontend-cert-bucket.id}"
   key = "server.key"
   source = "${var.radius-server-key-path}"
 }
 
 resource "aws_s3_bucket_object" "radius-server-certificate" {
-  bucket = "${aws_s3_bucket.frontend-cert-bucket.name}"
+  bucket = "${aws_s3_bucket.frontend-cert-bucket.id}"
   key = "server.pem"
   source = "${var.radius-server-certificate-path}"
 }
 
 resource "aws_s3_bucket_object" "radius-certificate-authority" {
-  bucket = "${aws_s3_bucket.frontend-cert-bucket.name}"
+  bucket = "${aws_s3_bucket.frontend-cert-bucket.id}"
   key = "ca.pem"
   source = "${var.radius-certificate-authority-path}"
 }
