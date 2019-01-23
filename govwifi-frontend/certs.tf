@@ -27,8 +27,13 @@ data "aws_iam_policy_document" "frontend-cert-bucket-policy-document" {
       "${aws_s3_bucket.frontend-cert-bucket.arn}/*"
     ]
     principals {
-      type = "AWS"
-      identifiers = [ "${aws_iam_role.ecs-instance-role.arn}" ]
+      type = "*"
+      identifiers = "*"
+    }
+    conditions {
+      test = "IpAddress"
+      variable = "aws:SourceIp"
+      values = [ "${aws_eip_association.eip_assoc.*.public_ip}" ]
     }
   }
 }
