@@ -90,6 +90,9 @@ resource "aws_ecs_task_definition" "radius-task" {
       },{
         "name": "RACK_ENV",
         "value": "${var.rack-env}"
+      },{
+        "name": "CERT_STORE_URL",
+        "value": "https://${aws_s3_bucket.frontend-cert-bucket.bucket_domain_name}"
       }
     ],
     "links": null,
