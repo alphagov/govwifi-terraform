@@ -22,7 +22,7 @@ resource "aws_ecs_task_definition" "radius-task" {
 [
   {
     "volumesFrom": [],
-    "memory": 2000,
+    "memory": 1000,
     "extraHosts": null,
     "dnsServers": null,
     "disableNetworking": null,
@@ -110,7 +110,7 @@ resource "aws_ecs_task_definition" "radius-task" {
         "awslogs-stream-prefix": "${var.Env-Name}-docker-logs"
       }
     },
-    "cpu": 2000,
+    "cpu": 1000,
     "privileged": null,
     "expanded": true
   }
@@ -124,9 +124,8 @@ resource "aws_ecs_service" "frontend-service" {
   task_definition = "${aws_ecs_task_definition.radius-task.arn}"
   desired_count   = "${var.radius-instance-count}"
 
-  # We can not add this role until a loadbalancer is set up.
-
-  #iam_role        = "${aws_iam_role.ecs-service-role.arn}"
-
-  #depends_on = ["aws_iam_role_policy.ecs-service-role-policy"]
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "instanceId"
+  }
 }
