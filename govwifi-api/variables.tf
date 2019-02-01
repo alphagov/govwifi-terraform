@@ -1,3 +1,5 @@
+variable "env" {}
+
 variable "Env-Name" {}
 
 variable "Env-Subdomain" {}
@@ -49,6 +51,12 @@ variable "logging-enabled" {
 variable "safe-restart-enabled" {
   default = 1
 }
+
+variable "user-db-username" {}
+
+variable "user-db-password" {}
+
+variable "user-db-hostname" {}
 
 variable "db-user" {}
 
