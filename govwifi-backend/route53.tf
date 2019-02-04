@@ -24,7 +24,7 @@ resource "aws_route53_record" "rr" {
 resource "aws_route53_record" "users-db" {
   count   = "${var.db-instance-count}"
   zone_id = "${var.route53-zone-id}"
-  name    = "users-db.${lower(var.aws-region-name)}.${var.env}.wifi.service.gov.uk"
+  name    = "${var.user-db-hostname}"
   type    = "CNAME"
   ttl     = "300"
   records = ["${aws_db_instance.users_db.address}"]
