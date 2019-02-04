@@ -99,6 +99,18 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
           "name": "DB_HOSTNAME",
           "value": "${var.db-hostname}"
         },{
+          "name": "USER_DB_NAME",
+          "value": "govwifi_user_${var.env}"
+        },{
+          "name": "USER_DB_PASS",
+          "value": "${var.user-db-password}"
+        },{
+          "name": "USER_DB_USER",
+          "value": "${var.user-db-username}"
+        },{
+          "name": "USER_DB_HOSTNAME",
+          "value": "${var.user-db-hostname}"
+        },{
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{

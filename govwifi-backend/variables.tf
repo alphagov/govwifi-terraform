@@ -1,5 +1,7 @@
 variable "Env-Name" {}
 
+variable "env" {}
+
 variable "Env-Subdomain" {}
 
 variable "route53-zone-id" {}
@@ -34,6 +36,12 @@ variable "db-user" {}
 
 variable "db-password" {}
 
+variable "user-db-username" {}
+
+variable "user-db-password" {}
+
+variable "user-db-hostname" {}
+
 variable "db-instance-count" {}
 
 variable "db-replica-count" {}
@@ -42,11 +50,15 @@ variable "db-backup-retention-days" {}
 
 variable "db-encrypt-at-rest" {}
 
-variable "db-instance-type" {}
+variable "session-db-instance-type" {}
+
+variable "user-db-instance-type" {}
 
 variable "db-monitoring-interval" {}
 
-variable "db-storage-gb" {}
+variable "session-db-storage-gb" {}
+
+variable "user-db-storage-gb" {}
 
 variable "db-maintenance-window" {}
 
