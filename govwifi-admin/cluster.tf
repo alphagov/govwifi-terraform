@@ -109,6 +109,15 @@ resource "aws_ecs_task_definition" "admin-task" {
         },{
           "name": "RR_DB_NAME",
           "value": "${var.rr-db-name}"
+        },{
+          "name": "ZENDESK_API_ENDPOINT",
+          "value": "${var.zendesk-api-endpoint}"
+        },{
+          "name": "ZENDESK_API_USER",
+          "value": "${var.zendesk-api-user}"
+        },{
+          "name": "ZENDESK_API_TOKEN",
+          "value": "${var.zendesk-api-token}"
         }
       ],
       "links": null,
