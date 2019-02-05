@@ -58,6 +58,8 @@ variable "user-db-password" {}
 
 variable "user-db-hostname" {}
 
+variable "user-rr-hostname" {}
+
 variable "db-user" {}
 
 variable "db-password" {}
