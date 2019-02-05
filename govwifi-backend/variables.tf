@@ -42,6 +42,8 @@ variable "user-db-password" {}
 
 variable "user-db-hostname" {}
 
+variable "user-rr-hostname" {}
+
 variable "db-instance-count" {}
 
 variable "db-replica-count" {}
@@ -68,6 +70,13 @@ variable "rr-instance-type" {}
 
 variable "rr-storage-gb" {}
 
+variable "user-rr-instance-type" {
+  default = "db.t2.medium"
+}
+
+variable "user-rr-storage-gb" {
+  default = 20
+}
 
 variable "mgt-sg-list" {
   type = "list"

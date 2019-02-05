@@ -30,3 +30,12 @@ resource "aws_route53_record" "users-db" {
   records = ["${aws_db_instance.users_db.address}"]
 }
 
+resource "aws_route53_record" "users-rr" {
+  count   = "${var.db-replica-count}"
+  zone_id = "${var.route53-zone-id}"
+  name    = "${var.user-rr-hostname}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["${aws_db_instance.users_read_replica.address}"]
+}
+
