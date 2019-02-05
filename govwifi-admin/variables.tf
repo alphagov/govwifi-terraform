@@ -135,3 +135,9 @@ variable "rr-db-password" {}
 variable "rr-db-host" {}
 
 variable "rr-db-name" {}
+
+variable "zendesk-api-endpoint" {}
+
+variable "zendesk-api-user" {}
+
+variable "zendesk-api-token" {}
