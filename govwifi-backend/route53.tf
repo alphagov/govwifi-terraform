@@ -31,7 +31,7 @@ resource "aws_route53_record" "users-db" {
 }
 
 resource "aws_route53_record" "users-rr" {
-  count   = "${var.db-replica-count}"
+  count   = "${var.user-db-replica-count}"
   zone_id = "${var.route53-zone-id}"
   name    = "${var.user-rr-hostname}"
   type    = "CNAME"
