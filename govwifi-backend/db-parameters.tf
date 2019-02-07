@@ -102,7 +102,7 @@ resource "aws_db_parameter_group" "rr-parameters" {
 }
 
 resource "aws_db_parameter_group" "user-rr-parameters" {
-  count = "${var.db-replica-count}"
+  count = "${var.user-db-replica-count}"
   name = "${var.Env-Name}-user-rr-parameter-group"
 
   family      = "mysql8.0"

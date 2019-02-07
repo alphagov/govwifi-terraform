@@ -48,6 +48,10 @@ variable "db-instance-count" {}
 
 variable "db-replica-count" {}
 
+variable "user-db-replica-count" {
+  default = 0
+}
+
 variable "db-backup-retention-days" {}
 
 variable "db-encrypt-at-rest" {}
@@ -122,5 +126,15 @@ variable "save-pp-data" {
 }
 
 variable "pp-domain-name" {
+  default = ""
+}
+
+variable "rds-kms-key-id" {
+  type = "string"
+  default = ""
+}
+
+variable "replica-source-db-arn" {
+  type = "string"
   default = ""
 }
