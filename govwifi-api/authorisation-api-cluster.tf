@@ -37,16 +37,16 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
       "environment": [
         {
           "name": "DB_NAME",
-          "value": "govwifi_${var.Env-Name}"
+          "value": "govwifi_${var.env}_users"
         },{
           "name": "DB_PASS",
-          "value": "${var.db-password}"
+          "value": "${var.user-db-password}"
         },{
           "name": "DB_USER",
-          "value": "${var.db-user}"
+          "value": "${var.user-db-username}"
         },{
           "name": "DB_HOSTNAME",
-          "value": "${var.db-read-replica-hostname}"
+          "value": "${var.user-rr-hostname}"
         },{
           "name": "RACK_ENV",
           "value": "${var.rack-env}"

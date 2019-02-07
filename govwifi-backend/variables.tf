@@ -134,7 +134,7 @@ variable "rds-kms-key-id" {
   default = ""
 }
 
-variable "replica-source-db-arn" {
+variable "user-replica-source-db" {
   type = "string"
   default = ""
 }

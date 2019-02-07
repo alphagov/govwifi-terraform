@@ -35,7 +35,7 @@ resource "aws_db_instance" "users_db" {
 
 resource "aws_db_instance" "users_read_replica" {
   count                       = "${var.user-db-replica-count}"
-  replicate_source_db         = "${var.replica-source-db-arn}"
+  replicate_source_db         = "${var.user-replica-source-db}"
   kms_key_id                  = "${var.rds-kms-key-id}"
   storage_encrypted           = "${var.db-encrypt-at-rest}"
   storage_type                = "gp2"
