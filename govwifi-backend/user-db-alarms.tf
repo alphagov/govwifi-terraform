@@ -58,26 +58,6 @@ resource "aws_cloudwatch_metric_alarm" "user_db_storagealarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "user_db_burstbalancealarm" {
-  count               = "${var.db-instance-count}"
-  alarm_name          = "${var.env}-user-db-burstbalanace-alarm"
-  comparison_operator = "LessThanOrEqualToThreshold"
-  evaluation_periods  = "1"
-  metric_name         = "BurstBalance"
-  namespace           = "AWS/RDS"
-  period              = "180"
-  statistic           = "Minimum"
-  threshold           = "45"
-
-  dimensions {
-    DBInstanceIdentifier = "${aws_db_instance.users_db.identifier}"
-  }
-
-  alarm_description  = "This metric monitors the IOPS burst balance available for the DB."
-  alarm_actions      = ["${var.critical-notifications-arn}"]
-  treat_missing_data = "missing"
-}
-
 resource "aws_cloudwatch_metric_alarm" "user_rr_burstbalancealarm" {
   count               = "${var.db-replica-count}"
   alarm_name          = "${var.env}-user-rr-burstbalanace-alarm"
