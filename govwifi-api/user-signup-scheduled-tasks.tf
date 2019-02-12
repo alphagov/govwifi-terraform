@@ -153,27 +153,15 @@ resource "aws_ecs_task_definition" "user-signup-api-scheduled-task" {
       "environment": [
         {
           "name": "DB_NAME",
-          "value": "govwifi_${var.Env-Name}"
-        },{
-          "name": "DB_PASS",
-          "value": "${var.db-password}"
-        },{
-          "name": "DB_USER",
-          "value": "${var.db-user}"
-        },{
-          "name": "DB_HOSTNAME",
-          "value": "${var.db-hostname}"
-        },{
-          "name": "USER_DB_NAME",
           "value": "govwifi_${var.env}_users"
         },{
-          "name": "USER_DB_PASS",
+          "name": "DB_PASS",
           "value": "${var.user-db-password}"
         },{
-          "name": "USER_DB_USER",
+          "name": "DB_USER",
           "value": "${var.user-db-username}"
         },{
-          "name": "USER_DB_HOSTNAME",
+          "name": "DB_HOSTNAME",
           "value": "${var.user-db-hostname}"
         },{
           "name": "RACK_ENV",
