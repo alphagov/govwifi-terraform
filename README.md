@@ -4,6 +4,8 @@
 
 A collection of Terraform modules to provision the GovWiFi infrastructure on AWS.
 
+To see this in context of _all_ the GovWifi repos, take a look at [govwifi-build][govwifi-build].
+
 ## Usage
 
 These modules are to be consumed by another Terraform config.

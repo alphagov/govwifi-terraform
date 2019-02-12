@@ -190,6 +190,18 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
           "name": "DB_HOSTNAME",
           "value": "${var.db-hostname}"
         },{
+          "name": "USER_DB_NAME",
+          "value": "govwifi_${var.env}_users"
+        },{
+          "name": "USER_DB_PASS",
+          "value": "${var.user-db-password}"
+        },{
+          "name": "USER_DB_USER",
+          "value": "${var.user-db-username}"
+        },{
+          "name": "USER_DB_HOSTNAME",
+          "value": "${var.user-db-hostname}"
+        },{
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{
