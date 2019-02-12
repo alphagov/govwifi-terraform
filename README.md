@@ -4,7 +4,7 @@
 
 A collection of Terraform modules to provision the GovWiFi infrastructure on AWS.
 
-To see this in context of _all_ the GovWifi repos, take a look at [govwifi-build][govwifi-build].
+To see this in context of _all_ the GovWiFi repos, take a look at [govwifi-build][govwifi-build].
 
 ## Usage
 
@@ -17,11 +17,16 @@ Please refer to this repo for execution instructions.
 Currently there are some key pieces of the infrastructure missing from these modules, as they
 are managed in the private [`govwifi-build`][govwifi-build] repo.
 
+This is to avoid publicly disclosing sensitive data to the public, such as:
+
+ - service keys/secrets (Databases, 3rd party services)
+ - Locations of infrastructure (Bastion / RADIUS / VPN addresses)
+
 ### Main Terraform config
 
 This ties all the modules together. In short, it:
 
-- Provides ann AWS provider to the modules, tied to a specific region
+- Provides an AWS provider to the modules, tied to a specific region
 - Configures any sensitive details, mainly around non-region specific values (e.g., RADIUS IP Addresses)
 - Controls which parts of the infrastructure go in which region
 
@@ -29,7 +34,7 @@ This ties all the modules together. In short, it:
 
 Currently, all security groups are managed in the private repo.
 
-These group relate to:
+These groups relate to:
 
 - communication between services and their database
 - inter-service communication (RADIUS to backend services)
