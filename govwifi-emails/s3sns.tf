@@ -53,6 +53,10 @@ EOF
     target_prefix = "user-emails"
   }
 
+  versioning {
+    enabled = true
+  }
+
   lifecycle_rule {
     enabled = true
 
@@ -62,7 +66,7 @@ EOF
   }
 }
 
-# S3 bucket to store administration emails - mostly set up so we can receive 
+# S3 bucket to store administration emails - mostly set up so we can receive
 # emails regards to the AWS-provided certificate(used for the elb) approval process.
 resource "aws_s3_bucket" "admin-emailbucket" {
   bucket        = "${var.Env-Name}-admin-emailbucket"
@@ -111,6 +115,10 @@ EOF
 #   Product     = "${var.product-name}"
     Environment = "${title(var.Env-Name)}"
     Category    = "Admin emails"
+  }
+
+  versioning {
+    enabled = true
   }
 
   logging {

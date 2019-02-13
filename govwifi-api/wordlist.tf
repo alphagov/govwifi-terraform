@@ -6,6 +6,10 @@ resource "aws_s3_bucket" "wordlist" {
   tags {
     Name = "wordlist-bucket"
   }
+
+  versioning {
+    enabled = true
+  }
 }
 
 resource "aws_s3_bucket_object" "wordlist" {
