@@ -32,6 +32,10 @@ variable "authorisation-api-count" {
 
 variable "backend-min-size" {}
 
+variable "backend-max-size" {
+  default     = 10
+}
+
 variable "backend-cpualarm-count" {}
 
 variable "backend-elb-count" {}
