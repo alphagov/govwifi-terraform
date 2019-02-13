@@ -16,6 +16,10 @@ resource "aws_s3_bucket" "frontend-cert-bucket" {
       }
     }
   }
+
+  versioning {
+    enabled = true
+  }
 }
 
 data "aws_iam_policy_document" "frontend-cert-bucket-policy-document" {
