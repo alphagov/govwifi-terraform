@@ -15,30 +15,22 @@ resource "aws_ecr_repository" "govwifi-admin-ecr" {
 
 resource "aws_ecs_task_definition" "admin-task" {
   family = "admin-task-${var.Env-Name}"
+  requires_compatibilities = ["FARGATE"]
+  cpu = "512"
+  memory = "1024"
 
   container_definitions = <<EOF
 [
     {
-      "volumesFrom": [],
-      "memory": 950,
-      "extraHosts": null,
-      "dnsServers": null,
-      "disableNetworking": null,
-      "dnsSearchDomains": null,
       "portMappings": [
         {
-          "hostPort": 0,
+          "hostPort": 3000,
           "containerPort": 3000,
           "protocol": "tcp"
         }
       ],
-      "hostname": null,
       "essential": true,
-      "entryPoint": null,
-      "mountPoints": [],
       "name": "admin",
-      "ulimits": null,
-      "dockerSecurityOptions": null,
       "environment": [
         {
           "name": "DB_USER",
@@ -120,13 +112,7 @@ resource "aws_ecs_task_definition" "admin-task" {
           "value": "${var.zendesk-api-token}"
         }
       ],
-      "links": null,
-      "workingDirectory": null,
-      "readonlyRootFilesystem": null,
       "image": "${var.admin-docker-image}",
-      "command": null,
-      "user": null,
-      "dockerLabels": null,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
@@ -135,8 +121,6 @@ resource "aws_ecs_task_definition" "admin-task" {
           "awslogs-stream-prefix": "${var.Env-Name}-admin-docker-logs"
         }
       },
-      "cpu": 0,
-      "privileged": null,
       "expanded": true
     }
 ]
@@ -150,6 +134,7 @@ resource "aws_ecs_service" "admin-service" {
   task_definition = "${aws_ecs_task_definition.admin-task.arn}"
   desired_count   = "${var.instance-count}"
   iam_role        = "${var.ecs-service-role}"
+  launch_type     = "FARGATE"
 
   ordered_placement_strategy {
     type  = "spread"
