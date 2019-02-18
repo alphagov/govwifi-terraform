@@ -77,34 +77,7 @@ EOF
 resource "aws_iam_role" "ecs-admin-instance-role" {
   name = "${var.aws-region-name}-ecs-admin-instance-role-${var.Env-Name}"
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    },
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
-}
-
-resource "aws_iam_instance_profile" "ecs-admin-instance-profile" {
-  name  = "${var.aws-region-name}-ecs-admin-instance-profile-${var.Env-Name}"
-  role  = "${aws_iam_role.ecs-admin-instance-role.name}"
+  assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole" {
