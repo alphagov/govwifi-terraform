@@ -18,6 +18,7 @@ resource "aws_ecs_task_definition" "admin-task" {
   requires_compatibilities = ["FARGATE"]
   cpu = "512"
   memory = "1024"
+  network_mode = "awsvpc"
 
   container_definitions = <<EOF
 [
@@ -145,6 +146,10 @@ resource "aws_ecs_service" "admin-service" {
     target_group_arn = "${aws_alb_target_group.admin-tg.arn}"
     container_name = "admin"
     container_port = "3000"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
