@@ -170,6 +170,7 @@ resource "aws_alb_target_group" "admin-tg" {
   port     = "3000"
   protocol = "HTTP"
   vpc_id   = "${var.vpc-id}"
+  deregistration_delay = 10
 
   health_check {
     healthy_threshold   = 3
@@ -177,5 +178,9 @@ resource "aws_alb_target_group" "admin-tg" {
     timeout             = 5
     interval            = 10
     path                = "/healthcheck"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
