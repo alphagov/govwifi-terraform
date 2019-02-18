@@ -16,6 +16,7 @@ resource "aws_ecr_repository" "govwifi-admin-ecr" {
 resource "aws_ecs_task_definition" "admin-task" {
   family = "admin-task-${var.Env-Name}"
   requires_compatibilities = ["FARGATE"]
+  task_role_arn = "${aws_iam_role.ecsTaskExecutionRole}"
   cpu = "512"
   memory = "1024"
   network_mode = "awsvpc"
@@ -134,7 +135,7 @@ resource "aws_ecs_service" "admin-service" {
   cluster         = "${aws_ecs_cluster.admin-cluster.id}"
   task_definition = "${aws_ecs_task_definition.admin-task.arn}"
   desired_count   = "${var.instance-count}"
-  iam_role        = "${var.ecs-service-role}"
+  #iam_role        = "${var.ecs-service-role}"
   launch_type     = "FARGATE"
 
   ordered_placement_strategy {

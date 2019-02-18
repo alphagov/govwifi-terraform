@@ -99,3 +99,18 @@ resource "aws_iam_instance_profile" "ecs-admin-instance-profile" {
   role  = "${aws_iam_role.ecs-admin-instance-role.name}"
 }
 
+resource "aws_iam_role" "ecsTaskExecutionRole" {
+  name               = "admin-ecsTaskExecutionRole-${var.rack-env}-${var.aws-region-name}"
+  assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
+}
+
+data "aws_iam_policy_document" "assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
