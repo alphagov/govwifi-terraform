@@ -16,7 +16,7 @@ resource "aws_ecr_repository" "govwifi-admin-ecr" {
 resource "aws_ecs_task_definition" "admin-task" {
   family = "admin-task-${var.Env-Name}"
   requires_compatibilities = ["FARGATE"]
-  task_role_arn = "${aws_iam_role.ecsTaskExecutionRole}"
+  execution_role_arn = "${aws_iam_role.ecsTaskExecutionRole.arn}"
   cpu = "512"
   memory = "1024"
   network_mode = "awsvpc"
@@ -138,29 +138,26 @@ resource "aws_ecs_service" "admin-service" {
   #iam_role        = "${var.ecs-service-role}"
   launch_type     = "FARGATE"
 
-  ordered_placement_strategy {
-    type  = "spread"
-    field = "instanceId"
-  }
-
   load_balancer {
     target_group_arn = "${aws_alb_target_group.admin-tg.arn}"
     container_name = "admin"
     container_port = "3000"
   }
 
-  lifecycle {
-    create_before_destroy = true
+  network_configuration {
+    subnets = ["${var.subnet-ids}"]
   }
+
 }
 
 
 resource "aws_alb_target_group" "admin-tg" {
   depends_on   = ["aws_lb.admin-alb"]
-  name     = "admin-${var.Env-Name}"
+  name     = "admin-${var.Env-Name}-fg-tg"
   port     = "3000"
   protocol = "HTTP"
   vpc_id   = "${var.vpc-id}"
+  target_type = "ip"
 
   health_check {
     healthy_threshold   = 3
