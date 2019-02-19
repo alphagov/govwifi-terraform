@@ -15,30 +15,25 @@ resource "aws_ecr_repository" "govwifi-admin-ecr" {
 
 resource "aws_ecs_task_definition" "admin-task" {
   family = "admin-task-${var.Env-Name}"
+  requires_compatibilities = ["FARGATE"]
+  task_role_arn = "${aws_iam_role.ecs-admin-instance-role.arn}"
+  execution_role_arn = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  cpu = "512"
+  memory = "1024"
+  network_mode = "awsvpc"
 
   container_definitions = <<EOF
 [
     {
-      "volumesFrom": [],
-      "memory": 950,
-      "extraHosts": null,
-      "dnsServers": null,
-      "disableNetworking": null,
-      "dnsSearchDomains": null,
       "portMappings": [
         {
-          "hostPort": 0,
+          "hostPort": 3000,
           "containerPort": 3000,
           "protocol": "tcp"
         }
       ],
-      "hostname": null,
       "essential": true,
-      "entryPoint": null,
-      "mountPoints": [],
       "name": "admin",
-      "ulimits": null,
-      "dockerSecurityOptions": null,
       "environment": [
         {
           "name": "DB_USER",
@@ -120,13 +115,7 @@ resource "aws_ecs_task_definition" "admin-task" {
           "value": "${var.zendesk-api-token}"
         }
       ],
-      "links": null,
-      "workingDirectory": null,
-      "readonlyRootFilesystem": null,
       "image": "${var.admin-docker-image}",
-      "command": null,
-      "user": null,
-      "dockerLabels": null,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
@@ -135,8 +124,6 @@ resource "aws_ecs_task_definition" "admin-task" {
           "awslogs-stream-prefix": "${var.Env-Name}-admin-docker-logs"
         }
       },
-      "cpu": 0,
-      "privileged": null,
       "expanded": true
     }
 ]
@@ -149,27 +136,29 @@ resource "aws_ecs_service" "admin-service" {
   cluster         = "${aws_ecs_cluster.admin-cluster.id}"
   task_definition = "${aws_ecs_task_definition.admin-task.arn}"
   desired_count   = "${var.instance-count}"
-  iam_role        = "${var.ecs-service-role}"
-
-  ordered_placement_strategy {
-    type  = "spread"
-    field = "instanceId"
-  }
+  launch_type     = "FARGATE"
 
   load_balancer {
     target_group_arn = "${aws_alb_target_group.admin-tg.arn}"
     container_name = "admin"
     container_port = "3000"
   }
+
+  network_configuration {
+    subnets = ["${var.subnet-ids}"]
+    security_groups = ["${var.ec2-sg-list}"]
+    assign_public_ip = true
+  }
 }
 
 
 resource "aws_alb_target_group" "admin-tg" {
   depends_on   = ["aws_lb.admin-alb"]
-  name     = "admin-${var.Env-Name}"
+  name     = "admin-${var.Env-Name}-fg-tg"
   port     = "3000"
   protocol = "HTTP"
   vpc_id   = "${var.vpc-id}"
+  target_type = "ip"
   deregistration_delay = 10
 
   health_check {
