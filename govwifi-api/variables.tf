@@ -102,6 +102,8 @@ variable "radius-server-ips" {}
 
 variable "authentication-sentry-dsn" {}
 
+variable "safe-restart-sentry-dsn" {}
+
 variable "user-signup-sentry-dsn" {}
 
 variable "logging-sentry-dsn" {}
