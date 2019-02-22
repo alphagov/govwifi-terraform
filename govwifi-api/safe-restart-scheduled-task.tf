@@ -50,6 +50,9 @@ resource "aws_ecs_task_definition" "safe-restart-task-definition" {
         {
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
+        },{
+          "name": "SENTRY_DSN",
+          "value": "${var.safe-restart-sentry-dsn}"
         }
       ],
       "links": null,
