@@ -56,7 +56,9 @@ variable "safe-restart-enabled" {
   default = 1
 }
 
-variable "safe-restart-sentry-dsn" {}
+variable "safe-restart-sentry-dsn" {
+  default = ""
+}
 
 variable "user-db-username" {}
 
