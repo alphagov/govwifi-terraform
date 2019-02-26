@@ -56,35 +56,47 @@ variable "enable-detailed-monitoring" {}
 variable "ithc-frontend-instance-count" {
   default = "0"
 }
+
 variable "ithc-ami" {
   default = ""
 }
+
 variable "ithc-instance-type" {
   default = ""
 }
+
 variable "ithc-server-ip" {
   default = ""
 }
+
 variable "ithc-ssh-key-name" {
   default = ""
 }
+
 variable "ithc-sg-list" {
   type    = "list"
   default = []
 }
+
 variable "radiusd-params" {
   default = ""
 }
 
 variable "users" {
-  type   = "list"
+  type = "list"
 }
 
 variable "rack-env" {
-  default   = ""
+  default = ""
 }
 
 variable "create-ecr" {
   description = "Whether or not to create ECR repository"
   default     = false
+}
+
+variable "bastion-ips" {
+  description = "The list of allowed hosts to connect to the ec2 instances"
+  type        = "list"
+  default     = []
 }

@@ -1,14 +1,21 @@
 # The element() function used in subnets wraps around when the index is over the number of elements
 # eg. in the 4th iteration the value returned will be the 1st, if there are only 3 elements in the list.
 resource "aws_instance" "radius" {
-  count                  = "${var.radius-instance-count}"
-  ami                    = "${var.ami}"
-  instance_type          = "t2.medium"
-  key_name               = "${var.ssh-key-name}"
-  subnet_id              = "${element(aws_subnet.wifi-frontend-subnet.*.id, count.index)}"
-  vpc_security_group_ids = ["${var.radius-instance-sg-ids}"]
-  iam_instance_profile   = "${aws_iam_instance_profile.ecs-instance-profile.id}"
-  monitoring             = "${var.enable-detailed-monitoring}"
+  count         = "${var.radius-instance-count}"
+  ami           = "${var.ami}"
+  instance_type = "t2.medium"
+  key_name      = "${var.ssh-key-name}"
+  subnet_id     = "${element(aws_subnet.wifi-frontend-subnet.*.id, count.index)}"
+
+  vpc_security_group_ids = [
+    "${aws_security_group.fe-ecs-out.id}",
+    "${aws_security_group.fe-admin-in.id}",
+    "${aws_security_group.fe-radius-out.id}",
+    "${aws_security_group.fe-radius-in.id}",
+  ]
+
+  iam_instance_profile = "${aws_iam_instance_profile.ecs-instance-profile.id}"
+  monitoring           = "${var.enable-detailed-monitoring}"
 
   user_data = <<DATA
 Content-Type: multipart/mixed; boundary="==BOUNDARY=="
@@ -37,8 +44,9 @@ DATA
 
   lifecycle {
     create_before_destroy = true
+
     ignore_changes = [
-      "user_data"
+      "user_data",
     ]
   }
 }
