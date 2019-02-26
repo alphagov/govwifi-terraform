@@ -19,7 +19,6 @@ resource "aws_appautoscaling_target" "auth-ecs-target" {
   resource_id        = "service/${aws_ecs_cluster.api-cluster.name}/${aws_ecs_service.authorisation-api-service.name}"
   max_capacity       = 20
   min_capacity       = 2
-  role_arn           = "${var.ecs-service-role}"
   scalable_dimension = "ecs:service:DesiredCount"
 }
 
@@ -36,7 +35,7 @@ resource "aws_appautoscaling_policy" "ecs-policy-up" {
 
     step_adjustment {
       metric_interval_lower_bound = 0
-      scaling_adjustment = 1
+      scaling_adjustment          = 1
     }
   }
 
@@ -51,12 +50,12 @@ resource "aws_appautoscaling_policy" "ecs-policy-down" {
   scalable_dimension = "ecs:service:DesiredCount"
 
   step_scaling_policy_configuration {
-    adjustment_type    = "ChangeInCapacity"
-    metric_aggregation_type   = "Average"
+    adjustment_type         = "ChangeInCapacity"
+    metric_aggregation_type = "Average"
 
     step_adjustment {
       metric_interval_upper_bound = 0
-      scaling_adjustment = -1
+      scaling_adjustment          = -1
     }
   }
 
