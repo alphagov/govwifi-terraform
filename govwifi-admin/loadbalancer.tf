@@ -1,8 +1,13 @@
 resource "aws_lb" "admin-alb" {
-  name               = "admin-alb-${var.Env-Name}"
-  internal           = false
-  subnets            = ["${var.subnet-ids}"]
-  security_groups    = ["${var.elb-sg-list}"]
+  name     = "admin-alb-${var.Env-Name}"
+  internal = false
+  subnets  = ["${var.subnet-ids}"]
+
+  security_groups = [
+    "${aws_security_group.admin-alb-in.id}",
+    "${aws_security_group.admin-alb-out.id}",
+  ]
+
   load_balancer_type = "application"
 
   tags {

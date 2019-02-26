@@ -14,13 +14,13 @@ resource "aws_ecr_repository" "govwifi-admin-ecr" {
 }
 
 resource "aws_ecs_task_definition" "admin-task" {
-  family = "admin-task-${var.Env-Name}"
+  family                   = "admin-task-${var.Env-Name}"
   requires_compatibilities = ["FARGATE"]
-  task_role_arn = "${aws_iam_role.ecs-admin-instance-role.arn}"
-  execution_role_arn = "${aws_iam_role.ecsTaskExecutionRole.arn}"
-  cpu = "512"
-  memory = "1024"
-  network_mode = "awsvpc"
+  task_role_arn            = "${aws_iam_role.ecs-admin-instance-role.arn}"
+  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  cpu                      = "512"
+  memory                   = "1024"
+  network_mode             = "awsvpc"
 
   container_definitions = <<EOF
 [
@@ -146,25 +146,29 @@ resource "aws_ecs_service" "admin-service" {
 
   load_balancer {
     target_group_arn = "${aws_alb_target_group.admin-tg.arn}"
-    container_name = "admin"
-    container_port = "3000"
+    container_name   = "admin"
+    container_port   = "3000"
   }
 
   network_configuration {
     subnets = ["${var.subnet-ids}"]
-    security_groups = ["${var.ec2-sg-list}"]
+
+    security_groups = [
+      "${aws_security_group.admin-ec2-in.id}",
+      "${aws_security_group.admin-ec2-out.id}",
+    ]
+
     assign_public_ip = true
   }
 }
 
-
 resource "aws_alb_target_group" "admin-tg" {
-  depends_on   = ["aws_lb.admin-alb"]
-  name     = "admin-${var.Env-Name}-fg-tg"
-  port     = "3000"
-  protocol = "HTTP"
-  vpc_id   = "${var.vpc-id}"
-  target_type = "ip"
+  depends_on           = ["aws_lb.admin-alb"]
+  name                 = "admin-${var.Env-Name}-fg-tg"
+  port                 = "3000"
+  protocol             = "HTTP"
+  vpc_id               = "${var.vpc-id}"
+  target_type          = "ip"
   deregistration_delay = 10
 
   health_check {

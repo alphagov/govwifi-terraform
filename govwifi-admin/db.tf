@@ -61,7 +61,7 @@ resource "aws_db_instance" "admin_db" {
   multi_az                    = true
   storage_encrypted           = "${var.db-encrypt-at-rest}"
   db_subnet_group_name        = "wifi-${var.Env-Name}-subnets"
-  vpc_security_group_ids      = ["${var.db-sg-list}"]
+  vpc_security_group_ids      = ["${aws_security_group.admin-db-in.id}"]
   monitoring_role_arn         = "${var.rds-monitoring-role}"
   monitoring_interval         = "${var.db-monitoring-interval}"
   maintenance_window          = "${var.db-maintenance-window}"
