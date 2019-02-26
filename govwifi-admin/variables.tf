@@ -16,22 +16,22 @@ variable "aws-region-name" {
 
 variable "ec2-sg-list" {
   description = "Security groups to apply to the EC2 instances used by ECS"
-  type = "list"
+  type        = "list"
 }
 
 variable "elb-sg-list" {
   description = "Security groups to apply to the ELB in front of the admin"
-  type = "list"
+  type        = "list"
 }
 
 variable "subnet-ids" {
   description = "List of AWS subnet IDs to place the EC2 instances and ELB into"
-  type = "list"
+  type        = "list"
 }
 
 variable "users" {
   description = "List of users to be added to the EC2 instance"
-  type = "list"
+  type        = "list"
 }
 
 variable "ami" {
@@ -141,3 +141,9 @@ variable "zendesk-api-endpoint" {}
 variable "zendesk-api-user" {}
 
 variable "zendesk-api-token" {}
+
+variable "bastion-ips" {
+  description = "The list of allowed hosts to connect to the ec2 instances"
+  type        = "list"
+  default     = []
+}
