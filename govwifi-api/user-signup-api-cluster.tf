@@ -47,10 +47,20 @@ resource "aws_iam_role_policy" "user-signup-api-task-policy" {
         "s3:GetObject"
       ],
       "Resource": "arn:aws:s3:::${var.Env-Name}-emailbucket/*"
+    }, {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": ["${data.aws_s3_bucket.admin-bucket.arn}/signup-whitelist.conf"]
     }
   ]
 }
 EOF
+}
+
+data "aws_s3_bucket" "admin-bucket" {
+  bucket = "${var.admin-bucket-name}"
 }
 
 resource "aws_ecs_task_definition" "user-signup-api-task" {
@@ -125,6 +135,12 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
         },{
           "name": "PERFORMANCE_BEARER_COMPLETION_RATE",
           "value": "${var.performance-bearer-completion-rate}"
+        },{
+          "name": "S3_SIGNUP_WHITELIST_BUCKET",
+          "value": "${data.aws_s3_bucket.admin-bucket.bucket}"
+        },{
+          "name": "S3_SIGNUP_WHITELIST_OBJECT_KEY",
+          "value": "signup-whitelist.conf"
         }
       ],
       "links": null,
