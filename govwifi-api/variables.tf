@@ -182,3 +182,8 @@ variable "iam-count" {
   default     = 0
   description = "Whether or not to iam roles"
 }
+
+variable "admin-bucket-name" {
+  type = "string"
+  description = "Name of the admin S3 bucket"
+}
