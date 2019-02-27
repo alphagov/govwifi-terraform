@@ -59,7 +59,7 @@ resource "aws_cloudwatch_metric_alarm" "user_db_storagealarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_rr_burstbalancealarm" {
-  count               = "${var.db-replica-count}"
+  count               = "${var.user-db-replica-count}"
   alarm_name          = "${var.env}-user-rr-burstbalanace-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -79,7 +79,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_burstbalancealarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_rr_laggingalarm" {
-  count               = "${var.db-replica-count}"
+  count               = "${var.user-db-replica-count}"
   alarm_name          = "${var.env}-user-rr-lagging-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
@@ -99,7 +99,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_laggingalarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_rr_cpualarm" {
-  count               = "${var.db-replica-count}"
+  count               = "${var.user-db-replica-count}"
   alarm_name          = "${var.env}-user-rr-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -119,7 +119,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_cpualarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_rr_memoryalarm" {
-  count               = "${var.db-replica-count}"
+  count               = "${var.user-db-replica-count}"
   alarm_name          = "${var.env}-user-rr-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -139,7 +139,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_memoryalarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_rr_storagealarm" {
-  count               = "${var.db-replica-count}"
+  count               = "${var.user-db-replica-count}"
   alarm_name          = "${var.env}-user-rr-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
