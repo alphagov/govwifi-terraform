@@ -184,6 +184,7 @@ variable "iam-count" {
 }
 
 variable "admin-bucket-name" {
+  default = ""
   type = "string"
   description = "Name of the admin S3 bucket"
 }
