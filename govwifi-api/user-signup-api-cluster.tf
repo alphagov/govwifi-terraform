@@ -125,6 +125,12 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
         },{
           "name": "PERFORMANCE_BEARER_COMPLETION_RATE",
           "value": "${var.performance-bearer-completion-rate}"
+        },{
+          "name": "S3_SIGNUP_WHITELIST_BUCKET",
+          "value": "govwifi-${var.rack-env}-admin"
+        },{
+          "name": "S3_SIGNUP_WHITELIST_OBJECT_KEY",
+          "value": "signup-whitelist.conf"
         }
       ],
       "links": null,
