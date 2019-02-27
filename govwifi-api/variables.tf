@@ -150,10 +150,6 @@ variable "logging-docker-image" {}
 
 variable "safe-restart-docker-image" {}
 
-variable "authorised-email-domains-regex" {
-  description = "Regex used as matcher for whether an incoming email is from a government address."
-}
-
 variable "notify-api-key" {
   default     = ""
   description = "API key used to authenticate with GOV.UK Notify"
@@ -184,6 +180,7 @@ variable "iam-count" {
 }
 
 variable "admin-bucket-name" {
+  default = ""
   type = "string"
   description = "Name of the admin S3 bucket"
 }
