@@ -46,46 +46,6 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-low" {
   ]
 }
 
-/*
-resource "aws_cloudwatch_metric_alarm" "radius-access-reject" {
-  count               = "${var.alarm-count}"
-  alarm_name          = "${var.Env-Name}-radius-access-reject"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = "2"
-  threshold           = "0.2"
-  alarm_description   = "Access rejections has exceeded 20%"
-
-  metric_query {
-    id          = "e1"
-    expression  = "rejected"
-    label       = "Rejection rate"
-    return_data = "true"
-  }
-
-  metric_query {
-    id = "accepted"
-
-    metric {
-      metric_name = "${aws_cloudwatch_log_metric_filter.radius-access-accept.name}"
-      namespace   = "${local.logging_api_namespace}"
-      period      = "300"
-      stat        = "Sum"
-    }
-  }
-
-  metric_query {
-    id = "rejected"
-
-    metric {
-      metric_name = "${aws_cloudwatch_log_metric_filter.radius-access-reject.name}"
-      namespace   = "${local.logging_api_namespace}"
-      period      = "300"
-      stat        = "Sum"
-    }
-  }
-}
-*/
-
 resource "aws_cloudwatch_metric_alarm" "radius-access-reject" {
   count               = "${var.alarm-count}"
   alarm_name          = "${var.Env-Name}-radius-access-reject"
