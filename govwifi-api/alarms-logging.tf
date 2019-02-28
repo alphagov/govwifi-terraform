@@ -14,9 +14,10 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-high" {
     ServiceName = "${aws_ecs_service.logging-api-service.name}"
   }
 
-  alarm_description  = "This alarm tells ECS to scale up based on high CPU - Logging"
-  alarm_actions      = [
-    "${aws_appautoscaling_policy.ecs-policy-up-logging.arn}"
+  alarm_description = "This alarm tells ECS to scale up based on high CPU - Logging"
+
+  alarm_actions = [
+    "${aws_appautoscaling_policy.ecs-policy-up-logging.arn}",
   ]
 
   treat_missing_data = "breaching"
@@ -38,8 +39,26 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-low" {
     ServiceName = "${aws_ecs_service.logging-api-service.name}"
   }
 
-  alarm_description  = "This alarm tells ECS to scale in based on low CPU usage - Logging"
-  alarm_actions      = [
-    "${aws_appautoscaling_policy.ecs-policy-down-logging.arn}"
+  alarm_description = "This alarm tells ECS to scale in based on low CPU usage - Logging"
+
+  alarm_actions = [
+    "${aws_appautoscaling_policy.ecs-policy-down-logging.arn}",
+  ]
+}
+
+resource "aws_cloudwatch_metric_alarm" "radius-access-reject" {
+  count               = "${var.alarm-count}"
+  alarm_name          = "${var.Env-Name}-radius-access-reject"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "3"
+  period              = "60"
+  threshold           = "1000"
+  alarm_description   = "Access rejections has exceeded 1000"
+  metric_name         = "${aws_cloudwatch_log_metric_filter.radius-access-reject.metric_transformation.0.name}"
+  namespace           = "${local.logging_api_namespace}"
+  statistic           = "Sum"
+
+  alarm_actions = [
+    "${var.devops-notifications-arn}",
   ]
 }
