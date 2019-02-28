@@ -28,3 +28,12 @@ resource "aws_route53_record" "elb_global" {
     region = "${var.aws-region}"
   }
 }
+
+resource "aws_route53_record" "elb_global_cert_validation" {
+  count   = "${aws_acm_certificate.api-elb-global.count}"
+  name    = "${aws_acm_certificate.api-elb-global.domain_validation_options.0.resource_record_name}"
+  type    = "${aws_acm_certificate.api-elb-global.domain_validation_options.0.resource_record_type}"
+  zone_id = "${var.route53-zone-id}"
+  records = ["${aws_acm_certificate.api-elb-global.domain_validation_options.0.resource_record_value}"]
+  ttl     = 60
+}

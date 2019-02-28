@@ -23,3 +23,13 @@ resource "aws_alb_listener" "alb_listener" {
     type             = "forward"
   }
 }
+
+resource "aws_lb_listener_certificate" "api-elb-global" {
+  count           = "${aws_lb.api-alb.count}"
+  listener_arn    = "${aws_alb_listener.alb_listener.arn}"
+  certificate_arn = "${aws_acm_certificate.api-elb-global.arn}"
+
+  depends_on = [
+    "aws_acm_certificate_validation.api-elb-global",
+  ]
+}
