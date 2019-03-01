@@ -13,9 +13,10 @@ resource "aws_cloudwatch_metric_alarm" "ec2-api-cpu-alarm-low" {
     AutoScalingGroupName = "${aws_autoscaling_group.api-asg.name}"
   }
 
-  alarm_description  = "This alarm tells EC2 to scale in based on low CPU usage"
-  alarm_actions      = [
-    "${aws_autoscaling_policy.api-ec2-scale-down-policy.arn}"
+  alarm_description = "This alarm tells EC2 to scale in based on low CPU usage"
+
+  alarm_actions = [
+    "${aws_autoscaling_policy.api-ec2-scale-down-policy.arn}",
   ]
 
   treat_missing_data = "breaching"
@@ -36,10 +37,11 @@ resource "aws_cloudwatch_metric_alarm" "ec2-api-cpu-alarm-high" {
     AutoScalingGroupName = "${aws_autoscaling_group.api-asg.name}"
   }
 
-  alarm_description  = "This alarm tells EC2 to scale up based on high CPU usage"
-  alarm_actions      = [
+  alarm_description = "This alarm tells EC2 to scale up based on high CPU usage"
+
+  alarm_actions = [
     "${aws_autoscaling_policy.api-ec2-scale-up-policy.arn}",
-    "${var.devops-notifications-arn}"
+    "${var.devops-notifications-arn}",
   ]
 
   treat_missing_data = "breaching"
@@ -61,10 +63,11 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-high" {
     ServiceName = "${aws_ecs_service.authorisation-api-service.name}"
   }
 
-  alarm_description  = "This alarm tells ECS to scale up based on high CPU"
-  alarm_actions      = [
+  alarm_description = "This alarm tells ECS to scale up based on high CPU"
+
+  alarm_actions = [
     "${aws_appautoscaling_policy.ecs-policy-up.arn}",
-    "${var.devops-notifications-arn}"
+    "${var.devops-notifications-arn}",
   ]
 
   treat_missing_data = "breaching"
@@ -86,9 +89,10 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
     ServiceName = "${aws_ecs_service.authorisation-api-service.name}"
   }
 
-  alarm_description  = "This alarm tells ECS to scale in based on low CPU usage"
-  alarm_actions      = [
-    "${aws_appautoscaling_policy.ecs-policy-down.arn}"
+  alarm_description = "This alarm tells ECS to scale in based on low CPU usage"
+
+  alarm_actions = [
+    "${aws_appautoscaling_policy.ecs-policy-down.arn}",
   ]
 
   treat_missing_data = "breaching"
@@ -108,9 +112,10 @@ resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-high" {
     ClusterName = "${aws_ecs_cluster.api-cluster.name}"
   }
 
-  alarm_description  = "Cluster memory reservation above 75%"
-  alarm_actions      = [
-    "${aws_autoscaling_policy.api-ec2-scale-up-policy.arn}"
+  alarm_description = "Cluster memory reservation above 75%"
+
+  alarm_actions = [
+    "${aws_autoscaling_policy.api-ec2-scale-up-policy.arn}",
   ]
 
   treat_missing_data = "breaching"
@@ -130,8 +135,9 @@ resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-low" {
     ClusterName = "${aws_ecs_cluster.api-cluster.name}"
   }
 
-  alarm_description  = "Cluster memory reservation below 40%"
-  alarm_actions      = [
-    "${aws_autoscaling_policy.api-ec2-scale-down-policy.arn}"
+  alarm_description = "Cluster memory reservation below 40%"
+
+  alarm_actions = [
+    "${aws_autoscaling_policy.api-ec2-scale-down-policy.arn}",
   ]
 }

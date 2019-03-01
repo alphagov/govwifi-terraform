@@ -61,4 +61,3 @@ resource "aws_cloudwatch_event_rule" "daily_user_deletion_event" {
   schedule_expression = "cron(0 23 * * ? *)"
   is_enabled          = true
 }
-

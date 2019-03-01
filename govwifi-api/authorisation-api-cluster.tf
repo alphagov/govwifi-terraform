@@ -5,12 +5,12 @@ resource "aws_cloudwatch_log_group" "authorisation-api-log-group" {
 }
 
 resource "aws_ecs_task_definition" "authorisation-api-task" {
-  family = "authorisation-api-task-${var.Env-Name}"
+  family                   = "authorisation-api-task-${var.Env-Name}"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
-  memory = 512
-  cpu = "256"
-  network_mode = "awsvpc"
+  memory                   = 512
+  cpu                      = "256"
+  network_mode             = "awsvpc"
 
   container_definitions = <<EOF
 [
@@ -87,11 +87,13 @@ resource "aws_ecs_service" "authorisation-api-service" {
   task_definition = "${aws_ecs_task_definition.authorisation-api-task.arn}"
   desired_count   = "${var.authorisation-api-count}"
   launch_type     = "FARGATE"
+
   network_configuration {
-    security_groups = ["${var.backend-sg-list}"]
-    subnets         = ["${var.subnet-ids}"]
+    security_groups  = ["${var.backend-sg-list}"]
+    subnets          = ["${var.subnet-ids}"]
     assign_public_ip = true
-}
+  }
+
   load_balancer {
     target_group_arn = "${aws_alb_target_group.alb_target_group.arn}"
     container_name   = "authorisation"
@@ -116,11 +118,11 @@ resource "aws_alb_listener_rule" "static" {
 }
 
 resource "aws_alb_target_group" "alb_target_group" {
-  depends_on = ["aws_lb.api-alb"]
-  name       = "api-lb-tg-${var.Env-Name}"
-  port       = "8080"
-  protocol   = "HTTP"
-  vpc_id     = "${var.vpc-id}"
+  depends_on  = ["aws_lb.api-alb"]
+  name        = "api-lb-tg-${var.Env-Name}"
+  port        = "8080"
+  protocol    = "HTTP"
+  vpc_id      = "${var.vpc-id}"
   target_type = "ip"
 
   tags {

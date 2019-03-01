@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_log_group" "user-signup-api-log-group" {
   count = "${var.user-signup-enabled}"
-  name = "${var.Env-Name}-user-signup-api-docker-log-group"
+  name  = "${var.Env-Name}-user-signup-api-docker-log-group"
 
   retention_in_days = 90
 }
@@ -12,7 +12,7 @@ resource "aws_ecr_repository" "user-signup-api-ecr" {
 
 resource "aws_iam_role" "user-signup-api-task-role" {
   count = "${var.user-signup-enabled}"
-  name = "${var.Env-Name}-user-signup-api-task-role"
+  name  = "${var.Env-Name}-user-signup-api-task-role"
 
   assume_role_policy = <<EOF
 {
@@ -65,14 +65,14 @@ data "aws_s3_bucket" "admin-bucket" {
 }
 
 resource "aws_ecs_task_definition" "user-signup-api-task" {
-  count = "${var.user-signup-enabled}"
-  family = "user-signup-api-task-${var.Env-Name}"
-  task_role_arn = "${aws_iam_role.user-signup-api-task-role.arn}"
+  count                    = "${var.user-signup-enabled}"
+  family                   = "user-signup-api-task-${var.Env-Name}"
+  task_role_arn            = "${aws_iam_role.user-signup-api-task-role.arn}"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
-  memory = 512
-  cpu = "256"
-  network_mode = "awsvpc"
+  memory                   = 512
+  cpu                      = "256"
+  network_mode             = "awsvpc"
 
   container_definitions = <<EOF
 [
@@ -173,8 +173,8 @@ resource "aws_ecs_service" "user-signup-api-service" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    security_groups = ["${var.backend-sg-list}"]
-    subnets         = ["${var.subnet-ids}"]
+    security_groups  = ["${var.backend-sg-list}"]
+    subnets          = ["${var.subnet-ids}"]
     assign_public_ip = true
   }
 
@@ -217,6 +217,7 @@ resource "aws_alb_listener_rule" "user-signup-api-lr" {
     type             = "forward"
     target_group_arn = "${aws_alb_target_group.user-signup-api-tg.id}"
   }
+
   condition {
     field  = "path-pattern"
     values = ["/user-signup/*"]

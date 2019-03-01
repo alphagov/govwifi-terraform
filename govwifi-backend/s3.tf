@@ -6,8 +6,9 @@ resource "aws_s3_bucket" "pp-data-bucket" {
   acl           = "private"
 
   tags {
-    Name        = "${title(var.Env-Name)} Performance Platform data backup"
-    Region      = "${title(var.aws-region-name)}"
+    Name   = "${title(var.Env-Name)} Performance Platform data backup"
+    Region = "${title(var.aws-region-name)}"
+
     # Product     = "${var.product-name}"
     Environment = "${title(var.Env-Name)}"
     Category    = "Statistics data / backup"

@@ -21,9 +21,10 @@ resource "aws_s3_bucket_object" "wordlist" {
 }
 
 resource "aws_iam_user_policy" "jenkins-read-wordlist-policy" {
-  user   = "${aws_iam_user.jenkins-read-wordlist-bucket.name}"
-  name   = "jenkins-read-wordlist-policy"
-  count  = "${var.wordlist-bucket-count}"
+  user  = "${aws_iam_user.jenkins-read-wordlist-bucket.name}"
+  name  = "jenkins-read-wordlist-policy"
+  count = "${var.wordlist-bucket-count}"
+
   policy = <<EOF
 {
   "Version": "2012-10-17",

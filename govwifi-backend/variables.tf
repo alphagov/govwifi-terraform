@@ -99,6 +99,7 @@ variable "enable-bastion-monitoring" {}
 variable "ithc-backend-instance-count" {
   default = "0"
 }
+
 variable "ithc-ami" {
   default = ""
 }
@@ -106,12 +107,15 @@ variable "ithc-ami" {
 variable "ithc-instance-type" {
   default = ""
 }
+
 variable "ithc-server-ip" {
   default = ""
 }
+
 variable "ithc-ssh-key-name" {
   default = ""
 }
+
 variable "ithc-sg-list" {
   type    = "list"
   default = []
@@ -120,6 +124,7 @@ variable "ithc-sg-list" {
 variable "users" {
   type = "list"
 }
+
 variable "save-pp-data" {
   description = "Whether or not to save Performance Platform backup data. Value must be 0 or 1."
   default     = "0"
@@ -130,11 +135,11 @@ variable "pp-domain-name" {
 }
 
 variable "rds-kms-key-id" {
-  type = "string"
+  type    = "string"
   default = ""
 }
 
 variable "user-replica-source-db" {
-  type = "string"
+  type    = "string"
   default = ""
 }

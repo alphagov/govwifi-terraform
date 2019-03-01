@@ -184,7 +184,7 @@ DATA
 
   tags {
     Name = "${title(var.Env-Name)} Bastion - backend (${aws_vpc.wifi-backend.id})"
-    Env = "${title(var.Env-Name)}"
+    Env  = "${title(var.Env-Name)}"
   }
 }
 

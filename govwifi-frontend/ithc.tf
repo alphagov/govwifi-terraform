@@ -11,14 +11,15 @@ resource "aws_instance" "ithc" {
   depends_on = [
     "aws_iam_instance_profile.ithc-instance-profile",
   ]
+
   tags {
     Name = "${title(var.Env-Name)} ITHC - frontend (${aws_vpc.wifi-frontend.id})"
   }
 }
 
 resource "aws_iam_role" "ithc-instance-role" {
-  count                  = "${var.ithc-frontend-instance-count}"
-  name = "${var.aws-region-name}-${var.Env-Name}-frontend-ithc-instance-role"
+  count = "${var.ithc-frontend-instance-count}"
+  name  = "${var.aws-region-name}-${var.Env-Name}-frontend-ithc-instance-role"
 
   assume_role_policy = <<EOF
 {
@@ -38,7 +39,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "ithc-instance-policy" {
-  count                  = "${var.ithc-frontend-instance-count}"
+  count      = "${var.ithc-frontend-instance-count}"
   name       = "${var.aws-region-name}-${var.Env-Name}-frontend-ithc-instance-policy"
   role       = "${aws_iam_role.ithc-instance-role.id}"
   depends_on = ["aws_iam_role.ithc-instance-role"]
