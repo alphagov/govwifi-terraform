@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_log_group" "logging-api-log-group" {
   count = "${var.logging-enabled}"
-  name = "${var.Env-Name}-logging-api-docker-log-group"
+  name  = "${var.Env-Name}-logging-api-docker-log-group"
 
   retention_in_days = 90
 }
@@ -11,14 +11,14 @@ resource "aws_ecr_repository" "logging-api-ecr" {
 }
 
 resource "aws_ecs_task_definition" "logging-api-task" {
-  count = "${var.logging-enabled}"
-  family   = "logging-api-task-${var.Env-Name}"
-  task_role_arn = "${aws_iam_role.logging-api-task-role.arn}"
+  count                    = "${var.logging-enabled}"
+  family                   = "logging-api-task-${var.Env-Name}"
+  task_role_arn            = "${aws_iam_role.logging-api-task-role.arn}"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
-  memory = 512
-  cpu = "256"
-  network_mode = "awsvpc"
+  memory                   = 512
+  cpu                      = "256"
+  network_mode             = "awsvpc"
 
   container_definitions = <<EOF
 [
@@ -77,9 +77,6 @@ resource "aws_ecs_task_definition" "logging-api-task" {
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
         },{
-          "name": "USER_SIGNUP_API_BASE_URL",
-          "value": "${var.user-signup-api-base-url}"
-        },{
           "name": "PERFORMANCE_URL",
           "value": "${var.performance-url}"
         },{
@@ -131,8 +128,8 @@ resource "aws_ecs_service" "logging-api-service" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    security_groups = ["${var.backend-sg-list}"]
-    subnets         = ["${var.subnet-ids}"]
+    security_groups  = ["${var.backend-sg-list}"]
+    subnets          = ["${var.subnet-ids}"]
     assign_public_ip = true
   }
 
@@ -144,12 +141,12 @@ resource "aws_ecs_service" "logging-api-service" {
 }
 
 resource "aws_alb_target_group" "logging-api-tg" {
-  count = "${var.logging-enabled}"
-  depends_on   = ["aws_lb.api-alb"]
-  name     = "logging-api-${var.Env-Name}"
-  port     = "8080"
-  protocol = "HTTP"
-  vpc_id   = "${var.vpc-id}"
+  count       = "${var.logging-enabled}"
+  depends_on  = ["aws_lb.api-alb"]
+  name        = "logging-api-${var.Env-Name}"
+  port        = "8080"
+  protocol    = "HTTP"
+  vpc_id      = "${var.vpc-id}"
   target_type = "ip"
 
   tags {
@@ -166,7 +163,7 @@ resource "aws_alb_target_group" "logging-api-tg" {
 }
 
 resource "aws_alb_listener_rule" "logging-api-lr" {
-  count = "${var.logging-enabled}"
+  count        = "${var.logging-enabled}"
   depends_on   = ["aws_alb_target_group.logging-api-tg"]
   listener_arn = "${aws_alb_listener.alb_listener.arn}"
   priority     = 3
@@ -175,6 +172,7 @@ resource "aws_alb_listener_rule" "logging-api-lr" {
     type             = "forward"
     target_group_arn = "${aws_alb_target_group.logging-api-tg.id}"
   }
+
   condition {
     field  = "path-pattern"
     values = ["/logging/*"]
@@ -183,7 +181,7 @@ resource "aws_alb_listener_rule" "logging-api-lr" {
 
 resource "aws_iam_role" "logging-api-task-role" {
   count = "${var.logging-enabled}"
-  name = "${var.Env-Name}-logging-api-task-role"
+  name  = "${var.Env-Name}-logging-api-task-role"
 
   assume_role_policy = <<EOF
 {
