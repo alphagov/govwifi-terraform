@@ -33,7 +33,7 @@ variable "authorisation-api-count" {
 variable "backend-min-size" {}
 
 variable "backend-max-size" {
-  default     = 10
+  default = 10
 }
 
 variable "backend-cpualarm-count" {}
@@ -172,7 +172,10 @@ variable "wordlist-file-path" {
 
 variable "vpc-id" {}
 
-variable "user-signup-api-base-url" {}
+variable "user-signup-api-base-url" {
+  description = "DEPRECATED"
+  default     = ""
+}
 
 variable "iam-count" {
   default     = 0
@@ -180,7 +183,7 @@ variable "iam-count" {
 }
 
 variable "admin-bucket-name" {
-  default = ""
-  type = "string"
+  default     = ""
+  type        = "string"
   description = "Name of the admin S3 bucket"
 }

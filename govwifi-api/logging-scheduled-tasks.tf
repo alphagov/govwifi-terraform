@@ -1,6 +1,7 @@
 resource "aws_iam_role" "logging-scheduled-task-role" {
   count = "${var.logging-enabled}"
-  name = "${var.Env-Name}-logging-scheduled-task-role"
+  name  = "${var.Env-Name}-logging-scheduled-task-role"
+
   assume_role_policy = <<DOC
 {
   "Version": "2012-10-17",
@@ -20,8 +21,9 @@ DOC
 
 resource "aws_iam_role_policy" "logging-scheduled-task-policy" {
   count = "${var.logging-enabled}"
-  name = "${var.Env-Name}-logging-scheduled-task-policy"
-  role = "${aws_iam_role.logging-scheduled-task-role.id}"
+  name  = "${var.Env-Name}-logging-scheduled-task-policy"
+  role  = "${aws_iam_role.logging-scheduled-task-role.id}"
+
   policy = <<DOC
 {
     "Version": "2012-10-17",
@@ -56,9 +58,9 @@ resource "aws_cloudwatch_event_target" "logging-publish-daily-statistics" {
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count = 1
+    task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-    launch_type  = "EC2"
+    launch_type         = "EC2"
   }
 
   input = <<EOF
@@ -81,9 +83,9 @@ resource "aws_cloudwatch_event_target" "logging-publish-weekly-statistics" {
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count = 1
+    task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-    launch_type  = "EC2"
+    launch_type         = "EC2"
   }
 
   input = <<EOF
@@ -106,9 +108,9 @@ resource "aws_cloudwatch_event_target" "logging-publish-monthly-statistics" {
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count = 1
+    task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-    launch_type  = "EC2"
+    launch_type         = "EC2"
   }
 
   input = <<EOF
@@ -131,9 +133,9 @@ resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count = 1
+    task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-    launch_type  = "EC2"
+    launch_type         = "EC2"
   }
 
   input = <<EOF
@@ -149,8 +151,8 @@ EOF
 }
 
 resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
-  count = "${var.logging-enabled}"
-  family   = "logging-api-scheduled-task-${var.Env-Name}"
+  count         = "${var.logging-enabled}"
+  family        = "logging-api-scheduled-task-${var.Env-Name}"
   task_role_arn = "${aws_iam_role.logging-api-task-role.arn}"
 
   container_definitions = <<EOF
@@ -210,10 +212,7 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
-        },{
-          "name": "USER_SIGNUP_API_BASE_URL",
-          "value": "${var.user-signup-api-base-url}"
-        },{
+        },
           "name": "PERFORMANCE_URL",
           "value": "${var.performance-url}"
         },{
