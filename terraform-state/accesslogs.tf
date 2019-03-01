@@ -85,7 +85,7 @@ resource "aws_s3_bucket" "accesslogs-bucket" {
   }
 
   lifecycle_rule {
-    id = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-accesslogs-lifecycle"
+    id      = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-accesslogs-lifecycle"
     enabled = true
 
     transition {
@@ -94,7 +94,7 @@ resource "aws_s3_bucket" "accesslogs-bucket" {
     }
 
     expiration {
-      days          = "${var.accesslogs-expiration-days}"
+      days = "${var.accesslogs-expiration-days}"
     }
   }
 

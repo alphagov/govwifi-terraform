@@ -12,6 +12,10 @@ These modules are to be consumed by another Terraform config.
 Currently the main configs for GovWiFi are contained in the [`govwifi-build`][govwifi-build] repo.
 Please refer to this repo for execution instructions.
 
+## Development
+
+All Terraform configs must be formatted using the `terraform fmt` command.
+
 ## What's missing
 
 Currently there are some key pieces of the infrastructure missing from these modules, as they

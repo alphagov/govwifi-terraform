@@ -19,7 +19,6 @@ resource "aws_iam_role" "tfstate-replication" {
 POLICY
 }
 
-
 resource "aws_iam_policy" "tfstate-replication" {
   name = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-replication-policy"
 
@@ -70,6 +69,7 @@ resource "aws_kms_key" "tfstate-key" {
   description             = "KMS key for the encryption of tfstate buckets."
   deletion_window_in_days = 10
   is_enabled              = true
+
   tags {
     Region      = "${title(var.aws-region-name)}"
     Product     = "${var.product-name}"
@@ -147,5 +147,3 @@ EOF
     }
   }
 }
-
-

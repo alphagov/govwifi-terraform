@@ -8,7 +8,7 @@ resource "aws_cloudwatch_event_rule" "daily_safe_restart" {
 
 resource "aws_cloudwatch_log_group" "safe-restart-log-group" {
   count = "${var.safe-restart-enabled}"
-  name = "${var.Env-Name}-safe-restart-docker-log-group"
+  name  = "${var.Env-Name}-safe-restart-docker-log-group"
 
   retention_in_days = 90
 }
@@ -19,8 +19,8 @@ resource "aws_ecr_repository" "safe-restarter-ecr" {
 }
 
 resource "aws_ecs_task_definition" "safe-restart-task-definition" {
-  count = "${var.safe-restart-enabled}"
-  family = "safe-restart-task-${var.Env-Name}"
+  count         = "${var.safe-restart-enabled}"
+  family        = "safe-restart-task-${var.Env-Name}"
   task_role_arn = "${aws_iam_role.safe-restart-task-role.arn}"
 
   container_definitions = <<EOF
@@ -80,7 +80,7 @@ EOF
 
 resource "aws_iam_role" "safe-restart-task-role" {
   count = "${var.safe-restart-enabled}"
-  name = "${var.Env-Name}-safe-restart-task-role"
+  name  = "${var.Env-Name}-safe-restart-task-role"
 
   assume_role_policy = <<EOF
 {
@@ -101,7 +101,8 @@ EOF
 
 resource "aws_iam_role" "safe-restart-scheduled-task-role" {
   count = "${var.safe-restart-enabled}"
-  name = "${var.Env-Name}-safe-restart-scheduled-task-role"
+  name  = "${var.Env-Name}-safe-restart-scheduled-task-role"
+
   assume_role_policy = <<DOC
 {
   "Version": "2012-10-17",
@@ -147,8 +148,9 @@ EOF
 
 resource "aws_iam_role_policy" "safe-restart-scheduled-task-policy" {
   count = "${var.safe-restart-enabled}"
-  name = "${var.Env-Name}-safe-restart-scheduled-task-policy"
-  role = "${aws_iam_role.safe-restart-scheduled-task-role.id}"
+  name  = "${var.Env-Name}-safe-restart-scheduled-task-policy"
+  role  = "${aws_iam_role.safe-restart-scheduled-task-role.id}"
+
   policy = <<DOC
 {
     "Version": "2012-10-17",
@@ -183,9 +185,9 @@ resource "aws_cloudwatch_event_target" "daily-safe-restart" {
   role_arn  = "${aws_iam_role.safe-restart-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count = 1
+    task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.safe-restart-task-definition.arn}"
-    launch_type  = "EC2"
+    launch_type         = "EC2"
   }
 
   input = <<EOF

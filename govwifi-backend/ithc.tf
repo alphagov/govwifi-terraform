@@ -11,6 +11,7 @@ resource "aws_instance" "ithc" {
   depends_on = [
     "aws_iam_instance_profile.ithc-instance-profile",
   ]
+
   tags {
     Name = "${title(var.Env-Name)} ITHC - backend (${aws_vpc.wifi-backend.id})"
   }

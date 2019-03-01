@@ -2,6 +2,7 @@ resource "aws_route53_record" "admin" {
   zone_id = "${data.aws_route53_zone.zone.id}"
   name    = "admin.${var.Env-Subdomain}.service.gov.uk"
   type    = "A"
+
   alias {
     name                   = "${aws_lb.admin-alb.dns_name}"
     zone_id                = "${aws_lb.admin-alb.zone_id}"
@@ -18,6 +19,6 @@ resource "aws_route53_record" "www" {
 }
 
 data "aws_route53_zone" "zone" {
-  name = "wifi.service.gov.uk."
+  name         = "wifi.service.gov.uk."
   private_zone = false
 }

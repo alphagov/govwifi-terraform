@@ -41,9 +41,10 @@ resource "aws_s3_bucket" "emailbucket" {
 EOF
 
   tags {
-    Name        = "${title(var.Env-Name)} Email Bucket"
-    Region      = "${title(var.aws-region-name)}"
-#   Product     = "${var.product-name}"
+    Name   = "${title(var.Env-Name)} Email Bucket"
+    Region = "${title(var.aws-region-name)}"
+
+    #   Product     = "${var.product-name}"
     Environment = "${title(var.Env-Name)}"
     Category    = "User emails"
   }
@@ -110,9 +111,10 @@ resource "aws_s3_bucket" "admin-emailbucket" {
 EOF
 
   tags {
-    Name        = "${title(var.Env-Name)} Admin Email Bucket"
-    Region      = "${title(var.aws-region-name)}"
-#   Product     = "${var.product-name}"
+    Name   = "${title(var.Env-Name)} Admin Email Bucket"
+    Region = "${title(var.aws-region-name)}"
+
+    #   Product     = "${var.product-name}"
     Environment = "${title(var.Env-Name)}"
     Category    = "Admin emails"
   }
@@ -200,9 +202,9 @@ resource "aws_sns_topic" "user-signup-notifications" {
 }
 
 resource "aws_sns_topic_subscription" "user-signup-notifications-target" {
-  topic_arn                       = "${aws_sns_topic.user-signup-notifications.arn}"
-  protocol                        = "https"
-  endpoint                        = "${var.user-signup-notifications-endpoint}"
-  endpoint_auto_confirms          = true
-  depends_on                      = ["aws_sns_topic.user-signup-notifications"]
+  topic_arn              = "${aws_sns_topic.user-signup-notifications.arn}"
+  protocol               = "https"
+  endpoint               = "${var.user-signup-notifications-endpoint}"
+  endpoint_auto_confirms = true
+  depends_on             = ["aws_sns_topic.user-signup-notifications"]
 }

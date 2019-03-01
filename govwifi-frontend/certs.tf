@@ -1,7 +1,7 @@
 resource "aws_s3_bucket" "frontend-cert-bucket" {
-  count         = 1
-  bucket        = "govwifi-${var.rack-env}-${lower(var.aws-region-name)}-frontend-cert"
-  acl           = "private"
+  count  = 1
+  bucket = "govwifi-${var.rack-env}-${lower(var.aws-region-name)}-frontend-cert"
+  acl    = "private"
 
   tags {
     Name        = "${title(var.Env-Name)} Frontend certs"
@@ -12,7 +12,7 @@ resource "aws_s3_bucket" "frontend-cert-bucket" {
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        sse_algorithm     = "AES256"
+        sse_algorithm = "AES256"
       }
     }
   }
@@ -27,17 +27,20 @@ data "aws_iam_policy_document" "frontend-cert-bucket-policy-document" {
     actions = [
       "s3:GetObject",
     ]
+
     resources = [
-      "${aws_s3_bucket.frontend-cert-bucket.arn}/*"
+      "${aws_s3_bucket.frontend-cert-bucket.arn}/*",
     ]
+
     principals {
-      type = "*"
-      identifiers = [ "*" ]
+      type        = "*"
+      identifiers = ["*"]
     }
+
     condition {
-      test = "IpAddress"
+      test     = "IpAddress"
       variable = "aws:SourceIp"
-      values = [ "${aws_eip_association.eip_assoc.*.public_ip}" ]
+      values   = ["${aws_eip_association.eip_assoc.*.public_ip}"]
     }
   }
 }

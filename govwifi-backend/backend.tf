@@ -2,7 +2,8 @@
 # CREATE VPC
 
 resource "aws_vpc" "wifi-backend" {
-  cidr_block           = "${var.vpc-cidr-block}"
+  cidr_block = "${var.vpc-cidr-block}"
+
   # Hostnames required by the CIS hardened image.
   enable_dns_hostnames = true
 

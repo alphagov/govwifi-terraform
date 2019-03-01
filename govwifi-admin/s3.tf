@@ -33,8 +33,9 @@ resource "aws_s3_bucket" "admin-mou-bucket" {
 }
 
 resource "aws_s3_bucket_policy" "admin-bucket-policy" {
-bucket = "${aws_s3_bucket.admin-bucket.id}"
-policy =<<POLICY
+  bucket = "${aws_s3_bucket.admin-bucket.id}"
+
+  policy = <<POLICY
 {
   "Version": "2012-10-17",
   "Id": "WhitelistFetch",

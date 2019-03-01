@@ -71,8 +71,8 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "ecs-instance-profile" {
-  name  = "${var.aws-region-name}-ecs-instance-profile-${var.Env-Name}"
-  role  = "${aws_iam_role.ecs-instance-role.name}"
+  name = "${var.aws-region-name}-ecs-instance-profile-${var.Env-Name}"
+  role = "${aws_iam_role.ecs-instance-role.name}"
 }
 
 resource "aws_iam_role_policy" "ecs-service-policy" {

@@ -1,6 +1,7 @@
 resource "aws_iam_role" "user-signup-scheduled-task-role" {
   count = "${var.user-signup-enabled}"
-  name = "${var.Env-Name}-user-signup-scheduled-task-role"
+  name  = "${var.Env-Name}-user-signup-scheduled-task-role"
+
   assume_role_policy = <<DOC
 {
   "Version": "2012-10-17",
@@ -20,8 +21,9 @@ DOC
 
 resource "aws_iam_role_policy" "user-signup-scheduled-task-policy" {
   count = "${var.user-signup-enabled}"
-  name = "${var.Env-Name}-user-signup-scheduled-task-policy"
-  role = "${aws_iam_role.user-signup-scheduled-task-role.id}"
+  name  = "${var.Env-Name}-user-signup-scheduled-task-policy"
+  role  = "${aws_iam_role.user-signup-scheduled-task-role.id}"
+
   policy = <<DOC
 {
     "Version": "2012-10-17",
@@ -56,9 +58,9 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-daily-statistics" {
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count = 1
+    task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type  = "EC2"
+    launch_type         = "EC2"
   }
 
   input = <<EOF
@@ -81,9 +83,9 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-weekly-statistics" {
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count = 1
+    task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type  = "EC2"
+    launch_type         = "EC2"
   }
 
   input = <<EOF
@@ -106,9 +108,9 @@ resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count = 1
+    task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type  = "EC2"
+    launch_type         = "EC2"
   }
 
   input = <<EOF
@@ -124,8 +126,8 @@ EOF
 }
 
 resource "aws_ecs_task_definition" "user-signup-api-scheduled-task" {
-  count = "${var.user-signup-enabled}"
-  family = "user-signup-api-scheduled-task-${var.Env-Name}"
+  count         = "${var.user-signup-enabled}"
+  family        = "user-signup-api-scheduled-task-${var.Env-Name}"
   task_role_arn = "${aws_iam_role.user-signup-api-task-role.arn}"
 
   container_definitions = <<EOF

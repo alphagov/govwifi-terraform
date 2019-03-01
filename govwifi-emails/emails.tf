@@ -13,7 +13,7 @@ resource "aws_ses_receipt_rule" "user-signup-rule" {
     "enrol@${var.Env-Subdomain}.service.gov.uk",
     "enroll@${var.Env-Subdomain}.service.gov.uk",
     "signup@${var.Env-Subdomain}.service.gov.uk",
-    "sponsor@${var.Env-Subdomain}.service.gov.uk"
+    "sponsor@${var.Env-Subdomain}.service.gov.uk",
   ]
 
   s3_action {
@@ -42,7 +42,7 @@ resource "aws_ses_receipt_rule" "all-mail-rule" {
   ]
 
   recipients = [
-    "verify@${var.Env-Subdomain}.service.gov.uk"
+    "verify@${var.Env-Subdomain}.service.gov.uk",
   ]
 
   s3_action {
@@ -66,12 +66,12 @@ resource "aws_ses_receipt_rule" "newsite-mail-rule" {
   ]
 
   recipients = [
-    "newsite@${var.Env-Subdomain}.service.gov.uk"
+    "newsite@${var.Env-Subdomain}.service.gov.uk",
   ]
 
   sns_action {
-    topic_arn   = "${var.devops-notifications-arn}"
-    position    = 1
+    topic_arn = "${var.devops-notifications-arn}"
+    position  = 1
   }
 }
 
@@ -105,11 +105,11 @@ resource "aws_ses_receipt_rule" "log-request-rule" {
   after         = "${var.Env-Name}-admin-email-rule"
 
   recipients = [
-    "logrequest@${var.Env-Subdomain}.service.gov.uk"
+    "logrequest@${var.Env-Subdomain}.service.gov.uk",
   ]
 
   sns_action {
-    topic_arn   = "${var.devops-notifications-arn}"
-    position    = 1
+    topic_arn = "${var.devops-notifications-arn}"
+    position  = 1
   }
 }

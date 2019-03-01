@@ -38,4 +38,3 @@ resource "aws_route53_record" "users-rr" {
   ttl     = "300"
   records = ["${aws_db_instance.users_read_replica.address}"]
 }
-
