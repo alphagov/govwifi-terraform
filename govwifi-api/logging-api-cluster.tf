@@ -76,7 +76,7 @@ resource "aws_ecs_task_definition" "logging-api-task" {
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
-        },
+        },{
           "name": "PERFORMANCE_URL",
           "value": "${var.performance-url}"
         },{
