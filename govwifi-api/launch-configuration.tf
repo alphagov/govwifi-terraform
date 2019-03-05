@@ -1,4 +1,5 @@
 resource "aws_launch_configuration" "ecs" {
+  count                = "${var.background-jobs-enabled}"
   name_prefix          = "tf-${var.Env-Name}-api-lc-"
   image_id             = "${var.ami}"
   instance_type        = "t2.medium"

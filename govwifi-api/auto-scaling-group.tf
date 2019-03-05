@@ -1,4 +1,5 @@
 resource "aws_autoscaling_group" "api-asg" {
+  count                     = "${var.background-jobs-enabled}"
   vpc_zone_identifier       = ["${var.subnet-ids}"]
   name                      = "${var.Env-Name}-api-cluster"
   min_size                  = "${var.backend-min-size}"

@@ -1,4 +1,5 @@
 resource "aws_autoscaling_policy" "api-ec2-scale-up-policy" {
+  count                  = "${var.background-jobs-enabled}"
   name                   = "${var.Env-Name}-api-ec2-scale-up-policy"
   scaling_adjustment     = 1
   adjustment_type        = "ChangeInCapacity"
@@ -7,6 +8,7 @@ resource "aws_autoscaling_policy" "api-ec2-scale-up-policy" {
 }
 
 resource "aws_autoscaling_policy" "api-ec2-scale-down-policy" {
+  count                  = "${var.background-jobs-enabled}"
   name                   = "${var.Env-Name}-api-ec2-scale-down-policy"
   scaling_adjustment     = -1
   adjustment_type        = "ChangeInCapacity"

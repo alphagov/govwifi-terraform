@@ -187,3 +187,7 @@ variable "admin-bucket-name" {
   type        = "string"
   description = "Name of the admin S3 bucket"
 }
+
+variable "background-jobs-enabled" {
+  default = 0
+}
