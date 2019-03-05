@@ -100,3 +100,7 @@ variable "bastion-ips" {
   type        = "list"
   default     = []
 }
+
+variable "route53-critical-notifications-arn" {
+  type = "string"
+}
