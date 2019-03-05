@@ -99,6 +99,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-high" {
+  count               = "${var.background-jobs-enabled}"
   alarm_name          = "${var.Env-Name}-ecs-api-memory-reservation-high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -122,6 +123,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-low" {
+  count               = "${var.background-jobs-enabled}"
   alarm_name          = "${var.Env-Name}-ecs-api-memory-reservation-low"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
