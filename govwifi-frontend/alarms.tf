@@ -9,10 +9,15 @@ resource "aws_cloudwatch_metric_alarm" "radius-hc" {
   period              = "60"
   statistic           = "Minimum"
   threshold           = "1"
+  treat_missing_data  = "breaching"
 
   dimensions {
     HealthCheckId = "${element(aws_route53_health_check.radius.*.id, count.index)}"
   }
+
+  alarm_actions = [
+    "${var.critical-notifications-arn}",
+  ]
 }
 
 resource "aws_cloudwatch_metric_alarm" "radius-latency" {
@@ -30,4 +35,8 @@ resource "aws_cloudwatch_metric_alarm" "radius-latency" {
   dimensions {
     HealthCheckId = "${element(aws_route53_health_check.radius.*.id, count.index)}"
   }
+
+  alarm_actions = [
+    "${var.critical-notifications-arn}",
+  ]
 }
