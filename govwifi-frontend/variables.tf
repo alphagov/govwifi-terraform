@@ -101,6 +101,6 @@ variable "bastion-ips" {
   default     = []
 }
 
-variable "critical-notifications-arn" {
+variable "route53-critical-notifications-arn" {
   type = "string"
 }

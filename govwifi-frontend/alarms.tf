@@ -16,7 +16,7 @@ resource "aws_cloudwatch_metric_alarm" "radius-hc" {
   }
 
   alarm_actions = [
-    "${var.critical-notifications-arn}",
+    "${var.route53-critical-notifications-arn}",
   ]
 }
 
@@ -37,6 +37,6 @@ resource "aws_cloudwatch_metric_alarm" "radius-latency" {
   }
 
   alarm_actions = [
-    "${var.critical-notifications-arn}",
+    "${var.route53-critical-notifications-arn}",
   ]
 }
