@@ -96,31 +96,6 @@ variable "capacity-notifications-arn" {}
 
 variable "enable-bastion-monitoring" {}
 
-variable "ithc-backend-instance-count" {
-  default = "0"
-}
-
-variable "ithc-ami" {
-  default = ""
-}
-
-variable "ithc-instance-type" {
-  default = ""
-}
-
-variable "ithc-server-ip" {
-  default = ""
-}
-
-variable "ithc-ssh-key-name" {
-  default = ""
-}
-
-variable "ithc-sg-list" {
-  type    = "list"
-  default = []
-}
-
 variable "users" {
   type = "list"
 }
