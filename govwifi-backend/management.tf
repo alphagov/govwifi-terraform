@@ -1,5 +1,6 @@
 # Using custom ubuntu AMI id, as the micro size is only supported for paravirtual images.
 resource "aws_instance" "management" {
+  count                  = "${var.enable-bastion}"
   ami                    = "${var.bastion-ami}"
   instance_type          = "${var.bastion-instance-type}"
   key_name               = "${var.bastion-ssh-key-name}"
@@ -189,7 +190,8 @@ DATA
 }
 
 resource "aws_iam_role" "bastion-instance-role" {
-  name = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-role"
+  count = "${var.enable-bastion}"
+  name  = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-role"
 
   assume_role_policy = <<EOF
 {
@@ -209,7 +211,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "bastion-instance-policy" {
-  count      = "${1 - (var.save-pp-data)}"
+  count      = "${min((1 - (var.save-pp-data)), var.enable-bastion)}"
   name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-policy"
   role       = "${aws_iam_role.bastion-instance-role.id}"
   depends_on = ["aws_iam_role.bastion-instance-role"]
@@ -236,7 +238,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "bastion-instance-policy-pp" {
-  count      = "${var.save-pp-data}"
+  count      = "${min(var.save-pp-data, var.enable-bastion)}"
   name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-policy"
   role       = "${aws_iam_role.bastion-instance-role.id}"
   depends_on = ["aws_iam_role.bastion-instance-role", "aws_s3_bucket.pp-data-bucket"]
@@ -270,17 +272,20 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "bastion-instance-profile" {
+  count      = "${var.enable-bastion}"
   name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-profile"
   role       = "${aws_iam_role.bastion-instance-role.name}"
   depends_on = ["aws_iam_role.bastion-instance-role"]
 }
 
 resource "aws_eip_association" "eip_assoc" {
+  count       = "${var.enable-bastion}"
   instance_id = "${aws_instance.management.id}"
   public_ip   = "${replace(var.bastion-server-ip, "/32", "")}"
 }
 
 resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
+  count               = "${var.enable-bastion}"
   alarm_name          = "${lower(var.Env-Name)}-bastion-status-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
