@@ -206,20 +206,3 @@ resource "aws_alb_target_group" "user-signup-api-tg" {
     path                = "/healthcheck"
   }
 }
-
-resource "aws_alb_listener_rule" "user-signup-api-lr" {
-  count        = "${var.user-signup-enabled}"
-  depends_on   = ["aws_alb_target_group.user-signup-api-tg"]
-  listener_arn = "${aws_alb_listener.alb_listener.arn}"
-  priority     = 2
-
-  action {
-    type             = "forward"
-    target_group_arn = "${aws_alb_target_group.user-signup-api-tg.id}"
-  }
-
-  condition {
-    field  = "path-pattern"
-    values = ["/user-signup/*"]
-  }
-}
