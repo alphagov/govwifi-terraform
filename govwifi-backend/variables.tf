@@ -24,6 +24,10 @@ variable "zone-subnets" {
   type = "map"
 }
 
+variable "enable-bastion" {
+  default = true
+}
+
 variable "bastion-ami" {}
 
 variable "bastion-instance-type" {}
