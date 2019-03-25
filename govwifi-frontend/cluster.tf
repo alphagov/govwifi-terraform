@@ -22,7 +22,7 @@ resource "aws_ecs_task_definition" "radius-task" {
 [
   {
     "volumesFrom": [],
-    "memory": 2000,
+    "memory": 1500,
     "extraHosts": null,
     "dnsServers": null,
     "disableNetworking": null,
