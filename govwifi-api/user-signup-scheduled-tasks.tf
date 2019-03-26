@@ -189,6 +189,12 @@ resource "aws_ecs_task_definition" "user-signup-api-scheduled-task" {
         },{
           "name": "PERFORMANCE_BEARER_COMPLETION_RATE",
           "value": "${var.performance-bearer-completion-rate}"
+        },{
+          "name": "FIRETEXT_TOKEN",
+          "value": "${var.firetext-token}"
+        },{
+          "name": "GOVNOTIFY_BEARER_TOKEN",
+          "value": "${var.govnotify-bearer-token}"
         }
       ],
       "links": null,
