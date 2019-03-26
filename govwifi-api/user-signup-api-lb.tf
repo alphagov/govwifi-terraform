@@ -1,9 +1,14 @@
 resource "aws_lb" "user-signup-api" {
-  count              = "${var.user-signup-enabled}"
-  name               = "user-signup-api-${var.Env-Name}"
-  internal           = false
-  subnets            = ["${var.subnet-ids}"]
-  security_groups    = ["${var.elb-sg-list}"]
+  count    = "${var.user-signup-enabled}"
+  name     = "user-signup-api-${var.Env-Name}"
+  internal = false
+  subnets  = ["${var.subnet-ids}"]
+
+  security_groups = [
+    "${var.elb-sg-list}",
+    "${aws_security_group.user-signup-api-lb-in.*.id}",
+  ]
+
   load_balancer_type = "application"
 
   tags {
