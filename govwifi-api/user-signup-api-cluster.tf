@@ -139,6 +139,12 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
         },{
           "name": "S3_SIGNUP_WHITELIST_OBJECT_KEY",
           "value": "signup-whitelist.conf"
+        },{
+          "name": "FIRETEXT_TOKEN",
+          "value": "${var.firetext-token}"
+        },{
+          "name": "GOVNOTIFY_BEARER_TOKEN",
+          "value": "${var.govnotify-bearer-token}"
         }
       ],
       "links": null,

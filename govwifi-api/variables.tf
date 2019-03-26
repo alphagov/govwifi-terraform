@@ -191,3 +191,13 @@ variable "admin-bucket-name" {
 variable "background-jobs-enabled" {
   default = 0
 }
+
+variable "firetext-token" {
+  type    = "string"
+  default = ""
+}
+
+variable "govnotify-bearer-token" {
+  type    = "string"
+  default = ""
+}
