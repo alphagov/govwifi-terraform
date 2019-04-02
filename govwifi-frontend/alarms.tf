@@ -40,3 +40,35 @@ resource "aws_cloudwatch_metric_alarm" "radius-latency" {
     "${var.route53-critical-notifications-arn}",
   ]
 }
+
+resource "aws_cloudwatch_metric_alarm" "auth-shared-secret-incorrect" {
+  alarm_name          = "${var.Env-Name}-shared-secret-incorrect"
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  evaluation_periods  = 1
+  period              = "${60 * 60 * 24}"
+  statistic           = "Sum"
+  treat_missing_data  = "breaching"
+  metric_name         = "${aws_cloudwatch_log_metric_filter.auth-shared-secret-incorrect.metric_transformation.0.name}"
+  namespace           = "${aws_cloudwatch_log_metric_filter.auth-shared-secret-incorrect.metric_transformation.0.namespace}"
+
+  alarm_actions = [
+    "${var.devops-notifications-arn}",
+  ]
+}
+
+resource "aws_cloudwatch_metric_alarm" "outer-and-inner-identities-same" {
+  alarm_name          = "${var.Env-Name}-outer-and-inner-identities-same"
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  evaluation_periods  = 1
+  period              = "${60 * 60 * 24}"
+  statistic           = "Sum"
+  treat_missing_data  = "breaching"
+  metric_name         = "${aws_cloudwatch_log_metric_filter.outer-and-inner-identities-same.metric_transformation.0.name}"
+  namespace           = "${aws_cloudwatch_log_metric_filter.outer-and-inner-identities-same.metric_transformation.0.namespace}"
+
+  alarm_actions = [
+    "${var.devops-notifications-arn}",
+  ]
+}
