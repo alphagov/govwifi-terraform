@@ -25,3 +25,31 @@ resource "aws_cloudwatch_log_metric_filter" "accounting-shared-secret-incorrect"
     default_value = "0"
   }
 }
+
+resource "aws_cloudwatch_log_metric_filter" "outer-and-inner-identities-same" {
+  name = "${var.Env-Name}-outer-and-inner-identities-same"
+
+  pattern        = "\"Outer and inner identities are the same\""
+  log_group_name = "${aws_cloudwatch_log_group.frontend-log-group.name}"
+
+  metric_transformation {
+    name          = "outer-and-inner-identities-same-count"
+    namespace     = "${local.frontend_metrics_namespace}"
+    value         = "1"
+    default_value = "0"
+  }
+}
+
+resource "aws_cloudwatch_log_metric_filter" "unknown-client" {
+  name = "${var.Env-Name}-unknown-client"
+
+  pattern        = "\"unknown client\""
+  log_group_name = "${aws_cloudwatch_log_group.frontend-log-group.name}"
+
+  metric_transformation {
+    name          = "unknown-client"
+    namespace     = "${local.frontend_metrics_namespace}"
+    value         = "1"
+    default_value = "0"
+  }
+}
