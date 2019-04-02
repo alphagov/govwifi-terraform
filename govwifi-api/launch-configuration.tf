@@ -5,7 +5,12 @@ resource "aws_launch_configuration" "ecs" {
   instance_type        = "t2.medium"
   iam_instance_profile = "${var.ecs-instance-profile-id}"
   key_name             = "${var.ssh-key-name}"
-  security_groups      = ["${var.backend-sg-list}"]
+
+  security_groups = [
+    "${var.backend-sg-list}",
+    "${aws_security_group.api-in.id}",
+    "${aws_security_group.api-out.id}",
+  ]
 
   user_data = <<DATA
 Content-Type: multipart/mixed; boundary="==BOUNDARY=="

@@ -102,7 +102,9 @@ variable "performance-bearer-unique-users" {
   default = ""
 }
 
-variable "radius-server-ips" {}
+variable "radius-server-ips" {
+  type = "list"
+}
 
 variable "authentication-sentry-dsn" {}
 
