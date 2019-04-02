@@ -128,7 +128,12 @@ resource "aws_ecs_service" "logging-api-service" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    security_groups  = ["${var.backend-sg-list}"]
+    security_groups = [
+      "${var.backend-sg-list}",
+      "${aws_security_group.api-in.id}",
+      "${aws_security_group.api-out.id}",
+    ]
+
     subnets          = ["${var.subnet-ids}"]
     assign_public_ip = true
   }

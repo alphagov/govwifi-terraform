@@ -5,7 +5,8 @@ resource "aws_lb" "user-signup-api" {
   subnets  = ["${var.subnet-ids}"]
 
   security_groups = [
-    "${var.elb-sg-list}",
+    "${aws_security_group.api-alb-in.id}",
+    "${aws_security_group.api-alb-out.id}",
     "${aws_security_group.user-signup-api-lb-in.*.id}",
   ]
 
