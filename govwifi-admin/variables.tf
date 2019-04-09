@@ -138,6 +138,8 @@ variable "zendesk-api-user" {}
 
 variable "zendesk-api-token" {}
 
+variable "public-google-api-key" {}
+
 variable "bastion-ips" {
   description = "The list of allowed hosts to connect to the ec2 instances"
   type        = "list"

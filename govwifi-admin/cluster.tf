@@ -116,6 +116,9 @@ resource "aws_ecs_task_definition" "admin-task" {
         },{
           "name": "ZENDESK_API_TOKEN",
           "value": "${var.zendesk-api-token}"
+        },{
+          "name": "GOOGLE_MAPS_PUBLIC_API_KEY",
+          "value": "${var.public-google-api-key}"
         }
       ],
       "image": "${var.admin-docker-image}",
