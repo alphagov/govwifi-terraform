@@ -14,6 +14,11 @@ variable "aws-region" {}
 
 variable "aws-region-name" {}
 
+variable "backend-subnet-IPs" {}
+variable "administrator-IPs" {}
+variable "bastion-server-IP" {}
+variable "frontend-radius-IPs" {}
+
 variable "zone-count" {}
 
 variable "zone-names" {
@@ -84,14 +89,6 @@ variable "user-rr-instance-type" {
 
 variable "user-rr-storage-gb" {
   default = 20
-}
-
-variable "mgt-sg-list" {
-  type = "list"
-}
-
-variable "db-sg-list" {
-  type = "list"
 }
 
 variable "critical-notifications-arn" {}

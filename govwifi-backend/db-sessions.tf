@@ -16,7 +16,7 @@ resource "aws_db_instance" "db" {
   multi_az                    = true
   storage_encrypted           = "${var.db-encrypt-at-rest}"
   db_subnet_group_name        = "wifi-${var.Env-Name}-subnets"
-  vpc_security_group_ids      = ["${var.db-sg-list}"]
+  vpc_security_group_ids      = ["${aws_security_group.be-db-in.id}"]
   depends_on                  = ["aws_iam_role.rds-monitoring-role"]
   monitoring_role_arn         = "${aws_iam_role.rds-monitoring-role.arn}"
   monitoring_interval         = "${var.db-monitoring-interval}"
@@ -50,7 +50,7 @@ resource "aws_db_instance" "read_replica" {
   backup_retention_period     = 0
   multi_az                    = false
   storage_encrypted           = "${var.db-encrypt-at-rest}"
-  vpc_security_group_ids      = ["${var.db-sg-list}"]
+  vpc_security_group_ids      = ["${aws_security_group.be-db-in.id}"]
   depends_on                  = ["aws_iam_role.rds-monitoring-role"]
   monitoring_role_arn         = "${aws_iam_role.rds-monitoring-role.arn}"
   monitoring_interval         = "${var.db-monitoring-interval}"
