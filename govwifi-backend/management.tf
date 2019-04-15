@@ -1,17 +1,19 @@
 # Using custom ubuntu AMI id, as the micro size is only supported for paravirtual images.
 resource "aws_instance" "management" {
-  count                  = "${var.enable-bastion}"
-  ami                    = "${var.bastion-ami}"
-  instance_type          = "${var.bastion-instance-type}"
-  key_name               = "${var.bastion-ssh-key-name}"
-  subnet_id              = "${aws_subnet.wifi-backend-subnet.0.id}"
+  count         = "${var.enable-bastion}"
+  ami           = "${var.bastion-ami}"
+  instance_type = "${var.bastion-instance-type}"
+  key_name      = "${var.bastion-ssh-key-name}"
+  subnet_id     = "${aws_subnet.wifi-backend-subnet.0.id}"
+
   vpc_security_group_ids = [
     "${aws_security_group.be-vpn-in.id}",
     "${aws_security_group.be-vpn-out.id}",
     "${aws_security_group.be-ecs-out.id}",
   ]
-  iam_instance_profile   = "${aws_iam_instance_profile.bastion-instance-profile.id}"
-  monitoring             = "${var.enable-bastion-monitoring}"
+
+  iam_instance_profile = "${aws_iam_instance_profile.bastion-instance-profile.id}"
+  monitoring           = "${var.enable-bastion-monitoring}"
 
   depends_on = [
     "aws_iam_instance_profile.bastion-instance-profile",
