@@ -19,5 +19,5 @@ output "rds-monitoring-role" {
 }
 
 output "be-admin-in" {
-  value = "${aws_security_group.be-admin-in.*.id}"
+  value = "${aws_security_group.be-admin-in.id}"
 }

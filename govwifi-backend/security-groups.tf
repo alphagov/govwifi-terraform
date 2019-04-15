@@ -110,7 +110,6 @@ resource "aws_security_group" "be-vpn-out" {
 
     cidr_blocks = [
       "${split(",", var.backend-subnet-IPs)}",
-      "${split(",", var.frontend-subnet-IPs)}",
       "${split(",", var.frontend-radius-IPs)}",
     ]
   }
@@ -137,78 +136,5 @@ resource "aws_security_group" "be-radius-api-in" {
     to_port     = 8443
     protocol    = "tcp"
     cidr_blocks = ["${split(",",var.frontend-radius-IPs)}"]
-  }
-}
-
-resource "aws_security_group" "be-sns-in" {
-  count       = "${var.sns-count}"
-  name        = "be-sns-in"
-  description = "Allow inbound calls from SNS"
-  vpc_id      = "${aws_vpc.wifi-backend.id}"
-
-  tags {
-    Name = "${title(var.Env-Name)} Backend SNS in"
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["${split(",", var.amazon-sns-IPs)}"]
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["${split(",", var.amazon-sns-IPs)}", "${split(",", var.bastion-server-IP)}"]
-  }
-}
-
-resource "aws_security_group" "be-elb-out" {
-  name        = "be-elb-out"
-  description = "Allow outbound calls from the backend"
-  vpc_id      = "${aws_vpc.wifi-backend.id}"
-
-  tags {
-    Name = "${title(var.Env-Name)} Backend ELB out"
-  }
-
-  egress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["${split(",", var.backend-subnet-IPs)}"]
-  }
-
-  egress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["${split(",", var.backend-subnet-IPs)}"]
-  }
-}
-
-resource "aws_security_group" "be-backend-in" {
-  name        = "be-backend-in"
-  description = "Allow inbound traffic from ELB"
-  vpc_id      = "${aws_vpc.wifi-backend.id}"
-
-  tags {
-    Name = "${title(var.Env-Name)} Backend Servers in"
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["${split(",", var.backend-subnet-IPs)}"]
-  }
-
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["${split(",", var.backend-subnet-IPs)}"]
   }
 }

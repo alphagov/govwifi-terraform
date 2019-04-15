@@ -18,7 +18,6 @@ variable "backend-subnet-IPs" {}
 variable "administrator-IPs" {}
 variable "bastion-server-IP" {}
 variable "amazon-sns-IPs" {}
-variable "frontend-subnet-IPs" {}
 variable "frontend-radius-IPs" {}
 
 variable "zone-count" {}
