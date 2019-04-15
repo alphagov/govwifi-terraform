@@ -14,6 +14,13 @@ variable "aws-region" {}
 
 variable "aws-region-name" {}
 
+variable "backend-subnet-IPs" {}
+variable "administrator-IPs" {}
+variable "bastion-server-IP" {}
+variable "amazon-sns-IPs" {}
+variable "frontend-subnet-IPs" {}
+variable "frontend-radius-IPs" {}
+
 variable "zone-count" {}
 
 variable "zone-names" {
@@ -86,14 +93,6 @@ variable "user-rr-storage-gb" {
   default = 20
 }
 
-variable "mgt-sg-list" {
-  type = "list"
-}
-
-variable "db-sg-list" {
-  type = "list"
-}
-
 variable "critical-notifications-arn" {}
 
 variable "capacity-notifications-arn" {}
@@ -121,4 +120,12 @@ variable "rds-kms-key-id" {
 variable "user-replica-source-db" {
   type    = "string"
   default = ""
+}
+
+variable "sns-count" {
+  default = 1
+}
+
+variable "admin-count" {
+  default = 1
 }

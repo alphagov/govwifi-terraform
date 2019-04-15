@@ -17,3 +17,7 @@ output "ecs-service-role" {
 output "rds-monitoring-role" {
   value = "${aws_iam_role.rds-monitoring-role.arn}"
 }
+
+output "be-admin-in" {
+  value = "${aws_security_group.be-admin-in.*.id}"
+}
