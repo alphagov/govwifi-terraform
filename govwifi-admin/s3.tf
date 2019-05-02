@@ -89,10 +89,7 @@ policy =<<POLICY
             "Principal": "*",
             "Action": [
                 "s3:GetObject",
-                "s3:GetObjectVersion",
-                "s3:PutObject",
-                "s3:PutObjectAcl",
-                "s3:PutObjectVersionAcl"
+                "s3:GetObjectVersion"
             ],
             "Resource": "arn:aws:s3:::govwifi-${var.rack-env}-product-page-data/*"
         },
