@@ -19,7 +19,7 @@ resource "aws_s3_bucket" "product-page-data-bucket" {
   count         = 1
   bucket        = "govwifi-${var.rack-env}-product-page-data"
   force_destroy = true
-  acl           = "public"
+  acl           = "public-read"
 
   tags {
     Name        = "${title(var.rack-env)} Product page data"
