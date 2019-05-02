@@ -22,7 +22,7 @@ resource "aws_s3_bucket" "product-page-data-bucket" {
   acl           = "public"
 
   tags {
-    Name        = "${title(var.Env-Name)} Product page data"
+    Name        = "${title(var.rack-env)} Product page data"
     Region      = "${title(var.aws-region-name)}"
     Environment = "${title(var.rack-env)}"
   }
@@ -76,7 +76,7 @@ resource "aws_s3_bucket_policy" "admin-bucket-policy" {
 POLICY
 }
 
-resource "aws_s3_bucket_policy" "product-page-data-bucket" {
+resource "aws_s3_bucket_policy" "product-page-data-bucket-policy" {
 bucket = "${aws_s3_bucket.product-page-data-bucket.id}"
 policy =<<POLICY
 {
