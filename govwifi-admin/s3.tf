@@ -15,6 +15,23 @@ resource "aws_s3_bucket" "admin-bucket" {
   }
 }
 
+resource "aws_s3_bucket" "product-page-data-bucket" {
+  count         = 1
+  bucket        = "govwifi-${var.rack-env}-product-page-data"
+  force_destroy = true
+  acl           = "public"
+
+  tags {
+    Name        = "${title(var.Env-Name)} Product page data"
+    Region      = "${title(var.aws-region-name)}"
+    Environment = "${title(var.rack-env)}"
+  }
+
+  versioning {
+    enabled = true
+  }
+}
+
 resource "aws_s3_bucket" "admin-mou-bucket" {
   count         = 1
   bucket        = "govwifi-${var.rack-env}-admin-mou"
@@ -55,6 +72,42 @@ resource "aws_s3_bucket_policy" "admin-bucket-policy" {
       }
     }
   ]
+}
+POLICY
+}
+
+resource "aws_s3_bucket_policy" "product-page-data-bucket" {
+bucket = "${aws_s3_bucket.product-page-data-bucket.id}"
+policy =<<POLICY
+{
+    "Version": "2012-10-17",
+    "Id": "ProductPageDataFetch",
+    "Statement": [
+        {
+            "Sid": "Get Product Page Data For Objects",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [
+                "s3:GetObject",
+                "s3:GetObjectVersion",
+                "s3:PutObject",
+                "s3:PutObjectAcl",
+                "s3:PutObjectVersionAcl"
+            ],
+            "Resource": "arn:aws:s3:::govwifi-${var.rack-env}-product-page-data/*"
+        },
+        {
+            "Sid": "Get Product Page Data For Bucket",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [
+                "s3:GetBucketVersioning",
+                "s3:ListBucket",
+                "s3:ListBucketVersions"
+            ],
+            "Resource": "arn:aws:s3:::govwifi-${var.rack-env}-product-page-data"
+        }
+    ]
 }
 POLICY
 }
