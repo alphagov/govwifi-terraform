@@ -93,6 +93,15 @@ resource "aws_ecs_task_definition" "admin-task" {
           "name": "S3_WHITELIST_OBJECT_KEY",
           "value": "clients.conf"
         },{
+          "name": "S3_PRODUCT_PAGE_DATA_BUCKET",
+          "value": "govwifi-${var.rack-env}-product-page-data"
+        },{
+          "name": "S3_ORGANISATION_NAMES_OBJECT_KEY",
+          "value": "organisations.yml"
+        },{
+          "name": "S3_EMAIL_DOMAINS_OBJECT_KEY",
+          "value": "domains.yml"
+        },{
           "name": "LOGGING_API_SEARCH_ENDPOINT",
           "value": "${var.logging-api-search-url}"
         },{
