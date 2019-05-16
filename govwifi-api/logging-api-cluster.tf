@@ -83,8 +83,8 @@ resource "aws_ecs_task_definition" "logging-api-task" {
           "name": "PERFORMANCE_DATASET",
           "value": "${var.performance-dataset}"
         },{
-          "name": "PERFORMANCE_BEARER_ACCOUNT_USAGE",
-          "value": "${var.performance-bearer-account-usage}"
+          "name": "PERFORMANCE_BEARER_ACTIVE_USERS",
+          "value": "${var.performance-bearer-active-users}"
         },{
           "name": "PERFORMANCE_BEARER_UNIQUE_USERS",
           "value": "${var.performance-bearer-unique-users}"
