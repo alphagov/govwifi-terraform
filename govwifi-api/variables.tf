@@ -94,7 +94,7 @@ variable "performance-bearer-completion-rate" {
   default = ""
 }
 
-variable "performance-bearer-account-usage" {
+variable "performance-bearer-active-users" {
   default = ""
 }
 
