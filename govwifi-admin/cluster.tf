@@ -1,194 +1,52 @@
-resource "aws_ecs_cluster" "admin-cluster" {
-  name = "${var.Env-Name}-admin-cluster"
-}
+module "service" {
+  source = "../fargate-service"
 
-resource "aws_cloudwatch_log_group" "admin-log-group" {
-  name = "${var.Env-Name}-admin-log-group"
+  stage          = "${var.Env-Name}"
+  name           = "admin"
+  vpc-id         = "${var.vpc-id}"
+  image-tag      = "${var.Env-Name == "wifi" ? "production" : var.Env-Name}"
+  subnet-ids     = "${var.subnet-ids}"
+  hosted-zone-id = "${data.aws_route53_zone.zone.id}"
+  set-subdomain  = "${var.Env-Name != "wifi"}"
 
-  retention_in_days = 90
-}
+  healthcheck-path     = "/healthcheck"
+  container-policy-arn = "${aws_iam_policy.ecs-admin-instance-policy.arn}"
 
-resource "aws_ecr_repository" "govwifi-admin-ecr" {
-  count = "${var.ecr-repository-count}"
-  name  = "govwifi/admin"
-}
-
-resource "aws_ecs_task_definition" "admin-task" {
-  family                   = "admin-task-${var.Env-Name}"
-  requires_compatibilities = ["FARGATE"]
-  task_role_arn            = "${aws_iam_role.ecs-admin-instance-role.arn}"
-  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
-  cpu                      = "512"
-  memory                   = "1024"
-  network_mode             = "awsvpc"
-
-  container_definitions = <<EOF
-[
-    {
-      "portMappings": [
-        {
-          "hostPort": 3000,
-          "containerPort": 3000,
-          "protocol": "tcp"
-        }
-      ],
-      "essential": true,
-      "name": "admin",
-      "environment": [
-        {
-          "name": "DB_USER",
-          "value": "${var.admin-db-user}"
-        },{
-          "name": "DB_PASS",
-          "value": "${var.admin-db-password}"
-        },{
-          "name": "DB_NAME",
-          "value": "govwifi_admin_${var.rack-env}"
-        },{
-          "name": "DB_HOST",
-          "value": "${aws_db_instance.admin_db.address}"
-        },{
-          "name": "NOTIFY_API_KEY",
-          "value": "${var.notify-api-key}"
-        },{
-          "name": "RACK_ENV",
-          "value": "${var.rack-env}"
-        },{
-          "name": "SECRET_KEY_BASE",
-          "value": "${var.secret-key-base}"
-        },{
-          "name": "DEVISE_SECRET_KEY",
-          "value": "${var.secret-key-base}"
-        },{
-          "name": "RAILS_LOG_TO_STDOUT",
-          "value": "1"
-        },{
-          "name": "RAILS_SERVE_STATIC_FILES",
-          "value": "1"
-        },{
-          "name": "LONDON_RADIUS_IPS",
-          "value": "${join(",", var.london-radius-ip-addresses)}"
-        },{
-          "name": "DUBLIN_RADIUS_IPS",
-          "value": "${join(",", var.dublin-radius-ip-addresses)}"
-        },{
-          "name": "SENTRY_DSN",
-          "value": "${var.sentry-dsn}"
-        },{
-          "name": "S3_MOU_BUCKET",
-          "value": "govwifi-${var.rack-env}-admin-mou"
-        },{
-          "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
-          "value": "govwifi-${var.rack-env}-admin"
-        },{
-          "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
-          "value": "ips-and-locations.json"
-        },{
-          "name": "S3_SIGNUP_WHITELIST_BUCKET",
-          "value": "govwifi-${var.rack-env}-admin"
-        },{
-          "name": "S3_SIGNUP_WHITELIST_OBJECT_KEY",
-          "value": "signup-whitelist.conf"
-        },{
-          "name": "S3_WHITELIST_OBJECT_KEY",
-          "value": "clients.conf"
-        },{
-          "name": "S3_PRODUCT_PAGE_DATA_BUCKET",
-          "value": "govwifi-${var.rack-env}-product-page-data"
-        },{
-          "name": "S3_ORGANISATION_NAMES_OBJECT_KEY",
-          "value": "organisations.yml"
-        },{
-          "name": "S3_EMAIL_DOMAINS_OBJECT_KEY",
-          "value": "domains.yml"
-        },{
-          "name": "LOGGING_API_SEARCH_ENDPOINT",
-          "value": "${var.logging-api-search-url}"
-        },{
-          "name": "RR_DB_USER",
-          "value": "${var.rr-db-user}"
-        },{
-          "name": "RR_DB_PASS",
-          "value": "${var.rr-db-password}"
-        },{
-          "name": "RR_DB_HOST",
-          "value": "${var.rr-db-host}"
-        },{
-          "name": "RR_DB_NAME",
-          "value": "${var.rr-db-name}"
-        },{
-          "name": "ZENDESK_API_ENDPOINT",
-          "value": "${var.zendesk-api-endpoint}"
-        },{
-          "name": "ZENDESK_API_USER",
-          "value": "${var.zendesk-api-user}"
-        },{
-          "name": "ZENDESK_API_TOKEN",
-          "value": "${var.zendesk-api-token}"
-        },{
-          "name": "GOOGLE_MAPS_PUBLIC_API_KEY",
-          "value": "${var.public-google-api-key}"
-        }
-      ],
-      "image": "${var.admin-docker-image}",
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.admin-log-group.name}",
-          "awslogs-region": "${var.aws-region}",
-          "awslogs-stream-prefix": "${var.Env-Name}-admin-docker-logs"
-        }
-      },
-      "expanded": true
-    }
-]
-EOF
-}
-
-resource "aws_ecs_service" "admin-service" {
-  depends_on      = ["aws_alb_listener.alb_listener"]
-  name            = "admin-${var.Env-Name}"
-  cluster         = "${aws_ecs_cluster.admin-cluster.id}"
-  task_definition = "${aws_ecs_task_definition.admin-task.arn}"
-  desired_count   = "${var.instance-count}"
-  launch_type     = "FARGATE"
-
-  load_balancer {
-    target_group_arn = "${aws_alb_target_group.admin-tg.arn}"
-    container_name   = "admin"
-    container_port   = "3000"
+  ports = {
+    "3000" = "tcp"
   }
 
-  network_configuration {
-    subnets = ["${var.subnet-ids}"]
-
-    security_groups = [
-      "${aws_security_group.admin-ec2-in.id}",
-      "${aws_security_group.admin-ec2-out.id}",
-    ]
-
-    assign_public_ip = true
-  }
-}
-
-resource "aws_alb_target_group" "admin-tg" {
-  depends_on           = ["aws_lb.admin-alb"]
-  name                 = "admin-${var.Env-Name}-fg-tg"
-  port                 = "3000"
-  protocol             = "HTTP"
-  vpc_id               = "${var.vpc-id}"
-  target_type          = "ip"
-  deregistration_delay = 10
-
-  health_check {
-    healthy_threshold   = 3
-    unhealthy_threshold = 10
-    timeout             = 5
-    interval            = 10
-    path                = "/healthcheck"
-  }
-
-  lifecycle {
-    create_before_destroy = true
+  environment = {
+    DB_USER                               = "${var.admin-db-user}"
+    DB_PASS                               = "${var.admin-db-password}"
+    DB_NAME                               = "govwifi_admin_${var.rack-env}"
+    DB_HOST                               = "${aws_db_instance.admin_db.address}"
+    NOTIFY_API_KEY                        = "${var.notify-api-key}"
+    RACK_ENV                              = "${var.rack-env}"
+    SECRET_KEY_BASE                       = "${var.secret-key-base}"
+    DEVISE_SECRET_KEY                     = "${var.secret-key-base}"
+    RAILS_LOG_TO_STDOUT                   = "1"
+    RAILS_SERVE_STATIC_FILES              = "1"
+    LONDON_RADIUS_IPS                     = "${join(",", var.london-radius-ip-addresses)}"
+    DUBLIN_RADIUS_IPS                     = "${join(",", var.dublin-radius-ip-addresses)}"
+    SENTRY_DSN                            = "${var.sentry-dsn}"
+    S3_MOU_BUCKET                         = "govwifi-${var.rack-env}-admin-mou"
+    S3_PUBLISHED_LOCATIONS_IPS_BUCKET     = "govwifi-${var.rack-env}-admin"
+    S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY = "ips-and-locations.json"
+    S3_SIGNUP_WHITELIST_BUCKET            = "govwifi-${var.rack-env}-admin"
+    S3_SIGNUP_WHITELIST_OBJECT_KEY        = "signup-whitelist.conf"
+    S3_WHITELIST_OBJECT_KEY               = "clients.conf"
+    S3_PRODUCT_PAGE_DATA_BUCKET           = "govwifi-${var.rack-env}-product-page-data"
+    S3_ORGANISATION_NAMES_OBJECT_KEY      = "organisations.yml"
+    S3_EMAIL_DOMAINS_OBJECT_KEY           = "domains.yml"
+    LOGGING_API_SEARCH_ENDPOINT           = "${var.logging-api-search-url}"
+    RR_DB_USER                            = "${var.rr-db-user}"
+    RR_DB_PASS                            = "${var.rr-db-password}"
+    RR_DB_HOST                            = "${var.rr-db-host}"
+    RR_DB_NAME                            = "${var.rr-db-name}"
+    ZENDESK_API_ENDPOINT                  = "${var.zendesk-api-endpoint}"
+    ZENDESK_API_USER                      = "${var.zendesk-api-user}"
+    ZENDESK_API_TOKEN                     = "${var.zendesk-api-token}"
+    GOOGLE_MAPS_PUBLIC_API_KEY            = "${var.public-google-api-key}"
   }
 }
