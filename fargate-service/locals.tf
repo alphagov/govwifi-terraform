@@ -16,6 +16,8 @@ locals {
 
   create-dns-record = "${var.hosted-zone-id != ""}"
 
+  healthchecks-enabled = "${var.healtcheck-path != ""}"
+
   forwarding-port = "${
     var.forwarding-port != ""
     ? var.forwarding-port

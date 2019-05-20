@@ -108,3 +108,9 @@ set the port that the loadbalancer is to use on the container.
 Defaults to the first port in 'ports' if only one is set.
 EOT
 }
+
+variable "healtcheck-path" {
+  type        = "string"
+  default     = ""
+  description = "Enable healthchecks against the path 'healtcheck-path'"
+}

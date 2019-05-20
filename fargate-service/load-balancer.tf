@@ -58,6 +58,13 @@ resource "aws_lb_target_group" "this" {
   deregistration_delay = 10
   tags                 = "${local.staged-tags}"
 
+  health_check {
+    enabled  = "${local.healthchecks-enabled}"
+    interval = 10
+    matcher  = "200"
+    path     = "${var.healtcheck-path}"
+  }
+
   lifecycle {
     create_before_destroy = true
   }
