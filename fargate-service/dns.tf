@@ -10,7 +10,7 @@ data "aws_lb" "this" {
 resource "aws_route53_record" "this" {
   count   = "${local.create-dns-record ? 1 : 0}"
   zone_id = "${var.hosted-zone-id}"
-  name    = "admin.${locals.dns-subdomain}"
+  name    = "${var.name}.${locals.dns-subdomain}"
   type    = "A"
 
   alias {
