@@ -9,7 +9,7 @@ data "aws_subnet_ids" "this" {
 }
 
 resource "aws_ecs_cluster" "this" {
-  count = "${local.create_cluster ? 1 : 0}"
+  count = "${local.create-cluster ? 1 : 0}"
   name  = "${local.full-name}"
   tags  = "${local.staged-tags}"
 }

@@ -62,7 +62,7 @@ resource "aws_lb_target_group" "this" {
     enabled  = "${local.healthchecks-enabled}"
     interval = 10
     matcher  = "200"
-    path     = "${var.healtcheck-path}"
+    path     = "${var.healthcheck-path}"
   }
 
   lifecycle {

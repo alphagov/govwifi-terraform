@@ -7,8 +7,9 @@ locals {
   repository        = "${local.create-repository ? aws_ecr_repository.this.repository_url : var.repository}"
   image             = "${local.repository}:${var.image-tag}"
 
-  subnet-ids    = "${length(var.subnet-ids) == 0 ? data.aws_subnet_ids.this.ids : var.subnet-ids }"
-  desired-count = "${var.count-per-subnet * local.subnet-ids}"
+  # This is an absolute hack, due to lists not being supported well in locals
+  subnet-ids    = "${split("&", length(var.subnet-ids) == 0 ? join("&", data.aws_subnet_ids.this.ids) : join("&", var.subnet-ids))}"
+  desired-count = "${var.count-per-subnet * length(local.subnet-ids)}"
 
   create-loadbalancer = "${var.loadbalancer-arn == ""}"
   public-loadbalancer = "${local.create-loadbalancer && var.public-loadbalancer}"
@@ -16,7 +17,7 @@ locals {
 
   create-dns-record = "${var.hosted-zone-id != ""}"
 
-  healthchecks-enabled = "${var.healtcheck-path != ""}"
+  healthchecks-enabled = "${var.healthcheck-path != ""}"
 
   forwarding-port = "${
     var.forwarding-port != ""

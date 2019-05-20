@@ -20,7 +20,7 @@ EOT
 }
 
 data "template_file" "container-definition-ports" {
-  count = "${local.container-definition-ports}"
+  count = "${length(local.container-definition-ports)}"
 
   vars = {
     port     = "${element(local.container-definition-ports, count.index)}"

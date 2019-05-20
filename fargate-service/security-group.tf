@@ -15,17 +15,19 @@ resource "aws_security_group" "lb" {
 }
 
 resource "aws_security_group_rule" "service-egress" {
-  type             = "egress"
-  description      = "Allow all outbound traffic"
-  cidr_blocks      = ["0.0.0.0/0"]
-  ipv6_cidr_blocks = ["::/0"]
-  protocol         = "all"
-  from_port        = 0
-  to_port          = 0
+  type              = "egress"
+  description       = "Allow all outbound traffic"
+  security_group_id = "${aws_security_group.service.id}"
+  cidr_blocks       = ["0.0.0.0/0"]
+  ipv6_cidr_blocks  = ["::/0"]
+  protocol          = "all"
+  from_port         = 0
+  to_port           = 0
 }
 
 resource "aws_security_group_rule" "service-ingress" {
   count                    = "${length(local.security-group-service-port-keys)}"
+  type                     = "ingress"
   description              = "Allow traffic from the loadbalancer to the service"
   security_group_id        = "${aws_security_group.service.id}"
   source_security_group_id = "${aws_security_group.lb.id}"
@@ -36,6 +38,7 @@ resource "aws_security_group_rule" "service-ingress" {
 
 resource "aws_security_group_rule" "lb-ingress-http" {
   count             = "${local.public-loadbalancer ? 1 : 0}"
+  type              = "ingress"
   description       = "Allow HTTP traffic to the loadbalancer"
   security_group_id = "${aws_security_group.lb.id}"
   cidr_blocks       = ["0.0.0.0/0"]
@@ -47,6 +50,7 @@ resource "aws_security_group_rule" "lb-ingress-http" {
 
 resource "aws_security_group_rule" "lb-ingress-https" {
   count             = "${local.public-loadbalancer ? 1 : 0}"
+  type              = "ingress"
   description       = "Allow HTTPS traffic to the loadbalancer"
   security_group_id = "${aws_security_group.lb.id}"
   cidr_blocks       = ["0.0.0.0/0"]
@@ -58,6 +62,7 @@ resource "aws_security_group_rule" "lb-ingress-https" {
 
 resource "aws_security_group_rule" "lb-egress" {
   count                    = "${length(local.security-group-service-port-keys)}"
+  type                     = "egress"
   description              = "Allow Loadbalancer to send to Service"
   security_group_id        = "${aws_security_group.lb.id}"
   source_security_group_id = "${aws_security_group.service.id}"

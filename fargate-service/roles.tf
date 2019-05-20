@@ -1,7 +1,3 @@
-locals {
-  has-custom-container-policy = "${var.container-policy-arn != ""}"
-}
-
 resource "aws_iam_role" "container" {
   # Role exposed to the container
   name               = "${local.full-name}-container-role"
@@ -34,7 +30,7 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "provided" {
-  count      = "${local.has-custom-container-policy ? 1 : 0}"
+  count      = "${var.container-policy-arn != "" ? 1 : 0}"
   role       = "${aws_iam_role.container.name}"
   policy_arn = "${var.container-policy-arn}"
 }

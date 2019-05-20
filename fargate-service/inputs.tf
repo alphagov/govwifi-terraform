@@ -109,10 +109,10 @@ Defaults to the first port in 'ports' if only one is set.
 EOT
 }
 
-variable "healtcheck-path" {
+variable "healthcheck-path" {
   type        = "string"
   default     = ""
-  description = "Enable healthchecks against the path 'healtcheck-path'"
+  description = "Enable healthchecks against the path 'healthcheck-path'"
 }
 
 variable "container-policy-arn" {
