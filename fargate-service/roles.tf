@@ -30,7 +30,7 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "provided" {
-  count      = "${var.container-policy-arn != "" ? 1 : 0}"
+  count      = "${var.attach-custom-policy-to-container ? 1 : 0}"
   role       = "${aws_iam_role.container.name}"
   policy_arn = "${var.container-policy-arn}"
 }
