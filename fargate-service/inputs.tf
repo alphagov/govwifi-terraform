@@ -98,3 +98,13 @@ variable "set-subdomain" {
   default     = true
   description = "include the stage in the domain"
 }
+
+variable "forwarding-port" {
+  type    = "string"
+  default = ""
+
+  description = <<EOT
+set the port that the loadbalancer is to use on the container.
+Defaults to the first port in 'ports' if only one is set.
+EOT
+}

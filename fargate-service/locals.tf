@@ -16,6 +16,14 @@ locals {
 
   create-dns-record = "${var.hosted-zone-id != ""}"
 
+  forwarding-port = "${
+    var.forwarding-port != ""
+    ? var.forwarding-port
+    : length(var.ports) == 1
+      ? element(keys(var.ports), 0)
+      : ""
+  }"
+
   default-tags = {
     "Namespace" = "${var.namespace}"
     "Service"   = "${var.name}"

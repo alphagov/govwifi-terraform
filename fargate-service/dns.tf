@@ -2,15 +2,10 @@ locals {
   dns-subdomain = "${var.set-subdomain ? "${var.stage}." : ""}"
 }
 
-data "aws_lb" "this" {
-  # fetch this dynamically, as we aren't guaranteed to be controlling the loadbalancer
-  arn = "${local.loadbalancer-arn}"
-}
-
 resource "aws_route53_record" "this" {
   count   = "${local.create-dns-record ? 1 : 0}"
   zone_id = "${var.hosted-zone-id}"
-  name    = "${var.name}.${locals.dns-subdomain}"
+  name    = "${var.name}.${local.dns-subdomain}"
   type    = "A"
 
   alias {
