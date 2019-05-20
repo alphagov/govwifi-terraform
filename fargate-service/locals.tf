@@ -4,7 +4,7 @@ locals {
   cluster-id     = "${local.create-cluster ? aws_ecs_cluster.this.id : var.cluster-id}"
 
   create-repository = "${var.repository == ""}"
-  repository        = "${local.create-repository ? "" : var.repository}"
+  repository        = "${local.create-repository ? aws_ecr_repository.this.repository_url : var.repository}"
   image             = "${local.repository}:${var.image-tag}"
 
   subnet-ids    = "${length(var.subnet-ids) == 0 ? data.aws_subnet_ids.this.ids : var.subnet-ids }"
