@@ -7,8 +7,12 @@ locals {
   repository        = "${local.create-repository ? "" : var.repository}"
   image             = "${local.repository}:${var.image-tag}"
 
-  subnet-ids    = "${var.subnet-ids == "" ? data.aws_subnet_ids.this.ids : var.subnet-ids }"
+  subnet-ids    = "${length(var.subnet-ids) == 0 ? data.aws_subnet_ids.this.ids : var.subnet-ids }"
   desired-count = "${var.count-per-subnet * local.subnet-ids}"
+
+  create-loadbalancer = "${var.loadbalancer-arn == ""}"
+  public-loadbalancer = "${local.create-loadbalancer && var.public-loadbalancer}"
+  loadbalancer-arn    = "${local.create-loadbalancer ? aws_lb.this.arn : var.loadbalancer-arn}"
 
   default-tags = {
     "Namespace" = "${var.namespace}"

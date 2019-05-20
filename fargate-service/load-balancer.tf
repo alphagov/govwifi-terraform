@@ -1,18 +1,17 @@
-resource "aws_lb" "admin-alb" {
-  name     = "admin-alb-${var.Env-Name}"
-  internal = false
-  subnets  = ["${var.subnet-ids}"]
+resource "aws_lb" "this" {
+  count              = "${local.create-loadbalancer ? 1 : 0}"
+  name               = "${local.full-name}"
+  internal           = false
+  load_balancer_type = "application"
+  tags               = "${local.staged-tags}"
 
-  security_groups = [
-    "${aws_security_group.admin-alb-in.id}",
-    "${aws_security_group.admin-alb-out.id}",
+  subnets = [
+    "${local.subnet-ids}",
   ]
 
-  load_balancer_type = "application"
-
-  tags {
-    Name = "admin-alb-${var.Env-Name}"
-  }
+  security_groups = [
+    "${aws_security_group.lb.id}",
+  ]
 }
 
 resource "aws_alb_listener" "alb_listener" {

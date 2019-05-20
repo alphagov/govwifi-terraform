@@ -76,3 +76,14 @@ variable "subnet-ids" {
   default     = []
   description = "Subnet IDs. Defaults to using all public subnets in the provided VPC"
 }
+
+variable "loadbalancer-arn" {
+  type        = "string"
+  default     = ""
+  description = "Set this to manage your own loadbalancer and listeners. Otherwise, creates a loadbalancer."
+}
+
+variable "public-loadbalancer" {
+  default     = true
+  description = "When creating the loadbalancer, make it publicly available on the internet"
+}
