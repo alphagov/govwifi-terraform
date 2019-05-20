@@ -114,3 +114,9 @@ variable "healtcheck-path" {
   default     = ""
   description = "Enable healthchecks against the path 'healtcheck-path'"
 }
+
+variable "container-policy-arn" {
+  type        = "string"
+  default     = ""
+  description = "policy to attach to the container role"
+}
