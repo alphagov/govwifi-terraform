@@ -14,6 +14,8 @@ locals {
   public-loadbalancer = "${local.create-loadbalancer && var.public-loadbalancer}"
   loadbalancer-arn    = "${local.create-loadbalancer ? aws_lb.this.arn : var.loadbalancer-arn}"
 
+  create-dns-record = "${var.hosted-zone-id != ""}"
+
   default-tags = {
     "Namespace" = "${var.namespace}"
     "Service"   = "${var.name}"

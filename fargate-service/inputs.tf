@@ -87,3 +87,14 @@ variable "public-loadbalancer" {
   default     = true
   description = "When creating the loadbalancer, make it publicly available on the internet"
 }
+
+variable "hosted-zone-id" {
+  type        = "string"
+  default     = ""
+  description = "Hosted Zone to configure a domain + Cetificate for. Omit to skip generating."
+}
+
+variable "set-subdomain" {
+  default     = true
+  description = "include the stage in the domain"
+}
