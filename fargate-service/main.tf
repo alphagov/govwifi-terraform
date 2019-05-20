@@ -26,7 +26,7 @@ resource "aws_ecs_task_definition" "this" {
   cpu                      = "${var.cpu}"
   memory                   = "${var.memory}"
   network_mode             = "awsvpc"
-  container_definitions    = "${data.template_file.container-definition.rendered}"
+  container_definitions    = "${local.container-definition}"
 }
 
 resource "aws_ecs_service" "this" {

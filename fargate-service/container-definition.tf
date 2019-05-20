@@ -35,24 +35,24 @@ data "template_file" "container-definition-ports" {
 EOT
 }
 
-data "template_file" "container-definition" {
-  template = <<EOT
+locals {
+  container-definition = <<EOT
 [
-    {
-      "portMappings": $${jsonencode(data.template_file.container-definition-ports.*.rendered)},
-      "essential": true,
-      "name": "${var.name}",
-      "environment": $${jsonencode(data.template_file.container-definition-environment.*.rendered)},
-      "image": "${local.image}",
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.this.name}",
-          "awslogs-region": "${data.aws_region.current.name}",
-          "awslogs-stream-prefix": "${local.full-name}"
-        }
+  {
+    "portMappings": ${jsonencode(data.template_file.container-definition-ports.*.rendered)},
+    "essential": true,
+    "name": "${var.name}",
+    "environment": ${jsonencode(data.template_file.container-definition-environment.*.rendered)},
+    "image": "${local.image}",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${aws_cloudwatch_log_group.this.name}",
+        "awslogs-region": "${data.aws_region.current.name}",
+        "awslogs-stream-prefix": "${local.full-name}"
       }
     }
+  }
 ]
 EOT
 }
