@@ -45,7 +45,7 @@ resource "aws_lb_listener" "https" {
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
 
   default_action {
-    target_group_arn = "${aws_alb_target_group.this.arn}"
+    target_group_arn = "${aws_lb_target_group.this.arn}"
     type             = "forward"
   }
 }

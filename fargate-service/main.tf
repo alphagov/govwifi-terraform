@@ -34,21 +34,22 @@ resource "aws_ecs_service" "this" {
   name            = "${local.full-name}"
   tags            = "${local.tags}"
   task_definition = "${aws_ecs_task_definition.this.arn}"
-  desired_count   = "${var.instance-count}"
+  desired_count   = "${local.desired-count}"
   launch_type     = "FARGATE"
 
   load_balancer {
-    target_group_arn = "${aws_alb_target_group.admin-tg.arn}"
+    target_group_arn = "${aws_lb_target_group.this.arn}"
     container_name   = "${var.name}"
-    container_port   = "3000"
+    container_port   = "${local.forwarding-port}"
   }
 
   network_configuration {
-    subnets = ["${local.subnet-ids}"]
+    subnets = [
+      "${local.subnet-ids}",
+    ]
 
     security_groups = [
-      "${aws_security_group.admin-ec2-in.id}",
-      "${aws_security_group.admin-ec2-out.id}",
+      "${aws_security_group.service.id}",
     ]
 
     assign_public_ip = true
