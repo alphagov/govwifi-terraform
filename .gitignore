@@ -1,0 +1,17 @@
+govwifi/govwifi-staging-bastion-key
+govwifi/govwifi-bastion-key
+govwifi/govwifi-staging-key
+govwifi/govwifi-key.pem
+govwifi/staging-london/backend.config
+govwifi/staging/backend.config
+govwifi/wifi-london/backend.config
+govwifi/wifi/backend.config
+govwifi/performance-london/backend.config
+govwifi/performance/backend.config
+.terraform
+terraform.tfstate
+terraform.tfstate.*.backup
+*.tfstate.backup
+terraform/*/*.zip
+
+secrets.auto.tfvars
