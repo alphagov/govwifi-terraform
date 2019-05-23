@@ -216,6 +216,11 @@ variable "performance-bearer-unique-users" {
   description = "Bearer token for `unique-users` Performance platform statistics"
 }
 
+variable "performance-bearer-roaming-users" {
+  type        = "string"
+  description = "Bearer token for `roaming-users` Performance platform statistics"
+}
+
 variable "london-radius-ip-addresses" {
   type        = "list"
   description = "Frontend RADIUS server IP addresses - London"

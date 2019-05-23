@@ -191,31 +191,43 @@ variable "govwifi-api-ssl-cert-arn" {
 variable "performance-url" {
   type        = "string"
   description = "URL endpoint leading to Performance platform API, with a trailing slash at the end"
+  default = "unused-on-staging"
 }
 
 variable "performance-dataset" {
   type        = "string"
   description = "Dataset to which Performance statistics should be saved e.g `gov-wifi`"
+  default = "unused-on-staging"
 }
 
 variable "performance-bearer-volumetrics" {
   type        = "string"
   description = "Bearer token for `volumetrics` Performance platform statistics"
+  default = "unused-on-staging"
 }
 
 variable "performance-bearer-completion-rate" {
   type        = "string"
   description = "Bearer token for `completion-rate` Performance platform statistics"
+  default = "unused-on-staging"
 }
 
 variable "performance-bearer-active-users" {
   type        = "string"
   description = "Bearer token for `active-users` Performance platform statistics"
+  default = "unused-on-staging"
 }
 
 variable "performance-bearer-unique-users" {
   type        = "string"
   description = "Bearer token for `unique-users` Performance platform statistics"
+  default = "unused-on-staging"
+}
+
+variable "performance-bearer-roaming-users" {
+  type        = "string"
+  description = "Bearer token for `roaming-users` Performance platform statistics"
+  default = "unused-on-staging"
 }
 
 variable "london-radius-ip-addresses" {

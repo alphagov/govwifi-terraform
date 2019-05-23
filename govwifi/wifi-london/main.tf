@@ -309,6 +309,7 @@ module "api" {
   performance-bearer-completion-rate = "${var.performance-bearer-completion-rate}"
   performance-bearer-active-users    = "${var.performance-bearer-active-users}"
   performance-bearer-unique-users    = "${var.performance-bearer-unique-users}"
+  performance-bearer-roaming-users   = "${var.performance-bearer-roaming-users}"
   subnet-ids                         = "${module.backend.backend-subnet-ids}"
   ecs-instance-profile-id            = "${module.backend.ecs-instance-profile-id}"
   ecs-service-role                   = "${module.backend.ecs-service-role}"
