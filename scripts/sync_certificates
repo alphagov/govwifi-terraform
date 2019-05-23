@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -euo pipefail
+
+stage="${1:-${STAGE}}"
+region="${2:-${REGION}}"
+
+files=("ca.pem" "comodoCA.pem" "server.key" "server.pem")
+
+for file in "${files[@]}"; do
+  echo "Uploading s3://govwifi-${stage}-${region}-frontend-cert/${file}"
+  PASSWORD_STORE_DIR=".private/passwords" pass show "certs/${stage}/${file}" | aws s3 cp - "s3://govwifi-${stage}-${region}-frontend-cert/${file}"
+done
+
+exit 0;
