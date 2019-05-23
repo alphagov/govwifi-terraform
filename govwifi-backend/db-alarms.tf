@@ -107,7 +107,7 @@ resource "aws_cloudwatch_metric_alarm" "rr_laggingalarm" {
   namespace           = "AWS/RDS"
   period              = "60"
   statistic           = "Minimum"
-  threshold           = "600"
+  threshold           = "30"
 
   dimensions {
     DBInstanceIdentifier = "${aws_db_instance.read_replica.identifier}"
