@@ -200,6 +200,9 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
           "name": "PERFORMANCE_BEARER_UNIQUE_USERS",
           "value": "${var.performance-bearer-unique-users}"
         },{
+          "name": "PERFORMANCE_BEARER_ROAMING_USERS",
+          "value": "${var.performance-bearer-roaming-users}"
+        },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
           "value": "govwifi-${var.rack-env}-admin"
         },{
