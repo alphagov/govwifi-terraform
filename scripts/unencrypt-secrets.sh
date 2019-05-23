@@ -14,3 +14,14 @@ for FILE in $files; do
   fi
 done
 
+if [[ -d .private/non-encrypted/secrets-to-copy ]]; then
+  files="$(find .private/non-encrypted/secrets-to-copy -type f)"
+  for FILE in $files; do
+    target_file="${FILE#.private/non-encrypted/secrets-to-copy/}"
+    if [ "$command" == "unencrypt" ]; then
+      cp "${FILE}" "${target_file}"
+    elif [ "$command" == "delete" ]; then
+      rm "${target_file}"
+    fi
+  done
+fi
