@@ -116,9 +116,18 @@ variable "user-rr-hostname" {
   default     = "users-rr.london.production.wifi.service.gov.uk"
 }
 
+variable "admin-db-username" {
+  type        = "string"
+  description = "Database main username for govwifi-admin"
+}
+
 variable "admin-db-password" {
   type        = "string"
   description = "Database main password for govwifi-admin"
+}
+variable "zendesk-api-user" {
+  type        = "string"
+  description = "User for authenticating with Zendesk API"
 }
 
 variable "zendesk-api-token" {
