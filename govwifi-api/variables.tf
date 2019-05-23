@@ -98,6 +98,10 @@ variable "performance-bearer-active-users" {
   default = ""
 }
 
+variable "performance-bearer-roaming-users" {
+  default = ""
+}
+
 variable "performance-bearer-unique-users" {
   default = ""
 }
