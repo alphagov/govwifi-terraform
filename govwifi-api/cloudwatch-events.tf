@@ -61,3 +61,11 @@ resource "aws_cloudwatch_event_rule" "daily_user_deletion_event" {
   schedule_expression = "cron(0 23 * * ? *)"
   is_enabled          = true
 }
+
+resource "aws_cloudwatch_event_rule" "daily_gdpr_set_user_last_login" {
+  count               = "${var.event-rule-count}"
+  name                = "${var.Env-Name}-daily-gdpr-set-user-last-login"
+  description         = "Triggers daily 02:00 am UTC"
+  schedule_expression = "cron(0 2 * * ? *)"
+  is_enabled          = true
+}

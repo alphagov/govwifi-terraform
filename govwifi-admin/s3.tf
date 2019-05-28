@@ -77,8 +77,9 @@ POLICY
 }
 
 resource "aws_s3_bucket_policy" "product-page-data-bucket-policy" {
-bucket = "${aws_s3_bucket.product-page-data-bucket.id}"
-policy =<<POLICY
+  bucket = "${aws_s3_bucket.product-page-data-bucket.id}"
+
+  policy = <<POLICY
 {
     "Version": "2012-10-17",
     "Id": "ProductPageDataFetch",
