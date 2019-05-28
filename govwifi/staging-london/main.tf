@@ -16,7 +16,7 @@ module "tfstate" {
     "aws" = "aws.AWS-main"
   }
 
-  source             = "../modules/terraform-state"
+  source             = "../../terraform-state"
   product-name       = "${var.product-name}"
   Env-Name           = "${var.Env-Name}"
   aws-account-id     = "${var.aws-account-id}"
@@ -47,7 +47,7 @@ module "govwifi-keys" {
     "aws" = "aws.AWS-main"
   }
 
-  source = "../modules/govwifi-keys"
+  source = "../../govwifi-keys"
 }
 
 # London Backend ==================================================================
@@ -56,7 +56,7 @@ module "backend" {
     "aws" = "aws.AWS-main"
   }
 
-  source        = "../modules/govwifi-backend"
+  source        = "../../govwifi-backend"
   env           = "staging"
   Env-Name      = "${var.Env-Name}"
   Env-Subdomain = "${var.Env-Subdomain}"
@@ -124,7 +124,7 @@ module "frontend" {
     "aws" = "aws.AWS-main"
   }
 
-  source        = "../modules/govwifi-frontend"
+  source        = "../../govwifi-frontend"
   Env-Name      = "${var.Env-Name}"
   Env-Subdomain = "${var.Env-Subdomain}"
 
@@ -192,7 +192,7 @@ module "govwifi-admin" {
     "aws" = "aws.AWS-main"
   }
 
-  source        = "../modules/govwifi-admin"
+  source        = "../../govwifi-admin"
   Env-Name      = "${var.Env-Name}"
   Env-Subdomain = "${var.Env-Subdomain}"
 
@@ -264,7 +264,7 @@ module "api" {
     "aws" = "aws.AWS-main"
   }
 
-  source        = "../modules/govwifi-api"
+  source        = "../../govwifi-api"
   env           = "staging"
   Env-Name      = "${var.Env-Name}"
   Env-Subdomain = "${var.Env-Subdomain}"
@@ -343,7 +343,7 @@ module "notifications" {
     "aws" = "aws.AWS-main"
   }
 
-  source = "../modules/sns-notification"
+  source = "../../sns-notification"
 
   env-name   = "${var.Env-Name}"
   topic-name = "govwifi-staging"
@@ -355,7 +355,7 @@ module "route53-notifications" {
     "aws" = "aws.route53-alarms"
   }
 
-  source = "../modules/sns-notification"
+  source = "../../sns-notification"
 
   env-name   = "${var.Env-Name}"
   topic-name = "govwifi-staging-london"
