@@ -125,7 +125,6 @@ resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
 EOF
 }
 
-
 resource "aws_cloudwatch_event_target" "gdpr-set-user-last-login" {
   count     = "${var.logging-enabled}"
   target_id = "${var.Env-Name}-gdpr-user-set-last-login"

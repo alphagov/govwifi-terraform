@@ -62,7 +62,6 @@ resource "aws_cloudwatch_event_rule" "daily_user_deletion_event" {
   is_enabled          = true
 }
 
-
 resource "aws_cloudwatch_event_rule" "daily_gdpr_set_user_last_login" {
   count               = "${var.event-rule-count}"
   name                = "${var.Env-Name}-daily-gdpr-set-user-last-login"
