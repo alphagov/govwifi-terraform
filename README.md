@@ -1,4 +1,4 @@
-# Govwifi build
+# Govwifi terraform
 
 This repository contains instructions on how to build GovWifi end-to-end - the sites, services and infrastructure.
 
@@ -8,7 +8,8 @@ This repository contains instructions on how to build GovWifi end-to-end - the s
 - [Secrets](#secrets)
   - [Getting access to secrets](#getting-access-to-secrets)
   - [Adding secrets to the repo](#adding-secrets-to-the-repo)
-- [Runnning terraform](#runnning-terraform)
+- [Running terraform for the first time](#running-terraform-for-the-first-time)
+- [Running terraform](#running-terraform)
 - [Bootstrapping terraform](#bootstrapping-terraform)
 - [Rotating ELB Certificates](#rotating-ELB-certificates)
 - [Performance Testing](#performance-testing)
@@ -96,7 +97,16 @@ use the `scripts/insert-secret.sh $pathandfilename` - this will add the secret t
 correct place in the password store, so it can be copied back in the required
 place.
 
-## Runnning terraform
+## Running terraform for the first time
+
+Initialise terraform if running for the first time:
+
+```
+make <ENV> init-backend
+make <ENV> plan
+```
+
+## Running terraform
 
 ```
 make <ENV> plan
