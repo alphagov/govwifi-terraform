@@ -1,4 +1,0 @@
-[submodule ".private"]
-	path = .private
-	url = https://github.com/alphagov/govwifi-build.git
-	branch = master

@@ -17,3 +17,5 @@ terraform/*/*.zip
 secrets.auto.tfvars
 variables.auto.tfvars
 govwifi/wordlist-short
+
+.private

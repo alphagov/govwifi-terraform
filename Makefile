@@ -43,11 +43,11 @@ destroy: check-env unencrypt-secrets destroy_task delete-secrets ## Run terrafor
 run-terraform-init: check-env
 	scripts/run-terraform.sh init
 init-backend: check-env unencrypt-secrets run-terraform-init delete-secrets ## Initalize the terraform backend. Use this when first working on the project to download the required state file. Must run in form make <env> init-backend
-rencrypt-passwords: ## Rencrypt passwords after adding a new gpg id to the password store
+rencrypt-passwords: .private ## Rencrypt passwords after adding a new gpg id to the password store
 	PASSWORD_STORE_DIR=.private/passwords pass init $$(cat .private/passwords/.gpg-id)
-unencrypt-secrets:
+unencrypt-secrets: .private
 	scripts/unencrypt-secrets.sh unencrypt
-delete-secrets:
+delete-secrets: .private
 	scripts/unencrypt-secrets.sh delete
 
 lint: lint-terraform
@@ -58,3 +58,9 @@ lint-terraform:
 
 format-terraform:
 	terraform fmt
+
+.private:
+	git clone git@github.com:alphagov/govwifi-build.git .private
+
+update-secrets: .private
+	cd .private && git pull
