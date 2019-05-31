@@ -99,6 +99,11 @@ variable "aws-account-id" {
   description = "The ID of the AWS tenancy."
 }
 
+variable "aws-parent-account-id" {
+  type        = "string"
+  description = "The ID of the AWS parent account."
+}
+
 variable "docker-image-path" {
   type        = "string"
   description = "ARN used to identify the common path element used for the docker image repositories."
