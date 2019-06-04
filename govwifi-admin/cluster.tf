@@ -117,6 +117,18 @@ resource "aws_ecs_task_definition" "admin-task" {
           "name": "RR_DB_NAME",
           "value": "${var.rr-db-name}"
         },{
+          "name": "USER_DB_USER",
+          "value": "${var.user-db-user}"
+        },{
+          "name": "USER_DB_PASS",
+          "value": "${var.user-db-password}"
+        },{
+          "name": "USER_DB_HOST",
+          "value": "${var.user-db-host}"
+        },{
+          "name": "USER_DB_NAME",
+          "value": "${var.user-db-name}"
+        },{
           "name": "ZENDESK_API_ENDPOINT",
           "value": "${var.zendesk-api-endpoint}"
         },{
