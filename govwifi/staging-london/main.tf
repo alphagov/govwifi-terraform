@@ -235,6 +235,11 @@ module "govwifi-admin" {
   rr-db-host     = "db.london.staging.wifi.service.gov.uk"
   rr-db-name     = "govwifi_staging"
 
+  user-db-user     = "${var.user-db-username}"
+  user-db-password = "${var.user-db-password}"
+  user-db-host     = "${var.user-db-hostname}"
+  user-db-name     = "govwifi_staging_users"
+
   db-sg-list = []
 
   critical-notifications-arn = "${module.notifications.topic-arn}"
