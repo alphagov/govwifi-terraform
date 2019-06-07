@@ -145,7 +145,16 @@ module "emails" {
   user-signup-notifications-endpoint = "https://user-signup-api.${var.Env-Subdomain}.service.gov.uk:8443/user-signup/email-notification"
 }
 
-# Frontend ====================================================================
+# Global ====================================================================
+module "account" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source     = "../../govwifi-account"
+  account-id = "${var.aws-parent-account-id}"
+}
+
 module "dns" {
   providers = {
     "aws" = "aws.AWS-main"
