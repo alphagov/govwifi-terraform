@@ -6,8 +6,6 @@ This repository contains instructions on how to build GovWifi end-to-end - the s
 
 - [Overview](#overview)
 - [Secrets](#secrets)
-  - [Getting access to secrets](#getting-access-to-secrets)
-  - [Adding secrets to the repo](#adding-secrets-to-the-repo)
 - [Running terraform for the first time](#running-terraform-for-the-first-time)
 - [Running terraform](#running-terraform)
 - [Bootstrapping terraform](#bootstrapping-terraform)
@@ -43,59 +41,7 @@ Other repositories:
 
 ## Secrets
 
-The secrets are encrypted using [password store](https://www.passwordstore.org/)
-in the `.private/passwords` subdirectory. There is a make target to run terraform, which
-will temporarily unencrypt the secrets, run terraform and clean up after so the
-secrets are not saved on disk.
-
-These are also kept within a private repo, to further reduce the potential of secrets
-being exposed.
-
-### Getting access to secrets
-
-You need to give your gpg key id to someone on the team with access to the
-secrets,
-
-To publish a key to a keyserver use
-
-```
-gpg --send-keys --keyserver hkp://pgp.mit.edu
-```
-
-And then let them know the fingerprint - the long hex digits after the following command
-
-```
-gpg -K --fingerprint
-```
-
-Then ask them to run
-
-```
-PASSWORD_STORE_DIR=passwords pass init <keyids>
-```
-
-Where `<keyids>` is a space separated list of GPG key ids.  You can see the
-current list in `passwords/.gpg-id`.
-
-And commit the changes. This will re encrypt the password store dir. They will
-need to import and sign your key first
-
-
-### Adding secrets to the repo
-
-The Makefile assumes there is a file in the password store with the path
-`$env/secrets.tf`.
-
-```
-PASSWORD_STORE_DIR=passwords pass edit terraform/$env/secrets.tf
-```
-
-The format of the file is a [terraform vars file](https://www.terraform.io/intro/getting-started/variables.html#from-a-file)
-
-You can also insert a secret to be copied during the build proccess - for this
-use the `scripts/insert-secret.sh $pathandfilename` - this will add the secret to the
-correct place in the password store, so it can be copied back in the required
-place.
+Please see: [GovWifi build](https://github.com/alphagov/govwifi-build)
 
 ## Running terraform for the first time
 
