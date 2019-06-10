@@ -4,7 +4,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-export PASSWORD_STORE_DIR=../private/passwords
+export PASSWORD_STORE_DIR=../.private/passwords
 echo "Expecting passwords under $PASSWORD_STORE_DIR"
 
 while IFS= read -r key && [[ -n "$key" ]]; do
