@@ -34,8 +34,6 @@ Our services include:
 
 We manage our infrastructure via:
 - Terraform, split across this repository and [govwifi-terraform](https://github.com/alphagov/govwifi-terraform)
-- [Ansible](https://github.com/alphagov/govwifi-ansible) to update our frontend servers in place
-- [Jenkins-specific Ansible](https://github.com/alphagov/govwifi-jenkins-ansible) to update our build server in place.
 - The [safe restarter](https://github.com/alphagov/govwifi-safe-restarter), which uses a [CanaryRelease](https://martinfowler.com/bliki/CanaryRelease.html) strategy to increase the stability of the frontends
 
 Other repositories:
