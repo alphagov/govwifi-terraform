@@ -234,6 +234,11 @@ module "govwifi-admin" {
   rr-db-host     = "rr.london.wifi.service.gov.uk"
   rr-db-name     = "govwifi_wifi"
 
+  user-db-user     = "${var.user-db-username}"
+  user-db-password = "${var.user-db-password}"
+  user-db-host     = "${var.user-rr-hostname}"
+  user-db-name     = "govwifi_production_users"
+
   critical-notifications-arn = "${module.critical-notifications.topic-arn}"
   capacity-notifications-arn = "${module.capacity-notifications.topic-arn}"
 
