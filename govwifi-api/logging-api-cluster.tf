@@ -154,7 +154,7 @@ resource "aws_alb_target_group" "logging-api-tg" {
   vpc_id      = "${var.vpc-id}"
   target_type = "ip"
 
-  tags {
+  tags = {
     Name = "logging-api-tg-${var.Env-Name}"
   }
 

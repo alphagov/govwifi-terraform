@@ -7,7 +7,7 @@ resource "aws_vpc" "wifi-backend" {
   # Hostnames required by the CIS hardened image.
   enable_dns_hostnames = true
 
-  tags {
+  tags = {
     Name = "GovWifi Backend - ${var.Env-Name}"
   }
 }
@@ -17,7 +17,7 @@ resource "aws_vpc" "wifi-backend" {
 resource "aws_internet_gateway" "wifi-backend" {
   vpc_id = "${aws_vpc.wifi-backend.id}"
 
-  tags {
+  tags = {
     Name = "Backend Internet GW - ${var.Env-Name}"
   }
 }
@@ -37,7 +37,7 @@ resource "aws_subnet" "wifi-backend-subnet" {
   cidr_block              = "${lookup(var.zone-subnets, format("zone%d", count.index))}"
   map_public_ip_on_launch = true
 
-  tags {
+  tags = {
     Name = "${var.Env-Name} Backend - AZ: ${lookup(var.zone-names, format("zone%d", count.index))} - GovWifi subnet"
   }
 }

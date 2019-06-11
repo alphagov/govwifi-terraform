@@ -23,7 +23,7 @@ resource "aws_db_parameter_group" "db-parameters" {
     value = "FILE"
   }
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} DB parameter group for govwifi-admin"
   }
 }
@@ -39,7 +39,7 @@ resource "aws_db_option_group" "mariadb-audit" {
     option_name = "MARIADB_AUDIT_PLUGIN"
   }
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} DB Audit configuration for govwifi-admin"
   }
 }
@@ -72,7 +72,7 @@ resource "aws_db_instance" "admin_db" {
   option_group_name               = "${aws_db_option_group.mariadb-audit.name}"
   parameter_group_name            = "${aws_db_parameter_group.db-parameters.name}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} DB for govwifi-admin"
   }
 }
@@ -88,7 +88,7 @@ resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
   threshold           = "80"
   depends_on          = ["aws_db_instance.admin_db"]
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.admin_db.identifier}"
   }
 
@@ -108,7 +108,7 @@ resource "aws_cloudwatch_metric_alarm" "db_memoryalarm" {
   threshold           = "524288000"
   depends_on          = ["aws_db_instance.admin_db"]
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.admin_db.identifier}"
   }
 
@@ -128,7 +128,7 @@ resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
   threshold           = "21474836480"
   depends_on          = ["aws_db_instance.admin_db"]
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.admin_db.identifier}"
   }
 
@@ -148,7 +148,7 @@ resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
   threshold           = "45"
   depends_on          = ["aws_db_instance.admin_db"]
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.admin_db.identifier}"
   }
 

@@ -5,7 +5,7 @@ resource "aws_s3_bucket" "pp-data-bucket" {
   force_destroy = true
   acl           = "private"
 
-  tags {
+  tags = {
     Name   = "${title(var.Env-Name)} Performance Platform data backup"
     Region = "${title(var.aws-region-name)}"
 

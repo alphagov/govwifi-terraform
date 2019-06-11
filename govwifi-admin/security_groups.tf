@@ -3,7 +3,7 @@ resource "aws_security_group" "admin-alb-in" {
   description = "Allow Inbound Traffic to the admin platform ALB"
   vpc_id      = "${var.vpc-id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Admin ALB Traffic In"
   }
 
@@ -20,7 +20,7 @@ resource "aws_security_group" "admin-alb-out" {
   description = "Allow Outbound Traffic from the admin platform ALB"
   vpc_id      = "${var.vpc-id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Admin ALB Traffic Out"
   }
 
@@ -37,7 +37,7 @@ resource "aws_security_group" "admin-ec2-in" {
   description = "Allow Inbound Traffic To Admin from the ALB"
   vpc_id      = "${var.vpc-id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Admin EC2 Traffic In"
   }
 
@@ -61,7 +61,7 @@ resource "aws_security_group" "admin-ec2-out" {
   description = "Allow Outbound Traffic From the Admin EC2 container"
   vpc_id      = "${var.vpc-id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Admin EC2 Traffic Out"
   }
 
@@ -78,7 +78,7 @@ resource "aws_security_group" "admin-db-in" {
   description = "Allow connections to the DB"
   vpc_id      = "${var.vpc-id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Admin DB in"
   }
 

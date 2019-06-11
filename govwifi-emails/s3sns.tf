@@ -40,7 +40,7 @@ resource "aws_s3_bucket" "emailbucket" {
 }
 EOF
 
-  tags {
+  tags = {
     Name   = "${title(var.Env-Name)} Email Bucket"
     Region = "${title(var.aws-region-name)}"
 
@@ -110,7 +110,7 @@ resource "aws_s3_bucket" "admin-emailbucket" {
 }
 EOF
 
-  tags {
+  tags = {
     Name   = "${title(var.Env-Name)} Admin Email Bucket"
     Region = "${title(var.aws-region-name)}"
 

@@ -12,7 +12,7 @@ resource "aws_lb" "user-signup-api" {
 
   load_balancer_type = "application"
 
-  tags {
+  tags = {
     Name = "user-signup-api-${var.Env-Name}"
   }
 }

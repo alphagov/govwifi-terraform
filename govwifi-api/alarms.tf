@@ -9,7 +9,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2-api-cpu-alarm-low" {
   statistic           = "Average"
   threshold           = "1"
 
-  dimensions {
+  dimensions = {
     AutoScalingGroupName = "${aws_autoscaling_group.api-asg.name}"
   }
 
@@ -33,7 +33,7 @@ resource "aws_cloudwatch_metric_alarm" "ec2-api-cpu-alarm-high" {
   statistic           = "Average"
   threshold           = "60"
 
-  dimensions {
+  dimensions = {
     AutoScalingGroupName = "${aws_autoscaling_group.api-asg.name}"
   }
 
@@ -58,7 +58,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-high" {
   statistic           = "Average"
   threshold           = "50"
 
-  dimensions {
+  dimensions = {
     ClusterName = "${aws_ecs_cluster.api-cluster.name}"
     ServiceName = "${aws_ecs_service.authorisation-api-service.name}"
   }
@@ -84,7 +84,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
   statistic           = "Average"
   threshold           = "10"
 
-  dimensions {
+  dimensions = {
     ClusterName = "${aws_ecs_cluster.api-cluster.name}"
     ServiceName = "${aws_ecs_service.authorisation-api-service.name}"
   }
@@ -109,7 +109,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-high" {
   statistic           = "Average"
   threshold           = "75"
 
-  dimensions {
+  dimensions = {
     ClusterName = "${aws_ecs_cluster.api-cluster.name}"
   }
 
@@ -133,7 +133,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs-api-memory-reservation-low" {
   statistic           = "Average"
   threshold           = "40"
 
-  dimensions {
+  dimensions = {
     ClusterName = "${aws_ecs_cluster.api-cluster.name}"
   }
 

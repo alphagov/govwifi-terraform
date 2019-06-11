@@ -130,7 +130,7 @@ resource "aws_alb_target_group" "alb_target_group" {
   vpc_id      = "${var.vpc-id}"
   target_type = "ip"
 
-  tags {
+  tags = {
     Name = "api-alb-tg-${var.Env-Name}"
   }
 

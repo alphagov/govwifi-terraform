@@ -11,7 +11,7 @@ resource "aws_lb" "api-alb" {
 
   load_balancer_type = "application"
 
-  tags {
+  tags = {
     Name = "api-alb-${var.Env-Name}"
   }
 }
@@ -44,7 +44,7 @@ resource "aws_security_group" "api-alb-in" {
   description = "Allow Inbound Traffic To The ALB"
   vpc_id      = "${var.vpc-id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} ALB Traffic In"
   }
 
@@ -61,7 +61,7 @@ resource "aws_security_group" "api-alb-out" {
   description = "Allow Outbound Traffic To The ALB"
   vpc_id      = "${var.vpc-id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} ALB Traffic Out"
   }
 

@@ -9,7 +9,7 @@ resource "aws_cloudwatch_metric_alarm" "user_db_cpualarm" {
   statistic           = "Maximum"
   threshold           = "80"
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.users_db.identifier}"
   }
 
@@ -29,7 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "user_db_memoryalarm" {
   statistic           = "Minimum"
   threshold           = "524288000"
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.users_db.identifier}"
   }
 
@@ -49,7 +49,7 @@ resource "aws_cloudwatch_metric_alarm" "user_db_storagealarm" {
   statistic           = "Minimum"
   threshold           = "21474836480"
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.users_db.identifier}"
   }
 
@@ -69,7 +69,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_burstbalancealarm" {
   statistic           = "Minimum"
   threshold           = "45"
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.users_read_replica.identifier}"
   }
 
@@ -89,7 +89,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_laggingalarm" {
   statistic           = "Minimum"
   threshold           = "600"
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.users_read_replica.identifier}"
   }
 
@@ -109,7 +109,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_cpualarm" {
   statistic           = "Maximum"
   threshold           = "80"
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.users_read_replica.identifier}"
   }
 
@@ -129,7 +129,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_memoryalarm" {
   statistic           = "Minimum"
   threshold           = "524288000"
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.users_read_replica.identifier}"
   }
 
@@ -149,7 +149,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_storagealarm" {
   statistic           = "Minimum"
   threshold           = "21474836480"
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.users_read_replica.identifier}"
   }
 

@@ -3,7 +3,7 @@ resource "aws_security_group" "be-ecs-out" {
   description = "Allow the ECS agent to talk to the ECS endpoints"
   vpc_id      = "${aws_vpc.wifi-backend.id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Backend ECS out"
   }
 
@@ -48,7 +48,7 @@ resource "aws_security_group" "be-db-in" {
   description = "Allow connections to the DB"
   vpc_id      = "${aws_vpc.wifi-backend.id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Backend DB in"
   }
 
@@ -65,7 +65,7 @@ resource "aws_security_group" "be-admin-in" {
   description = "Allow inbound SSH from administrators"
   vpc_id      = "${aws_vpc.wifi-backend.id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Backend Admin in"
   }
 
@@ -82,7 +82,7 @@ resource "aws_security_group" "be-vpn-in" {
   description = "Allow inbound SSH from VPN IPs to the bastion only"
   vpc_id      = "${aws_vpc.wifi-backend.id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Backend VPN in"
   }
 
@@ -99,7 +99,7 @@ resource "aws_security_group" "be-vpn-out" {
   description = "Allow outbound SSH from bastion"
   vpc_id      = "${aws_vpc.wifi-backend.id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Backend VPN out"
   }
 
@@ -120,7 +120,7 @@ resource "aws_security_group" "be-radius-api-in" {
   description = "Allow inbound API calls from the RADIUS servers"
   vpc_id      = "${aws_vpc.wifi-backend.id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Backend RADIUS API in"
   }
 

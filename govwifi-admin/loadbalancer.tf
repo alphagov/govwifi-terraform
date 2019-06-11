@@ -10,7 +10,7 @@ resource "aws_lb" "admin-alb" {
 
   load_balancer_type = "application"
 
-  tags {
+  tags = {
     Name = "admin-alb-${var.Env-Name}"
   }
 }

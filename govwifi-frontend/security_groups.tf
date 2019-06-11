@@ -5,7 +5,7 @@ resource "aws_security_group" "fe-ecs-out" {
   description = "Allow the ECS agent to talk to the ECS endpoints"
   vpc_id      = "${aws_vpc.wifi-frontend.id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Frontend ECS out"
   }
 
@@ -39,7 +39,7 @@ resource "aws_security_group" "fe-admin-in" {
   description = "Allow inbound traffic from administrators"
   vpc_id      = "${aws_vpc.wifi-frontend.id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Frontend Admin in"
   }
 
@@ -58,7 +58,7 @@ resource "aws_security_group" "fe-radius-out" {
   description = "Allow outbound API calls from the RADIUS servers"
   vpc_id      = "${aws_vpc.wifi-frontend.id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Frontend RADIUS out"
   }
 
@@ -94,7 +94,7 @@ resource "aws_security_group" "fe-radius-in" {
   description = "Allow inbound API calls to the RADIUS servers"
   vpc_id      = "${aws_vpc.wifi-frontend.id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Frontend RADIUS in"
   }
 

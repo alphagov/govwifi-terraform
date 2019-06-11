@@ -3,7 +3,7 @@ resource "aws_security_group" "api-in" {
   description = "Allow Inbound Traffic To API"
   vpc_id      = "${var.vpc-id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} API Traffic In"
   }
 
@@ -20,7 +20,7 @@ resource "aws_security_group" "api-out" {
   description = "Allow Outbound Traffic From the API"
   vpc_id      = "${var.vpc-id}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} API Traffic Out"
   }
 
