@@ -34,7 +34,6 @@ joiners should be given access to, and leavers be removed from.
 * GDS Build server, ah-govwf-d-01.dmz.gds
   - This server is managed by GDS IT networks team.  They create/remove user
   accounts using their Puppet scripts.
-* [Jenkins account](https://jenkins.wifi.service.gov.uk/securityRealm/)
 
 ## Rotating secrets
 
