@@ -50,7 +50,6 @@ resource "aws_db_instance" "users_read_replica" {
   backup_retention_period     = 0
   multi_az                    = true
   vpc_security_group_ids      = ["${aws_security_group.be-db-in.id}"]
-  depends_on                  = ["aws_iam_role.rds-monitoring-role"]
   monitoring_role_arn         = "${aws_iam_role.rds-monitoring-role.arn}"
   monitoring_interval         = "${var.db-monitoring-interval}"
   maintenance_window          = "${var.db-maintenance-window}"
