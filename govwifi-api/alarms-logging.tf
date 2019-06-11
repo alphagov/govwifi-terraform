@@ -9,7 +9,7 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-high" {
   statistic           = "Average"
   threshold           = "50"
 
-  dimensions {
+  dimensions = {
     ClusterName = "${aws_ecs_cluster.api-cluster.name}"
     ServiceName = "${aws_ecs_service.logging-api-service.name}"
   }
@@ -34,7 +34,7 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-low" {
   statistic           = "Average"
   threshold           = "10"
 
-  dimensions {
+  dimensions = {
     ClusterName = "${aws_ecs_cluster.api-cluster.name}"
     ServiceName = "${aws_ecs_service.logging-api-service.name}"
   }

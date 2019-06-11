@@ -11,7 +11,7 @@ resource "aws_cloudwatch_metric_alarm" "radius-hc" {
   threshold           = "1"
   treat_missing_data  = "breaching"
 
-  dimensions {
+  dimensions = {
     HealthCheckId = "${element(aws_route53_health_check.radius.*.id, count.index)}"
   }
 
@@ -32,7 +32,7 @@ resource "aws_cloudwatch_metric_alarm" "radius-latency" {
   statistic           = "Average"
   threshold           = "1000"
 
-  dimensions {
+  dimensions = {
     HealthCheckId = "${element(aws_route53_health_check.radius.*.id, count.index)}"
   }
 

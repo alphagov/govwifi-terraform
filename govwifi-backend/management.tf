@@ -302,7 +302,7 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
   unit                = "Count"
   threshold           = "1"
 
-  dimensions {
+  dimensions = {
     InstanceId = "${aws_instance.management.id}"
   }
 

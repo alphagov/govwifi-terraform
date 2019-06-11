@@ -88,7 +88,7 @@ resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
   threshold           = "80"
   depends_on          = ["aws_db_instance.admin_db"]
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.admin_db.identifier}"
   }
 
@@ -108,7 +108,7 @@ resource "aws_cloudwatch_metric_alarm" "db_memoryalarm" {
   threshold           = "524288000"
   depends_on          = ["aws_db_instance.admin_db"]
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.admin_db.identifier}"
   }
 
@@ -128,7 +128,7 @@ resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
   threshold           = "21474836480"
   depends_on          = ["aws_db_instance.admin_db"]
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.admin_db.identifier}"
   }
 
@@ -148,7 +148,7 @@ resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
   threshold           = "45"
   depends_on          = ["aws_db_instance.admin_db"]
 
-  dimensions {
+  dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.admin_db.identifier}"
   }
 
