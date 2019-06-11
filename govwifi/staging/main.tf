@@ -154,6 +154,7 @@ module "govwifi-keys" {
 module "frontend" {
   providers = {
     "aws" = "aws.AWS-main"
+    "aws.route53-alarms" = "aws.route53-alarms"
   }
 
   source        = "../../govwifi-frontend"
