@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "frontend-cert-bucket" {
   bucket = "govwifi-${var.rack-env}-${lower(var.aws-region-name)}-frontend-cert"
   acl    = "private"
 
-  tags {
+  tags = {
     Name        = "${title(var.Env-Name)} Frontend certs"
     Region      = "${title(var.aws-region-name)}"
     Environment = "${title(var.rack-env)}"

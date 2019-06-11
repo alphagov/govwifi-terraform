@@ -205,7 +205,7 @@ resource "aws_alb_target_group" "user-signup-api-tg" {
   vpc_id      = "${var.vpc-id}"
   target_type = "ip"
 
-  tags {
+  tags = {
     Name = "user-signup-api-tg-${var.Env-Name}"
   }
 

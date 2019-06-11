@@ -23,7 +23,7 @@ resource "aws_db_parameter_group" "db-parameters" {
     value = "FILE"
   }
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} DB parameter group for govwifi-admin"
   }
 }
@@ -39,7 +39,7 @@ resource "aws_db_option_group" "mariadb-audit" {
     option_name = "MARIADB_AUDIT_PLUGIN"
   }
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} DB Audit configuration for govwifi-admin"
   }
 }
@@ -72,7 +72,7 @@ resource "aws_db_instance" "admin_db" {
   option_group_name               = "${aws_db_option_group.mariadb-audit.name}"
   parameter_group_name            = "${aws_db_parameter_group.db-parameters.name}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} DB for govwifi-admin"
   }
 }

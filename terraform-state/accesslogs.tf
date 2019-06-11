@@ -73,7 +73,7 @@ resource "aws_s3_bucket" "accesslogs-bucket" {
   region = "${var.aws-region}"
   acl    = "log-delivery-write"
 
-  tags {
+  tags = {
     Region      = "${title(var.aws-region-name)}"
     Product     = "${var.product-name}"
     Environment = "${title(var.Env-Name)}"

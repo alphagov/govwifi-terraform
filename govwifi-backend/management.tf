@@ -189,7 +189,7 @@ sudo python3 ./awslogs-agent-setup.py -n -r ${var.aws-region} -c ./initial-awslo
 --==BOUNDARY==--
 DATA
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} Bastion - backend (${aws_vpc.wifi-backend.id})"
     Env  = "${title(var.Env-Name)}"
   }

@@ -5,7 +5,7 @@ resource "aws_vpc" "wifi-frontend" {
   cidr_block           = "${var.vpc-cidr-block}"
   enable_dns_hostnames = true
 
-  tags {
+  tags = {
     Name = "GovWifi Frontend - ${var.Env-Name}"
   }
 }
@@ -15,7 +15,7 @@ resource "aws_vpc" "wifi-frontend" {
 resource "aws_internet_gateway" "wifi-frontend" {
   vpc_id = "${aws_vpc.wifi-frontend.id}"
 
-  tags {
+  tags = {
     Name = "Frontend Internet GW - ${var.Env-Name}"
   }
 }
@@ -35,7 +35,7 @@ resource "aws_subnet" "wifi-frontend-subnet" {
   cidr_block              = "${lookup(var.zone-subnets, format("zone%d", count.index))}"
   map_public_ip_on_launch = true
 
-  tags {
+  tags = {
     Name = "${var.Env-Name} Frontend - AZ: ${lookup(var.zone-names, format("zone%d", count.index))} - GovWifi subnet"
   }
 }

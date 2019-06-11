@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "wordlist" {
   count  = "${var.wordlist-bucket-count}"
   acl    = "private"
 
-  tags {
+  tags = {
     Name = "wordlist-bucket"
   }
 

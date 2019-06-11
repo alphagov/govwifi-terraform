@@ -3,7 +3,7 @@ resource "aws_db_subnet_group" "db-subnets" {
   description = "GovWifi ${var.Env-Name} backend subnets"
   subnet_ids  = ["${aws_subnet.wifi-backend-subnet.*.id}"]
 
-  tags {
+  tags = {
     Name = "wifi-${var.Env-Name}-subnets"
   }
 }
@@ -34,7 +34,7 @@ resource "aws_db_parameter_group" "db-parameters" {
     value = "FILE"
   }
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} DB parameter group"
   }
 }
@@ -65,7 +65,7 @@ resource "aws_db_parameter_group" "user-db-parameters" {
     value = "FILE"
   }
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} User DB parameter group"
   }
 }
@@ -96,7 +96,7 @@ resource "aws_db_parameter_group" "rr-parameters" {
     value = "FILE"
   }
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} DB read replica parameter group"
   }
 }
@@ -128,7 +128,7 @@ resource "aws_db_parameter_group" "user-rr-parameters" {
     value = "FILE"
   }
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} User DB read replica parameter group"
   }
 }
@@ -146,7 +146,7 @@ resource "aws_db_option_group" "mariadb-audit" {
     option_name = "MARIADB_AUDIT_PLUGIN"
   }
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} DB Audit configuration"
   }
 }
@@ -159,7 +159,7 @@ resource "aws_db_option_group" "user-mariadb-audit" {
   engine_name              = "mysql"
   major_engine_version     = "8.0"
 
-  tags {
+  tags = {
     Name = "${title(var.env)} User DB Audit configuration"
   }
 }

@@ -28,7 +28,7 @@ resource "aws_db_instance" "users_db" {
   option_group_name               = "${aws_db_option_group.user-mariadb-audit.name}"
   parameter_group_name            = "${aws_db_parameter_group.user-db-parameters.name}"
 
-  tags {
+  tags = {
     Name = "${title(var.env)} Users DB"
   }
 }
@@ -61,7 +61,7 @@ resource "aws_db_instance" "users_read_replica" {
 
   depends_on = ["aws_db_instance.users_db"]
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} DB Read Replica"
   }
 }

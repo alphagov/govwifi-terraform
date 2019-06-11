@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "admin-bucket" {
   force_destroy = true
   acl           = "private"
 
-  tags {
+  tags = {
     Name        = "${title(var.Env-Name)} Admin data"
     Region      = "${title(var.aws-region-name)}"
     Environment = "${title(var.rack-env)}"
@@ -21,7 +21,7 @@ resource "aws_s3_bucket" "product-page-data-bucket" {
   force_destroy = true
   acl           = "public-read"
 
-  tags {
+  tags = {
     Name        = "${title(var.rack-env)} Product page data"
     Region      = "${title(var.aws-region-name)}"
     Environment = "${title(var.rack-env)}"
@@ -38,7 +38,7 @@ resource "aws_s3_bucket" "admin-mou-bucket" {
   force_destroy = true
   acl           = "private"
 
-  tags {
+  tags = {
     Name        = "${title(var.Env-Name)} MOU documents from Admin"
     Region      = "${title(var.aws-region-name)}"
     Environment = "${title(var.rack-env)}"

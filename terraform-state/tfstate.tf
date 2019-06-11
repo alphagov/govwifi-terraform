@@ -70,7 +70,7 @@ resource "aws_kms_key" "tfstate-key" {
   deletion_window_in_days = 10
   is_enabled              = true
 
-  tags {
+  tags = {
     Region      = "${title(var.aws-region-name)}"
     Product     = "${var.product-name}"
     Environment = "${title(var.Env-Name)}"
@@ -106,7 +106,7 @@ resource "aws_s3_bucket" "state-bucket" {
 }
 EOF
 
-  tags {
+  tags = {
     Region      = "${title(var.aws-region-name)}"
     Product     = "${var.product-name}"
     Environment = "${title(var.Env-Name)}"

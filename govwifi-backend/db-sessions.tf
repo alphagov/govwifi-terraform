@@ -28,7 +28,7 @@ resource "aws_db_instance" "db" {
   option_group_name               = "${aws_db_option_group.mariadb-audit.name}"
   parameter_group_name            = "${aws_db_parameter_group.db-parameters.name}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} DB"
   }
 }
@@ -60,7 +60,7 @@ resource "aws_db_instance" "read_replica" {
   option_group_name           = "${aws_db_option_group.mariadb-audit.name}"
   parameter_group_name        = "${aws_db_parameter_group.rr-parameters.name}"
 
-  tags {
+  tags = {
     Name = "${title(var.Env-Name)} DB Read Replica"
   }
 }
