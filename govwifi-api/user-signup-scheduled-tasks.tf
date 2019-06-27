@@ -100,6 +100,31 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-weekly-statistics" {
 EOF
 }
 
+resource "aws_cloudwatch_event_target" "user-signup-publish-monthly-statistics" {
+  count     = "${var.user-signup-enabled}"
+  target_id = "${var.Env-Name}-user-signup-monthly-statistics"
+  arn       = "${aws_ecs_cluster.api-cluster.arn}"
+  rule      = "${aws_cloudwatch_event_rule.monthly_statistics_user_signup_event.name}"
+  role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
+
+  ecs_target = {
+    task_count          = 1
+    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type         = "EC2"
+  }
+
+  input = <<EOF
+{
+  "containerOverrides": [
+    {
+      "name": "user-signup",
+      "command": ["bundle", "exec", "rake", "publish_monthly_statistics"]
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
   count     = "${var.user-signup-enabled}"
   target_id = "${var.Env-Name}-user-signup-daily-user-deletion"
