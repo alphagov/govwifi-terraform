@@ -1,8 +1,8 @@
 resource "aws_cloudwatch_event_rule" "daily_safe_restart" {
   count               = "${var.safe-restart-enabled}"
   name                = "${var.Env-Name}-daily-safe-restart"
-  description         = "Triggers at midnight Daily"
-  schedule_expression = "cron(0 0 * * ? *)"
+  description         = "Triggers at 1am Daily"
+  schedule_expression = "cron(0 1 * * ? *)"
   is_enabled          = true
 }
 
