@@ -148,6 +148,10 @@ variable "zendesk-api-token" {}
 
 variable "public-google-api-key" {}
 
+variable "otp-secret-encryption-key" {
+  description = "Encryption key used to verify OTP authentication codes"
+}
+
 variable "bastion-ips" {
   description = "The list of allowed hosts to connect to the ec2 instances"
   type        = "list"
