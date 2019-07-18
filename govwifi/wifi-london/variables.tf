@@ -72,6 +72,11 @@ variable "public-google-api-key" {
   default = "AIzaSyCz1cPYKamsA_ZJCygL9EY0Zq6stkazTco"
 }
 
+variable "otp-secret-encryption-key" {
+  type        = "string"
+  description = "Encryption key used to verify OTP authentication codes"
+}
+
 variable "user-signup-sentry-dsn" {
   type    = "string"
 }
