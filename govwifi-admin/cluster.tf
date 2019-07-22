@@ -140,6 +140,9 @@ resource "aws_ecs_task_definition" "admin-task" {
         },{
           "name": "GOOGLE_MAPS_PUBLIC_API_KEY",
           "value": "${var.public-google-api-key}"
+        },{
+          "name": "OTP_SECRET_ENCRYPTION_KEY",
+          "value": "${var.otp-secret-encryption-key}"
         }
       ],
       "image": "${var.admin-docker-image}",
