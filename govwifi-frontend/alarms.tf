@@ -72,3 +72,19 @@ resource "aws_cloudwatch_metric_alarm" "outer-and-inner-identities-same" {
     "${var.devops-notifications-arn}",
   ]
 }
+
+resource "aws_cloudwatch_metric_alarm" "radius-cannot-connect-to-api" {
+  alarm_name          = "${var.Env-Name}-radius-cannot-connect-to-api"
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = 0
+  evaluation_periods  = 1
+  period              = "${60 * 60 * 24}"
+  statistic           = "Sum"
+  treat_missing_data  = "breaching"
+  metric_name         = "${aws_cloudwatch_log_metric_filter.radius-cannot-connect-to-api.metric_transformation.0.name}"
+  namespace           = "${aws_cloudwatch_log_metric_filter.radius-cannot-connect-to-api.metric_transformation.0.namespace}"
+
+  alarm_actions = [
+    "${var.devops-notifications-arn}",
+  ]
+}

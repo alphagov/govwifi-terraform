@@ -53,3 +53,17 @@ resource "aws_cloudwatch_log_metric_filter" "unknown-client" {
     default_value = "0"
   }
 }
+
+resource "aws_cloudwatch_log_metric_filter" "radius-cannot-connect-to-api" {
+  name = "${var.Env-Name}-radius-cannot-connect-to-api"
+
+  pattern        = "\"ERROR: Server returned no data\""
+  log_group_name = "${aws_cloudwatch_log_group.frontend-log-group.name}"
+
+  metric_transformation {
+    name          = "radius-cannot-connect-to-api"
+    namespace     = "${local.frontend_metrics_namespace}"
+    value         = "1"
+    default_value = "0"
+  }
+}
