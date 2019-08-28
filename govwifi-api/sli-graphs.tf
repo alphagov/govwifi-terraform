@@ -49,6 +49,46 @@ resource "aws_cloudwatch_dashboard" "SLIs" {
                 "title": "Authentication Journey",
                 "period": 300
             }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 3,
+            "width": 18,
+            "height": 3,
+            "properties": {
+                "metrics": [
+                    [ "wifi-user-signup-api", "wifi-notify-sms-success-count", { "id": "m1", "period": 300, "stat": "Sum", "label": "sms-success-count" } ],
+                    [ ".", "wifi-notify-sms-failed-count", { "id": "m2", "period": 300, "stat": "Sum", "label": "sms-failed-count" } ]
+                ],
+                "view": "timeSeries",
+                "region": "eu-west-2",
+                "stacked": false,
+                "title": "Successful SMS Responses Details",
+                "period": 300,
+                "legend": {
+                    "position": "right"
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 18,
+            "y": 3,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "metrics": [
+                    [ { "expression": "SUM(METRICS())", "label": "total", "id": "e1", "visible": false } ],
+                    [ { "expression": "m1 / e1 * 100", "label": "percentile", "id": "e2" } ],
+                    [ "wifi-user-signup-api", "wifi-notify-sms-success-count", { "id": "m1", "visible": false, "period": 604800, "stat": "Sum", "label": "sms-success-count" } ],
+                    [ ".", "wifi-notify-sms-failed-count", { "id": "m2", "visible": false, "period": 604800, "stat": "Sum", "label": "sms-failed-count" } ]
+                ],
+                "view": "singleValue",
+                "region": "eu-west-2",
+                "title": "Successful SMS Responses",
+                "period": 300
+            }
         }
     ]
 }
