@@ -89,6 +89,46 @@ resource "aws_cloudwatch_dashboard" "SLIs" {
                 "title": "Successful SMS Responses",
                 "period": 300
             }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 6,
+            "width": 18,
+            "height": 3,
+            "properties": {
+                "metrics": [
+                    [ "wifi-user-signup-api", "wifi-notify-email-success-count", { "id": "m1", "period": 300, "stat": "Sum", "label": "email-success-count" } ],
+                    [ ".", "wifi-notify-email-failed-count", { "id": "m2", "period": 300, "stat": "Sum", "label": "email-failed-count" } ]
+                ],
+                "view": "timeSeries",
+                "region": "eu-west-2",
+                "stacked": false,
+                "title": "Successful email Responses Details",
+                "period": 300,
+                "legend": {
+                    "position": "right"
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 18,
+            "y": 6,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "metrics": [
+                    [ { "expression": "SUM(METRICS())", "label": "total", "id": "e1", "visible": false } ],
+                    [ { "expression": "m1 / e1 * 100", "label": "percentile", "id": "e2" } ],
+                    [ "wifi-user-signup-api", "wifi-notify-email-success-count", { "id": "m1", "visible": false, "period": 604800, "stat": "Sum", "label": "email-success-count" } ],
+                    [ ".", "wifi-notify-email-failed-count", { "id": "m2", "visible": false, "period": 604800, "stat": "Sum", "label": "email-failed-count" } ]
+                ],
+                "view": "singleValue",
+                "region": "eu-west-2",
+                "title": "Successful email Responses",
+                "period": 300
+            }
         }
     ]
 }
