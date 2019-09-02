@@ -27,3 +27,18 @@ resource "aws_cloudwatch_log_metric_filter" "radius-access-accept" {
     default_value = "0"
   }
 }
+
+resource "aws_cloudwatch_log_metric_filter" "response-status-no-content" {
+  count = "${aws_cloudwatch_log_group.logging-api-log-group.count}"
+  name  = "${var.Env-Name}-response-status-no-content"
+
+  pattern        = "\"status=204\" -\"\\\"username\\\": \\\"HEALTH\\\"\""
+  log_group_name = "${aws_cloudwatch_log_group.logging-api-log-group.name}"
+
+  metric_transformation {
+    name          = "${var.Env-Name}-response-status-no-content-count"
+    namespace     = "${local.logging_api_namespace}"
+    value         = "1"
+    default_value = "0"
+  }
+}
