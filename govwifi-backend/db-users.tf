@@ -23,6 +23,7 @@ resource "aws_db_instance" "users_db" {
   maintenance_window          = "${var.db-maintenance-window}"
   backup_window               = "${var.db-backup-window}"
   skip_final_snapshot         = true
+  deletion_protection         = true
 
   enabled_cloudwatch_logs_exports = ["error", "general", "slowquery"]
   option_group_name               = "${aws_db_option_group.user-mariadb-audit.name}"
@@ -57,6 +58,7 @@ resource "aws_db_instance" "users_read_replica" {
   skip_final_snapshot         = true
   parameter_group_name        = "${aws_db_parameter_group.user-rr-parameters.name}"
   db_subnet_group_name        = "wifi-${var.Env-Name}-subnets"
+  deletion_protection         = true
 
   depends_on = ["aws_db_instance.users_db"]
 

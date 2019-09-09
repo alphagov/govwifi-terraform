@@ -67,6 +67,7 @@ resource "aws_db_instance" "admin_db" {
   maintenance_window          = "${var.db-maintenance-window}"
   backup_window               = "${var.db-backup-window}"
   skip_final_snapshot         = true
+  deletion_protection         = true
 
   enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
   option_group_name               = "${aws_db_option_group.mariadb-audit.name}"

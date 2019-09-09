@@ -23,6 +23,7 @@ resource "aws_db_instance" "db" {
   maintenance_window          = "${var.db-maintenance-window}"
   backup_window               = "${var.db-backup-window}"
   skip_final_snapshot         = true
+  deletion_protection         = true
 
   enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
   option_group_name               = "${aws_db_option_group.mariadb-audit.name}"
@@ -59,6 +60,7 @@ resource "aws_db_instance" "read_replica" {
   skip_final_snapshot         = true
   option_group_name           = "${aws_db_option_group.mariadb-audit.name}"
   parameter_group_name        = "${aws_db_parameter_group.rr-parameters.name}"
+  deletion_protection         = true
 
   tags = {
     Name = "${title(var.Env-Name)} DB Read Replica"
