@@ -77,8 +77,8 @@ resource "aws_cloudwatch_metric_alarm" "radius-cannot-connect-to-api" {
   alarm_name          = "${var.Env-Name}-radius-cannot-connect-to-api"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 0
-  evaluation_periods  = 1
-  period              = "300"
+  evaluation_periods  = 2
+  period              = "60"
   statistic           = "Sum"
   treat_missing_data  = "breaching"
   metric_name         = "${aws_cloudwatch_log_metric_filter.radius-cannot-connect-to-api.metric_transformation.0.name}"
