@@ -19,22 +19,27 @@ resource "aws_ecr_repository" "safe-restarter-ecr" {
 }
 
 resource "aws_ecs_task_definition" "safe-restart-task-definition" {
-  count         = "${var.safe-restart-enabled}"
-  family        = "safe-restart-task-${var.Env-Name}"
-  task_role_arn = "${aws_iam_role.safe-restart-task-role.arn}"
+  count                    = "${var.safe-restart-enabled}"
+  family                   = "safe-restart-task-${var.Env-Name}"
+  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  task_role_arn            = "${aws_iam_role.safe-restart-task-role.arn}"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = 256
+  memory                   = 1024
+  network_mode             = "awsvpc"
 
   container_definitions = <<EOF
 [
     {
       "volumesFrom": [],
-      "memory": 950,
+      "memory": 1024,
       "extraHosts": null,
       "dnsServers": null,
       "disableNetworking": null,
       "dnsSearchDomains": null,
       "portMappings": [
         {
-          "hostPort": 0,
+          "hostPort": 8080,
           "containerPort": 8080,
           "protocol": "tcp"
         }
@@ -187,7 +192,19 @@ resource "aws_cloudwatch_event_target" "daily-safe-restart" {
   ecs_target = {
     task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.safe-restart-task-definition.arn}"
-    launch_type         = "EC2"
+    launch_type         = "FARGATE"
+    
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
   }
 
   input = <<EOF
