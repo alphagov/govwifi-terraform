@@ -58,12 +58,21 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-daily-statistics" {
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count          = 1
-    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type         = "FARGATE"
-  }
+    task_count            = 1
+    task_definition_arn   = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type           = "FARGATE"
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
 
-  network_configuration = "${local.scheduled_task_network_configuration}"
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
+  }
 
   input = <<EOF
 {
@@ -85,12 +94,21 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-weekly-statistics" {
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count          = 1
-    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type         = "FARGATE"
-  }
+    task_count            = 1
+    task_definition_arn   = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type           = "FARGATE"
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
 
-  network_configuration = "${local.scheduled_task_network_configuration}"
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
+  }
 
   input = <<EOF
 {
@@ -112,12 +130,21 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-monthly-statistics" 
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count          = 1
-    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type         = "FARGATE"
-  }
+    task_count            = 1
+    task_definition_arn   = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type           = "FARGATE"
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
 
-  network_configuration = "${local.scheduled_task_network_configuration}"
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
+  }
 
   input = <<EOF
 {
@@ -139,12 +166,21 @@ resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count          = 1
-    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type         = "FARGATE"
-  }
+    task_count            = 1
+    task_definition_arn   = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type           = "FARGATE"
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
 
-  network_configuration = "${local.scheduled_task_network_configuration}"
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
+  }
 
   input = <<EOF
 {
