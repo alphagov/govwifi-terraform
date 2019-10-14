@@ -60,8 +60,10 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-daily-statistics" {
   ecs_target = {
     task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type         = "EC2"
+    launch_type         = "FARGATE"
   }
+
+  network_configuration = "${local.scheduled_task_network_configuration}"
 
   input = <<EOF
 {
@@ -85,8 +87,10 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-weekly-statistics" {
   ecs_target = {
     task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type         = "EC2"
+    launch_type         = "FARGATE"
   }
+
+  network_configuration = "${local.scheduled_task_network_configuration}"
 
   input = <<EOF
 {
@@ -110,8 +114,10 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-monthly-statistics" 
   ecs_target = {
     task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type         = "EC2"
+    launch_type         = "FARGATE"
   }
+
+  network_configuration = "${local.scheduled_task_network_configuration}"
 
   input = <<EOF
 {
@@ -135,8 +141,10 @@ resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
   ecs_target = {
     task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type         = "EC2"
+    launch_type         = "FARGATE"
   }
+
+  network_configuration = "${local.scheduled_task_network_configuration}"
 
   input = <<EOF
 {
@@ -151,15 +159,20 @@ EOF
 }
 
 resource "aws_ecs_task_definition" "user-signup-api-scheduled-task" {
-  count         = "${var.user-signup-enabled}"
-  family        = "user-signup-api-scheduled-task-${var.Env-Name}"
-  task_role_arn = "${aws_iam_role.user-signup-api-task-role.arn}"
+  count                    = "${var.user-signup-enabled}"
+  family                   = "user-signup-api-scheduled-task-${var.Env-Name}"
+  task_role_arn            = "${aws_iam_role.user-signup-api-task-role.arn}"
+  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = 512
+  memory                   = 1024
+  network_mode             = "awsvpc"
 
   container_definitions = <<EOF
 [
     {
       "volumesFrom": [],
-      "memory": 512,
+      "memory": 1024,
       "extraHosts": null,
       "dnsServers": null,
       "disableNetworking": null,
