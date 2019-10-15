@@ -1,21 +1,3 @@
-resource "aws_autoscaling_policy" "api-ec2-scale-up-policy" {
-  count                  = "${var.background-jobs-enabled}"
-  name                   = "${var.Env-Name}-api-ec2-scale-up-policy"
-  scaling_adjustment     = 1
-  adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
-  autoscaling_group_name = "${aws_autoscaling_group.api-asg.name}"
-}
-
-resource "aws_autoscaling_policy" "api-ec2-scale-down-policy" {
-  count                  = "${var.background-jobs-enabled}"
-  name                   = "${var.Env-Name}-api-ec2-scale-down-policy"
-  scaling_adjustment     = -1
-  adjustment_type        = "ChangeInCapacity"
-  cooldown               = 300
-  autoscaling_group_name = "${aws_autoscaling_group.api-asg.name}"
-}
-
 resource "aws_appautoscaling_target" "auth-ecs-target" {
   service_namespace  = "ecs"
   resource_id        = "service/${aws_ecs_cluster.api-cluster.name}/${aws_ecs_service.authorisation-api-service.name}"
