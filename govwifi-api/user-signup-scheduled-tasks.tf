@@ -58,9 +58,20 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-daily-statistics" {
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count          = 1
-    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type         = "EC2"
+    task_count            = 1
+    task_definition_arn   = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type           = "FARGATE"
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
   }
 
   input = <<EOF
@@ -83,9 +94,20 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-weekly-statistics" {
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count          = 1
-    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type         = "EC2"
+    task_count            = 1
+    task_definition_arn   = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type           = "FARGATE"
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
   }
 
   input = <<EOF
@@ -108,9 +130,20 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-monthly-statistics" 
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count          = 1
-    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type         = "EC2"
+    task_count            = 1
+    task_definition_arn   = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type           = "FARGATE"
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
   }
 
   input = <<EOF
@@ -133,9 +166,20 @@ resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
   role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count          = 1
-    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
-    launch_type         = "EC2"
+    task_count            = 1
+    task_definition_arn   = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type           = "FARGATE"
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
   }
 
   input = <<EOF
@@ -151,15 +195,20 @@ EOF
 }
 
 resource "aws_ecs_task_definition" "user-signup-api-scheduled-task" {
-  count         = "${var.user-signup-enabled}"
-  family        = "user-signup-api-scheduled-task-${var.Env-Name}"
-  task_role_arn = "${aws_iam_role.user-signup-api-task-role.arn}"
+  count                    = "${var.user-signup-enabled}"
+  family                   = "user-signup-api-scheduled-task-${var.Env-Name}"
+  task_role_arn            = "${aws_iam_role.user-signup-api-task-role.arn}"
+  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = 512
+  memory                   = 1024
+  network_mode             = "awsvpc"
 
   container_definitions = <<EOF
 [
     {
       "volumesFrom": [],
-      "memory": 512,
+      "memory": 1024,
       "extraHosts": null,
       "dnsServers": null,
       "disableNetworking": null,

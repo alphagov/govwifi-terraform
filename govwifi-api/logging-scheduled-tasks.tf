@@ -58,9 +58,20 @@ resource "aws_cloudwatch_event_target" "logging-publish-weekly-statistics" {
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count          = 1
-    task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-    launch_type         = "EC2"
+    task_count            = 1
+    task_definition_arn   = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
+    launch_type           = "FARGATE"
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
   }
 
   input = <<EOF
@@ -83,9 +94,20 @@ resource "aws_cloudwatch_event_target" "logging-publish-monthly-statistics" {
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count          = 1
-    task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-    launch_type         = "EC2"
+    task_count            = 1
+    task_definition_arn   = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
+    launch_type           = "FARGATE"
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
   }
 
   input = <<EOF
@@ -108,10 +130,23 @@ resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count          = 1
-    task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-    launch_type         = "EC2"
+    task_count            = 1
+    task_definition_arn   = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
+    launch_type           = "FARGATE"
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
   }
+
+  
 
   input = <<EOF
 {
@@ -133,9 +168,20 @@ resource "aws_cloudwatch_event_target" "gdpr-set-user-last-login" {
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count          = 1
-    task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-    launch_type         = "EC2"
+    task_count            = 1
+    task_definition_arn   = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
+    launch_type           = "FARGATE"
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
   }
 
   input = <<EOF
@@ -151,9 +197,14 @@ EOF
 }
 
 resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
-  count         = "${var.logging-enabled}"
-  family        = "logging-api-scheduled-task-${var.Env-Name}"
-  task_role_arn = "${aws_iam_role.logging-api-task-role.arn}"
+  count                    = "${var.logging-enabled}"
+  family                   = "logging-api-scheduled-task-${var.Env-Name}"
+  task_role_arn            = "${aws_iam_role.logging-api-task-role.arn}"
+  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = 512
+  memory                   = 1024
+  network_mode             = "awsvpc"
 
   container_definitions = <<EOF
 [
@@ -166,7 +217,7 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
       "dnsSearchDomains": null,
       "portMappings": [
         {
-          "hostPort": 0,
+          "hostPort": 8080,
           "containerPort": 8080,
           "protocol": "tcp"
         }
