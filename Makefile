@@ -28,7 +28,7 @@ wifi:
 	$(eval export AWS_REGION=eu-west-1)
 
 plan_task: check-env
-	scripts/run-terraform.sh plan
+	scripts/run-terraform.sh plan ${terraform_flags}
 plan: check-env unencrypt-secrets plan_task delete-secrets ## Run terraform plan after decrypting secrets. Must run in form make <env> plan
 apply_task: check-env
 	scripts/run-terraform.sh apply ${terraform_flags}

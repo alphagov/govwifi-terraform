@@ -38,7 +38,7 @@ variable "backup-region-name" {
 
 variable "zone-count" {
   type    = "string"
-  default = "2"
+  default = "3"
 }
 
 # Zone names and subnets MUST be static, can not be constructed from vars.
@@ -48,6 +48,7 @@ variable "zone-names" {
   default = {
     zone0 = "eu-west-2a"
     zone1 = "eu-west-2b"
+    zone2 = "eu-west-2c"
   }
 }
 
