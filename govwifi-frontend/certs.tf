@@ -37,6 +37,11 @@ data "aws_iam_policy_document" "frontend-cert-bucket-policy-document" {
       identifiers = ["*"]
     }
 
+    principals {
+      type        = "AWS"
+      identifiers = ["${aws_iam_role.ecs-service-role.arn}"]
+    }
+
     condition {
       test     = "IpAddress"
       variable = "aws:SourceIp"

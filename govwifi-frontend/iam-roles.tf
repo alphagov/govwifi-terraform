@@ -117,3 +117,21 @@ resource "aws_iam_role" "ecs-service-role" {
 }
 EOF
 }
+
+resource "aws_iam_role_policy" "connect_to_cert_bucket" {
+  name = "${var.aws-region-name}-frontend-connect-to-cert-bucket-${var.Env-Name}"
+  role = "${aws_iam_role.ecs-service-role.id}"
+  policy = "${data.aws_iam_policy_document.connect_to_cert_bucket.json}"
+}
+
+data "aws_iam_policy_document" "connect_to_cert_bucket" {
+  statement {
+    actions = [
+      "s3:GetObject",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.frontend-cert-bucket.arn}/*",
+    ]
+  }
+}
