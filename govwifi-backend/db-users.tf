@@ -3,7 +3,7 @@ resource "aws_db_instance" "users_db" {
   allocated_storage           = "${var.user-db-storage-gb}"
   storage_type                = "gp2"
   engine                      = "mysql"
-  engine_version              = "8.0.11"
+  engine_version              = "8.0"
   auto_minor_version_upgrade  = true
   allow_major_version_upgrade = false
   apply_immediately           = true
@@ -40,7 +40,7 @@ resource "aws_db_instance" "users_read_replica" {
   kms_key_id                  = "${var.rds-kms-key-id}"
   storage_encrypted           = "${var.db-encrypt-at-rest}"
   storage_type                = "gp2"
-  engine_version              = "8.0.11"
+  engine_version              = "8.0"
   auto_minor_version_upgrade  = true
   allow_major_version_upgrade = false
   apply_immediately           = true
