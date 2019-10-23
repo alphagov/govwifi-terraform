@@ -3,7 +3,7 @@ resource "aws_db_instance" "db" {
   allocated_storage           = "${var.session-db-storage-gb}"
   storage_type                = "gp2"
   engine                      = "mysql"
-  engine_version              = "5.7.23"
+  engine_version              = "5.7"
   auto_minor_version_upgrade  = true
   allow_major_version_upgrade = false
   apply_immediately           = true
@@ -40,7 +40,7 @@ resource "aws_db_instance" "read_replica" {
   replicate_source_db         = "${aws_db_instance.db.identifier}"
   storage_type                = "gp2"
   engine                      = "mysql"
-  engine_version              = "5.7.23"
+  engine_version              = "5.7"
   auto_minor_version_upgrade  = true
   allow_major_version_upgrade = false
   apply_immediately           = true
