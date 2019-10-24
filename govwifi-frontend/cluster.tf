@@ -113,7 +113,7 @@ resource "aws_ecs_task_definition" "radius-task" {
     ]
   },
   {
-    "essential": true,
+    "essential": false,
     "mountPoints": [
       {
         "sourceVolume": "raddb-certs",
@@ -139,6 +139,7 @@ resource "aws_ecs_task_definition" "radius-task" {
         "awslogs-stream-prefix": "${var.Env-Name}-docker-logs"
       }
     },
+    "memory": 1500,
     "cpu": 1000,
     "expanded": true
   }
