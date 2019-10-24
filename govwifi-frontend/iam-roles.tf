@@ -1,3 +1,6 @@
+locals {
+  admin-bucket-arn = "arn:aws:s3:::${var.admin-bucket-name}"
+}
 resource "aws_iam_role_policy" "ecs-instance-policy" {
   name = "${var.aws-region-name}-frontend-ecs-instance-policy-${var.Env-Name}"
   role = "${aws_iam_role.ecs-instance-role.id}"
@@ -152,8 +155,8 @@ data "aws_iam_policy_document" "admin_bucket_policy" {
     ]
 
     resources = [
-      "${var.admin-bucket-arn}",
-      "${var.admin-bucket-arn}/*",
+      "${local.admin-bucket-arn}",
+      "${local.admin-bucket-arn}/*",
     ]
   }
 }

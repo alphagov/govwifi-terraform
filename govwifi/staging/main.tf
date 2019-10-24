@@ -192,7 +192,6 @@ module "frontend" {
   raddb-docker-image    = "${format("%s/raddb:staging", var.docker-image-path)}"
 
   # admin bucket
-  admin-bucket-arn = "arn:aws:s3:::govwifi-staging-admin"
   admin-bucket-name = "govwifi-staging-admin"
 
   logging-api-base-url = "${var.london-api-base-url}"

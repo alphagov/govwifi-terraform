@@ -163,7 +163,6 @@ module "frontend" {
   create-ecr            = true
 
   # admin bucket
-  admin-bucket-arn = "arn:aws:s3:::govwifi-staging-admin"
   admin-bucket-name = "govwifi-staging-admin"
 
   logging-api-base-url = "${var.london-api-base-url}"

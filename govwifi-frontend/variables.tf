@@ -89,7 +89,3 @@ variable "devops-notifications-arn" {
 variable "admin-bucket-name" {
   type = "string"
 }
-
-variable "admin-bucket-arn" {
-  type = "string"
-}
