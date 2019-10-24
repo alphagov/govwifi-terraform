@@ -78,7 +78,7 @@ resource "aws_iam_instance_profile" "ecs-instance-profile" {
 # Unused until a loadbalancer is set up
 resource "aws_iam_role_policy" "ecs-service-policy" {
   name = "${var.aws-region-name}-frontend-ecs-service-policy-${var.Env-Name}"
-  role = "${aws_iam_role.ecs-service-role.id}"
+  role = "${aws_iam_role.ecs-task-role.id}"
 
   policy = <<EOF
 {
@@ -98,8 +98,8 @@ EOF
 }
 
 # Unused until a loadbalancer is set up
-resource "aws_iam_role" "ecs-service-role" {
-  name = "${var.aws-region-name}-frontend-ecs-service-role-${var.Env-Name}"
+resource "aws_iam_role" "ecs-task-role" {
+  name = "${var.aws-region-name}-frontend-ecs-task-role-${var.Env-Name}"
 
   assume_role_policy = <<EOF
 {
@@ -108,7 +108,7 @@ resource "aws_iam_role" "ecs-service-role" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": "ecs.amazonaws.com"
+        "Service": "ecs-tasks.amazonaws.com"
       },
       "Effect": "Allow",
       "Sid": ""
@@ -118,20 +118,42 @@ resource "aws_iam_role" "ecs-service-role" {
 EOF
 }
 
-resource "aws_iam_role_policy" "connect_to_cert_bucket" {
-  name = "${var.aws-region-name}-frontend-connect-to-cert-bucket-${var.Env-Name}"
-  role = "${aws_iam_role.ecs-service-role.id}"
-  policy = "${data.aws_iam_policy_document.connect_to_cert_bucket.json}"
+resource "aws_iam_role_policy" "cert_bucket_policy" {
+  name   = "${var.aws-region-name}-frontend-cert-bucket-${var.Env-Name}"
+  role   = "${aws_iam_role.ecs-task-role.id}"
+  policy = "${data.aws_iam_policy_document.cert_bucket_policy.json}"
 }
 
-data "aws_iam_policy_document" "connect_to_cert_bucket" {
+data "aws_iam_policy_document" "cert_bucket_policy" {
   statement {
     actions = [
+      "s3:ListBucket",
       "s3:GetObject",
     ]
 
     resources = [
+      "${aws_s3_bucket.frontend-cert-bucket.arn}",
       "${aws_s3_bucket.frontend-cert-bucket.arn}/*",
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "admin_bucket_policy" {
+  name   = "${var.aws-region-name}-frontend-admin-bucket-${var.Env-Name}"
+  role   = "${aws_iam_role.ecs-task-role.id}"
+  policy = "${data.aws_iam_policy_document.admin_bucket_policy.json}"
+}
+
+data "aws_iam_policy_document" "admin_bucket_policy" {
+  statement {
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObject",
+    ]
+
+    resources = [
+      "${var.admin-bucket-arn}",
+      "${var.admin-bucket-arn}/*",
     ]
   }
 }

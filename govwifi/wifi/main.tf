@@ -197,20 +197,22 @@ module "frontend" {
   radius-instance-count      = 3
   enable-detailed-monitoring = true
 
-  # "-X" debug mode, "" normal mode (preventing insta-shutdown with pipeing to cat)
-  radiusd-params = ""
-
   # eg. dns recods are generated for radius(N).x.service.gov.uk
   # where N = this base + 1 + server#
   dns-numbering-base = 0
 
-  elastic-ip-list = ["${split(",", var.frontend-region-IPs)}"]
-  ami             = "${var.ami}"
-  ssh-key-name    = "${var.ssh-key-name}"
-  users           = "${var.users}"
-  docker-image    = "${format("%s/frontend:latest", var.docker-image-path)}"
+  elastic-ip-list       = ["${split(",", var.frontend-region-IPs)}"]
+  ami                   = "${var.ami}"
+  ssh-key-name          = "${var.ssh-key-name}"
+  users                 = "${var.users}"
+  frontend-docker-image = "${format("%s/frontend:latest", var.docker-image-path)}"
+  raddb-docker-image    = "${format("%s/raddb:latest", var.docker-image-path)}"
 
   shared-key = "${var.shared-key}"
+
+  # admin bucket
+  admin-bucket-arn = "arn:aws:s3:::govwifi-production-admin"
+  admin-bucket-name = "govwifi-production-admin"
 
   logging-api-base-url = "${var.london-api-base-url}"
   auth-api-base-url    = "${var.dublin-api-base-url}"

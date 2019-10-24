@@ -26,7 +26,9 @@ variable "radius-instance-sg-ids" {
   type = "list"
 }
 
-variable "docker-image" {}
+variable "frontend-docker-image" {}
+
+variable "raddb-docker-image" {}
 
 variable "ami" {
   description = "AMI id to launch, must be in the region specified by the region variable"
@@ -54,7 +56,7 @@ variable "elastic-ip-list" {
 variable "enable-detailed-monitoring" {}
 
 variable "radiusd-params" {
-  default = ""
+  default = "-f"
 }
 
 variable "users" {
@@ -81,5 +83,13 @@ variable "route53-critical-notifications-arn" {
 }
 
 variable "devops-notifications-arn" {
+  type = "string"
+}
+
+variable "admin-bucket-name" {
+  type = "string"
+}
+
+variable "admin-bucket-arn" {
   type = "string"
 }
