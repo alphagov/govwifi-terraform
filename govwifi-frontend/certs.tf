@@ -21,36 +21,3 @@ resource "aws_s3_bucket" "frontend-cert-bucket" {
     enabled = true
   }
 }
-
-data "aws_iam_policy_document" "frontend-cert-bucket-policy-document" {
-  statement {
-    actions = [
-      "s3:GetObject",
-    ]
-
-    resources = [
-      "${aws_s3_bucket.frontend-cert-bucket.arn}/*",
-    ]
-
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-
-    principals {
-      type        = "AWS"
-      identifiers = ["${aws_iam_role.ecs-service-role.arn}"]
-    }
-
-    condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-      values   = ["${aws_eip_association.eip_assoc.*.public_ip}"]
-    }
-  }
-}
-
-resource "aws_s3_bucket_policy" "frontend-cert-bucket-policy" {
-  bucket = "${aws_s3_bucket.frontend-cert-bucket.id}"
-  policy = "${data.aws_iam_policy_document.frontend-cert-bucket-policy-document.json}"
-}

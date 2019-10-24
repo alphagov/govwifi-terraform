@@ -21,7 +21,8 @@ resource "aws_ecr_repository" "govwifi-raddb-ecr" {
 }
 
 resource "aws_ecs_task_definition" "radius-task" {
-  family = "radius-task-${var.Env-Name}"
+  family        = "radius-task-${var.Env-Name}"
+  task_role_arn = "${aws_iam_role.ecs-task-role.arn}"
 
   volume {
     name = "raddb-certs"
@@ -94,7 +95,7 @@ resource "aws_ecs_task_definition" "radius-task" {
         "value": "${var.rack-env}"
       }
     ],
-    "image": "${var.docker-image}",
+    "image": "${var.frontend-docker-image}",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -108,12 +109,12 @@ resource "aws_ecs_task_definition" "radius-task" {
     "dependsOn": [
       {
         "containerName": "populate-radius-certs",
-        "condition": "COMPLETE"
+        "condition": "SUCCESS"
       }
     ]
   },
   {
-    "essential": true,
+    "essential": false,
     "mountPoints": [
       {
         "sourceVolume": "raddb-certs",
@@ -124,13 +125,13 @@ resource "aws_ecs_task_definition" "radius-task" {
     "environment": [
       {
         "name": "WHITELIST_BUCKET",
-        "value": "https://s3.eu-west-2.amazonaws.com/govwifi-${var.rack-env}-admin"
+        "value": "s3://${var.admin-bucket-name}"
       },{
         "name": "CERT_STORE_BUCKET",
-        "value": "https://${aws_s3_bucket.frontend-cert-bucket.bucket_domain_name}"
+        "value": "s3://${aws_s3_bucket.frontend-cert-bucket.bucket}"
       }
     ],
-    "image": "${var.docker-image}",
+    "image": "${var.raddb-docker-image}",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -139,6 +140,7 @@ resource "aws_ecs_task_definition" "radius-task" {
         "awslogs-stream-prefix": "${var.Env-Name}-docker-logs"
       }
     },
+    "memory": 1500,
     "cpu": 1000,
     "expanded": true
   }

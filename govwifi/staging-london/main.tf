@@ -150,19 +150,21 @@ module "frontend" {
   radius-instance-count      = 3
   enable-detailed-monitoring = false
 
-  # "-X" debug mode, "" normal mode (preventing insta-shutdown with pipeing to cat)
-  radiusd-params = ""
-
   # eg. dns recods are generated for radius(N).x.service.gov.uk
   # where N = this base + 1 + server#
   dns-numbering-base = 3
 
-  elastic-ip-list = ["${split(",", var.frontend-region-IPs)}"]
-  ami             = "${var.ami}"
-  ssh-key-name    = "${var.ssh-key-name}"
-  users           = "${var.users}"
-  docker-image    = "${format("%s/frontend:staging", var.docker-image-path)}"
-  create-ecr      = true
+  elastic-ip-list       = ["${split(",", var.frontend-region-IPs)}"]
+  ami                   = "${var.ami}"
+  ssh-key-name          = "${var.ssh-key-name}"
+  users                 = "${var.users}"
+  frontend-docker-image = "${format("%s/frontend:staging", var.docker-image-path)}"
+  raddb-docker-image    = "${format("%s/raddb:staging", var.docker-image-path)}"
+  create-ecr            = true
+
+  # admin bucket
+  admin-bucket-arn = "arn:aws:s3:::govwifi-staging-admin"
+  admin-bucket-name = "govwifi-staging-admin"
 
   logging-api-base-url = "${var.london-api-base-url}"
   auth-api-base-url    = "${var.london-api-base-url}"
@@ -335,7 +337,7 @@ module "api" {
   ecs-instance-profile-id            = "${module.backend.ecs-instance-profile-id}"
   ecs-service-role                   = "${module.backend.ecs-service-role}"
   user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
-  admin-bucket-name                  = "${module.govwifi-admin.admin-bucket-name}"
+  admin-bucket-name                  = "govwifi-staging-admin"
   govnotify-bearer-token             = "${var.govnotify-bearer-token}"
   user-signup-api-is-public          = true
 
