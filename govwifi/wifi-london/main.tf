@@ -163,7 +163,6 @@ module "frontend" {
   shared-key            = "${var.shared-key}"
 
   # admin bucket
-  admin-bucket-arn = "arn:aws:s3:::govwifi-production-admin"
   admin-bucket-name = "govwifi-production-admin"
 
   logging-api-base-url = "${var.london-api-base-url}"
