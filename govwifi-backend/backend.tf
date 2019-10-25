@@ -41,3 +41,22 @@ resource "aws_subnet" "wifi-backend-subnet" {
     Name = "${var.Env-Name} Backend - AZ: ${lookup(var.zone-names, format("zone%d", count.index))} - GovWifi subnet"
   }
 }
+
+resource "aws_vpc_peering_connection" "backend_to_frontend_peer" {
+  peer_vpc_id = "${var.frontend-vpc-id}"
+  vpc_id      = "${aws_vpc.wifi-backend.id}"
+
+  auto_accept = true
+
+  tags = {
+    Name = "Backend/Frontend peer - ${var.Env-Name}"
+  }
+
+  accepter {
+    allow_remote_vpc_dns_resolution = true
+  }
+
+  requester {
+    allow_remote_vpc_dns_resolution = true
+  }
+}

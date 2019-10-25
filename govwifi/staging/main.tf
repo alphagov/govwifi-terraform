@@ -60,6 +60,7 @@ module "backend" {
   vpc-cidr-block  = "10.100.0.0/16"
   zone-count      = "${var.zone-count}"
   zone-names      = "${var.zone-names}"
+  frontend-vpc-id = "${module.frontend.frontend-vpc-id}"
 
   zone-subnets = {
     zone0 = "10.100.1.0/24"
