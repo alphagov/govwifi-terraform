@@ -205,8 +205,8 @@ module "frontend" {
   ami                   = "${var.ami}"
   ssh-key-name          = "${var.ssh-key-name}"
   users                 = "${var.users}"
-  frontend-docker-image = "${format("%s/frontend:latest", var.docker-image-path)}"
-  raddb-docker-image    = "${format("%s/raddb:latest", var.docker-image-path)}"
+  frontend-docker-image = "${format("%s/frontend:production", var.docker-image-path)}"
+  raddb-docker-image    = "${format("%s/raddb:production", var.docker-image-path)}"
 
   shared-key = "${var.shared-key}"
 
