@@ -26,6 +26,12 @@ resource "aws_route" "internet_access" {
   gateway_id             = "${aws_internet_gateway.wifi-frontend.id}"
 }
 
+resource "aws_route" "backend_vpc" {
+  route_table_id            = "${aws_vpc.wifi-frontend.main_route_table_id}"
+  destination_cidr_block    = "${var.backend-vpc-cidr-block}"
+  vpc_peering_connection_id = "${var.backend-to-frontend-vpc-peering-id}"
+}
+
 # CREATE SUBNET IN EACH AZ
 
 resource "aws_subnet" "wifi-frontend-subnet" {

@@ -6,6 +6,10 @@ output "backend-subnet-ids" {
   value = ["${aws_subnet.wifi-backend-subnet.*.id}"]
 }
 
+output "backend-to-frontend-vpc-peering-id" {
+  value = "${aws_vpc_peering_connection.backend_to_frontend_peer.id}"
+}
+
 output "ecs-instance-profile-id" {
   value = "${aws_iam_instance_profile.ecs-instance-profile.id}"
 }

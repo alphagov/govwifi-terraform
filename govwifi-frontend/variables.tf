@@ -89,3 +89,13 @@ variable "devops-notifications-arn" {
 variable "admin-bucket-name" {
   type = "string"
 }
+
+variable "backend-to-frontend-vpc-peering-id" {
+  type    = "string"
+  default = ""
+}
+
+variable "backend-vpc-cidr-block" {
+  type    = "string"
+  default = ""
+}
