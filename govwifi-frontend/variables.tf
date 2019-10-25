@@ -97,5 +97,4 @@ variable "backend-to-frontend-vpc-peering-id" {
 
 variable "backend-vpc-cidr-block" {
   type    = "string"
-  default = ""
 }

@@ -11,6 +11,11 @@ provider "aws" {
   region  = "us-east-1"
 }
 
+locals {
+  backend-vpc-cidr-block  = "10.103.0.0/16"
+  frontend-vpc-cidr-block = "10.102.0.0/16"
+}
+
 module "tfstate" {
   providers = {
     "aws" = "aws.AWS-main"
@@ -65,7 +70,7 @@ module "backend" {
   aws-region      = "${var.aws-region}"
   route53-zone-id = "${var.route53-zone-id}"
   aws-region-name = "${var.aws-region-name}"
-  vpc-cidr-block  = "10.103.0.0/16"
+  vpc-cidr-block  = "${local.backend-vpc-cidr-block}"
   zone-count      = "${var.zone-count}"
   zone-names      = "${var.zone-names}"
   frontend-vpc-id = "${module.frontend.frontend-vpc-id}"
@@ -136,7 +141,7 @@ module "frontend" {
 
   aws-region-name = "${var.aws-region-name}"
   route53-zone-id = "${var.route53-zone-id}"
-  vpc-cidr-block  = "10.102.0.0/16"
+  vpc-cidr-block  = "${local.frontend-vpc-cidr-block}"
   zone-count      = "${var.zone-count}"
   zone-names      = "${var.zone-names}"
   rack-env        = "staging"
@@ -146,6 +151,9 @@ module "frontend" {
     zone1 = "10.102.2.0/24"
     zone2 = "10.102.3.0/24"
   }
+
+  backend-to-frontend-vpc-peering-id = "${module.backend.backend-to-frontend-vpc-peering-id}"
+  backend-vpc-cidr-block             = "${local.backend-vpc-cidr-block}"
 
   # Instance-specific setup -------------------------------
   radius-instance-count      = 3
