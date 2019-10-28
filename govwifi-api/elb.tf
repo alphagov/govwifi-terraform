@@ -1,6 +1,6 @@
 resource "aws_lb" "api-alb" {
   name     = "api-alb-${var.Env-Name}"
-  internal = false
+  internal = true
   count    = "${var.backend-elb-count}"
   subnets  = ["${var.subnet-ids}"]
 

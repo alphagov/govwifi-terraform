@@ -174,8 +174,10 @@ module "frontend" {
   # admin bucket
   admin-bucket-name = "govwifi-staging-admin"
 
-  logging-api-base-url = "${var.london-api-base-url}"
-  auth-api-base-url    = "${var.london-api-base-url}"
+  logging-api-base-url = "https://api.internal.staging.wifi.service.gov.uk:8443"
+  auth-api-base-url    = "https://api.internal.staging.wifi.service.gov.uk:8443"
+
+  radiusd-params = "-X"
 
   shared-key = "${var.shared-key}"
 
