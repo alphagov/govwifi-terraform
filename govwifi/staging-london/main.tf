@@ -165,8 +165,8 @@ module "frontend" {
   # admin bucket
   admin-bucket-name = "govwifi-staging-admin"
 
-  logging-api-base-url = "${var.london-api-base-url}"
-  auth-api-base-url    = "${var.london-api-base-url}"
+  logging-api-base-url = "${module.api.api-alb-url}"
+  auth-api-base-url    = "${module.api.api-alb-url}"
 
   shared-key = "${var.shared-key}"
 
@@ -187,6 +187,19 @@ module "frontend" {
     "${var.bastion-server-IP}",
     "${split(",", var.backend-subnet-IPs)}",
   ]
+}
+
+module "vpc_peering" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source          = "../../govwifi-peering"
+  backend_vpc_id  = "${module.backend.backend-vpc-id}"
+  frontend_vpc_id = "${module.frontend.frontend-vpc-id}"
+
+  frontend_route_table_id = "${module.frontend.route_table_id}"
+  destination_cidr_block  = "${module.backend.vpc-cidr-block}"
 }
 
 module "govwifi-admin" {
@@ -293,6 +306,8 @@ module "api" {
   vpc-id                 = "${module.backend.backend-vpc-id}"
   iam-count              = 1
   safe-restart-enabled   = 1
+
+  frontend_security_groups = ["${module.frontend.frontend_security_group}"]
 
   critical-notifications-arn = "${module.notifications.topic-arn}"
   capacity-notifications-arn = "${module.notifications.topic-arn}"

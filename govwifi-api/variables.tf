@@ -211,3 +211,7 @@ variable "govnotify-bearer-token" {
 variable "user-signup-api-is-public" {
   default = false
 }
+
+variable "frontend_security_groups" {
+  type = "list"
+}

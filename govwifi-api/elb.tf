@@ -1,6 +1,6 @@
 resource "aws_lb" "api-alb" {
   name     = "api-alb-${var.Env-Name}"
-  internal = false
+  internal = true
   count    = "${var.backend-elb-count}"
   subnets  = ["${var.subnet-ids}"]
 
@@ -53,6 +53,8 @@ resource "aws_security_group" "api-alb-in" {
     to_port     = 8443
     protocol    = "tcp"
     cidr_blocks = ["${var.radius-server-ips}"]
+
+    security_groups = ["${var.frontend_security_groups}"]
   }
 }
 
