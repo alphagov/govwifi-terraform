@@ -12,7 +12,7 @@ resource "aws_lb" "frontend-nlb" {
 }
 
 resource "aws_lb_target_group" "frontend-target-group" {
-  name     = "frontend-${var.Env-Name}-tg"
+  name     = "frontend-tg-${var.Env-Name}"
   port     = 3000
   protocol = "UDP"
   vpc_id   = "${aws_vpc.wifi-frontend.id}"
