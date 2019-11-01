@@ -35,3 +35,14 @@ resource "aws_lb_target_group_attachment" "frontend-target-group-attachment" {
   target_id        = "${element(aws_instance.radius.*.id, count.index)}"
   port             = 8080
 }
+
+resource "aws_lb_listener" "frontend-listener" {
+  load_balancer_arn = "${aws_lb.frontend-nlb.arn}"
+  port              = 3000
+  protocol          = "UDP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.frontend-target-group.arn}"
+  }
+}
