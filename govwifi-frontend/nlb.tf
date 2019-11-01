@@ -1,5 +1,5 @@
 resource "aws_lb" "frontend-nlb" {
-  name               = "frontend-${var.Env-Name}-nlb"
+  name               = "frontend-nlb-${var.Env-Name}"
   internal           = false
   load_balancer_type = "network"
   subnets            = ["${aws_subnet.wifi-frontend-subnet.*.id}"]
