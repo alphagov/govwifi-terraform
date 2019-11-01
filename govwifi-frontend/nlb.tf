@@ -26,3 +26,10 @@ resource "aws_lb_target_group" "frontend-target-group" {
     protocol            = "TCP"
   }
 }
+
+resource "aws_lb_target_group_attachment" "frontend-target-group-attachment" {
+  count            = "${aws_instance.radius.count}"
+  target_group_arn = "${aws_lb_target_group.frontend-target-group.arn}"
+  target_id        = "${element(aws_instance.radius.*.id, count.index)}"
+  port             = 8080
+}
