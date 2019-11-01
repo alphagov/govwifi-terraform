@@ -1,12 +1,12 @@
 provider "aws" {
   # Workaround for import issue, see https://github.com/hashicorp/terraform/issues/13018#issuecomment-291547317
-  version = "2.10.0"
+  version = "2.17.0"
   alias   = "AWS-main"
   region  = "${var.aws-region}"
 }
 
 provider "aws" {
-  version = "2.10.0"
+  version = "2.17.0"
   alias   = "route53-alarms"
   region  = "us-east-1"
 }
@@ -36,7 +36,6 @@ terraform {
     #key    = "${lower(var.aws-region-name)}-tfstate"
     #region = "${var.aws-region}"
     bucket = "govwifi-staging-london-tfstate"
-
     key    = "london-tfstate"
     region = "eu-west-2"
   }
