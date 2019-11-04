@@ -42,6 +42,7 @@ resource "aws_lb_target_group" "frontend-target-group" {
     interval            = 30
     protocol            = "HTTP"
     path                = "/"
+    port                = 3000
   }
 
   tags = {
