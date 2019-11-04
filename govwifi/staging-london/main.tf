@@ -319,7 +319,7 @@ module "api" {
   # There is no read replica for the staging database
   db-read-replica-hostname           = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                           = "staging"
-  radius-server-ips                  = "${split(",", var.frontend-radius-IPs)}"
+  radius-server-ips                  = "${concat(module.frontend.radius-box-eip-cidr, split(",", var.frontend-radius-IPs))}"
   authentication-sentry-dsn          = "${var.auth-sentry-dsn}"
   safe-restart-sentry-dsn            = "${var.safe-restart-sentry-dsn}"
   user-signup-sentry-dsn             = "${var.user-signup-sentry-dsn}"

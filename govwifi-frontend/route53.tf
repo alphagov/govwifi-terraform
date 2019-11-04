@@ -6,13 +6,13 @@ resource "aws_route53_record" "radius" {
   type       = "CNAME"
   ttl        = "300"
   records    = ["${element(aws_instance.radius.*.public_dns, count.index)}"]
-  depends_on = ["aws_instance.radius", "aws_eip_association.eip_assoc"]
+  depends_on = ["aws_instance.radius", "aws_lb.frontend-nlb"]
 }
 
 resource "aws_route53_health_check" "radius" {
-  count             = "${aws_eip_association.eip_assoc.count}"
+  count             = "${length(var.elastic-ip-list)}"
   reference_name    = "${format("${var.Env-Name}-${var.aws-region-name}-frontend-%d", count.index + 1)}"
-  ip_address        = "${element(aws_eip_association.eip_assoc.*.public_ip, count.index)}"
+  ip_address        = "${replace(element(var.elastic-ip-list, count.index), "/32", "")}"
   port              = 3000
   type              = "HTTP"
   request_interval  = "30"

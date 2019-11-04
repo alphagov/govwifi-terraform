@@ -1,13 +1,32 @@
+data "aws_eip" "radius_ips" {
+  count     = "${length(var.elastic-ip-list)}"
+  public_ip = "${replace(element(var.elastic-ip-list, count.index), "/32", "")}"
+}
+
 resource "aws_lb" "frontend-nlb" {
   name               = "frontend-nlb-${var.Env-Name}"
   internal           = false
   load_balancer_type = "network"
-  subnets            = ["${aws_subnet.wifi-frontend-subnet.*.id}"]
 
   enable_deletion_protection = false
 
   tags = {
     Name = "frontend-nlb-${var.Env-Name}"
+  }
+
+  subnet_mapping {
+    subnet_id     = "${aws_subnet.wifi-frontend-subnet.0.id}"
+    allocation_id = "${data.aws_eip.radius_ips.0.id}"
+  }
+
+  subnet_mapping {
+    subnet_id     = "${aws_subnet.wifi-frontend-subnet.1.id}"
+    allocation_id = "${data.aws_eip.radius_ips.1.id}"
+  }
+
+  subnet_mapping {
+    subnet_id     = "${aws_subnet.wifi-frontend-subnet.2.id}"
+    allocation_id = "${data.aws_eip.radius_ips.2.id}"
   }
 }
 
