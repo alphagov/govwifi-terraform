@@ -115,11 +115,11 @@ resource "aws_security_group" "fe-radius-in" {
   }
 
   ingress {
-    description = "Allow route53 healthcheck"
-    from_port   = 8080
-    to_port     = 8080
+    description = "Allow target group healthcheck"
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "tcp"
-    cidr_blocks = ["${data.aws_ip_ranges.route53_healthcheck.cidr_blocks}"]
+    cidr_blocks = ["${aws_subnet.wifi-frontend-subnet.*.cidr_block}"]
   }
 
   ingress {
