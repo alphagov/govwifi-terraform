@@ -60,6 +60,20 @@ resource "aws_lb_target_group_attachment" "frontend-healthcheck" {
   port             = 3000
 }
 
+resource "aws_lb_target_group_attachment" "frontend-radius-server" {
+  count            = "${aws_instance.radius.count}"
+  target_group_arn = "${aws_lb_target_group.frontend-target-group.arn}"
+  target_id        = "${element(aws_instance.radius.*.id, count.index)}"
+  port             = 1812
+}
+
+resource "aws_lb_target_group_attachment" "frontend-radius-accounting" {
+  count            = "${aws_instance.radius.count}"
+  target_group_arn = "${aws_lb_target_group.frontend-target-group.arn}"
+  target_id        = "${element(aws_instance.radius.*.id, count.index)}"
+  port             = 1813
+}
+
 resource "aws_lb_listener" "healthcheck" {
   load_balancer_arn = "${aws_lb.frontend-nlb.arn}"
   port              = 3000

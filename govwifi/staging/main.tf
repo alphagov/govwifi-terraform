@@ -70,7 +70,7 @@ module "backend" {
   backend-subnet-IPs  = "${var.backend-subnet-IPs}"
   administrator-IPs   = "${var.administrator-IPs}"
   bastion-server-IP   = "${var.bastion-server-IP}"
-  frontend-radius-IPs = "${var.frontend-radius-IPs}"
+  frontend-radius-IPs = "${module.frontend.radius-box-elastic-ips}"
 
   # Instance-specific setup -------------------------------
   # eu-west-1, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1

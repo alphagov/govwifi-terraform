@@ -17,7 +17,9 @@ variable "aws-region-name" {}
 variable "backend-subnet-IPs" {}
 variable "administrator-IPs" {}
 variable "bastion-server-IP" {}
-variable "frontend-radius-IPs" {}
+variable "frontend-radius-IPs" {
+  type = "list"
+}
 
 variable "zone-count" {}
 

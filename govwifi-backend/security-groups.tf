@@ -110,7 +110,7 @@ resource "aws_security_group" "be-vpn-out" {
 
     cidr_blocks = [
       "${split(",", var.backend-subnet-IPs)}",
-      "${split(",", var.frontend-radius-IPs)}",
+      "${formatlist("%s/32", var.frontend-radius-IPs)}",
     ]
   }
 }
@@ -128,13 +128,13 @@ resource "aws_security_group" "be-radius-api-in" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["${split(",",var.frontend-radius-IPs)}"]
+    cidr_blocks = ["${formatlist("%s/32", var.frontend-radius-IPs)}"]
   }
 
   ingress {
     from_port   = 8443
     to_port     = 8443
     protocol    = "tcp"
-    cidr_blocks = ["${split(",",var.frontend-radius-IPs)}"]
+    cidr_blocks = ["${formatlist("%s/32", var.frontend-radius-IPs)}"]
   }
 }
