@@ -269,7 +269,7 @@ module "api" {
   # There is no read replica for the staging database
   db-read-replica-hostname           = ""
   rack-env                           = "staging"
-  radius-server-ips                  = "${module.frontend.radius-box-eip-cidr}"
+  radius-server-ips                  = "${module.frontend.radius-box-elastic-ips}"
   authentication-sentry-dsn          = "${var.auth-sentry-dsn}"
   safe-restart-sentry-dsn            = ""
   user-signup-sentry-dsn             = ""

@@ -328,7 +328,7 @@ module "api" {
   # There is no read replica for the staging database
   db-read-replica-hostname           = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                           = "staging"
-  radius-server-ips                  = "${concat(module.frontend.radius-box-eip-cidr, data.terraform_remote_state.ireland.radius-box-eip-cidr)}"
+  radius-server-ips                  = "${concat(module.frontend.radius-box-elastic-ips, data.terraform_remote_state.ireland.radius-box-elastic-ips)}"
   authentication-sentry-dsn          = "${var.auth-sentry-dsn}"
   safe-restart-sentry-dsn            = "${var.safe-restart-sentry-dsn}"
   user-signup-sentry-dsn             = "${var.user-signup-sentry-dsn}"

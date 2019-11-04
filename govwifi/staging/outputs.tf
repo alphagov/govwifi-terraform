@@ -1,3 +1,3 @@
-output "radius-box-eip-cidr" {
-  value = "${module.frontend.radius-box-eip-cidr}"
+output "radius-box-elastic-ips" {
+  value = "${module.frontend.radius-box-elastic-ips}"
 }
