@@ -1,12 +1,12 @@
 provider "aws" {
   # Workaround for import issue, see https://github.com/hashicorp/terraform/issues/13018#issuecomment-291547317
-  version = "2.10.0"
+  version = "2.17.0"
   alias   = "AWS-main"
   region  = "${var.aws-region}"
 }
 
 provider "aws" {
-  version = "2.10.0"
+  version = "2.17.0"
   alias   = "route53-alarms"
   region  = "us-east-1"
 }
@@ -269,7 +269,7 @@ module "api" {
   # There is no read replica for the staging database
   db-read-replica-hostname           = ""
   rack-env                           = "staging"
-  radius-server-ips                  = "${split(",", var.frontend-radius-IPs)}"
+  radius-server-ips                  = "${module.frontend.radius-box-eip-cidr}"
   authentication-sentry-dsn          = "${var.auth-sentry-dsn}"
   safe-restart-sentry-dsn            = ""
   user-signup-sentry-dsn             = ""

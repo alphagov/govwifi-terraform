@@ -41,6 +41,15 @@ terraform {
   }
 }
 
+data "terraform_remote_state" "ireland" {
+  backend = "s3"
+  config {
+    bucket = "govwifi-staging-dublin-tfstate"
+    key    = "dublin-tfstate"
+    region = "eu-west-1"
+  }
+}
+
 module "govwifi-keys" {
   providers = {
     "aws" = "aws.AWS-main"
@@ -319,7 +328,7 @@ module "api" {
   # There is no read replica for the staging database
   db-read-replica-hostname           = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                           = "staging"
-  radius-server-ips                  = "${concat(module.frontend.radius-box-eip-cidr, split(",", var.frontend-radius-IPs))}"
+  radius-server-ips                  = "${concat(module.frontend.radius-box-eip-cidr, data.terraform_remote_state.ireland.radius-box-eip-cidr)}"
   authentication-sentry-dsn          = "${var.auth-sentry-dsn}"
   safe-restart-sentry-dsn            = "${var.safe-restart-sentry-dsn}"
   user-signup-sentry-dsn             = "${var.user-signup-sentry-dsn}"
