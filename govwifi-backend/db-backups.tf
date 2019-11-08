@@ -16,10 +16,10 @@ resource "aws_s3_bucket" "db_backups" {
 
 resource "aws_s3_bucket_policy" "db_backups" {
   bucket = "${aws_s3_bucket.db_backups.id}"
-  policy = "${data.aws_iam_policy_document.db_backups.json}"
+  policy = "${data.aws_iam_policy_document.deny_delete_actions.json}"
 }
 
-data "aws_iam_policy_document" "db_backups" {
+data "aws_iam_policy_document" "deny_delete_actions" {
   statement {
     effect = "Deny"
 
