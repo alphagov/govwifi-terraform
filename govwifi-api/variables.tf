@@ -156,6 +156,8 @@ variable "logging-docker-image" {}
 
 variable "safe-restart-docker-image" {}
 
+variable "database-backup-docker-image" {}
+
 variable "notify-api-key" {
   default     = ""
   description = "API key used to authenticate with GOV.UK Notify"

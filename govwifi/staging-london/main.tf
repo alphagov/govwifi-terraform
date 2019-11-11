@@ -307,6 +307,8 @@ module "api" {
   ecr-repository-count      = 1
   background-jobs-enabled   = 1
 
+  database-backup-docker-image = "${format("%s/database-backups:staging", var.docker-image-path)}"
+
   db-user     = "${var.db-user}"
   db-password = "${var.db-password}"
   db-hostname = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"

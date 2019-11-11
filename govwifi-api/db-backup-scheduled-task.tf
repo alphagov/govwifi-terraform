@@ -10,7 +10,7 @@ resource "aws_cloudwatch_event_rule" "daily_databse_backup" {
 }
 
 resource "aws_cloudwatch_log_group" "database_back_up_log_group" {
-  name = "${var.Env-Name}-databse-backup-log-group"
+  name = "${var.Env-Name}-database-backup-log-group"
 
   retention_in_days = 90
 }
