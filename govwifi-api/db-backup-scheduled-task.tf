@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "assume_events_role" {
 
     principals {
       identifiers = ["events.amazonaws.com"]
-      type        = "AWS"
+      type        = "Service"
     }
 
     actions = ["sts:AssumeRole"]
