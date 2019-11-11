@@ -1,7 +1,3 @@
-resource "aws_ecr_repository" "db_backups" {
-  name = "govwifi/db-backups"
-}
-
 resource "aws_s3_bucket" "db_backups" {
   bucket        = "${var.Env-Name}-${lower(var.aws-region-name)}-db-backup"
   force_destroy = true
