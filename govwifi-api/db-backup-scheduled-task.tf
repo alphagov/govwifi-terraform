@@ -37,3 +37,59 @@ resource "aws_iam_role" "database_backup_task_role" {
   name = "${var.Env-Name}-database-backup-task-role"
   assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
 }
+
+resource "aws_ecs_task_definition" "db_backup_task_definition" {
+  family                   = "database-backup-${var.Env-Name}"
+  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  task_role_arn            = "${aws_iam_role.database_backup_task_role.arn}"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = 256
+  memory                   = 1024
+  network_mode             = "awsvpc"
+
+  container_definitions = <<EOF
+[
+    {
+      "volumesFrom": [],
+      "memory": 1024,
+      "extraHosts": null,
+      "dnsServers": null,
+      "disableNetworking": null,
+      "dnsSearchDomains": null,
+      "portMappings": [
+        {
+          "hostPort": 8080,
+          "containerPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "hostname": null,
+      "essential": true,
+      "entryPoint": null,
+      "mountPoints": [],
+      "name": "database-backup",
+      "ulimits": null,
+      "dockerSecurityOptions": null,
+      "environment": [],
+      "links": null,
+      "workingDirectory": null,
+      "readonlyRootFilesystem": null,
+      "image": "${var.database-backup-docker-image}",
+      "command": null,
+      "user": null,
+      "dockerLabels": null,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "${aws_cloudwatch_log_group.database_back_up_log_group.name}",
+          "awslogs-region": "${var.aws-region}",
+          "awslogs-stream-prefix": "${var.Env-Name}-database-backup-logs"
+        }
+      },
+      "cpu": 0,
+      "privileged": null,
+      "expanded": true
+    }
+]
+EOF
+}
