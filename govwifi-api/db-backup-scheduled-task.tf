@@ -32,3 +32,8 @@ data "aws_iam_policy_document" "assume_events_role" {
     actions = ["sts:AssumeRole"]
   }
 }
+
+resource "aws_iam_role" "database_backup_task_role" {
+  name = "${var.Env-Name}-database-backup-task-role"
+  assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
+}
