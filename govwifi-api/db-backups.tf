@@ -1,4 +1,4 @@
-resource "aws_s3_bucket" "db_backups" {
+resource "aws_s3_bucket" "database_backups" {
   bucket        = "${var.Env-Name}-${lower(var.aws-region-name)}-db-backup"
   force_destroy = true
   acl           = "private"
@@ -14,8 +14,8 @@ resource "aws_s3_bucket" "db_backups" {
   }
 }
 
-resource "aws_s3_bucket_policy" "db_backups" {
-  bucket = "${aws_s3_bucket.db_backups.id}"
+resource "aws_s3_bucket_policy" "database_backups" {
+  bucket = "${aws_s3_bucket.database_backups.id}"
   policy = "${data.aws_iam_policy_document.deny_delete_actions.json}"
 }
 
@@ -34,8 +34,8 @@ data "aws_iam_policy_document" "deny_delete_actions" {
     ]
 
     resources = [
-      "${aws_s3_bucket.db_backups.arn}",
-      "${aws_s3_bucket.db_backups.arn}/*"
+      "${aws_s3_bucket.database_backups.arn}",
+      "${aws_s3_bucket.database_backups.arn}/*"
     ]
   }
 }
