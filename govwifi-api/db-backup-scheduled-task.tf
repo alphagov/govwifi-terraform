@@ -14,3 +14,21 @@ resource "aws_cloudwatch_log_group" "database_back_up_log_group" {
 
   retention_in_days = 90
 }
+
+resource "aws_iam_role" "database_backup_scheduled_task_role" {
+  name               = "${var.Env-Name}-database-backup-scheduled-task-role"
+  assume_role_policy = "${data.aws_iam_policy_document.assume_events_role.json}"
+}
+
+data "aws_iam_policy_document" "assume_events_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      identifiers = ["events.amazonaws.com"]
+      type        = "AWS"
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
