@@ -71,7 +71,7 @@ resource "aws_ecs_task_definition" "db_backup_task_definition" {
       "ulimits": null,
       "dockerSecurityOptions": null,
       "environment": [
-      {
+        {
           "name": "WIFI_DB_HOST",
           "value": "${var.db-hostname}"
         },{
@@ -91,7 +91,7 @@ resource "aws_ecs_task_definition" "db_backup_task_definition" {
           "value": "${var.user-db-password}"
         },{
           "name": "S3_BUCKET",
-          "value": "${aws_s3_bucket.database_backups}"
+          "value": "${aws_s3_bucket.database_backups.bucket}"
         }
       ],
       "links": null,
