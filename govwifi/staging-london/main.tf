@@ -318,6 +318,11 @@ module "api" {
   user-db-password = "${var.user-db-password}"
   user-rr-hostname = "${var.user-db-hostname}"
 
+  admin-db-hostname = "${module.govwifi-admin.db-hostname}"
+  admin-db-username = "${module.govwifi-admin.db-username}"
+  admin-db-password = "${module.govwifi-admin.db-password}"
+  admin-db-name     = "${module.govwifi-admin.db-name}"
+
   # There is no read replica for the staging database
   db-read-replica-hostname           = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                           = "staging"

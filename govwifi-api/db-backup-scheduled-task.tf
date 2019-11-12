@@ -90,6 +90,18 @@ resource "aws_ecs_task_definition" "db_backup_task_definition" {
           "name": "USERS_DB_PASS",
           "value": "${var.user-db-password}"
         },{
+          "name": "ADMIN_DB_HOST",
+          "value": "${var.admin-db-hostname}"
+        },{
+          "name": "ADMIN_DB_USER",
+          "value": "${var.admin-db-username}"
+        },{
+          "name": "ADMIN_DB_PASS",
+          "value": "${var.admin-db-password}"
+        },{
+          "name": "ADMIN_DB_NAME",
+          "value": "${var.admin-db-name}"
+        },{
           "name": "S3_BUCKET",
           "value": "${aws_s3_bucket.database_backups.bucket}"
         }
