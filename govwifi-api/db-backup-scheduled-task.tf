@@ -81,6 +81,9 @@ resource "aws_ecs_task_definition" "db_backup_task_definition" {
           "name": "WIFI_DB_PASS",
           "value": "${var.db-password}"
         },{
+          "name": "WIFI_DB_NAME",
+          "value": "${var.db-name}"
+        },{
           "name": "USERS_DB_HOST",
           "value": "${var.user-db-hostname}"
         },{
@@ -89,6 +92,9 @@ resource "aws_ecs_task_definition" "db_backup_task_definition" {
         },{
           "name": "USERS_DB_PASS",
           "value": "${var.user-db-password}"
+        },{
+          "name": "USERS_DB_NAME",
+          "value": "${var.user-db-name}"
         },{
           "name": "ADMIN_DB_HOST",
           "value": "${var.admin-db-hostname}"

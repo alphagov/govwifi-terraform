@@ -76,11 +76,15 @@ variable "user-db-hostname" {}
 
 variable "user-rr-hostname" {}
 
+variable "user-db-name" {}
+
 variable "db-user" {}
 
 variable "db-password" {}
 
 variable "db-hostname" {}
+
+variable "db-name" {}
 
 variable "db-read-replica-hostname" {}
 

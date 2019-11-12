@@ -21,3 +21,11 @@ output "rds-monitoring-role" {
 output "be-admin-in" {
   value = "${aws_security_group.be-admin-in.id}"
 }
+
+output "db-name" {
+  value = "${aws_db_instance.db.*.identifier[0]}"
+}
+
+output "user-db-name" {
+  value = "${aws_db_instance.users_db.*.identifier[0]}"
+}
