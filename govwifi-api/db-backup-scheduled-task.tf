@@ -2,7 +2,7 @@ resource "aws_ecr_repository" "database_backups" {
   name = "govwifi/database-backups"
 }
 
-resource "aws_cloudwatch_event_rule" "daily_databse_backup" {
+resource "aws_cloudwatch_event_rule" "daily_database_backup" {
   name                = "${var.Env-Name}-daily-database-backup"
   description         = "Triggers at 1am Daily"
   schedule_expression = "cron(0 1 * * ? *)"
@@ -39,7 +39,7 @@ resource "aws_iam_role" "database_backup_task_role" {
 }
 
 resource "aws_iam_role_policy" "access_database_backup_bucket" {
-  name = "${var.aws-region-name}-databse-backup-bucket-${var.Env-Name}"
+  name = "${var.aws-region-name}-database-backup-bucket-${var.Env-Name}"
   policy = "${data.aws_iam_policy_document.access_database_backup_bucket.json}"
   role = "${aws_iam_role.database_backup_task_role.id}"
 }
@@ -57,7 +57,6 @@ data "aws_iam_policy_document" "access_database_backup_bucket" {
     ]
   }
 }
-
 
 resource "aws_ecs_task_definition" "db_backup_task_definition" {
   family                   = "database-backup-${var.Env-Name}"
@@ -154,4 +153,29 @@ resource "aws_ecs_task_definition" "db_backup_task_definition" {
     }
 ]
 EOF
+}
+
+resource "aws_cloudwatch_event_target" "daily_database_backup" {
+  target_id = "${var.Env-Name}-database-backup"
+  arn       = "${aws_ecs_cluster.api-cluster.arn}"
+  rule      = "${aws_cloudwatch_event_rule.daily_database_backup.name}"
+  role_arn  = "${aws_iam_role.database_backup_scheduled_task_role.arn}"
+
+  ecs_target = {
+    task_count          = 1
+    task_definition_arn = "${aws_ecs_task_definition.db_backup_task_definition.arn}"
+    launch_type         = "FARGATE"
+
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
+  }
 }
