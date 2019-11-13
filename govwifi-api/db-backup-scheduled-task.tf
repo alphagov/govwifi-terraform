@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "database_backups" {
-  name = "govwifi/database-backups"
+  name = "govwifi/database-backup"
 }
 
 resource "aws_cloudwatch_event_rule" "daily_database_backup" {
@@ -178,4 +178,15 @@ resource "aws_cloudwatch_event_target" "daily_database_backup" {
       assign_public_ip = true
     }
   }
+
+  input = <<EOF
+{
+  "containerOverrides": [
+    {
+      "name": "database-backup",
+      "command": ["/bin/sh", "/govwifi-backup.sh"]
+    }
+  ]
+}
+EOF
 }
