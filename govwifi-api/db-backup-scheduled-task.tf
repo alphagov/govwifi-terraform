@@ -34,26 +34,26 @@ data "aws_iam_policy_document" "assume_events_role" {
 }
 
 resource "aws_iam_role" "database_backup_task_role" {
-  name = "${var.Env-Name}-database-backup-task-role"
+  name               = "${var.Env-Name}-database-backup-task-role"
   assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
 }
 
 resource "aws_iam_role_policy" "access_database_backup_bucket" {
-  name = "${var.aws-region-name}-database-backup-bucket-${var.Env-Name}"
+  name   = "${var.aws-region-name}-database-backup-bucket-${var.Env-Name}"
   policy = "${data.aws_iam_policy_document.access_database_backup_bucket.json}"
-  role = "${aws_iam_role.database_backup_task_role.id}"
+  role   = "${aws_iam_role.database_backup_task_role.id}"
 }
 
 data "aws_iam_policy_document" "access_database_backup_bucket" {
   statement {
     actions = [
       "s3:ListBucket",
-      "s3:PutObject"
+      "s3:PutObject",
     ]
 
     resources = [
       "${aws_s3_bucket.database_backups.arn}",
-      "${aws_s3_bucket.database_backups.arn}/*"
+      "${aws_s3_bucket.database_backups.arn}/*",
     ]
   }
 }
