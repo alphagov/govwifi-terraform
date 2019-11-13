@@ -38,6 +38,27 @@ resource "aws_iam_role" "database_backup_task_role" {
   assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
 }
 
+resource "aws_iam_role_policy" "access_database_backup_bucket" {
+  name = "${var.aws-region-name}-databse-backup-bucket-${var.Env-Name}"
+  policy = "${data.aws_iam_policy_document.access_database_backup_bucket.json}"
+  role = "${aws_iam_role.database_backup_task_role.id}"
+}
+
+data "aws_iam_policy_document" "access_database_backup_bucket" {
+  statement {
+    actions = [
+      "s3:ListBucket",
+      "s3:PutObject"
+    ]
+
+    resources = [
+      "${aws_s3_bucket.database_backups.arn}",
+      "${aws_s3_bucket.database_backups.arn}/*"
+    ]
+  }
+}
+
+
 resource "aws_ecs_task_definition" "db_backup_task_definition" {
   family                   = "database-backup-${var.Env-Name}"
   execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
