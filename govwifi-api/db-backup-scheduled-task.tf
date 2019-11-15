@@ -1,7 +1,3 @@
-resource "aws_ecr_repository" "database_backups" {
-  name = "govwifi/database-backup"
-}
-
 resource "aws_cloudwatch_event_rule" "daily_database_backup" {
   name                = "${var.Env-Name}-daily-database-backup"
   description         = "Triggers at 1am Daily"
@@ -9,53 +5,14 @@ resource "aws_cloudwatch_event_rule" "daily_database_backup" {
   is_enabled          = true
 }
 
-resource "aws_cloudwatch_log_group" "database_back_up_log_group" {
+resource "aws_cloudwatch_log_group" "database_backup_log_group" {
   name = "${var.Env-Name}-database-backup-log-group"
 
   retention_in_days = 90
 }
 
-resource "aws_iam_role" "database_backup_scheduled_task_role" {
-  name               = "${var.Env-Name}-database-backup-scheduled-task-role"
-  assume_role_policy = "${data.aws_iam_policy_document.assume_events_role.json}"
-}
-
-data "aws_iam_policy_document" "assume_events_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      identifiers = ["events.amazonaws.com"]
-      type        = "Service"
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
-resource "aws_iam_role" "database_backup_task_role" {
-  name               = "${var.Env-Name}-database-backup-task-role"
-  assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
-}
-
-resource "aws_iam_role_policy" "access_database_backup_bucket" {
-  name   = "${var.aws-region-name}-database-backup-bucket-${var.Env-Name}"
-  policy = "${data.aws_iam_policy_document.access_database_backup_bucket.json}"
-  role   = "${aws_iam_role.database_backup_task_role.id}"
-}
-
-data "aws_iam_policy_document" "access_database_backup_bucket" {
-  statement {
-    actions = [
-      "s3:ListBucket",
-      "s3:PutObject",
-    ]
-
-    resources = [
-      "${aws_s3_bucket.database_backups.arn}",
-      "${aws_s3_bucket.database_backups.arn}/*",
-    ]
-  }
+resource "aws_ecr_repository" "database_backups" {
+  name = "govwifi/database-backup"
 }
 
 resource "aws_ecs_task_definition" "db_backup_task_definition" {
@@ -135,14 +92,14 @@ resource "aws_ecs_task_definition" "db_backup_task_definition" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.database-backup-docker-image}",
+      "image": "",
       "command": null,
       "user": null,
       "dockerLabels": null,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.database_back_up_log_group.name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.database_backup_log_group.name}",
           "awslogs-region": "${var.aws-region}",
           "awslogs-stream-prefix": "${var.Env-Name}-database-backup-logs"
         }
@@ -153,6 +110,90 @@ resource "aws_ecs_task_definition" "db_backup_task_definition" {
     }
 ]
 EOF
+}
+
+resource "aws_iam_role" "database_backup_task_role" {
+  name               = "${var.Env-Name}-database-backup-task-role"
+  assume_role_policy = "${data.aws_iam_policy_document.assume_task_role.json}"
+}
+
+resource "aws_iam_role" "database_backup_scheduled_task_role" {
+  name               = "${var.Env-Name}-database-backup-scheduled-task-role"
+  assume_role_policy = "${data.aws_iam_policy_document.assume_events_role.json}"
+}
+
+resource "aws_iam_role_policy" "database_backup_task_role_policy" {
+  name   = "${var.aws-region-name}-database-backup-bucket-${var.Env-Name}"
+  policy = "${data.aws_iam_policy_document.access_database_backup_bucket.json}"
+  role   = "${aws_iam_role.database_backup_task_role.id}"
+  depends_on = ["aws_iam_role.database_backup_task_role"]
+}
+
+resource "aws_iam_role_policy" "databse_backup_schedule_task_role_policy" {
+  name   = "${var.Env-Name}-safe-restart-scheduled-task-policy"
+  policy = "${data.aws_iam_policy_document.pass_role_to_service.json}"
+  role   = "${aws_iam_role.database_backup_scheduled_task_role.id}"
+}
+
+data "aws_iam_policy_document" "assume_events_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      identifiers = ["events.amazonaws.com"]
+      type        = "Service"
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+data "aws_iam_policy_document" "assume_task_role" {
+
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      identifiers = ["ecs-tasks.amazonaws.com"]
+      type = "Service"
+    }
+    effect = "Allow"
+  }
+}
+
+data "aws_iam_policy_document" "access_database_backup_bucket" {
+  statement {
+    actions = [
+      "s3:ListBucket",
+      "s3:PutObject",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.database_backups.arn}",
+      "${aws_s3_bucket.database_backups.arn}/*",
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "pass_role_to_service" {
+
+  statement {
+    effect = "Allow"
+    actions = ["ecs:RunTask"]
+    resources = ["${replace(aws_ecs_task_definition.db_backup_task_definition.arn, "/:\\d+$/", ":*")}"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = ["iam:PassRole"]
+    resources = ["*"]
+
+    condition {
+      test = "StringLike"
+      values = ["iam:PassedToService"]
+      variable = "ecs-tasks.amazonaws.com"
+    }
+  }
 }
 
 resource "aws_cloudwatch_event_target" "daily_database_backup" {

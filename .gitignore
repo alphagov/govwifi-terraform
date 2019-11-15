@@ -19,3 +19,5 @@ variables.auto.tfvars
 govwifi/wordlist-short
 
 .private
+
+.idea
