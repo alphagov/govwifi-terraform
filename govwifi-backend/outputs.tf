@@ -23,9 +23,17 @@ output "be-admin-in" {
 }
 
 output "db-name" {
-  value = "${aws_db_instance.db.*.identifier[0]}"
+  value = "${aws_db_instance.db.*.name[0]}"
 }
 
 output "user-db-name" {
-  value = "${aws_db_instance.users_db.*.identifier[0]}"
+  value = "${aws_db_instance.users_db.*.name[0]}"
+}
+
+output "db-hostname-endpoint" {
+  value = "${aws_db_instance.db.*.address[0]}"
+}
+
+output "user-db-hostname-endpoint" {
+  value = "${aws_db_instance.users_db.*.address[0]}"
 }

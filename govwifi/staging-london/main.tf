@@ -314,11 +314,15 @@ module "api" {
   db-hostname = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   db-name     = "${module.backend.db-name}"
 
+  db-hostname-endpoint = "${module.backend.db-hostname-endpoint}"
+
   user-db-username = "${var.user-db-username}"
   user-db-hostname = "${var.user-db-hostname}"
   user-db-password = "${var.user-db-password}"
   user-rr-hostname = "${var.user-db-hostname}"
   user-db-name     = "${module.backend.user-db-name}"
+
+  user-db-hostname-endpoint = "${module.backend.user-db-hostname-endpoint}"
 
   admin-db-hostname = "${module.govwifi-admin.db-hostname}"
   admin-db-username = "${module.govwifi-admin.db-username}"

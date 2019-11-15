@@ -3,7 +3,7 @@ output "db-hostname" {
 }
 
 output "db-name" {
-  value = "${aws_db_instance.admin_db.identifier}"
+  value = "${aws_db_instance.admin_db.name}"
 }
 
 output "db-username" {

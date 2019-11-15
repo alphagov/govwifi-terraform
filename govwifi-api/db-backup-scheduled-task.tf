@@ -50,7 +50,7 @@ resource "aws_ecs_task_definition" "db_backup_task_definition" {
       "environment": [
         {
           "name": "WIFI_DB_HOST",
-          "value": "${var.db-hostname}"
+          "value": "${var.db-hostname-endpoint}"
         },{
           "name": "WIFI_DB_USER",
           "value": "${var.db-user}"
@@ -62,7 +62,7 @@ resource "aws_ecs_task_definition" "db_backup_task_definition" {
           "value": "${var.db-name}"
         },{
           "name": "USERS_DB_HOST",
-          "value": "${var.user-db-hostname}"
+          "value": "${var.user-db-hostname-endpoint}"
         },{
           "name": "USERS_DB_USER",
           "value": "${var.user-db-username}"
