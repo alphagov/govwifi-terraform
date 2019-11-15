@@ -92,7 +92,7 @@ resource "aws_ecs_task_definition" "db_backup_task_definition" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "",
+      "image": "${var.database-backup-docker-image}",
       "command": null,
       "user": null,
       "dockerLabels": null,
@@ -190,8 +190,8 @@ data "aws_iam_policy_document" "pass_role_to_service" {
 
     condition {
       test = "StringLike"
-      values = ["iam:PassedToService"]
-      variable = "ecs-tasks.amazonaws.com"
+      values = ["ecs-tasks.amazonaws.com"]
+      variable = "iam:PassedToService"
     }
   }
 }

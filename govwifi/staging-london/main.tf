@@ -307,7 +307,7 @@ module "api" {
   ecr-repository-count      = 1
   background-jobs-enabled   = 1
 
-  database-backup-docker-image = "${format("%s/database-backups:staging", var.docker-image-path)}"
+  database-backup-docker-image = "${format("%s/database-backup:staging", var.docker-image-path)}"
 
   db-user     = "${var.db-user}"
   db-password = "${var.db-password}"
