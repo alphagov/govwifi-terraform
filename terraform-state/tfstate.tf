@@ -86,6 +86,7 @@ resource "aws_kms_alias" "tfstate-key-alias" {
 resource "aws_s3_bucket" "state-bucket" {
   bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
   region = "${var.aws-region}"
+  depends_on = ["aws_s3_bucket.accesslogs-bucket"]
 
   policy = <<EOF
 {
@@ -122,21 +123,21 @@ EOF
     target_prefix = "${lower(var.aws-region-name)}-tfstate"
   }
 
-  replication_configuration {
-    role = "${aws_iam_role.tfstate-replication.arn}"
-
-    rules {
-      # ID is necessary to prevent continuous change issue
-      id     = "${lower(var.aws-region-name)}-to-${lower(var.backup-region-name)}-tfstate-backup"
-      prefix = "${lower(var.aws-region-name)}-tfstate"
-      status = "Enabled"
-
-      destination {
-        bucket        = "arn:aws:s3:::${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.backup-region-name)}-tfstate"
-        storage_class = "STANDARD_IA"
-      }
-    }
-  }
+#  replication_configuration {
+#    role = "${aws_iam_role.tfstate-replication.arn}"
+#
+#    rules {
+#      # ID is necessary to prevent continuous change issue
+#      id     = "${lower(var.aws-region-name)}-to-${lower(var.backup-region-name)}-tfstate-backup"
+#      prefix = "${lower(var.aws-region-name)}-tfstate"
+#      status = "Enabled"
+#
+#      destination {
+#        bucket        = "arn:aws:s3:::${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.backup-region-name)}-tfstate"
+#        storage_class = "STANDARD_IA"
+#      }
+#    }
+#  }
 
   server_side_encryption_configuration {
     rule {
