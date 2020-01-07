@@ -10,6 +10,14 @@ staging:
 	$(eval export DEPLOY_ENV=staging)
 	$(eval export REPO=staging)
 	$(eval export AWS_REGION=eu-west-1)
+staging-london-temp:
+	$(eval export DEPLOY_ENV=staging-london-temp)
+	$(eval export REPO=staging)
+	$(eval export AWS_REGION=eu-west-2)
+staging-dublin-temp:
+	$(eval export DEPLOY_ENV=staging-dublin-temp)
+	$(eval export REPO=staging)
+	$(eval export AWS_REGION=eu-west-1)
 performance-london:
 	$(eval export DEPLOY_ENV=performance-london)
 	$(eval export REPO=latest)
