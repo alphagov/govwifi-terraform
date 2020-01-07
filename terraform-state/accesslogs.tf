@@ -100,20 +100,19 @@ resource "aws_s3_bucket" "accesslogs-bucket" {
     }
   }
 
-  replication_configuration {
-    role = aws_iam_role.accesslogs-replication.arn
-
-    rules {
-      # ID is necessary to prevent continuous change issue
-      id     = "${lower(var.aws-region-name)}-to-${lower(var.backup-region-name)}-accesslogs-backup"
-      prefix = "${lower(var.aws-region-name)}-accesslogs-backup"
-      status = "Enabled"
-
-      destination {
-        bucket        = "arn:aws:s3:::${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.backup-region-name)}-accesslogs"
-        storage_class = "STANDARD"
-      }
-    }
-  }
+#  replication_configuration {
+#    role = "${aws_iam_role.accesslogs-replication.arn}"
+#
+#    rules {
+#      # ID is necessary to prevent continuous change issue
+#      id     = "${lower(var.aws-region-name)}-to-${lower(var.backup-region-name)}-accesslogs-backup"
+#      prefix = "${lower(var.aws-region-name)}-accesslogs-backup"
+#      status = "Enabled"
+#
+#      destination {
+#        bucket        = "arn:aws:s3:::${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.backup-region-name)}-accesslogs"
+#        storage_class = "STANDARD"
+#      }
+#    }
+#  }
 }
-
