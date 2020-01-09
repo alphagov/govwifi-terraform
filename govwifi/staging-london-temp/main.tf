@@ -163,7 +163,7 @@ module "frontend" {
   create-ecr            = true
 
   # admin bucket
-  admin-bucket-name = "govwifi-staging-admin"
+  admin-bucket-name = "${module.govwifi-admin.admin-bucket}"  # "govwifi-staging-temp-admin"
 
   logging-api-base-url = "${var.london-api-base-url}"
   auth-api-base-url    = "${var.london-api-base-url}"
@@ -336,7 +336,7 @@ module "api" {
   ecs-instance-profile-id            = "${module.backend.ecs-instance-profile-id}"
   ecs-service-role                   = "${module.backend.ecs-service-role}"
   user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
-  admin-bucket-name                  = "govwifi-staging-temp-admin"
+  admin-bucket-name = "${module.govwifi-admin.admin-bucket}"  # "govwifi-staging-temp-admin"
   govnotify-bearer-token             = "${var.govnotify-bearer-token}"
   user-signup-api-is-public          = true
 
