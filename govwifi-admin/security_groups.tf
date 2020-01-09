@@ -91,6 +91,6 @@ resource "aws_security_group" "admin-db-in" {
 }
 
 data "aws_subnet" "backend_subnet" {
-  count = "${length(var.subnet-ids)}"
+  count = "3"
   id    = "${var.subnet-ids[count.index]}"
 }
