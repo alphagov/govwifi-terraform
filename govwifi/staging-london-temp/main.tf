@@ -336,7 +336,7 @@ module "api" {
   ecs-instance-profile-id            = "${module.backend.ecs-instance-profile-id}"
   ecs-service-role                   = "${module.backend.ecs-service-role}"
   user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
-  admin-bucket-name                  = "govwifi-staging-admin"
+  admin-bucket-name                  = "govwifi-staging-temp-admin"
   govnotify-bearer-token             = "${var.govnotify-bearer-token}"
   user-signup-api-is-public          = true
 

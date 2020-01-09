@@ -1,13 +1,13 @@
 resource "aws_s3_bucket" "admin-bucket" {
   count         = 1
-  bucket        = "govwifi-${var.rack-env}-admin"
+  bucket        = "govwifi-staging-temp-admin"
   force_destroy = true
   acl           = "private"
 
   tags = {
     Name        = "${title(var.Env-Name)} Admin data"
-    Region      = title(var.aws-region-name)
-    Environment = title(var.rack-env)
+    Region      = "${title(var.aws-region-name)}"
+    Environment = "Staging-temp"
   }
 
   versioning {
@@ -120,4 +120,3 @@ resource "aws_s3_bucket_policy" "product-page-data-bucket-policy" {
 POLICY
 
 }
-
