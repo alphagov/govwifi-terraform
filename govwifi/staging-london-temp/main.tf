@@ -36,7 +36,7 @@ terraform {
   #key    = "${lower(var.aws-region-name)}-tfstate"
   #region = "${var.aws-region}"
 
-    bucket = "govwifi-staging-london-temp-tfstate"
+    bucket = "govwifi-staging-temp-london-tfstate"
     key    = "london-tfstate"
     region = "eu-west-2"
   }
