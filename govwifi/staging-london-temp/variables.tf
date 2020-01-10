@@ -1,6 +1,6 @@
 variable "Env-Name" {
   type    = "string"
-  default = "staging"
+  default = "staging-temp"
 }
 
 variable "product-name" {
