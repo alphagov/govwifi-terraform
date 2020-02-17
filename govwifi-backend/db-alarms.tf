@@ -47,7 +47,7 @@ resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
   namespace           = "AWS/RDS"
   period              = "60"
   statistic           = "Minimum"
-  threshold           = "21474836480"
+  threshold           = "32212254720"
 
   dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.db.identifier}"
