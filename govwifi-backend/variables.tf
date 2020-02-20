@@ -119,3 +119,8 @@ variable "user-replica-source-db" {
   type    = "string"
   default = ""
 }
+
+variable "frontend-vpc-id" {
+  type    = "string"
+  default = ""
+}
