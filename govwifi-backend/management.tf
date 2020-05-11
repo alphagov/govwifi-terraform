@@ -247,7 +247,7 @@ resource "aws_iam_role_policy" "bastion-instance-policy-pp" {
   count      = "${min(var.save-pp-data, var.enable-bastion)}"
   name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-policy"
   role       = "${aws_iam_role.bastion-instance-role.id}"
-  depends_on = ["aws_iam_role.bastion-instance-role", "aws_s3_bucket.pp-data-bucket"]
+  depends_on = ["aws_iam_role.bastion-instance-role", "aws_s3_bucket.pp-data-bucket", "aws_s3_bucket.metrics-data-bucket"]
 
   policy = <<EOF
 {
@@ -271,6 +271,13 @@ resource "aws_iam_role_policy" "bastion-instance-policy-pp" {
         "s3:PutObject"
       ],
       "Resource": "arn:aws:s3:::${var.Env-Name}-${lower(var.aws-region-name)}-pp-data/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Resource": "arn:aws:s3:::${var.Env-Name}-${lower(var.aws-region-name)}-metrics-data-bucket/*"
     }
   ]
 }

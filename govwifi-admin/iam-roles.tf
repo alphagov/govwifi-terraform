@@ -84,6 +84,15 @@ resource "aws_iam_role_policy" "ecs-admin-instance-policy" {
         "s3:PutObjectVersionAcl"
       ],
       "Resource": ["${aws_s3_bucket.product-page-data-bucket.arn}/*"]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:PutObjectVersionAcl"
+      ],
+      "Resource": ["${aws_s3_bucket.metrics-data-bucket.arn}/*"]
     }
   ]
 }
