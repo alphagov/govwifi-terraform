@@ -386,3 +386,12 @@ module "route53-critical-notifications" {
   topic-name = "govwifi-wifi-critical-london"
   emails     = ["${var.critical-notification-email}"]
 }
+
+module "govwifi-admin" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source        = "../../govwifi-dashboard"
+  Env-Name      = "${var.Env-Name}"
+}
