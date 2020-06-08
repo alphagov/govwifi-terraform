@@ -1,6 +1,5 @@
 resource "aws_s3_bucket" "metrics-bucket" {
   bucket        = "govwifi-${var.Env-Name}-metrics-bucket"
-  force_destroy = true
   acl           = "private"
 
   tags = {
