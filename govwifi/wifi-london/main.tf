@@ -387,7 +387,7 @@ module "route53-critical-notifications" {
   emails     = ["${var.critical-notification-email}"]
 }
 
-module "govwifi-admin" {
+module "govwifi-dashboard" {
   providers = {
     "aws" = "aws.AWS-main"
   }
