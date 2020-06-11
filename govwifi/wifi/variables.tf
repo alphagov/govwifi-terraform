@@ -166,11 +166,11 @@ variable "govwifi-api-ssl-cert-arn" {
 }
 
 variable "auth-sentry-dsn" {
-  type    = "string"
+  type = "string"
 }
 
 variable "safe-restart-sentry-dsn" {
-  type    = "string"
+  type = "string"
 }
 
 variable "logging-sentry-dsn" {
@@ -217,13 +217,13 @@ variable "rds-kms-key-id" {
 }
 
 variable "critical-notification-email" {
-  type    = "string"
+  type = "string"
 }
 
 variable "capacity-notification-email" {
-  type    = "string"
+  type = "string"
 }
 
 variable "devops-notification-email" {
-  type    = "string"
+  type = "string"
 }

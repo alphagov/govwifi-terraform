@@ -193,7 +193,7 @@ resource "aws_cloudwatch_event_target" "daily-safe-restart" {
     task_count          = 1
     task_definition_arn = "${aws_ecs_task_definition.safe-restart-task-definition.arn}"
     launch_type         = "FARGATE"
-    
+
     network_configuration = {
       subnets = ["${var.subnet-ids}"]
 

@@ -36,6 +36,7 @@ terraform {
     #key    = "${lower(var.aws-region-name)}-tfstate"
     #region = "${var.aws-region}"
     bucket = "govwifi-staging-london-tfstate"
+
     key    = "london-tfstate"
     region = "eu-west-2"
   }
@@ -120,7 +121,7 @@ module "backend" {
 # London Frontend ==================================================================
 module "frontend" {
   providers = {
-    "aws" = "aws.AWS-main"
+    "aws"                = "aws.AWS-main"
     "aws.route53-alarms" = "aws.route53-alarms"
   }
 
@@ -255,7 +256,7 @@ module "govwifi-admin" {
   logging-api-search-url     = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
   public-google-api-key      = "${var.public-google-api-key}"
 
-  otp-secret-encryption-key  = "${var.otp-secret-encryption-key}"
+  otp-secret-encryption-key = "${var.otp-secret-encryption-key}"
 
   zendesk-api-endpoint = "https://govuk.zendesk.com/api/v2/"
   zendesk-api-user     = "${var.zendesk-api-user}"

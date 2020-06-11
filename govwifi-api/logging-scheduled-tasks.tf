@@ -58,9 +58,10 @@ resource "aws_cloudwatch_event_target" "logging-publish-weekly-statistics" {
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count            = 1
-    task_definition_arn   = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-    launch_type           = "FARGATE"
+    task_count          = 1
+    task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
+    launch_type         = "FARGATE"
+
     network_configuration = {
       subnets = ["${var.subnet-ids}"]
 
@@ -94,9 +95,10 @@ resource "aws_cloudwatch_event_target" "logging-publish-monthly-statistics" {
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count            = 1
-    task_definition_arn   = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-    launch_type           = "FARGATE"
+    task_count          = 1
+    task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
+    launch_type         = "FARGATE"
+
     network_configuration = {
       subnets = ["${var.subnet-ids}"]
 
@@ -130,9 +132,10 @@ resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count            = 1
-    task_definition_arn   = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-    launch_type           = "FARGATE"
+    task_count          = 1
+    task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
+    launch_type         = "FARGATE"
+
     network_configuration = {
       subnets = ["${var.subnet-ids}"]
 
@@ -145,8 +148,6 @@ resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
       assign_public_ip = true
     }
   }
-
-  
 
   input = <<EOF
 {
@@ -168,9 +169,10 @@ resource "aws_cloudwatch_event_target" "gdpr-set-user-last-login" {
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
-    task_count            = 1
-    task_definition_arn   = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
-    launch_type           = "FARGATE"
+    task_count          = 1
+    task_definition_arn = "${aws_ecs_task_definition.logging-api-scheduled-task.arn}"
+    launch_type         = "FARGATE"
+
     network_configuration = {
       subnets = ["${var.subnet-ids}"]
 

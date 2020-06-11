@@ -139,7 +139,7 @@ variable "rds-kms-key-id" {
 }
 
 variable "auth-sentry-dsn" {
-  type    = "string"
+  type = "string"
 }
 
 variable "govwifi-api-ssl-cert-arn" {
@@ -148,5 +148,4 @@ variable "govwifi-api-ssl-cert-arn" {
   default     = "arn:aws:acm:eu-west-1:788375279931:certificate/88b4e46f-69ac-4445-8c17-3066ba7a6ac4"
 }
 
-variable "notification-email" {
-}
+variable "notification-email" {}
