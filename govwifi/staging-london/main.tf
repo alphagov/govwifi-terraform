@@ -376,6 +376,6 @@ module "govwifi-dashboard" {
     "aws" = "aws.AWS-main"
   }
 
-  source        = "../../govwifi-dashboard"
-  Env-Name      = "${var.Env-Name}"
+  source   = "../../govwifi-dashboard"
+  Env-Name = "${var.Env-Name}"
 }
