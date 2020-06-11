@@ -1,0 +1,14 @@
+name: govwifi-terraform-linting
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: terraform fmt
+        run: |
+          brew install tfenv
+          tfenv install
+          find . -name '*.tf' | xargs tools/terraform-format.sh
+

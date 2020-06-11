@@ -61,11 +61,11 @@ variable "ami" {
 # Secrets
 
 variable "auth-sentry-dsn" {
-  type    = "string"
+  type = "string"
 }
 
 variable "safe-restart-sentry-dsn" {
-  type    = "string"
+  type = "string"
 }
 
 variable "public-google-api-key" {
@@ -79,15 +79,15 @@ variable "otp-secret-encryption-key" {
 }
 
 variable "user-signup-sentry-dsn" {
-  type    = "string"
+  type = "string"
 }
 
 variable "logging-sentry-dsn" {
-  type    = "string"
+  type = "string"
 }
 
 variable "admin-sentry-dsn" {
-  type    = "string"
+  type = "string"
 }
 
 variable "db-user" {
@@ -131,6 +131,7 @@ variable "admin-db-password" {
   type        = "string"
   description = "Database main password for govwifi-admin"
 }
+
 variable "zendesk-api-user" {
   type        = "string"
   description = "User for authenticating with Zendesk API"
@@ -257,13 +258,13 @@ variable "govnotify-bearer-token" {
 }
 
 variable "critical-notification-email" {
-  type    = "string"
+  type = "string"
 }
 
 variable "capacity-notification-email" {
-  type    = "string"
+  type = "string"
 }
 
 variable "devops-notification-email" {
-  type    = "string"
+  type = "string"
 }

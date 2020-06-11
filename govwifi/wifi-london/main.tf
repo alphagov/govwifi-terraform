@@ -121,7 +121,7 @@ module "backend" {
 # London Frontend ======DIFFERENT AWS REGION===================================
 module "frontend" {
   providers = {
-    "aws" = "aws.AWS-main"
+    "aws"                = "aws.AWS-main"
     "aws.route53-alarms" = "aws.route53-alarms"
   }
 
@@ -252,7 +252,7 @@ module "govwifi-admin" {
   sentry-dsn                 = "${var.admin-sentry-dsn}"
   public-google-api-key      = "${var.public-google-api-key}"
 
-  otp-secret-encryption-key  = "${var.otp-secret-encryption-key}"
+  otp-secret-encryption-key = "${var.otp-secret-encryption-key}"
 
   logging-api-search-url = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
 
