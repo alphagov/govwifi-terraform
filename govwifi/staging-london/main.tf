@@ -370,3 +370,12 @@ module "route53-notifications" {
   topic-name = "govwifi-staging-london"
   emails     = ["${var.notification-email}"]
 }
+
+module "govwifi-dashboard" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source   = "../../govwifi-dashboard"
+  Env-Name = "${var.Env-Name}"
+}
