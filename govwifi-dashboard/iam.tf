@@ -15,7 +15,7 @@ resource "aws_iam_user_policy" "dashboard-read-only-policy" {
     },
     {
       "Action": [
-        "s3:ListObjectsV2"
+        "s3:ListBucket"
       ],
       "Effect": "Allow",
       "Resource": "arn:aws:s3:::${aws_s3_bucket.metrics-bucket.bucket}"
