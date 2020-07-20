@@ -1,6 +1,6 @@
 variable "Env-Name" {
   type    = "string"
-  default = "staging"
+  default = "staging-temp"
 }
 
 variable "product-name" {
@@ -10,7 +10,7 @@ variable "product-name" {
 
 variable "Env-Subdomain" {
   type        = "string"
-  default     = "staging.wifi"
+  default     = "staging-temp.wifi"
   description = "Environment-specific subdomain to use under the service domain."
 }
 

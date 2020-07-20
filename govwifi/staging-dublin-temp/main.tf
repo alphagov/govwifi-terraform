@@ -35,7 +35,7 @@ terraform {
     #bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
     #key    = "${lower(var.aws-region-name)}-tfstate"
     #region = "${var.aws-region}"
-    bucket = "govwifi-staging-dublin-tfstate"
+    bucket = "govwifi-staging-dublin-temp-tfstate"
 
     key    = "dublin-tfstate"
     region = "eu-west-1"
@@ -49,7 +49,7 @@ module "backend" {
   }
 
   source        = "../../govwifi-backend"
-  env           = "staging"
+  env           = "staging-temp"
   Env-Name      = "${var.Env-Name}"
   Env-Subdomain = "${var.Env-Subdomain}"
 
@@ -100,7 +100,7 @@ module "backend" {
   rr-storage-gb    = 0
 
   user-db-replica-count  = 1
-  user-replica-source-db = "arn:aws:rds:eu-west-2:${var.aws-account-id}:db:wifi-staging-user-db"
+  user-replica-source-db = "arn:aws:rds:eu-west-2:${var.aws-account-id}:db:wifi-staging-temp-user-db"
   user-rr-instance-type  = "db.t2.small"
 
   user-rr-hostname           = "${var.user-rr-hostname}"
@@ -153,7 +153,7 @@ module "govwifi-keys" {
 # Frontend ====================================================================
 module "frontend" {
   providers = {
-    "aws" = "aws.AWS-main"
+    "aws"                = "aws.AWS-main"
     "aws.route53-alarms" = "aws.route53-alarms"
   }
 
@@ -192,7 +192,7 @@ module "frontend" {
   raddb-docker-image    = "${format("%s/raddb:staging", var.docker-image-path)}"
 
   # admin bucket
-  admin-bucket-name = "govwifi-staging-admin"
+  admin-bucket-name = "govwifi-staging-temp-admin"
 
   logging-api-base-url = "${var.london-api-base-url}"
   auth-api-base-url    = "${var.dublin-api-base-url}"
@@ -222,7 +222,7 @@ module "api" {
   }
 
   source        = "../../govwifi-api"
-  env           = "staging"
+  env           = "staging-temp"
   Env-Name      = "${var.Env-Name}"
   Env-Subdomain = "${var.Env-Subdomain}"
 
@@ -301,7 +301,7 @@ module "notifications" {
   source = "../../sns-notification"
 
   env-name   = "${var.Env-Name}"
-  topic-name = "govwifi-staging"
+  topic-name = "govwifi-staging-temp"
   emails     = ["${var.notification-email}"]
 }
 
@@ -313,6 +313,6 @@ module "route53-notifications" {
   source = "../../sns-notification"
 
   env-name   = "${var.Env-Name}"
-  topic-name = "govwifi-staging"
+  topic-name = "govwifi-staging-dublin-temp"
   emails     = ["${var.notification-email}"]
 }
