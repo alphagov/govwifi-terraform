@@ -16,7 +16,7 @@ variable "Env-Subdomain" {
 
 variable "ssh-key-name" {
   type    = "string"
-  default = "govwifi-staging-key-20180530"
+  default = "staging-temp-ec2-instances-20200717"
 }
 
 # Entries below should probably stay as is for different environments
@@ -70,7 +70,7 @@ variable "safe-restart-sentry-dsn" {
 
 variable "public-google-api-key" {
   type    = "string"
-  default = "AIzaSyCz1cPYKamsA_ZJCygL9EY0Zq6stkazTco"
+  default = "xxxxxxxxxxxxxxxxxxxxx"
 }
 
 variable "otp-secret-encryption-key" {
@@ -148,17 +148,17 @@ variable "hc-key" {
 
 variable "hc-ssid" {
   type        = "string"
-  description = "Healt check simulated SSID"
+  description = "Health check simulated SSID"
 }
 
 variable "hc-identity" {
   type        = "string"
-  description = "Healt check identity"
+  description = "Health check identity"
 }
 
 variable "hc-password" {
   type        = "string"
-  description = "Healt check password"
+  description = "Health check password"
 }
 
 variable "shared-key" {

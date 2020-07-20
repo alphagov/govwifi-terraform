@@ -36,9 +36,9 @@ terraform {
   #key    = "${lower(var.aws-region-name)}-tfstate"
   #region = "${var.aws-region}"
 
-    bucket = "govwifi-staging-temp-london-tfstate"
-    key    = "london-tfstate"
-    region = "eu-west-2"
+#    bucket = "govwifi-staging-temp-london-tfstate"
+#    key    = "london-tfstate"
+#    region = "eu-west-2"
   }
 }
 
@@ -86,7 +86,7 @@ module "backend" {
   bastion-ami                = "ami-ae6d81c9"
   bastion-instance-type      = "t2.micro"
   bastion-server-ip          = "${var.bastion-server-IP}"
-  bastion-ssh-key-name       = "govwifi-staging-bastion-key-20181025"
+  bastion-ssh-key-name       = "staging-temp-bastion-20200717"
   enable-bastion-monitoring  = false
   users                      = "${var.users}"
   aws-account-id             = "${var.aws-account-id}"

@@ -16,7 +16,7 @@ variable "Env-Subdomain" {
 
 variable "ssh-key-name" {
   type    = "string"
-  default = "govwifi-staging-key-20180530"
+  default = "staging-temp-ec2-instances-20200717"
 }
 
 # Entries below should probably stay as is for different environments
