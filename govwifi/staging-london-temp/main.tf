@@ -31,14 +31,8 @@ module "tfstate" {
 
 terraform {
   backend "s3" {
-  # Interpolation is not allowed here.
-  #bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
-  #key    = "${lower(var.aws-region-name)}-tfstate"
-  #region = "${var.aws-region}"
-
-#    bucket = "govwifi-staging-temp-london-tfstate"
-#    key    = "london-tfstate"
-#    region = "eu-west-2"
+    # Interpolation is not allowed here.  #bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"  #key    = "${lower(var.aws-region-name)}-tfstate"  #region = "${var.aws-region}"
+    #    bucket = "govwifi-staging-london-temp-tfstate"  #    key    = "london-tfstate"  #    region = "eu-west-2"
   }
 }
 
@@ -121,7 +115,7 @@ module "backend" {
 # London Frontend ==================================================================
 module "frontend" {
   providers = {
-    "aws" = "aws.AWS-main"
+    "aws"                = "aws.AWS-main"
     "aws.route53-alarms" = "aws.route53-alarms"
   }
 
@@ -163,7 +157,7 @@ module "frontend" {
   create-ecr            = true
 
   # admin bucket
-  admin-bucket-name = "${module.govwifi-admin.admin-bucket}"  # "govwifi-staging-temp-admin"
+  admin-bucket-name = "govwifi-staging-temp-admin"
 
   logging-api-base-url = "${var.london-api-base-url}"
   auth-api-base-url    = "${var.london-api-base-url}"
@@ -234,7 +228,7 @@ module "govwifi-admin" {
 
   rr-db-user     = "${var.db-user}"
   rr-db-password = "${var.db-password}"
-  rr-db-host     = "db.london.staging.wifi.service.gov.uk"
+  rr-db-host     = "db.london.staging-temp.wifi.service.gov.uk"
   rr-db-name     = "govwifi_staging"
 
   user-db-user     = "${var.user-db-username}"
@@ -256,7 +250,7 @@ module "govwifi-admin" {
   logging-api-search-url     = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
   public-google-api-key      = "${var.public-google-api-key}"
 
-  otp-secret-encryption-key  = "${var.otp-secret-encryption-key}"
+  otp-secret-encryption-key = "${var.otp-secret-encryption-key}"
 
   zendesk-api-endpoint = "https://govuk.zendesk.com/api/v2/"
   zendesk-api-user     = "${var.zendesk-api-user}"
@@ -274,7 +268,7 @@ module "api" {
   }
 
   source        = "../../govwifi-api"
-  env           = "staging"
+  env           = "staging-temp"
   Env-Name      = "${var.Env-Name}"
   Env-Subdomain = "${var.Env-Subdomain}"
 
@@ -336,7 +330,7 @@ module "api" {
   ecs-instance-profile-id            = "${module.backend.ecs-instance-profile-id}"
   ecs-service-role                   = "${module.backend.ecs-service-role}"
   user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
-  admin-bucket-name = "${module.govwifi-admin.admin-bucket}"  # "govwifi-staging-temp-admin"
+  admin-bucket-name                  = "govwifi-staging-temp-admin"
   govnotify-bearer-token             = "${var.govnotify-bearer-token}"
   user-signup-api-is-public          = true
 
@@ -355,7 +349,7 @@ module "notifications" {
   source = "../../sns-notification"
 
   env-name   = "${var.Env-Name}"
-  topic-name = "govwifi-staging"
+  topic-name = "govwifi-staging-temp"
   emails     = ["${var.notification-email}"]
 }
 
@@ -367,6 +361,6 @@ module "route53-notifications" {
   source = "../../sns-notification"
 
   env-name   = "${var.Env-Name}"
-  topic-name = "govwifi-staging-london"
+  topic-name = "govwifi-staging-london-temp"
   emails     = ["${var.notification-email}"]
 }

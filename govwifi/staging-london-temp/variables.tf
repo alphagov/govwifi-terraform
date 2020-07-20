@@ -10,7 +10,7 @@ variable "product-name" {
 
 variable "Env-Subdomain" {
   type        = "string"
-  default     = "staging.wifi"
+  default     = "staging-temp.wifi"
   description = "Environment-specific subdomain to use under the service domain."
 }
 
@@ -113,13 +113,13 @@ variable "user-db-username" {
 variable "user-db-hostname" {
   type        = "string"
   description = "User details database hostname"
-  default     = "users-db.london.staging.wifi.service.gov.uk"
+  default     = "users-db.london.staging-temp.wifi.service.gov.uk"
 }
 
 variable "user-rr-hostname" {
   type        = "string"
   description = "User details read replica hostname"
-  default     = "users-rr.london.staging.wifi.service.gov.uk"
+  default     = "users-rr.london.staging-temp.wifi.service.gov.uk"
 }
 
 variable "admin-db-username" {
@@ -256,7 +256,7 @@ variable "dublin-radius-ip-addresses" {
 variable "london-api-base-url" {
   type        = "string"
   description = "Base URL for authentication, user signup and logging APIs"
-  default     = "https://api-elb.london.staging.wifi.service.gov.uk:8443"
+  default     = "https://api-elb.london.staging-temp.wifi.service.gov.uk:8443"
 }
 
 variable "device-wifi-docker-image-path" {
