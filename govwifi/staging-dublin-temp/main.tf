@@ -80,7 +80,7 @@ module "backend" {
 
   bastion-instance-type     = "t2.micro"
   bastion-server-ip         = "${var.bastion-server-IP}"
-  bastion-ssh-key-name      = "govwifi-staging-bastion-key-20181025"
+  bastion-ssh-key-name      = "staging-temp-bastion-20200717"
   enable-bastion-monitoring = false
   users                     = "${var.users}"
   aws-account-id            = "${var.aws-account-id}"
