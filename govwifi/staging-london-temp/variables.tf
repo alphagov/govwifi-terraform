@@ -259,11 +259,6 @@ variable "london-api-base-url" {
   default     = "https://api-elb.london.staging-temp.wifi.service.gov.uk:8443"
 }
 
-variable "device-wifi-docker-image-path" {
-  type        = "string"
-  description = "ARN used to identify the common path element used for the docker image repositories."
-}
-
 variable "govnotify-bearer-token" {
   type = "string"
 }
