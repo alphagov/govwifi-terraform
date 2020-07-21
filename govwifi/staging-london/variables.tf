@@ -306,4 +306,3 @@ variable "metrics-aws-access-key" {
 variable "aws-parent-account-id" {
   description = "Unused in this configuration"
 }
-
