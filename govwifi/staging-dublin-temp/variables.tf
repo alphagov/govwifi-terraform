@@ -134,10 +134,6 @@ variable "user-db-username" {
   description = "Users database username"
 }
 
-variable "rds-kms-key-id" {
-  type = "string"
-}
-
 variable "auth-sentry-dsn" {
   type    = "string"
 }

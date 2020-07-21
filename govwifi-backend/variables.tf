@@ -170,4 +170,3 @@ variable "prometheus-IP-ireland" {
 
 variable "grafana-IP" {
 }
-
