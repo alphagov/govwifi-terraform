@@ -347,4 +347,3 @@ module "govwifi-prometheus" {
   prometheus-IP = var.prometheus-IP-ireland
   grafana-IP    = "${var.grafana-IP}/32"
 }
-
