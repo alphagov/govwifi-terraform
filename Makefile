@@ -80,7 +80,7 @@ format-terraform:
 
 .private:
 	git clone git@github.com:alphagov/govwifi-build.git .private
-	cd .private && git checkout adding_staging-temp && cd ..
+	cd .private && git checkout 20200717_new_staging_environment && cd ..
 
 update-secrets: .private
 	cd .private && git pull
