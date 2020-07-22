@@ -175,7 +175,7 @@ module "frontend" {
   radius-instance-count      = 3
   enable-detailed-monitoring = true
 
-  # eg. dns recods are generated for radius(N).x.service.gov.uk
+  # eg. dns records are generated for radius(N).x.service.gov.uk
   # where N = this base + 1 + server#
   dns-numbering-base = 3
 
