@@ -59,14 +59,14 @@ module "backend" {
   aws-region      = "${var.aws-region}"
   route53-zone-id = "${var.route53-zone-id}"
   aws-region-name = "${var.aws-region-name}"
-  vpc-cidr-block  = "10.103.0.0/16"
+  vpc-cidr-block  = "10.106.0.0/16"
   zone-count      = "${var.zone-count}"
   zone-names      = "${var.zone-names}"
 
   zone-subnets = {
-    zone0 = "10.103.1.0/24"
-    zone1 = "10.103.2.0/24"
-    zone2 = "10.103.3.0/24"
+    zone0 = "10.106.1.0/24"
+    zone1 = "10.106.2.0/24"
+    zone2 = "10.106.3.0/24"
   }
 
   backend-subnet-IPs  = "${var.backend-subnet-IPs}"
@@ -129,22 +129,22 @@ module "frontend" {
 
   aws-region-name = "${var.aws-region-name}"
   route53-zone-id = "${var.route53-zone-id}"
-  vpc-cidr-block  = "10.102.0.0/16"
+  vpc-cidr-block  = "10.107.0.0/16"
   zone-count      = "${var.zone-count}"
   zone-names      = "${var.zone-names}"
   rack-env        = "staging"
 
   zone-subnets = {
-    zone0 = "10.102.1.0/24"
-    zone1 = "10.102.2.0/24"
-    zone2 = "10.102.3.0/24"
+    zone0 = "10.107.1.0/24"
+    zone1 = "10.107.2.0/24"
+    zone2 = "10.107.3.0/24"
   }
 
   # Instance-specific setup -------------------------------
   radius-instance-count      = 3
   enable-detailed-monitoring = false
 
-  # eg. dns recods are generated for radius(N).x.service.gov.uk
+  # eg. dns records are generated for radius(N).x.service.gov.uk
   # where N = this base + 1 + server#
   dns-numbering-base = 3
 
