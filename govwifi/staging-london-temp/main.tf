@@ -132,7 +132,7 @@ module "frontend" {
   vpc-cidr-block  = "10.107.0.0/16"
   zone-count      = "${var.zone-count}"
   zone-names      = "${var.zone-names}"
-  rack-env        = "staging"
+  rack-env        = "staging-temp"
 
   zone-subnets = {
     zone0 = "10.107.1.0/24"
@@ -202,7 +202,7 @@ module "govwifi-admin" {
   min-size        = 1
 
   admin-docker-image      = "${format("%s/admin:staging", var.docker-image-path)}"
-  rack-env                = "staging"
+  rack-env                = "staging-temp"
   secret-key-base         = "${var.admin-secret-key-base}"
   ecr-repository-count    = 1
   ecs-instance-profile-id = "${module.backend.ecs-instance-profile-id}"
@@ -313,7 +313,7 @@ module "api" {
 
   # There is no read replica for the staging database
   db-read-replica-hostname           = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  rack-env                           = "staging"
+  rack-env                           = "staging-temp"
   radius-server-ips                  = "${split(",", var.frontend-radius-IPs)}"
   authentication-sentry-dsn          = "${var.auth-sentry-dsn}"
   safe-restart-sentry-dsn            = "${var.safe-restart-sentry-dsn}"
