@@ -194,11 +194,13 @@ variable "route53-zone-id" {
 variable "elb-ssl-cert-arn" {
   type        = "string"
   description = "ARN of the ACM SSL certificate to be attached to the ELB"
+  default     = "junk"
 }
 
 variable "govwifi-api-ssl-cert-arn" {
   type        = "string"
   description = "ARN of the ACM SSL certificate to be attached to the ELB for the API"
+  default     = "junk2"
 }
 
 variable "performance-url" {
