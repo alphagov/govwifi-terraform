@@ -158,4 +158,3 @@ resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
   alarm_actions      = [var.critical-notifications-arn]
   treat_missing_data = "missing"
 }
-
