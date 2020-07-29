@@ -19,7 +19,7 @@ resource "aws_route53_record" "www" {
 }
 
 data "aws_route53_zone" "zone" {
-  name         = "wifi.service.gov.uk."
+  name         = "staging-temp.wifi.service.gov.uk."
   private_zone = false
 }
 
