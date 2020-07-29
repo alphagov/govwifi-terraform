@@ -66,4 +66,3 @@ resource "aws_db_instance" "read_replica" {
     Name = "${title(var.Env-Name)} DB Read Replica"
   }
 }
-
