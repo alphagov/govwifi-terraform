@@ -34,4 +34,3 @@ resource "aws_route53_health_check" "radius" {
     Name = format("${var.Env-Name}-${var.aws-region-name}-%d", count.index + 1)
   }
 }
-
