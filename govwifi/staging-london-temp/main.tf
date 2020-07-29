@@ -31,8 +31,10 @@ module "tfstate" {
 
 terraform {
   backend "s3" {
-    # Interpolation is not allowed here.  #bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"  #key    = "${lower(var.aws-region-name)}-tfstate"  #region = "${var.aws-region}"
-    #    bucket = "govwifi-staging-london-temp-tfstate"  #    key    = "london-tfstate"  #    region = "eu-west-2"
+   bucket  = "govwifi-staging-london-temp-tfstate"
+   key     = "staging-london-temp-tfstate"
+   encrypt = true
+   region  = "eu-west-2"
   }
 }
 
