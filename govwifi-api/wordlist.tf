@@ -1,10 +1,10 @@
 resource "aws_s3_bucket" "wordlist" {
-  bucket = "govwifi-wordlist"
+  bucket = "govwifi-staging-temp-wordlist"
   count  = var.wordlist-bucket-count
   acl    = "private"
 
   tags = {
-    Name = "wordlist-bucket"
+    Name = "wordlist-staging-temp-bucket"
   }
 
   versioning {
@@ -46,4 +46,3 @@ resource "aws_iam_user" "jenkins-read-wordlist-bucket" {
   name  = "jenkins-read-wordlist-user"
   count = var.wordlist-bucket-count
 }
-
