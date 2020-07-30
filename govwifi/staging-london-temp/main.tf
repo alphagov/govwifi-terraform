@@ -78,8 +78,9 @@ module "backend" {
 
   # Instance-specific setup -------------------------------
 
-  # eu-west-2, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
-  bastion-ami                = "ami-ae6d81c9"
+  # eu-west-2, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.23 - Level 1
+  # Updated Ubuntu AMI as the previous AMI is no longer supported by the owner.
+  bastion-ami                = "ami-0f98289a07be24dc3"
   bastion-instance-type      = "t2.micro"
   bastion-server-ip          = "${var.bastion-server-IP}"
   bastion-ssh-key-name       = "staging-temp-bastion-20200717"
