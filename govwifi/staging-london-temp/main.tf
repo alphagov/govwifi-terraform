@@ -31,8 +31,8 @@ module "tfstate" {
 
 terraform {
   backend "s3" {
-   bucket  = "govwifi-staging-london-temp-tfstate"
-   key     = "staging-london-temp-tfstate"
+   bucket  = "govwifi-staging-temp-london-tfstate"
+   key     = "staging-temp-london-tfstate"
    encrypt = true
    region  = "eu-west-2"
   }
