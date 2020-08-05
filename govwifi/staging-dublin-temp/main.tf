@@ -35,10 +35,10 @@ terraform {
     #bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
     #key    = "${lower(var.aws-region-name)}-tfstate"
     #region = "${var.aws-region}"
-    bucket = "govwifi-staging-dublin-temp-tfstate"
-
-    key    = "dublin-tfstate"
-    region = "eu-west-1"
+    bucket  = "govwifi-staging-temp-dublin-tfstate"
+    key     = "dublin-tfstate"
+    encrypt = true
+    region  = "eu-west-1"
   }
 }
 
