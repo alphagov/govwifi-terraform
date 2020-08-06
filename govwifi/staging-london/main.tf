@@ -345,6 +345,8 @@ module "api" {
   backend-sg-list = [
     "${module.backend.be-admin-in}",
   ]
+
+  metrics-bucket-name = "${module.govwifi-dashboard.metrics-bucket-name}"
 }
 
 module "notifications" {
