@@ -211,3 +211,8 @@ variable "govnotify-bearer-token" {
 variable "user-signup-api-is-public" {
   default = false
 }
+
+variable "metrics-bucket-name" {
+  type        = "string"
+  description = "Name of the S3 bucket to write metrics into"
+}
