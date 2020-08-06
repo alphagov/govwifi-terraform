@@ -213,6 +213,6 @@ variable "user-signup-api-is-public" {
 }
 
 variable "metrics-bucket-name" {
-  type = "string"
+  type        = "string"
   description = "Name of the S3 bucket to write metrics into"
 }
