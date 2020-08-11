@@ -53,7 +53,7 @@ module "backend" {
   }
 
   source        = "../../govwifi-backend"
-  env           = "staging"
+  env           = "staging-temp"
   Env-Name      = "${var.Env-Name}"
   Env-Subdomain = "${var.Env-Subdomain}"
 
