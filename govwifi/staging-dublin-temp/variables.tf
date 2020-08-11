@@ -146,3 +146,6 @@ variable "govwifi-api-ssl-cert-arn" {
 
 variable "notification-email" {
 }
+
+# TODO enable for London and Ireland
+//variable "rds-kms-key-id" {}

@@ -65,4 +65,6 @@ resource "aws_db_instance" "users_read_replica" {
   tags = {
     Name = "${title(var.Env-Name)} DB Read Replica"
   }
+# TODO enable this for Ireland and London
+//  kms_key_id = "${var.rds-kms-key-id}"
 }
