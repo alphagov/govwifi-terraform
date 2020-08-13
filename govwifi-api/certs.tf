@@ -11,7 +11,6 @@ resource "aws_acm_certificate" "api-elb-global" {
 resource "aws_acm_certificate_validation" "api-elb-global" {
   count                   = "${aws_acm_certificate.api-elb-global.count}"
   certificate_arn         = "${aws_acm_certificate.api-elb-global.arn}"
-  validation_record_fqdns = ["${aws_route53_record.elb_global_cert_validation.fqdn}"]
 }
 
 resource "aws_acm_certificate" "api-elb" {
