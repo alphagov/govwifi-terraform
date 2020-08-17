@@ -25,7 +25,7 @@ resource "aws_acm_certificate" "api-elb-regional" {
 }
 
 resource "aws_acm_certificate_validation" "api-elb-regional" {
-  count           = "${aws_acm_certificate.api-elb-regional.count}"
-  certificate_arn = "${aws_acm_certificate.api-elb-regional.arn}"
+  count                   = "${aws_acm_certificate.api-elb-regional.count}"
+  certificate_arn         = "${aws_acm_certificate.api-elb-regional.arn}"
   validation_record_fqdns = ["${aws_route53_record.elb_regional_cert_validation.fqdn}"]
 }
