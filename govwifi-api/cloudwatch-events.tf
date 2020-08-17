@@ -94,3 +94,11 @@ resource "aws_cloudwatch_event_rule" "monthly_active_users_metrics_event" {
   schedule_expression = "cron(0 6 1 * ? *)"
   is_enabled          = true
 }
+
+resource "aws_cloudwatch_event_rule" "retrieve_notifications_event" {
+  count               = "${var.event-rule-count}"
+  name                = "${var.Env-Name}-retrieve-notifications"
+  description         = "Triggers daily 06:00 am UTC"
+  schedule_expression = "cron(0 6 * * ? *)"
+  is_enabled          = true
+}
