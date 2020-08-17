@@ -286,7 +286,6 @@ module "api" {
   backend-min-size       = 1
   backend-cpualarm-count = 1
   aws-account-id         = "${var.aws-account-id}"
-  elb-ssl-cert-arn       = "${var.govwifi-api-ssl-cert-arn}"
   aws-region-name        = "${var.aws-region-name}"
   aws-region             = "${var.aws-region}"
   route53-zone-id        = "${var.route53-zone-id}"

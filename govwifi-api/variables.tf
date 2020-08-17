@@ -42,8 +42,6 @@ variable "backend-elb-count" {}
 
 variable "aws-account-id" {}
 
-variable "elb-ssl-cert-arn" {}
-
 variable "user-signup-enabled" {
   default = 1
 }
