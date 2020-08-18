@@ -20,7 +20,7 @@ resource "aws_alb_listener" "alb_listener" {
   load_balancer_arn = "${aws_lb.api-alb.arn}"
   port              = "8443"
   protocol          = "HTTPS"
-  certificate_arn   = "${var.elb-ssl-cert-arn}"
+  certificate_arn   = "${aws_acm_certificate.api-elb-regional.arn}"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
 
   default_action {

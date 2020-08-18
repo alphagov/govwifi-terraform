@@ -114,11 +114,6 @@ variable "route53-zone-id" {
   description = "Zone ID used by the Route53 DNS service."
 }
 
-variable "elb-ssl-cert-arn" {
-  type        = "string"
-  description = "ARN of the ACM SSL certificate to be attached to the ELB"
-}
-
 variable "user-signup-sentry-dsn" {
   type    = "string"
   default = ""
@@ -158,11 +153,6 @@ variable "performance-bearer-unique-users" {
   default     = ""
   type        = "string"
   description = "Bearer token for `unique-users` Performance platform statistics"
-}
-
-variable "govwifi-api-ssl-cert-arn" {
-  type        = "string"
-  description = "ARN of the ACM SSL certificate to be attached to the ELB for the API"
 }
 
 variable "auth-sentry-dsn" {

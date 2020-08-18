@@ -142,10 +142,4 @@ variable "auth-sentry-dsn" {
   type = "string"
 }
 
-variable "govwifi-api-ssl-cert-arn" {
-  type        = "string"
-  description = "ARN of the ACM SSL certificate to be attached to the ELB for the API"
-  default     = "arn:aws:acm:eu-west-1:788375279931:certificate/88b4e46f-69ac-4445-8c17-3066ba7a6ac4"
-}
-
 variable "notification-email" {}
