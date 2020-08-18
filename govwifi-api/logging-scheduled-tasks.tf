@@ -44,6 +44,13 @@ resource "aws_iam_role_policy" "logging-scheduled-task-policy" {
               "iam:PassedToService": "ecs-tasks.amazonaws.com"
             }
           }
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:PutObject"
+          ],
+          "Resource": "arn:aws:s3:::${var.metrics-bucket-name}/*"
         }
     ]
 }
@@ -398,6 +405,10 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
+        },
+        {
+          "name": "S3_METRICS_BUCKET",
+          "value": "${var.metrics-bucket-name}"
         }
       ],
       "links": null,
