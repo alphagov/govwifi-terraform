@@ -191,19 +191,6 @@ variable "route53-zone-id" {
   description = "Zone ID used by the Route53 DNS service."
 }
 
-# TODO Tech debt: this variable is never used in the staging-london-temp/main.tf file.
-variable "elb-ssl-cert-arn" {
-  type        = "string"
-  description = "ARN of the ACM SSL certificate to be attached to the ELB"
-  default     = "junk"
-}
-
-variable "govwifi-api-ssl-cert-arn" {
-  type        = "string"
-  description = "ARN of the ACM SSL certificate to be attached to the ELB for the API"
-  default     = "junk2"
-}
-
 variable "performance-url" {
   type        = "string"
   description = "URL endpoint leading to Performance platform API, with a trailing slash at the end"
