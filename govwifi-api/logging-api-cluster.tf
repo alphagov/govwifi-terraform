@@ -94,10 +94,6 @@ resource "aws_ecs_task_definition" "logging-api-task" {
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
-        },
-        {
-          "name": "S3_METRICS_BUCKET",
-          "value": "${var.metrics-bucket-name}"
         }
       ],
       "links": null,
@@ -225,15 +221,7 @@ resource "aws_iam_role_policy" "logging-api-task-policy" {
         "s3:GetObject"
       ],
       "Resource": "arn:aws:s3:::govwifi-${var.rack-env}-admin/*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject"
-      ],
-      "Resource": "arn:aws:s3:::${var.metrics-bucket-name}/*"
     }
-
   ]
 }
 EOF
