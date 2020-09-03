@@ -44,13 +44,6 @@ resource "aws_iam_role_policy" "logging-scheduled-task-policy" {
               "iam:PassedToService": "ecs-tasks.amazonaws.com"
             }
           }
-        },
-        {
-          "Effect": "Allow",
-          "Action": [
-            "s3:PutObject"
-          ],
-          "Resource": "arn:aws:s3:::${var.metrics-bucket-name}/*"
         }
     ]
 }
