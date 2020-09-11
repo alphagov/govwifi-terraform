@@ -198,6 +198,117 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-monthly-statistics" 
 EOF
 }
 
+resource "aws_cloudwatch_event_target" "user-signup-publish-daily-metrics" {
+  count     = "${var.user-signup-enabled}"
+  target_id = "${var.Env-Name}-user-signup-daily-metrics"
+  arn       = "${aws_ecs_cluster.api-cluster.arn}"
+  rule      = "${aws_cloudwatch_event_rule.daily_metrics_user_signup_event.name}"
+  role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
+
+  ecs_target = {
+    task_count          = 1
+    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type         = "FARGATE"
+
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
+  }
+
+  input = <<EOF
+{
+  "containerOverrides": [
+    {
+      "name": "user-signup",
+      "command": ["bundle", "exec", "rake", "publish_daily_metrics"]
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_cloudwatch_event_target" "user-signup-publish-weekly-metrics" {
+  count     = "${var.user-signup-enabled}"
+  target_id = "${var.Env-Name}-user-signup-weekly-metrics"
+  arn       = "${aws_ecs_cluster.api-cluster.arn}"
+  rule      = "${aws_cloudwatch_event_rule.weekly_metrics_user_signup_event.name}"
+  role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
+
+  ecs_target = {
+    task_count          = 1
+    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type         = "FARGATE"
+
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
+  }
+
+  input = <<EOF
+{
+  "containerOverrides": [
+    {
+      "name": "user-signup",
+      "command": ["bundle", "exec", "rake", "publish_weekly_metrics"]
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_cloudwatch_event_target" "user-signup-publish-monthly-metrics" {
+  count     = "${var.user-signup-enabled}"
+  target_id = "${var.Env-Name}-user-signup-monthly-metrics"
+  arn       = "${aws_ecs_cluster.api-cluster.arn}"
+  rule      = "${aws_cloudwatch_event_rule.monthly_metrics_user_signup_event.name}"
+  role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
+
+  ecs_target = {
+    task_count          = 1
+    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type         = "FARGATE"
+
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
+  }
+
+  input = <<EOF
+{
+  "containerOverrides": [
+    {
+      "name": "user-signup",
+      "command": ["bundle", "exec", "rake", "publish_monthly_metrics"]
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
   count     = "${var.user-signup-enabled}"
   target_id = "${var.Env-Name}-user-signup-daily-user-deletion"
