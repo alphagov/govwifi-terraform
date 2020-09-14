@@ -25,6 +25,13 @@ resource "aws_iam_role" "user-signup-api-task-role" {
       },
       "Effect": "Allow",
       "Sid": ""
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Resource": "arn:aws:s3:::${var.metrics-bucket-name}/*"
     }
   ]
 }
@@ -145,6 +152,10 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
         },{
           "name": "GOVNOTIFY_BEARER_TOKEN",
           "value": "${var.govnotify-bearer-token}"
+        },
+        {
+          "name": "S3_METRICS_BUCKET",
+          "value": "${var.metrics-bucket-name}"
         }
       ],
       "links": null,
