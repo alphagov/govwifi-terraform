@@ -25,13 +25,6 @@ resource "aws_iam_role" "user-signup-api-task-role" {
       },
       "Effect": "Allow",
       "Sid": ""
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject"
-      ],
-      "Resource": "arn:aws:s3:::${var.metrics-bucket-name}/*"
     }
   ]
 }
@@ -60,6 +53,13 @@ resource "aws_iam_role_policy" "user-signup-api-task-policy" {
         "s3:GetObject"
       ],
       "Resource": ["${data.aws_s3_bucket.admin-bucket.arn}/signup-whitelist.conf"]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Resource": "arn:aws:s3:::${var.metrics-bucket-name}/*"
     }
   ]
 }
