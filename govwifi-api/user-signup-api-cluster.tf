@@ -25,6 +25,13 @@ resource "aws_iam_role" "user-signup-api-task-role" {
       },
       "Effect": "Allow",
       "Sid": ""
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject"
+      ],
+      "Resource": "arn:aws:s3:::${var.metrics-bucket-name}/*"
     }
   ]
 }
