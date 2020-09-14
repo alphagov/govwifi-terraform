@@ -102,3 +102,27 @@ resource "aws_cloudwatch_event_rule" "retrieve_notifications_event" {
   schedule_expression = "cron(0 6 * * ? *)"
   is_enabled          = true
 }
+
+resource "aws_cloudwatch_event_rule" "daily_metrics_user_signup_event" {
+  count               = "${var.event-rule-count}"
+  name                = "${var.Env-Name}-daily-metrics-frequency-user-signup"
+  description         = "Triggers daily 04:45 am UTC"
+  schedule_expression = "cron(45 4 * * ? *)"
+  is_enabled          = true
+}
+
+resource "aws_cloudwatch_event_rule" "weekly_metrics_user_signup_event" {
+  count               = "${var.event-rule-count}"
+  name                = "${var.Env-Name}-weekly-metrics-frequency-user-signup"
+  description         = "Triggers every SUN 05:45 am UTC"
+  schedule_expression = "cron(45 5 ? * 7 *)"
+  is_enabled          = true
+}
+
+resource "aws_cloudwatch_event_rule" "monthly_metrics_user_signup_event" {
+  count               = "${var.event-rule-count}"
+  name                = "${var.Env-Name}-monthly-metrics-frequency-user-signup"
+  description         = "Triggers on the first of each month at 06:30 am UTC"
+  schedule_expression = "cron(30 6 1 * ? *)"
+  is_enabled          = true
+}
