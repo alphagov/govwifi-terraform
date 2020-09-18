@@ -198,7 +198,7 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-monthly-statistics" 
 EOF
 }
 
-resource "aws_cloudwatch_event_target" "user-signup-publish-daily-metrics" {
+resource "aws_cloudwatch_event_target" "publish-daily-metrics-user-signup" {
   count     = "${var.user-signup-enabled}"
   target_id = "${var.Env-Name}-user-signup-daily-metrics"
   arn       = "${aws_ecs_cluster.api-cluster.arn}"
@@ -235,7 +235,7 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-daily-metrics" {
 EOF
 }
 
-resource "aws_cloudwatch_event_target" "user-signup-publish-weekly-metrics" {
+resource "aws_cloudwatch_event_target" "publish-weekly-metrics-user-signup" {
   count     = "${var.user-signup-enabled}"
   target_id = "${var.Env-Name}-user-signup-weekly-metrics"
   arn       = "${aws_ecs_cluster.api-cluster.arn}"
@@ -272,7 +272,7 @@ resource "aws_cloudwatch_event_target" "user-signup-publish-weekly-metrics" {
 EOF
 }
 
-resource "aws_cloudwatch_event_target" "user-signup-publish-monthly-metrics" {
+resource "aws_cloudwatch_event_target" "publish-monthly-metrics-user-signup" {
   count     = "${var.user-signup-enabled}"
   target_id = "${var.Env-Name}-user-signup-monthly-metrics"
   arn       = "${aws_ecs_cluster.api-cluster.arn}"

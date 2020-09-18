@@ -70,28 +70,52 @@ resource "aws_cloudwatch_event_rule" "daily_gdpr_set_user_last_login" {
   is_enabled          = true
 }
 
-# new daily, weekly and monthly active users metrics published to S3
-resource "aws_cloudwatch_event_rule" "daily_active_users_metrics_event" {
+# new daily, weekly and monthly metrics published to S3
+resource "aws_cloudwatch_event_rule" "daily_metrics_logging_event" {
   count               = "${var.event-rule-count}"
-  name                = "${var.Env-Name}-daily-active-users-metrics-logging"
+  name                = "${var.Env-Name}-daily-metrics-logging"
   description         = "Triggers daily 02:00 am UTC"
   schedule_expression = "cron(0 2 * * ? *)"
   is_enabled          = true
 }
 
-resource "aws_cloudwatch_event_rule" "weekly_active_users_metrics_event" {
+resource "aws_cloudwatch_event_rule" "weekly_metrics_logging_event" {
   count               = "${var.event-rule-count}"
-  name                = "${var.Env-Name}-weekly-active-users-metrics-logging"
+  name                = "${var.Env-Name}-weekly-metrics-logging"
   description         = "Triggers every SUN 05:45 am UTC"
   schedule_expression = "cron(45 5 ? * 1 *)"
   is_enabled          = true
 }
 
-resource "aws_cloudwatch_event_rule" "monthly_active_users_metrics_event" {
+resource "aws_cloudwatch_event_rule" "monthly_metrics_logging_event" {
   count               = "${var.event-rule-count}"
-  name                = "${var.Env-Name}-monthly-active-users-metrics-logging"
+  name                = "${var.Env-Name}-monthly-metrics-logging"
   description         = "Triggers on the first of each month at 06:00 am UTC"
   schedule_expression = "cron(0 6 1 * ? *)"
+  is_enabled          = true
+}
+
+resource "aws_cloudwatch_event_rule" "daily_metrics_user_signup_event" {
+  count               = "${var.event-rule-count}"
+  name                = "${var.Env-Name}-daily-metrics-user-signup"
+  description         = "Triggers daily 04:45 am UTC"
+  schedule_expression = "cron(45 4 * * ? *)"
+  is_enabled          = true
+}
+
+resource "aws_cloudwatch_event_rule" "weekly_metrics_user_signup_event" {
+  count               = "${var.event-rule-count}"
+  name                = "${var.Env-Name}-weekly-metrics-user-signup"
+  description         = "Triggers every SUN 05:45 am UTC"
+  schedule_expression = "cron(45 5 ? * 7 *)"
+  is_enabled          = true
+}
+
+resource "aws_cloudwatch_event_rule" "monthly_metrics_user_signup_event" {
+  count               = "${var.event-rule-count}"
+  name                = "${var.Env-Name}-monthly-metrics-user-signup"
+  description         = "Triggers on the first of each month at 06:30 am UTC"
+  schedule_expression = "cron(30 6 1 * ? *)"
   is_enabled          = true
 }
 
@@ -100,29 +124,5 @@ resource "aws_cloudwatch_event_rule" "retrieve_notifications_event" {
   name                = "${var.Env-Name}-retrieve-notifications"
   description         = "Triggers daily 06:00 am UTC"
   schedule_expression = "cron(0 6 * * ? *)"
-  is_enabled          = true
-}
-
-resource "aws_cloudwatch_event_rule" "daily_metrics_user_signup_event" {
-  count               = "${var.event-rule-count}"
-  name                = "${var.Env-Name}-daily-metrics-frequency-user-signup"
-  description         = "Triggers daily 04:45 am UTC"
-  schedule_expression = "cron(45 4 * * ? *)"
-  is_enabled          = true
-}
-
-resource "aws_cloudwatch_event_rule" "weekly_metrics_user_signup_event" {
-  count               = "${var.event-rule-count}"
-  name                = "${var.Env-Name}-weekly-metrics-frequency-user-signup"
-  description         = "Triggers every SUN 05:45 am UTC"
-  schedule_expression = "cron(45 5 ? * 7 *)"
-  is_enabled          = true
-}
-
-resource "aws_cloudwatch_event_rule" "monthly_metrics_user_signup_event" {
-  count               = "${var.event-rule-count}"
-  name                = "${var.Env-Name}-monthly-metrics-frequency-user-signup"
-  description         = "Triggers on the first of each month at 06:30 am UTC"
-  schedule_expression = "cron(30 6 1 * ? *)"
   is_enabled          = true
 }

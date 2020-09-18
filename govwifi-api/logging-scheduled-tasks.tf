@@ -199,11 +199,11 @@ EOF
 }
 
 # new metrics
-resource "aws_cloudwatch_event_target" "logging-publish-monthly-active-users-metrics" {
+resource "aws_cloudwatch_event_target" "publish-monthly-metrics-logging" {
   count     = "${var.logging-enabled}"
   target_id = "${var.Env-Name}-logging-monthly-metrics"
   arn       = "${aws_ecs_cluster.api-cluster.arn}"
-  rule      = "${aws_cloudwatch_event_rule.monthly_active_users_metrics_event.name}"
+  rule      = "${aws_cloudwatch_event_rule.monthly_metrics_logging_event.name}"
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
@@ -236,11 +236,11 @@ resource "aws_cloudwatch_event_target" "logging-publish-monthly-active-users-met
 EOF
 }
 
-resource "aws_cloudwatch_event_target" "logging-publish-active-users-weekly-metrics" {
+resource "aws_cloudwatch_event_target" "publish-weekly-metrics-logging" {
   count     = "${var.logging-enabled}"
   target_id = "${var.Env-Name}-logging-weekly-metrics"
   arn       = "${aws_ecs_cluster.api-cluster.arn}"
-  rule      = "${aws_cloudwatch_event_rule.weekly_active_users_metrics_event.name}"
+  rule      = "${aws_cloudwatch_event_rule.weekly_metrics_logging_event.name}"
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
@@ -273,11 +273,11 @@ resource "aws_cloudwatch_event_target" "logging-publish-active-users-weekly-metr
 EOF
 }
 
-resource "aws_cloudwatch_event_target" "logging-publish-active-users-daily-metrics" {
+resource "aws_cloudwatch_event_target" "publish-daily-metrics-logging" {
   count     = "${var.logging-enabled}"
   target_id = "${var.Env-Name}-logging-daily-metrics"
   arn       = "${aws_ecs_cluster.api-cluster.arn}"
-  rule      = "${aws_cloudwatch_event_rule.daily_active_users_metrics_event.name}"
+  rule      = "${aws_cloudwatch_event_rule.daily_metrics_logging_event.name}"
   role_arn  = "${aws_iam_role.logging-scheduled-task-role.arn}"
 
   ecs_target = {
