@@ -164,7 +164,7 @@ module "dns" {
   Env-Name           = "${var.Env-Name}"
   Env-Subdomain      = "${var.Env-Subdomain}"
   route53-zone-id    = "${var.route53-zone-id}"
-  status-page-domain = "govwifi2.statuspage.io"
+  status-page-domain = "bl6klm1cjshh.stspg-customer.com"
 }
 
 # Frontend ====================================================================
