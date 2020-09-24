@@ -18,6 +18,7 @@ resource "aws_route53_health_check" "radius" {
   request_interval  = "30"
   failure_threshold = "3"
   measure_latency   = true
+  regions           = ["eu-west-1", "us-east-1", "us-west-1"]
 
   tags = {
     Name = "${format("${var.Env-Name}-${var.aws-region-name}-%d", count.index + 1)}"
