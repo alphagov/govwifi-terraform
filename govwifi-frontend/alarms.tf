@@ -62,4 +62,3 @@ resource "aws_cloudwatch_metric_alarm" "radius-cannot-connect-to-api" {
     var.devops-notifications-arn,
   ]
 }
-
