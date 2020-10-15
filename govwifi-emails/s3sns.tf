@@ -64,6 +64,10 @@ EOF
     expiration {
       days = 30
     }
+
+    noncurrent_version_expiration {
+      days = 1
+    }
   }
 }
 
