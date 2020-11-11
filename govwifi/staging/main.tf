@@ -177,7 +177,7 @@ module "frontend" {
   }
 
   # Instance-specific setup -------------------------------
-  radius-instance-count      = 3
+  radius-instance-count      = 4
   enable-detailed-monitoring = false
 
   # eg. dns recods are generated for radius(N).x.service.gov.uk
