@@ -380,3 +380,36 @@ module "govwifi-dashboard" {
   source   = "../../govwifi-dashboard"
   Env-Name = "${var.Env-Name}"
 }
+
+module "govwifi-prometheus" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source = "../../govwifi-prometheus"
+  Env-Name = "${var.Env-Name}"
+
+  // Declare in the module not in the main.tf file
+  ssh-key-name = "${var.ssh-key-name}"
+
+  // We should decide which AMI we want to use. Can we learn anything from Verify?
+  // Ideally the AMI is declared in the module not the main.tf file
+  ami = "${var.ami}"
+
+  /**
+  Using the "{module.fronted.*}" approach creates a dependency on FE.
+  A change to the FE will result in a change to this module
+  This dependency isn't obvious, however this approach is standard design for TF.
+  Something to think about.
+  **/
+  frontend-vpc-id = "${module.frontend.frontend-vpc-id}"
+
+  fe-admin-in = "${module.frontend.fe-admin-in}"
+  fe-ecs-out = "${module.frontend.fe-ecs-out}"
+  fe-radius-in = "${module.frontend.fe-radius-in}"
+  fe-radius-out = "${module.frontend.fe-radius-out}"
+
+  ecs-instance-profile = "${module.frontend.ecs-instance-profile}"
+
+  wifi-frontend-subnet = "${module.frontend.wifi-frontend-subnet}"
+}

@@ -1,92 +1,33 @@
 variable "Env-Name" {}
 
-variable "Env-Subdomain" {}
-
-variable "route53-zone-id" {}
-
-variable "vpc-cidr-block" {}
-
-variable "aws-region" {}
-
-variable "aws-region-name" {}
-
-### Added for Prometheus
-
-variable "ami" {
-  description = "AMI id to launch, must be in the region specified by the region variable"
+variable "aws-region" {
+  default = "eu-west-2a"
 }
 
-### Editing begins again HERE!!!
-
-
-
-
-
-
-
-
-variable "radius-instance-sg-ids" {
-  type = "list"
+variable "zone-subnets" {
+  default = {
+    zone0 = "10.102.1.0/24"
+    zone1 = "10.102.2.0/24"
+    zone2 = "10.102.3.0/24"
+  }
 }
 
-variable "frontend-docker-image" {}
+variable "frontend-vpc-id" {}
 
-variable "raddb-docker-image" {}
-
-
+variable "ami" {}
 
 variable "ssh-key-name" {}
 
-variable "shared-key" {}
+variable "fe-admin-in" {}
 
-variable "healthcheck-radius-key" {}
-variable "healthcheck-ssid" {}
-variable "healthcheck-identity" {}
-variable "healthcheck-password" {}
+variable "fe-ecs-out" {}
 
-variable "dns-numbering-base" {}
+variable "fe-radius-in" {}
 
-variable "logging-api-base-url" {}
+variable "fe-radius-out" {}
 
-variable "auth-api-base-url" {}
+variable "ecs-instance-profile" {}
 
-variable "elastic-ip-list" {
+variable "wifi-frontend-subnet" {
   type = "list"
-}
-
-variable "enable-detailed-monitoring" {}
-
-variable "radiusd-params" {
-  default = "-f"
-}
-
-variable "users" {
-  type = "list"
-}
-
-variable "rack-env" {
-  default = ""
-}
-
-variable "create-ecr" {
-  description = "Whether or not to create ECR repository"
-  default     = false
-}
-
-variable "bastion-ips" {
-  description = "The list of allowed hosts to connect to the ec2 instances"
-  type        = "list"
-  default     = []
-}
-
-variable "route53-critical-notifications-arn" {
-  type = "string"
-}
-
-variable "devops-notifications-arn" {
-  type = "string"
-}
-
-variable "admin-bucket-name" {
-  type = "string"
 }
