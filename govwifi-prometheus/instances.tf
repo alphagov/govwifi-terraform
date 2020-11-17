@@ -18,10 +18,27 @@ resource "aws_eip" "prometheus-eip" {
   vpc      = true
 }
 
+
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
+}
+
 # The element() function used in subnets wraps around when the index is over the number of elements
 # eg. in the 4th iteration the value returned will be the 1st, if there are only 3 elements in the list.
 resource "aws_instance" "prometheus-instance" {
-  ami           = "${var.ami}"
+  ami           = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.small"
   key_name      = "${var.ssh-key-name}"
   subnet_id     = "${element(var.wifi-frontend-subnet, count.index)}" // referred to the existing wifi subnet instead of creating a new one
@@ -54,5 +71,18 @@ resource "aws_instance" "prometheus-instance" {
     ignore_changes = [
       "user_data",
     ]
+  }
+}
+
+
+data "aws_ami" "ubuntu_focal" {
+  most_recent = true
+
+  # canonical
+  owners = ["099720109477"]
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
   }
 }
