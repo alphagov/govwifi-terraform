@@ -127,9 +127,9 @@ resource "aws_cloudwatch_event_rule" "retrieve_notifications_event" {
   is_enabled          = true
 }
 
-resource "aws_cloudwatch_event_rule" "user_active_signup_survey_event" {
+resource "aws_cloudwatch_event_rule" "active_users_signup_survey_event" {
   count               = "${var.event-rule-count}"
-  name                = "${var.Env-Name}-active_signup_survey"
+  name                = "${var.Env-Name}-active-users-signup-survey"
   description         = "Triggers daily at 1:00PM UTC"
   schedule_expression = "cron(0 13 * * ? *)"
   is_enabled          = true
