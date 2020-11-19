@@ -13,8 +13,8 @@ resource "aws_subnet" "prometheus-subnet" {
 **/
 
 # Create New EIP and Associate it
-resource "aws_eip" "prometheus-eip" {
-  instance = "${aws_instance.prometheus-instance.id}"
+resource "aws_eip" "prometheus_eip" {
+  instance = "${aws_instance.prometheus_instance.id}"
   vpc      = true
 }
 
@@ -35,14 +35,23 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+
+data "template_file" "prometheus_user_data" {
+  template = file("user_data.init")
+
+  vars = {
+     data_volume_size           = "${var.prometheus_volume_size}"
+  }
+}
+
 # The element() function used in subnets wraps around when the index is over the number of elements
 # eg. in the 4th iteration the value returned will be the 1st, if there are only 3 elements in the list.
-resource "aws_instance" "prometheus-instance" {
+resource "aws_instance" "prometheus_instance" {
   ami           = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.small"
   key_name      = "${var.ssh-key-name}"
   subnet_id     = "${element(var.wifi-frontend-subnet, count.index)}" // referred to the existing wifi subnet instead of creating a new one
-
+  user_data     = "${data.template_file.prometheus_user_data.rendered}"
 
 ### Editing begins again HERE!!!
   vpc_security_group_ids = [
@@ -52,7 +61,7 @@ resource "aws_instance" "prometheus-instance" {
     "${var.fe-radius-in}",
   ]
 
-  iam_instance_profile = "${var.ecs-instance-profile}"
+  iam_instance_profile = "${var.ecs_instance_profile}"
 
   // Do we need detailed monitoring enabled?
   //  monitoring           = "${var.enable-detailed-monitoring}"
@@ -74,15 +83,21 @@ resource "aws_instance" "prometheus-instance" {
   }
 }
 
+### ADD A VOLUME FOR PROMETHEUS
 
-data "aws_ami" "ubuntu_focal" {
-  most_recent = true
+resource "aws_ebs_volume" "prometheus_ebs" {
 
-  # canonical
-  owners = ["099720109477"]
+  size      = 40
+  encrypted = true
+  availability_zone       = "${var.aws-region}"
 
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  tags = {
+    Name = "Prometheus volume"
   }
+}
+
+resource "aws_volume_attachment" "prometheus_ebs_attach" {
+  device_name = "/dev/xvdp"
+  volume_id   = aws_ebs_volume.prometheus_ebs.id
+  instance_id = aws_instance.prometheus_instance.id
 }

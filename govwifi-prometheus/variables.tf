@@ -12,6 +12,10 @@ variable "zone-subnets" {
   }
 }
 
+variable "prometheus_volume_size" {
+  default = "40"
+}
+
 variable "frontend-vpc-id" {}
 
 variable "ami" {}
