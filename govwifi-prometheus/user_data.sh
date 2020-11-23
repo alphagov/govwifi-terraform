@@ -48,7 +48,7 @@ run-until-success apt-get install --yes docker.io
 cat <<EOF > /etc/systemd/system/docker.service.d/override.conf
 [Service]
 ExecStart=
-ExecStart=/usr/bin/dockerd --log-driver awslogs --log-opt awslogs-region=eu-west-2 --log-opt awslogs-group=${cloudwatch_log_group} --dns 10.0.0.2
+ExecStart=/usr/bin/dockerd --log-driver awslogs --log-opt awslogs-region=eu-west-2 --log-opt awslogs-group=${prometheus-log-group} --dns 10.0.0.2
 EOF
 
 # Reload systemctl daemon to pick up new override files

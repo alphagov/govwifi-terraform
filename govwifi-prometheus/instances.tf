@@ -37,10 +37,11 @@ data "aws_ami" "ubuntu" {
 
 
 data "template_file" "prometheus_user_data" {
-  template = file("user_data.init")
+  template = "${file("${path.module}/user_data.sh")}"
 
   vars = {
      data_volume_size           = "${var.prometheus_volume_size}"
+     prometheus-log-group       = "${var.Env-Name}-prometheus-log-group"
   }
 }
 
@@ -61,7 +62,8 @@ resource "aws_instance" "prometheus_instance" {
     "${var.fe-radius-in}",
   ]
 
-  iam_instance_profile = "${var.ecs_instance_profile}"
+  //iam_instance_profile = "${var.ecs_instance_profile}"
+  //Commented the above out for now, lets worry about adding this to a cluster later
 
   // Do we need detailed monitoring enabled?
   //  monitoring           = "${var.enable-detailed-monitoring}"
@@ -98,6 +100,6 @@ resource "aws_ebs_volume" "prometheus_ebs" {
 
 resource "aws_volume_attachment" "prometheus_ebs_attach" {
   device_name = "/dev/xvdp"
-  volume_id   = aws_ebs_volume.prometheus_ebs.id
-  instance_id = aws_instance.prometheus_instance.id
+  volume_id   = "${aws_ebs_volume.prometheus_ebs.id}"
+  instance_id = "${aws_instance.prometheus_instance.id}"
 }
