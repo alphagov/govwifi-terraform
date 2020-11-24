@@ -134,3 +134,11 @@ resource "aws_cloudwatch_event_rule" "active_users_signup_survey_event" {
   schedule_expression = "cron(0 13 * * ? *)"
   is_enabled          = true
 }
+
+resource "aws_cloudwatch_event_rule" "inactive_users_signup_survey_event" {
+  count               = "${var.event-rule-count}"
+  name                = "${var.Env-Name}-inactive-users-signup-survey"
+  description         = "Triggers daily at 11:00AM UTC"
+  schedule_expression = "cron(0 11 * * ? *)"
+  is_enabled          = true
+}

@@ -479,7 +479,44 @@ resource "aws_cloudwatch_event_target" "active-users-signup-surveys" {
   "containerOverrides": [
     {
       "name": "user-signup",
-      "command": ["bundle", "exec", "rake", "send_active_users_signup_survey"]
+      "command": ["bundle", "exec", "rake", "users_signup_survey:send_active"]
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_cloudwatch_event_target" "inactive-users-signup-surveys" {
+  count     = "${var.user-signup-enabled}"
+  target_id = "${var.Env-Name}-inactive-users-signup-surveys"
+  arn       = "${aws_ecs_cluster.api-cluster.arn}"
+  rule      = "${aws_cloudwatch_event_rule.inactive_users_signup_survey_event.name}"
+  role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
+
+  ecs_target = {
+    task_count          = 1
+    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type         = "FARGATE"
+
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
+  }
+
+  input = <<EOF
+{
+  "containerOverrides": [
+    {
+      "name": "user-signup",
+      "command": ["bundle", "exec", "rake", "users_signup_survey:send_inactive"]
     }
   ]
 }
