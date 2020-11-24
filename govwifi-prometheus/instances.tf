@@ -13,11 +13,18 @@ resource "aws_subnet" "prometheus-subnet" {
 **/
 
 # Create New EIP and Associate it
-resource "aws_eip" "prometheus_eip" {
-  instance = "${aws_instance.prometheus_instance.id}"
-  vpc      = true
-}
-
+# Temporarily commenting this out since we can't release/delete EIPs. So when
+# terraform runs it will error
+# resource "aws_eip" "prometheus_eip" {
+#   instance = "${aws_instance.prometheus_instance.id}"
+#   vpc      = true
+#
+#   tags = {
+#     Name = "${title(var.Env-Name)} Prometheus-Server"
+#     Env  = "${title(var.Env-Name)}"
+#   }
+#
+# }
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -102,4 +109,14 @@ resource "aws_volume_attachment" "prometheus_ebs_attach" {
   device_name = "/dev/xvdp"
   volume_id   = "${aws_ebs_volume.prometheus_ebs.id}"
   instance_id = "${aws_instance.prometheus_instance.id}"
+}
+
+# resource "aws_eip_association" "prometheus_eip_assoc" {
+#   instance_id   = aws_instance.prometheus_instance.id
+#   allocation_id = "${var.prometheus_eip.id}"  aws_eip.example.id
+# }
+
+resource "aws_eip_association" "prometheus_eip_assoc" {
+  instance_id   = "${aws_instance.prometheus_instance.id}"
+  public_ip     = "${var.prometheus_eip}"
 }

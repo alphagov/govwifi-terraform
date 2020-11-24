@@ -16,6 +16,10 @@ variable "prometheus_volume_size" {
   default = "40"
 }
 
+variable "prometheus_eip" {
+    default = "18.135.11.32"
+}
+
 variable "frontend-vpc-id" {}
 
 variable "ami" {}
