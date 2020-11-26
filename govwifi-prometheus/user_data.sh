@@ -56,7 +56,11 @@ systemctl stop docker
 systemctl daemon-reload
 systemctl enable --now docker
 
-## Revisit for Refactoring (node exporter may not necessary)
+# Install Prometheus
+echo 'Installing prometheus'
+run-until-success apt-get install --yes prometheus
+
+## Install Prometheus Node exporter
 echo 'Installing prometheus node exporter'
 run-until-success apt-get install --yes prometheus-node-exporter
 mkdir /etc/systemd/system/prometheus-node-exporter.service.d
