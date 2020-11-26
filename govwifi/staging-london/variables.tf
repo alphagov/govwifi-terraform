@@ -159,12 +159,12 @@ variable "hc-identity" {
 
 variable "hc-password" {
   type        = "string"
-  description = "Healt check password"
+  description = "Health check password"
 }
 
 variable "shared-key" {
   type        = "string"
-  description = "A random key to be shared between the fronend and backend to retrieve initial client setup."
+  description = "A random key to be shared between the frontend and backend to retrieve initial client setup."
 }
 
 variable "notify-api-key" {
@@ -260,3 +260,5 @@ variable "govnotify-bearer-token" {
 }
 
 variable "notification-email" {}
+
+variable "prometheus-IPs" {}

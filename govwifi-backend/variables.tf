@@ -119,3 +119,7 @@ variable "user-replica-source-db" {
   type    = "string"
   default = ""
 }
+
+variable "prometheus-IPs" {
+  default = ""
+}

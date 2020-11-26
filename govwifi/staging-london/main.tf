@@ -116,6 +116,7 @@ module "backend" {
   # Whether or not to save Performance Platform backup data
   save-pp-data   = 1
   pp-domain-name = "www.performance.service.gov.uk"
+  prometheus-IPs = "${var.prometheus-IPs}"
 }
 
 # London Frontend ==================================================================
