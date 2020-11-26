@@ -111,6 +111,7 @@ resource "aws_security_group" "be-vpn-out" {
     cidr_blocks = [
       "${split(",", var.backend-subnet-IPs)}",
       "${split(",", var.frontend-radius-IPs)}",
+      "${var.prometheus-IPs}",
     ]
   }
 }
