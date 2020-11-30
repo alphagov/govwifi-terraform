@@ -49,6 +49,15 @@ data "template_file" "prometheus_user_data" {
   vars = {
      data_volume_size           = "${var.prometheus_volume_size}"
      prometheus-log-group       = "${var.Env-Name}-prometheus-log-group"
+     prometheus_config          = "${data.template_file.prometheus_config.rendered}"
+  }
+}
+
+data "template_file" "prometheus_config" {
+  template = "${file("${path.module}/prometheus.yml")}"
+
+  vars = {
+    radius_ips = "${var.radius_ips}"
   }
 }
 

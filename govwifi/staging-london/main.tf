@@ -413,4 +413,6 @@ module "govwifi-prometheus" {
   ecs-instance-profile = "${module.frontend.ecs-instance-profile}"
 
   wifi-frontend-subnet = "${module.frontend.wifi-frontend-subnet}"
+
+  radius_ips = "${var.london-radius-ip-addresses}"
 }

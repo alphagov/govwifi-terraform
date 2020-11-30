@@ -39,3 +39,7 @@ variable "ecs-instance-profile" {}
 variable "wifi-frontend-subnet" {
   type = "list"
 }
+
+variable "radius_ips" {
+  default = ""
+}

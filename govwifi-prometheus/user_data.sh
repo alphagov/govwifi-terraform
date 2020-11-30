@@ -77,11 +77,11 @@ systemctl daemon-reload
 systemctl enable prometheus-node-exporter
 systemctl restart prometheus-node-exporter
 
-
-
-
-
-
+## Configure Prometheus scrape points
+## This overwrites the existing prometheus configuration
+cat << EOF > /etc/prometheus/prometheus.yml
+ ${prometheus_config}
+EOF
 
 
 ## CREATE A VOLUME FOR PROMETHEUS INSTANCE DELETE AND ADD THIS TO TERRAFORM
