@@ -40,6 +40,4 @@ variable "wifi-frontend-subnet" {
   type = "list"
 }
 
-variable "radius_ips" {
-  default = ""
-}
+variable "london-radius-ip-addresses" {}
