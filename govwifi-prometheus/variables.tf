@@ -22,8 +22,6 @@ variable "prometheus_eip" {
 
 variable "frontend-vpc-id" {}
 
-variable "ami" {}
-
 variable "ssh-key-name" {}
 
 variable "fe-admin-in" {}
@@ -34,13 +32,18 @@ variable "fe-radius-in" {}
 
 variable "fe-radius-out" {}
 
-variable "ecs-instance-profile" {}
-
 variable "wifi-frontend-subnet" {
   type = "list"
 }
 
 variable "london-radius-ip-addresses" {
   type = "list"
-  //default = ["52.56.75.60", "52.56.49.122", "3.9.74.198"]
+  default = []
+}
+
+# Feature toggle to create (1) or not create (0) Prometheus server
+# Default value is 0, we only want Prometheus enabled in Staging.
+# To enable Prometheus, set the value to 1 in the relevant <environment>/main.tf
+variable "create_prometheus_server" {
+  default = 0
 }

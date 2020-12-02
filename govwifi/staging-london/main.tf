@@ -390,19 +390,8 @@ module "govwifi-prometheus" {
   source = "../../govwifi-prometheus"
   Env-Name = "${var.Env-Name}"
 
-  // Declare in the module not in the main.tf file
   ssh-key-name = "${var.ssh-key-name}"
 
-  // We should decide which AMI we want to use. Can we learn anything from Verify?
-  // Ideally the AMI is declared in the module not the main.tf file
-  ami = "${var.ami}"
-
-  /**
-  Using the "{module.fronted.*}" approach creates a dependency on FE.
-  A change to the FE will result in a change to this module
-  This dependency isn't obvious, however this approach is standard design for TF.
-  Something to think about.
-  **/
   frontend-vpc-id = "${module.frontend.frontend-vpc-id}"
 
   fe-admin-in = "${module.frontend.fe-admin-in}"
@@ -414,4 +403,8 @@ module "govwifi-prometheus" {
 
   wifi-frontend-subnet = "${module.frontend.wifi-frontend-subnet}"
   london-radius-ip-addresses = "${var.london-radius-ip-addresses}"
+
+  # Feature toggle creating Prometheus server.
+  # Value defaults to 0 and is only enabled (i.e., value = 1) in staging-london
+  create_prometheus_server = 1
 }
