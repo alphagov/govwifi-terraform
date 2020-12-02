@@ -85,6 +85,6 @@ resource "aws_volume_attachment" "prometheus_ebs_attach" {
 
 resource "aws_eip_association" "prometheus_eip_assoc" {
   depends_on    = ["aws_instance.prometheus_instance"]
-  instance_id   = aws_instance.prometheus_instance.id
-  allocation_id = "${var.prometheus_eip.id}"
+  instance_id   = "${aws_instance.prometheus_instance.id}"
+  public_ip     = "${var.prometheus_eip}"
 }

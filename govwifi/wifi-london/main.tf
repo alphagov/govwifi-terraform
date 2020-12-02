@@ -116,6 +116,8 @@ module "backend" {
   # Whether or not to save Performance Platform backup data
   save-pp-data   = 1
   pp-domain-name = "www.performance.service.gov.uk"
+  prometheus-IPs = "${var.prometheus-IPs}"
+
 }
 
 # London Frontend ======DIFFERENT AWS REGION===================================
@@ -413,8 +415,6 @@ module "govwifi-prometheus" {
   fe-ecs-out = "${module.frontend.fe-ecs-out}"
   fe-radius-in = "${module.frontend.fe-radius-in}"
   fe-radius-out = "${module.frontend.fe-radius-out}"
-
-  ecs-instance-profile = "${module.frontend.ecs-instance-profile}"
 
   wifi-frontend-subnet = "${module.frontend.wifi-frontend-subnet}"
   london-radius-ip-addresses = "${var.london-radius-ip-addresses}"
