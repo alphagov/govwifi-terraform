@@ -40,4 +40,7 @@ variable "wifi-frontend-subnet" {
   type = "list"
 }
 
-variable "london-radius-ip-addresses" {}
+variable "london-radius-ip-addresses" {
+  type = "list"
+  //default = ["52.56.75.60", "52.56.49.122", "3.9.74.198"]
+}

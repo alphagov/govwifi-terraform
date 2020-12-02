@@ -83,7 +83,6 @@ cat << EOF > /etc/prometheus/prometheus.yml
  ${prometheus_config}
 EOF
 
-
 ## CREATE A VOLUME FOR PROMETHEUS INSTANCE DELETE AND ADD THIS TO TERRAFORM
 echo 'Configuring prometheus EBS'
 vol=""

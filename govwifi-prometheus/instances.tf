@@ -55,11 +55,12 @@ data "template_file" "prometheus_user_data" {
 
 data "template_file" "prometheus_config" {
   template = "${file("${path.module}/prometheus.yml")}"
-  # count    = "${length(var.london-radius-ip-addresses)}"
-  #
-  # vars = {
-  #   london-radius-ip-addresses = "${element(values(var.london-radius-ip-addresses[count.index]), 0)}"
-  # }
+
+  vars = {
+    london-radius-ip-addresses-one = "${element(var.london-radius-ip-addresses, 0)}"
+    london-radius-ip-addresses-two = "${element(var.london-radius-ip-addresses, 1)}"
+    london-radius-ip-addresses-three = "${element(var.london-radius-ip-addresses, 2)}"
+  }
 }
 
 # The element() function used in subnets wraps around when the index is over the number of elements
