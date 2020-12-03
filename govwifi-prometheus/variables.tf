@@ -36,7 +36,7 @@ variable "wifi-frontend-subnet" {
   type = "list"
 }
 
-variable "london-radius-ip-addresses" {
+variable "radius-ip-addresses" {
   type = "list"
   default = []
 }

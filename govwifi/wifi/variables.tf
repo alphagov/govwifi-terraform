@@ -217,3 +217,7 @@ variable "capacity-notification-email" {
 variable "devops-notification-email" {
   type = "string"
 }
+
+variable "prometheus-IPs" {}
+
+variable "radius-ip-addresses" {} 

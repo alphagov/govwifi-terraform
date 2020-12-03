@@ -28,9 +28,9 @@ data "template_file" "prometheus_config" {
   template = "${file("${path.module}/prometheus.yml")}"
 
   vars = {
-    london-radius-ip-addresses-one = "${element(var.london-radius-ip-addresses, 0)}"
-    london-radius-ip-addresses-two = "${element(var.london-radius-ip-addresses, 1)}"
-    london-radius-ip-addresses-three = "${element(var.london-radius-ip-addresses, 2)}"
+    london-radius-ip-addresses-one = "${element(var.radius-ip-addresses, 0)}"
+    london-radius-ip-addresses-two = "${element(var.radius-ip-addresses, 1)}"
+    london-radius-ip-addresses-three = "${element(var.radius-ip-addresses, 2)}"
   }
 }
 

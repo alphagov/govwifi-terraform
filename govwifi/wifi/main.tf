@@ -121,6 +121,8 @@ module "backend" {
   user-db-hostname      = "${var.user-db-hostname}"
   user-db-storage-gb    = 20
   user-rr-hostname      = "${var.user-rr-hostname}"
+  prometheus-IPs        = "${var.prometheus-IPs}"
+
 }
 
 # Emails ======================================================================
@@ -369,4 +371,5 @@ module "govwifi-prometheus" {
   ecs-instance-profile = "${module.frontend.ecs-instance-profile}"
 
   wifi-frontend-subnet = "${module.frontend.wifi-frontend-subnet}"
+  radius-ip-addresses  = "${var.dublin-radius-ip-addresses}"
 }
