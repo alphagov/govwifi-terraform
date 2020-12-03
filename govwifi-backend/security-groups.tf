@@ -116,6 +116,30 @@ resource "aws_security_group" "be-vpn-out" {
   }
 }
 
+
+resource "aws_security_group" "bastion-prometheus" {
+  count       = "${var.create_prometheus_server}"
+  name        = "bastion-prometheus"
+  description = "Allow outbound SSH from bastion to prometheus server"
+  vpc_id      = "${aws_vpc.wifi-backend.id}"
+
+  tags = {
+    Name = "${title(var.Env-Name)} Prometheus Bastion Backend VPN out"
+  }
+
+  egress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+
+    cidr_blocks = [
+      "${var.prometheus-IPs}",
+    ]
+  }
+}
+
+
+
 resource "aws_security_group" "be-radius-api-in" {
   name        = "be-radius-api-in"
   description = "Allow inbound API calls from the RADIUS servers"

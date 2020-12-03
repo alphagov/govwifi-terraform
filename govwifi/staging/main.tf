@@ -333,7 +333,5 @@ module "govwifi-prometheus" {
   fe-radius-in = "${module.frontend.fe-radius-in}"
   fe-radius-out = "${module.frontend.fe-radius-out}"
 
-  ecs-instance-profile = "${module.frontend.ecs-instance-profile}"
-
   wifi-frontend-subnet = "${module.frontend.wifi-frontend-subnet}"
 }

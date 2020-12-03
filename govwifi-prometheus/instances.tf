@@ -77,6 +77,7 @@ resource "aws_ebs_volume" "prometheus_ebs" {
 }
 
 resource "aws_volume_attachment" "prometheus_ebs_attach" {
+  count       = "${var.create_prometheus_server}"
   depends_on  = ["aws_ebs_volume.prometheus_ebs"]
   device_name = "/dev/xvdp"
   volume_id   = "${aws_ebs_volume.prometheus_ebs.id}"
@@ -84,6 +85,7 @@ resource "aws_volume_attachment" "prometheus_ebs_attach" {
 }
 
 resource "aws_eip_association" "prometheus_eip_assoc" {
+  count         = "${var.create_prometheus_server}"
   depends_on    = ["aws_instance.prometheus_instance"]
   instance_id   = "${aws_instance.prometheus_instance.id}"
   public_ip     = "${var.prometheus_eip}"
