@@ -417,5 +417,5 @@ module "govwifi-prometheus" {
   fe-radius-out = "${module.frontend.fe-radius-out}"
 
   wifi-frontend-subnet = "${module.frontend.wifi-frontend-subnet}"
-  london-radius-ip-addresses = "${var.london-radius-ip-addresses}"
+  radius-ip-addresses = "${var.london-radius-ip-addresses}"
 }
