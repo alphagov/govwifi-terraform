@@ -87,10 +87,12 @@ resource "aws_security_group" "be-vpn-in" {
   }
 
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["${split(",", var.administrator-IPs)}"]
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+
+    # Temporarily add ITHC IPs. Remove when ITHC complete.
+    cidr_blocks = ["${split(",", var.administrator-IPs)}", "3.10.4.0/24", "90.155.48.192/26"]
   }
 }
 
