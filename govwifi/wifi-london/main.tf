@@ -187,6 +187,8 @@ module "frontend" {
     "${split(",", var.bastion-server-IP)}",
     "${split(",", var.backend-subnet-IPs)}",
   ]
+
+  prometheus-IPs = "${var.prometheus-IPs}"
 }
 
 module "govwifi-admin" {

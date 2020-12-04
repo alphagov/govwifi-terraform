@@ -219,5 +219,3 @@ variable "devops-notification-email" {
 }
 
 variable "prometheus-IPs" {}
-
-variable "radius-ip-addresses" {} 
