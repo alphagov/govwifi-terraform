@@ -399,6 +399,12 @@ module "govwifi-dashboard" {
   Env-Name = "${var.Env-Name}"
 }
 
+/*
+We are only configuring a Prometheus server in London for now.
+The server will scrape metrics from the agents configured in both regions.
+The module `govwifi-prometheus` only needs to exist in
+govwifi/staging-london/main.tf and govwifi/wifi-london/main.tf.
+*/
 module "govwifi-prometheus" {
   providers = {
     "aws" = "aws.AWS-main"
@@ -417,5 +423,10 @@ module "govwifi-prometheus" {
   fe-radius-out = "${module.frontend.fe-radius-out}"
 
   wifi-frontend-subnet = "${module.frontend.wifi-frontend-subnet}"
-  radius-ip-addresses = "${var.london-radius-ip-addresses}"
+  london-radius-ip-addresses = "${var.london-radius-ip-addresses}"
+  dublin-radius-ip-addresses = "${var.dublin-radius-ip-addresses}"
+
+  # Feature toggle creating Prometheus server.
+  # Value defaults to 0 and should only be enabled (i.e., value = 1) in staging-london
+  # create_prometheus_server = 1
 }

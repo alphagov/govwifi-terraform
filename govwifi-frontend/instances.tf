@@ -12,6 +12,7 @@ resource "aws_instance" "radius" {
     "${aws_security_group.fe-admin-in.id}",
     "${aws_security_group.fe-radius-out.id}",
     "${aws_security_group.fe-radius-in.id}",
+    "${aws_security_group.fe-prometheus-in.id}"
   ]
 
   iam_instance_profile = "${aws_iam_instance_profile.ecs-instance-profile.id}"

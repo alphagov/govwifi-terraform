@@ -172,7 +172,9 @@ module "frontend" {
   zone-names      = "${var.zone-names}"
   rack-env        = "staging"
 
-  zone-subnets = {
+  london-cidr-block = "10.102.0.0/16"
+
+zone-subnets = {
     zone0 = "10.101.1.0/24"
     zone1 = "10.101.2.0/24"
     zone2 = "10.101.3.0/24"
@@ -318,23 +320,3 @@ module "route53-notifications" {
   emails     = ["${var.notification-email}"]
 }
 
-module "govwifi-prometheus" {
-  providers = {
-    "aws" = "aws.AWS-main"
-  }
-
-  source = "../../govwifi-prometheus"
-  Env-Name = "${var.Env-Name}"
-
-  ssh-key-name = "${var.ssh-key-name}"
-
-  frontend-vpc-id = "${module.frontend.frontend-vpc-id}"
-
-  fe-admin-in = "${module.frontend.fe-admin-in}"
-  fe-ecs-out = "${module.frontend.fe-ecs-out}"
-  fe-radius-in = "${module.frontend.fe-radius-in}"
-  fe-radius-out = "${module.frontend.fe-radius-out}"
-
-  wifi-frontend-subnet = "${module.frontend.wifi-frontend-subnet}"
-  radius-ip-addresses  = "${var.dublin-radius-ip-addresses}"
-}

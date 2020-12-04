@@ -35,6 +35,7 @@ apply_task: check-env
 apply: check-env unencrypt-secrets apply_task delete-secrets ## Run terraform apply after decrypting secrets. Must run in form make <env> apply
 .PHONY: terraform
 terraform_task: check-env
+# if running a targeted terraform plan/apply, remove `delete-secrets` command from the list
 terraform: check-env unencrypt-secrets delete-secrets
 	scripts/run-terraform.sh ${terraform_cmd}
 destroy_task: check-env

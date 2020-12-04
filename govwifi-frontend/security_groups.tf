@@ -51,6 +51,23 @@ resource "aws_security_group" "fe-admin-in" {
   }
 }
 
+resource "aws_security_group" "fe-prometheus-in" {
+  name        = "fe-admin-in"
+  description = "Allow inbound traffic from Prometheus server"
+  vpc_id      = "${aws_vpc.wifi-frontend.id}"
+
+  tags = {
+    Name = "${title(var.Env-Name)} Frontend Prometheus in"
+  }
+
+  ingress {
+    from_port   = 9812
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["${var.prometheus-IPs}"]
+  }
+}
+
 # API access from the RADIUS servers
 
 resource "aws_security_group" "fe-radius-out" {

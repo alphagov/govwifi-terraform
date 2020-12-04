@@ -10,4 +10,4 @@ rule_files:
 scrape_configs:
   - job_name: prometheus
     static_configs:
-      - targets: ['localhost:9090','${london-radius-ip-addresses-one}:9812','${london-radius-ip-addresses-two}:9812','${london-radius-ip-addresses-three}:9812']
+      - targets: ['localhost:9090','${london-radius-ip-addresses-one}:9812','${london-radius-ip-addresses-two}:9812','${london-radius-ip-addresses-three}:9812', '${dublin-radius-ip-addresses-one}:9812','${dublin-radius-ip-addresses-two}:9812','${dublin-radius-ip-addresses-three}:9812' ]

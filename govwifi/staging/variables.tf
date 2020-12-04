@@ -145,8 +145,3 @@ variable "auth-sentry-dsn" {
 variable "notification-email" {}
 
 variable "prometheus-IPs" {}
-
-variable "radius-ip-addresses" {}
-
-variable "dublin-radius-ip-addresses" {
-}

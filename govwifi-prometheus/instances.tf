@@ -28,9 +28,12 @@ data "template_file" "prometheus_config" {
   template = "${file("${path.module}/prometheus.yml")}"
 
   vars = {
-    london-radius-ip-addresses-one = "${element(var.radius-ip-addresses, 0)}"
-    london-radius-ip-addresses-two = "${element(var.radius-ip-addresses, 1)}"
-    london-radius-ip-addresses-three = "${element(var.radius-ip-addresses, 2)}"
+    london-radius-ip-addresses-one = "${element(var.london-radius-ip-addresses, 0)}"
+    london-radius-ip-addresses-two = "${element(var.london-radius-ip-addresses, 1)}"
+    london-radius-ip-addresses-three = "${element(var.london-radius-ip-addresses, 2)}"
+    dublin-radius-ip-addresses-one = "${element(var.dublin-radius-ip-addresses, 0)}"
+    dublin-radius-ip-addresses-two = "${element(var.dublin-radius-ip-addresses, 1)}"
+    dublin-radius-ip-addresses-three = "${element(var.dublin-radius-ip-addresses, 2)}"
   }
 }
 
@@ -52,7 +55,7 @@ resource "aws_instance" "prometheus_instance" {
   ]
 
   tags = {
-    Name = "${title(var.Env-Name)} Prometheus-Server" // previously had ${var.dns-numbering-base} but I don't think we need this
+    Name = "${title(var.Env-Name)} Prometheus-Server"
     Env  = "${title(var.Env-Name)}"
   }
 

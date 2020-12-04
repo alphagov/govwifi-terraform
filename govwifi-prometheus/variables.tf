@@ -47,3 +47,13 @@ variable "radius-ip-addresses" {
 variable "create_prometheus_server" {
   default = 0
 }
+
+variable "london-radius-ip-addresses" {
+  type = "list"
+  default = []
+}
+
+variable "dublin-radius-ip-addresses" {
+  type = "list"
+  default = []
+}
