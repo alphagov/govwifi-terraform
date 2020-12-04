@@ -94,10 +94,3 @@ variable "prometheus-IPs" {
   type    = "string"
   default = ""
 }
-
-variable "london-cidr-block" {
-  description = "This is needed so the Ireland ECS cluster can accept requests from the London Prometheus server"
-  type        = "string"
-  default     = ""
-
-}

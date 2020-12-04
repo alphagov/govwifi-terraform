@@ -409,7 +409,7 @@ module "govwifi-prometheus" {
 
   wifi-frontend-subnet = "${module.frontend.wifi-frontend-subnet}"
   london-radius-ip-addresses = "${var.london-radius-ip-addresses}"
-  dublin-radius-ip-addresses = "${var.london-radius-ip-addresses}"
+  dublin-radius-ip-addresses = "${var.dublin-radius-ip-addresses}"
 
   # Feature toggle creating Prometheus server.
   # Value defaults to 0 and is only enabled (i.e., value = 1) in staging-london

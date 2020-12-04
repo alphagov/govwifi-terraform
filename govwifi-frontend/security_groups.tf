@@ -51,9 +51,11 @@ resource "aws_security_group" "fe-admin-in" {
   }
 }
 
+# Traffic from Prometheus server in London
+
 resource "aws_security_group" "fe-prometheus-in" {
-  name        = "fe-admin-in"
-  description = "Allow inbound traffic from Prometheus server"
+  name        = "fe-prometheus-in"
+  description = "Allow inbound traffic from Prometheus server in London"
   vpc_id      = "${aws_vpc.wifi-frontend.id}"
 
   tags = {
@@ -62,7 +64,7 @@ resource "aws_security_group" "fe-prometheus-in" {
 
   ingress {
     from_port   = 9812
-    to_port     = 22
+    to_port     = 9812
     protocol    = "tcp"
     cidr_blocks = ["${var.prometheus-IPs}"]
   }

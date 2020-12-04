@@ -172,8 +172,6 @@ module "frontend" {
   zone-names      = "${var.zone-names}"
   rack-env        = "staging"
 
-  london-cidr-block = "10.102.0.0/16"
-
 zone-subnets = {
     zone0 = "10.101.1.0/24"
     zone1 = "10.101.2.0/24"
@@ -218,6 +216,8 @@ zone-subnets = {
   bastion-ips = [
     "${var.bastion-server-IP}",
   ]
+
+  prometheus-IPs = "${var.prometheus-IPs}"
 }
 
 module "api" {
