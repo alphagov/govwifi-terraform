@@ -119,7 +119,6 @@ module "backend" {
   user-db-instance-type = ""
   user-db-storage-gb    = 0
   prometheus-IPs        = "${var.prometheus-IPs}"
-
 }
 
 # Emails ======================================================================
@@ -172,7 +171,7 @@ module "frontend" {
   zone-names      = "${var.zone-names}"
   rack-env        = "staging"
 
-zone-subnets = {
+  zone-subnets = {
     zone0 = "10.101.1.0/24"
     zone1 = "10.101.2.0/24"
     zone2 = "10.101.3.0/24"
@@ -319,4 +318,3 @@ module "route53-notifications" {
   topic-name = "govwifi-staging"
   emails     = ["${var.notification-email}"]
 }
-

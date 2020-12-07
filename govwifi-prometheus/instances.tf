@@ -18,9 +18,9 @@ data "template_file" "prometheus_user_data" {
   template = "${file("${path.module}/user_data.sh")}"
 
   vars = {
-     data_volume_size           = "${var.prometheus_volume_size}"
-     prometheus-log-group       = "${var.Env-Name}-prometheus-log-group"
-     prometheus_config          = "${data.template_file.prometheus_config.rendered}"
+    data_volume_size     = "${var.prometheus_volume_size}"
+    prometheus-log-group = "${var.Env-Name}-prometheus-log-group"
+    prometheus_config    = "${data.template_file.prometheus_config.rendered}"
   }
 }
 
@@ -28,11 +28,11 @@ data "template_file" "prometheus_config" {
   template = "${file("${path.module}/prometheus.yml")}"
 
   vars = {
-    london-radius-ip-addresses-one = "${element(var.london-radius-ip-addresses, 0)}"
-    london-radius-ip-addresses-two = "${element(var.london-radius-ip-addresses, 1)}"
+    london-radius-ip-addresses-one   = "${element(var.london-radius-ip-addresses, 0)}"
+    london-radius-ip-addresses-two   = "${element(var.london-radius-ip-addresses, 1)}"
     london-radius-ip-addresses-three = "${element(var.london-radius-ip-addresses, 2)}"
-    dublin-radius-ip-addresses-one = "${element(var.dublin-radius-ip-addresses, 0)}"
-    dublin-radius-ip-addresses-two = "${element(var.dublin-radius-ip-addresses, 1)}"
+    dublin-radius-ip-addresses-one   = "${element(var.dublin-radius-ip-addresses, 0)}"
+    dublin-radius-ip-addresses-two   = "${element(var.dublin-radius-ip-addresses, 1)}"
     dublin-radius-ip-addresses-three = "${element(var.dublin-radius-ip-addresses, 2)}"
   }
 }
@@ -69,10 +69,10 @@ resource "aws_instance" "prometheus_instance" {
 }
 
 resource "aws_ebs_volume" "prometheus_ebs" {
-  count     = "${var.create_prometheus_server}"
-  size      = 40
-  encrypted = true
-  availability_zone       = "${var.aws-region}"
+  count             = "${var.create_prometheus_server}"
+  size              = 40
+  encrypted         = true
+  availability_zone = "${var.aws-region}"
 
   tags = {
     Name = "Prometheus volume"
@@ -88,8 +88,8 @@ resource "aws_volume_attachment" "prometheus_ebs_attach" {
 }
 
 resource "aws_eip_association" "prometheus_eip_assoc" {
-  count         = "${var.create_prometheus_server}"
-  depends_on    = ["aws_instance.prometheus_instance"]
-  instance_id   = "${aws_instance.prometheus_instance.id}"
-  public_ip     = "${var.prometheus_eip}"
+  count       = "${var.create_prometheus_server}"
+  depends_on  = ["aws_instance.prometheus_instance"]
+  instance_id = "${aws_instance.prometheus_instance.id}"
+  public_ip   = "${var.prometheus_eip}"
 }

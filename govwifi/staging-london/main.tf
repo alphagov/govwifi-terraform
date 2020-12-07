@@ -395,19 +395,19 @@ module "govwifi-prometheus" {
     "aws" = "aws.AWS-main"
   }
 
-  source = "../../govwifi-prometheus"
+  source   = "../../govwifi-prometheus"
   Env-Name = "${var.Env-Name}"
 
   ssh-key-name = "${var.ssh-key-name}"
 
   frontend-vpc-id = "${module.frontend.frontend-vpc-id}"
 
-  fe-admin-in = "${module.frontend.fe-admin-in}"
-  fe-ecs-out = "${module.frontend.fe-ecs-out}"
-  fe-radius-in = "${module.frontend.fe-radius-in}"
+  fe-admin-in   = "${module.frontend.fe-admin-in}"
+  fe-ecs-out    = "${module.frontend.fe-ecs-out}"
+  fe-radius-in  = "${module.frontend.fe-radius-in}"
   fe-radius-out = "${module.frontend.fe-radius-out}"
 
-  wifi-frontend-subnet = "${module.frontend.wifi-frontend-subnet}"
+  wifi-frontend-subnet       = "${module.frontend.wifi-frontend-subnet}"
   london-radius-ip-addresses = "${var.london-radius-ip-addresses}"
   dublin-radius-ip-addresses = "${var.dublin-radius-ip-addresses}"
 

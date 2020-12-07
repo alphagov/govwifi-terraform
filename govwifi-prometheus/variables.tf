@@ -17,7 +17,7 @@ variable "prometheus_volume_size" {
 }
 
 variable "prometheus_eip" {
-    default = "18.135.11.32"
+  default = "18.135.11.32"
 }
 
 variable "frontend-vpc-id" {}
@@ -37,7 +37,7 @@ variable "wifi-frontend-subnet" {
 }
 
 variable "radius-ip-addresses" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
@@ -49,11 +49,11 @@ variable "create_prometheus_server" {
 }
 
 variable "london-radius-ip-addresses" {
-  type = "list"
+  type    = "list"
   default = []
 }
 
 variable "dublin-radius-ip-addresses" {
-  type = "list"
+  type    = "list"
   default = []
 }
