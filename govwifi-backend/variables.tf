@@ -120,5 +120,4 @@ variable "user-replica-source-db" {
   default = ""
 }
 
-variable "prometheus-IPs" {
-}
+variable "prometheus-IPs" {}

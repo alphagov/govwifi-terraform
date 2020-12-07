@@ -91,5 +91,5 @@ variable "admin-bucket-name" {
 }
 
 variable "prometheus-IPs" {
-  type    = "string"
+  type = "string"
 }
