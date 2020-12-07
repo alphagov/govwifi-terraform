@@ -122,7 +122,6 @@ module "backend" {
   user-db-storage-gb    = 20
   user-rr-hostname      = "${var.user-rr-hostname}"
   prometheus-IPs        = "${var.prometheus-IPs}"
-
 }
 
 # Emails ======================================================================
