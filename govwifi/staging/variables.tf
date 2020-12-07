@@ -143,3 +143,5 @@ variable "auth-sentry-dsn" {
 }
 
 variable "notification-email" {}
+
+variable "prometheus-IPs" {}

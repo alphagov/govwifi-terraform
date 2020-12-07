@@ -121,6 +121,7 @@ module "backend" {
   user-db-hostname      = "${var.user-db-hostname}"
   user-db-storage-gb    = 20
   user-rr-hostname      = "${var.user-rr-hostname}"
+  prometheus-IPs        = "${var.prometheus-IPs}"
 }
 
 # Emails ======================================================================
@@ -232,6 +233,8 @@ module "frontend" {
     "${split(",", var.bastion-server-IP)}",
     "${split(",", var.backend-subnet-IPs)}",
   ]
+
+  prometheus-IPs = "${var.prometheus-IPs}"
 }
 
 module "api" {

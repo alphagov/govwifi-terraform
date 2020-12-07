@@ -116,6 +116,7 @@ module "backend" {
   # Whether or not to save Performance Platform backup data
   save-pp-data   = 1
   pp-domain-name = "www.performance.service.gov.uk"
+  prometheus-IPs = "${var.prometheus-IPs}"
 }
 
 # London Frontend ==================================================================
@@ -187,6 +188,8 @@ module "frontend" {
     "${var.bastion-server-IP}",
     "${split(",", var.backend-subnet-IPs)}",
   ]
+
+  prometheus-IPs = "${var.prometheus-IPs}"
 }
 
 module "govwifi-admin" {
@@ -379,4 +382,36 @@ module "govwifi-dashboard" {
 
   source   = "../../govwifi-dashboard"
   Env-Name = "${var.Env-Name}"
+}
+
+/*
+We are only configuring a Prometheus server in London for now.
+The server will scrape metrics from the agents configured in both regions.
+The module `govwifi-prometheus` only needs to exist in
+govwifi/staging-london/main.tf and govwifi/wifi-london/main.tf.
+*/
+module "govwifi-prometheus" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source   = "../../govwifi-prometheus"
+  Env-Name = "${var.Env-Name}"
+
+  ssh-key-name = "${var.ssh-key-name}"
+
+  frontend-vpc-id = "${module.frontend.frontend-vpc-id}"
+
+  fe-admin-in   = "${module.frontend.fe-admin-in}"
+  fe-ecs-out    = "${module.frontend.fe-ecs-out}"
+  fe-radius-in  = "${module.frontend.fe-radius-in}"
+  fe-radius-out = "${module.frontend.fe-radius-out}"
+
+  wifi-frontend-subnet       = "${module.frontend.wifi-frontend-subnet}"
+  london-radius-ip-addresses = "${var.london-radius-ip-addresses}"
+  dublin-radius-ip-addresses = "${var.dublin-radius-ip-addresses}"
+
+  # Feature toggle creating Prometheus server.
+  # Value defaults to 0 and is only enabled (i.e., value = 1) in staging-london
+  create_prometheus_server = 1
 }
