@@ -93,3 +93,12 @@ variable "admin-bucket-name" {
 variable "prometheus-IPs" {
   type = "string"
 }
+
+variable "london-radius-ip-addresses" {
+  type    = "string"
+  default = ""
+}
+variable "dublin-radius-ip-addresses" {
+  type = "string"
+  default = ""
+}

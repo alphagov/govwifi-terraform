@@ -104,6 +104,14 @@ resource "aws_security_group" "fe-radius-out" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  egress {
+    from_port   = 9812
+    to_port     = 9812
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow outbound data to Prometheus server"
+  }
 }
 
 # RADIUS traffic to the RADIUS servers
@@ -147,6 +155,17 @@ resource "aws_security_group" "fe-radius-in" {
     to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = ["${data.aws_ip_ranges.route53_healthcheck.cidr_blocks}"]
+  }
+
+  ingress {
+    description = "Allow FreeRadius Log Exporter in"
+    from_port   = 9812
+    to_port     = 9812
+    protocol    = "tcp"
+    cidr_blocks = [
+      "${split(",", var.london-radius-ip-addresses)}",
+      "${split(",", var.dublin-radius-ip-addresses)}",
+    ]
   }
 }
 
