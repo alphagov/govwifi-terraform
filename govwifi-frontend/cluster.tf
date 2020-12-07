@@ -52,6 +52,11 @@ resource "aws_ecs_task_definition" "radius-task" {
         "hostPort": 1813,
         "containerPort": 1813,
         "protocol": "udp"
+      },
+      {
+        "hostPort": 9812,
+        "containerPort": 9812,
+        "protocol": "tcp"
       }
     ],
     "essential": true,
