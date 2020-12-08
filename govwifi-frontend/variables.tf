@@ -93,3 +93,8 @@ variable "admin-bucket-name" {
 variable "prometheus-IPs" {
   type = "string"
 }
+
+variable "radius-CIDR-blocks" {
+  description = "IP addresses for the London and Ireland Radius instances in CIDR block format"
+  type        = "list"
+}

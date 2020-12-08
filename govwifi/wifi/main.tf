@@ -235,6 +235,10 @@ module "frontend" {
   ]
 
   prometheus-IPs = "${var.prometheus-IPs}"
+
+  radius-CIDR-blocks = [
+    "${split(",", var.frontend-radius-IPs)}",
+  ]
 }
 
 module "api" {
