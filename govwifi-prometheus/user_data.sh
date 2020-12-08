@@ -59,6 +59,9 @@ systemctl enable --now docker
 # Install Prometheus
 echo 'Installing prometheus'
 run-until-success apt-get install --yes prometheus
+service prometheus stop
+chown prometheus:prometheus /srv/prometheus/metrics2
+prometheus --storage.tsdb.path=/srv/prometheus/metrics2
 
 ## Install Prometheus Node exporter
 echo 'Installing prometheus node exporter'
