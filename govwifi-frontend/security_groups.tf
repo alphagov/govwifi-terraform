@@ -162,9 +162,9 @@ resource "aws_security_group" "fe-radius-in" {
     from_port   = 9812
     to_port     = 9812
     protocol    = "tcp"
+
     cidr_blocks = [
-      "${split(",", var.london-radius-ip-addresses)}",
-      "${split(",", var.dublin-radius-ip-addresses)}",
+      "${var.radius-CIDR-blocks}",
     ]
   }
 }
