@@ -94,6 +94,15 @@ systemctl enable --now docker
 # Install Prometheus
 echo 'Installing prometheus'
 run-until-success apt-get install --yes prometheus
+
+## Configure Prometheus scrape points
+## This overwrites the existing prometheus configuration
+echo 'Overwriting default Prometheus scraping configuation'
+cat << EOF > /etc/prometheus/prometheus.yml
+ ${prometheus_config}
+EOF
+
+## Configure Prometheus to write to EBS volume
 service prometheus stop
 chown prometheus:prometheus /srv/prometheus/metrics2
 prometheus --storage.tsdb.path=/srv/prometheus/metrics2
@@ -114,12 +123,6 @@ EOF
 systemctl daemon-reload
 systemctl enable prometheus-node-exporter
 systemctl restart prometheus-node-exporter
-
-## Configure Prometheus scrape points
-## This overwrites the existing prometheus configuration
-cat << EOF > /etc/prometheus/prometheus.yml
- ${prometheus_config}
-EOF
 
 echo 'Installing awscli'
 run-until-success apt-get install --yes awscli
