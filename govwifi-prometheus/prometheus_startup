@@ -1,0 +1,9 @@
+[Unit]
+Description=Starts prometheus with the options needed by govwifi
+Documentation=https://github.com/alphagov/govwifi-terraform/blob/master/README.md
+
+[Service]
+Restart=always
+User=prometheus
+ExecStart=/usr/bin/prometheus --storage.tsdb.path=/srv/prometheus/metrics2
+TimeoutStopSec=20s
