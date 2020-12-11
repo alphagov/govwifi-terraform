@@ -21,7 +21,7 @@ data "template_file" "prometheus_user_data" {
     data_volume_size     = "${var.prometheus_volume_size}"
     prometheus-log-group = "${var.Env-Name}-prometheus-log-group"
     prometheus_config    = "${data.template_file.prometheus_config.rendered}"
-    prometheus_startup   = "${data.template_file.prometheus_startup}"
+    prometheus_startup   = "${data.template_file.prometheus_startup.rendered}"
   }
 }
 
@@ -39,7 +39,7 @@ data "template_file" "prometheus_config" {
 }
 
 data "template_file" "prometheus_startup" {
-  template = "${file("${path.module}/prometheus_startup")}"
+  template = "${file("${path.module}/prometheus-govwifi")}"
 }
 
 # The element() function used in subnets wraps around when the index is over the number of elements

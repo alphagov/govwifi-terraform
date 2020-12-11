@@ -105,6 +105,7 @@ run-until-success apt-get install --yes prometheus
 systemctl disable prometheus
 # Run prometheus with the EBS volume configuration
 systemctl enable prometheus-govwifi
+systemctl start prometheus-govwifi
 
 ## Configure Prometheus scrape points
 ## This overwrites the existing prometheus configuration
