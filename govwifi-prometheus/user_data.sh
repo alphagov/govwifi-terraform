@@ -108,13 +108,6 @@ run-until-success apt-get install --yes prometheus
 ## Configure Prometheus to write to EBS volume
 chown -R prometheus:prometheus /srv/prometheus/metrics2
 
-
-# Run prometheus with the EBS volume configuration
-service prometheus stop
-service prometheus disable
-systemctl enable prometheus-govwifi
-systemctl start prometheus-govwifi
-
 ## Configure Prometheus scrape points
 ## This overwrites the existing prometheus configuration
 echo 'Overwriting default Prometheus scraping configuation'
@@ -165,5 +158,14 @@ crontab - <<EOF
 $(crontab -l | grep -v 'no crontab')
 */5 * * * * /usr/bin/instance-reboot-required-metric.sh | sponge /var/lib/prometheus/node-exporter/reboot-required.prom
 EOF
+
+# Run prometheus with the EBS volume configuration
+echo 'Stop Out of Box Prometheus'
+service prometheus stop
+systemctl disable prometheus
+echo 'Enable Prometheus-Govwifi'
+systemctl enable --now prometheus-govwifi
+systemctl start prometheus-govwifi
+
 
 reboot
