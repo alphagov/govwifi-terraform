@@ -91,6 +91,14 @@ systemctl stop docker
 systemctl daemon-reload
 systemctl enable --now docker
 
+# Configure systemd to write prometheus data to the EBS volume on start up.
+# This script will start prometheus automatically with the correct storage location,
+# even if the instance is rebooted or the service crashes.
+echo 'Configuring Prometheus start up script'
+cat << EOF > /etc/systemd/system/prometheus_startup.service
+ ${prometheus_config}
+EOF
+
 # Install Prometheus
 echo 'Installing prometheus'
 run-until-success apt-get install --yes prometheus
@@ -99,7 +107,7 @@ run-until-success apt-get install --yes prometheus
 ## This overwrites the existing prometheus configuration
 echo 'Overwriting default Prometheus scraping configuation'
 cat << EOF > /etc/prometheus/prometheus.yml
- ${prometheus_config}
+ ${prometheus_startup}
 EOF
 
 ## Configure Prometheus to write to EBS volume
