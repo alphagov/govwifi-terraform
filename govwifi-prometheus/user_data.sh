@@ -102,8 +102,14 @@ EOF
 # Install Prometheus
 echo 'Installing prometheus'
 run-until-success apt-get install --yes prometheus
-systemctl disable prometheus
+
+## Configure Prometheus to write to EBS volume
+chown -R prometheus:prometheus /srv/prometheus/metrics2
+
+
 # Run prometheus with the EBS volume configuration
+service prometheus stop
+service prometheus disable
 systemctl enable prometheus-govwifi
 systemctl start prometheus-govwifi
 
@@ -113,11 +119,6 @@ echo 'Overwriting default Prometheus scraping configuation'
 cat << EOF > /etc/prometheus/prometheus.yml
  ${prometheus_config}
 EOF
-
-## Configure Prometheus to write to EBS volume
-service prometheus stop
-chown prometheus:prometheus /srv/prometheus/metrics2
-prometheus --storage.tsdb.path=/srv/prometheus/metrics2
 
 ## Install Prometheus Node exporter
 echo 'Installing prometheus node exporter'
