@@ -98,6 +98,8 @@ echo 'Configuring Prometheus start up script'
 cat << EOF > /etc/systemd/system/prometheus-govwifi.service
  ${prometheus_startup}
 EOF
+# Reload systemctl daemon to pick up new override files
+systemctl daemon-reload
 
 # Install Prometheus
 echo 'Installing prometheus'
