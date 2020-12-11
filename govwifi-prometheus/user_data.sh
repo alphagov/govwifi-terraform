@@ -95,19 +95,22 @@ systemctl enable --now docker
 # This script will start prometheus automatically with the correct storage location,
 # even if the instance is rebooted or the service crashes.
 echo 'Configuring Prometheus start up script'
-cat << EOF > /etc/systemd/system/prometheus_startup.service
- ${prometheus_config}
+cat << EOF > /etc/systemd/system/prometheus-govwifi.service
+ ${prometheus_startup}
 EOF
 
 # Install Prometheus
 echo 'Installing prometheus'
 run-until-success apt-get install --yes prometheus
+systemctl disable prometheus
+# Run prometheus with the EBS volume configuration
+systemctl enable prometheus-govwifi
 
 ## Configure Prometheus scrape points
 ## This overwrites the existing prometheus configuration
 echo 'Overwriting default Prometheus scraping configuation'
 cat << EOF > /etc/prometheus/prometheus.yml
- ${prometheus_startup}
+ ${prometheus_config}
 EOF
 
 ## Configure Prometheus to write to EBS volume
