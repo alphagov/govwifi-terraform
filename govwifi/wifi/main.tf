@@ -121,7 +121,7 @@ module "backend" {
   user-db-hostname      = "${var.user-db-hostname}"
   user-db-storage-gb    = 20
   user-rr-hostname      = "${var.user-rr-hostname}"
-  prometheus-IPs        = "${var.prometheus-IPs}"
+  prometheus-IPs        = "${var.production-prometheus-IPs}/32"
 }
 
 # Emails ======================================================================
@@ -234,7 +234,7 @@ module "frontend" {
     "${split(",", var.backend-subnet-IPs)}",
   ]
 
-  prometheus-IPs = "${var.prometheus-IPs}"
+  prometheus-IPs = "${var.production-prometheus-IPs}/32"
 
   radius-CIDR-blocks = [
     "${split(",", var.frontend-radius-IPs)}",

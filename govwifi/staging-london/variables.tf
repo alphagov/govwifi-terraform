@@ -261,4 +261,4 @@ variable "govnotify-bearer-token" {
 
 variable "notification-email" {}
 
-variable "prometheus-IPs" {}
+variable "staging-prometheus-IPs" {}

@@ -116,7 +116,7 @@ module "backend" {
   # Whether or not to save Performance Platform backup data
   save-pp-data   = 1
   pp-domain-name = "www.performance.service.gov.uk"
-  prometheus-IPs = "${var.prometheus-IPs}"
+  prometheus-IPs = "${var.production-prometheus-IP}/32"
 }
 
 # London Frontend ======DIFFERENT AWS REGION===================================
@@ -187,7 +187,7 @@ module "frontend" {
     "${split(",", var.backend-subnet-IPs)}",
   ]
 
-  prometheus-IPs = "${var.prometheus-IPs}"
+  prometheus-IPs = "${var.production-prometheus-IP}/32"
 
   radius-CIDR-blocks = [
     "${split(",", var.frontend-radius-IPs)}",
@@ -432,6 +432,8 @@ module "govwifi-prometheus" {
   dublin-radius-ip-addresses = "${var.dublin-radius-ip-addresses}"
 
   # Feature toggle creating Prometheus server.
-  # Value defaults to 0 and should only be enabled (i.e., value = 1) in staging-london
-  # create_prometheus_server = 1
+  # Value defaults to 0 and should only be enabled (i.e., value = 1) in staging-london and wifi-london
+  create_prometheus_server = 1
+
+  prometheus-IPs = "${var.production-prometheus-IP}"
 }
