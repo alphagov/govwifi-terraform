@@ -96,5 +96,5 @@ resource "aws_eip_association" "prometheus_eip_assoc" {
   count       = "${var.create_prometheus_server}"
   depends_on  = ["aws_instance.prometheus_instance"]
   instance_id = "${aws_instance.prometheus_instance.id}"
-  public_ip   = "${var.prometheus_eip}"
+  public_ip   = "${var.prometheus-IPs}"
 }

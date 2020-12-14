@@ -118,7 +118,7 @@ module "backend" {
   user-db-hostname      = ""
   user-db-instance-type = ""
   user-db-storage-gb    = 0
-  prometheus-IPs        = "${var.prometheus-IPs}"
+  prometheus-IPs        = "${var.staging-prometheus-IPs}/32"
 }
 
 # Emails ======================================================================
@@ -216,7 +216,7 @@ module "frontend" {
     "${var.bastion-server-IP}",
   ]
 
-  prometheus-IPs = "${var.prometheus-IPs}"
+  prometheus-IPs = "${var.staging-prometheus-IPs}/32"
 
   radius-CIDR-blocks = [
     "${split(",", var.frontend-radius-IPs)}",

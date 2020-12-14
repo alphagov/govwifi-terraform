@@ -16,9 +16,7 @@ variable "prometheus_volume_size" {
   default = "40"
 }
 
-variable "prometheus_eip" {
-  default = "18.135.11.32"
-}
+variable "prometheus-IPs" {}
 
 variable "frontend-vpc-id" {}
 
@@ -42,7 +40,7 @@ variable "radius-ip-addresses" {
 }
 
 # Feature toggle to create (1) or not create (0) Prometheus server
-# Default value is 0, we only want Prometheus enabled in Staging.
+# Default value is 0, we only want Prometheus enabled in Staging and Production (London only).
 # To enable Prometheus, set the value to 1 in the relevant <environment>/main.tf
 variable "create_prometheus_server" {
   default = 0
