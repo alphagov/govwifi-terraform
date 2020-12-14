@@ -11,6 +11,41 @@ function run-until-success() {
   done
 }
 
+## CREATE A VOLUME FOR PROMETHEUS INSTANCE DELETE AND ADD THIS TO TERRAFORM
+echo 'Configuring prometheus EBS'
+vol=""
+while [ -z "$vol" ]; do
+  # adapted from
+  # https://medium.com/@moonape1226/mount-aws-ebs-on-ec2-automatically-with-cloud-init-e5e837e5438a
+  # [Last accessed on 2020-04-02]
+  vol=$(lsblk | grep -e disk | awk '{sub("G","",$4)} {if ($4+0 == ${data_volume_size}) print $1}')
+  echo "still waiting for data volume ; sleeping 5"
+  sleep 5
+done
+mkdir -p /srv/prometheus
+echo "found volume /dev/$vol"
+if [ -z "$(lsblk | grep "$vol" | awk '{print $7}')" ] ; then
+  if [ -z "$(blkid /dev/$vol | grep ext4)" ] ; then
+    echo "volume /dev/$vol is not formatted ; formatting"
+    mkfs -F -t ext4 "/dev/$vol"
+  else
+    echo "volume /dev/$vol is already formatted"
+  fi
+
+  echo "volume /dev/$vol is not mounted ; mounting"
+  mount "/dev/$vol" /srv/prometheus
+  UUID=$(blkid /dev/$vol -s UUID -o value)
+  if [ -z "$(grep $UUID /etc/fstab)" ] ; then
+    echo "writing fstab entry"
+
+    echo "UUID=$UUID /srv/prometheus ext4 defaults,nofail 0 2" >> /etc/fstab
+  fi
+fi
+
+mkdir -p /srv/prometheus/metrics2
+chown -R nobody /srv/prometheus
+
+
 # Apt - Make sure everything is up to date
 run-until-success apt-get update  --yes
 run-until-success apt-get upgrade --yes
@@ -56,9 +91,29 @@ systemctl stop docker
 systemctl daemon-reload
 systemctl enable --now docker
 
+# Configure systemd to write prometheus data to the EBS volume on start up.
+# This script will start prometheus automatically with the correct storage location,
+# even if the instance is rebooted or the service crashes.
+echo 'Configuring Prometheus start up script'
+cat << EOF > /etc/systemd/system/prometheus-govwifi.service
+ ${prometheus_startup}
+EOF
+# Reload systemctl daemon to pick up new override files
+systemctl daemon-reload
+
 # Install Prometheus
 echo 'Installing prometheus'
 run-until-success apt-get install --yes prometheus
+
+## Configure Prometheus to write to EBS volume
+chown -R prometheus:prometheus /srv/prometheus/metrics2
+
+## Configure Prometheus scrape points
+## This overwrites the existing prometheus configuration
+echo 'Overwriting default Prometheus scraping configuation'
+cat << EOF > /etc/prometheus/prometheus.yml
+ ${prometheus_config}
+EOF
 
 ## Install Prometheus Node exporter
 echo 'Installing prometheus node exporter'
@@ -76,55 +131,6 @@ EOF
 systemctl daemon-reload
 systemctl enable prometheus-node-exporter
 systemctl restart prometheus-node-exporter
-
-## Configure Prometheus scrape points
-## This overwrites the existing prometheus configuration
-cat << EOF > /etc/prometheus/prometheus.yml
- ${prometheus_config}
-EOF
-
-## CREATE A VOLUME FOR PROMETHEUS INSTANCE DELETE AND ADD THIS TO TERRAFORM
-echo 'Configuring prometheus EBS'
-vol=""
-while [ -z "$vol" ]; do
-  # adapted from
-  # https://medium.com/@moonape1226/mount-aws-ebs-on-ec2-automatically-with-cloud-init-e5e837e5438a
-  # [Last accessed on 2020-04-02]
-  vol=$(lsblk | grep -e disk | awk '{sub("G","",$4)} {if ($4+0 == ${data_volume_size}) print $1}')
-  echo "still waiting for data volume ; sleeping 5"
-  sleep 5
-done
-mkdir -p /srv/prometheus
-echo "found volume /dev/$vol"
-if [ -z "$(lsblk | grep "$vol" | awk '{print $7}')" ] ; then
-  if [ -z "$(blkid /dev/$vol | grep ext4)" ] ; then
-    echo "volume /dev/$vol is not formatted ; formatting"
-    mkfs -F -t ext4 "/dev/$vol"
-  else
-    echo "volume /dev/$vol is already formatted"
-  fi
-
-  echo "volume /dev/$vol is not mounted ; mounting"
-  mount "/dev/$vol" /srv/prometheus
-  UUID=$(blkid /dev/$vol -s UUID -o value)
-  if [ -z "$(grep $UUID /etc/fstab)" ] ; then
-    echo "writing fstab entry"
-
-    echo "UUID=$UUID /srv/prometheus ext4 defaults,nofail 0 2" >> /etc/fstab
-  fi
-fi
-
-mkdir -p /srv/prometheus/metrics2
-chown -R nobody /srv/prometheus
-
-### END BLOCK TO DELETE
-
-
-
-
-
-
-
 
 echo 'Installing awscli'
 run-until-success apt-get install --yes awscli
@@ -153,12 +159,13 @@ $(crontab -l | grep -v 'no crontab')
 */5 * * * * /usr/bin/instance-reboot-required-metric.sh | sponge /var/lib/prometheus/node-exporter/reboot-required.prom
 EOF
 
-function run-until-success() {
-  until $*
-  do
-    echo "Executing $* failed. Sleeping..."
-    sleep 5
-  done
-}
+# Run prometheus with the EBS volume configuration
+echo 'Stop Out of Box Prometheus'
+service prometheus stop
+systemctl disable prometheus
+echo 'Enable Prometheus-Govwifi'
+systemctl enable --now prometheus-govwifi
+systemctl start prometheus-govwifi
+
 
 reboot
