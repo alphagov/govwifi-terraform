@@ -259,4 +259,4 @@ variable "devops-notification-email" {
   type = "string"
 }
 
-variable "production-prometheus-IP" {}
+variable "production-prometheus-IPs" {}
