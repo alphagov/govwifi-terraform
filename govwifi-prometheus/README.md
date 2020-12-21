@@ -1,4 +1,4 @@
-# Prometheus
+# GovWifi Prometheus
 
 This module creates an EC2 instance with an attached EBS volume. It installs Prometheus, runs a Prometheus server, and saves the scraped metric data to the EBS volume.
 
