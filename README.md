@@ -25,10 +25,11 @@ Our public-facing websites are:
 - A [redirection service](https://github.com/alphagov/govwifi-redirect) to handle "www" requests to these sites
 
 Our services include:
-- [Frontend servers](https://github.com/alphagov/govwifi-frontend), instances of freeRADIUS that act as authentication servers
+- [Frontend servers](https://github.com/alphagov/govwifi-frontend), instances of FreeRADIUS that act as authentication servers and use [FreeRADIUS Prometheus Exporter](https://github.com/bvantagelimited/freeradius_exporter) to measure server stats
 - An [authentication API](https://github.com/alphagov/govwifi-authentication-api), which the frontend calls to help authenticate GovWifi requests
 - A [logging API](https://github.com/alphagov/govwifi-logging-api), which the frontend calls to record each GovWifi request
 - A [user signup API](https://github.com/alphagov/govwifi-user-signup-api), which handles incoming sign-up texts and e-mails (with a little help from AWS)
+- A Prometheus server to scrape metrics from the FreeRADIUS Prometheus Exporters which exposes FreeRADIUS server data
 
 We manage our infrastructure via:
 - Terraform, split across this repository and [govwifi-terraform](https://github.com/alphagov/govwifi-terraform)
