@@ -28,7 +28,7 @@ resource "aws_cloudwatch_metric_alarm" "radius-latency" {
   evaluation_periods  = "1"
   metric_name         = "TimeToFirstByte"
   namespace           = "AWS/Route53"
-  period              = "60"
+  period              = "120"
   statistic           = "Average"
   threshold           = "1000"
 
