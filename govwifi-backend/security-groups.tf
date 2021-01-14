@@ -92,7 +92,7 @@ resource "aws_security_group" "be-vpn-in" {
     protocol  = "tcp"
 
     # Temporarily add ITHC IPs. Remove when ITHC complete.
-    cidr_blocks = ["${split(",", var.administrator-IPs)}", "3.10.4.0/24", "90.155.48.192/26"]
+    cidr_blocks = ["${split(",", var.administrator-IPs)}"]
   }
 }
 
