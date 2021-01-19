@@ -364,9 +364,9 @@ module "govwifi-prometheus" {
     "aws" = "aws.AWS-main"
   }
 
-  source   = "../../govwifi-prometheus"
-  Env-Name = "${var.Env-Name}"
-  aws-region   = "${var.aws-region}"
+  source     = "../../govwifi-prometheus"
+  Env-Name   = "${var.Env-Name}"
+  aws-region = "${var.aws-region}"
 
   ssh-key-name = "${var.ssh-key-name}"
 

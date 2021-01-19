@@ -389,19 +389,21 @@ module "govwifi-dashboard" {
 }
 
 /*
-We are only configuring a Prometheus server in London for now.
+We are only configuring a Prometheus server in Staging London for now, although
+in production the instance is available in both regions.
 The server will scrape metrics from the agents configured in both regions.
-The module `govwifi-prometheus` only needs to exist in
-govwifi/staging-london/main.tf and govwifi/wifi-london/main.tf.
+There are some problems with the Staging Bastion instance that is preventing
+us from mirroring the setup in Production in Staging. This will be rectified
+when we create a separate staging environment.
 */
 module "govwifi-prometheus" {
   providers = {
     "aws" = "aws.AWS-main"
   }
 
-  source   = "../../govwifi-prometheus"
-  Env-Name = "${var.Env-Name}"
-  aws-region   = "${var.aws-region}"
+  source     = "../../govwifi-prometheus"
+  Env-Name   = "${var.Env-Name}"
+  aws-region = "${var.aws-region}"
 
   ssh-key-name = "${var.ssh-key-name}"
 

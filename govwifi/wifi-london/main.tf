@@ -114,8 +114,8 @@ module "backend" {
   user-db-storage-gb    = 1000
   user-db-replica-count = 1
   # Whether or not to save Performance Platform backup data
-  save-pp-data   = 1
-  pp-domain-name = "www.performance.service.gov.uk"
+  save-pp-data          = 1
+  pp-domain-name        = "www.performance.service.gov.uk"
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 }
