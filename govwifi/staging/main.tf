@@ -328,8 +328,9 @@ module "govwifi-prometheus" {
     "aws" = "aws.AWS-main"
   }
 
-  source   = "../../govwifi-prometheus"
-  Env-Name = "${var.Env-Name}"
+  source       = "../../govwifi-prometheus"
+  Env-Name     = "${var.Env-Name}"
+  aws-region   = "${var.aws-region}"
 
   ssh-key-name = "${var.ssh-key-name}"
 
@@ -346,7 +347,7 @@ module "govwifi-prometheus" {
 
   # Feature toggle creating Prometheus server.
   # Value defaults to 0 and should only be enabled (i.e., value = 1)
-  create_prometheus_server = 1
+  create_prometheus_server = 0
 
   prometheus-IPs = "${var.staging-prometheus-IPs}"
 }

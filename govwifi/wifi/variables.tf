@@ -155,6 +155,16 @@ variable "performance-bearer-unique-users" {
   description = "Bearer token for `unique-users` Performance platform statistics"
 }
 
+variable "london-radius-ip-addresses" {
+  type        = "list"
+  description = "Frontend RADIUS server IP addresses - London"
+}
+
+variable "dublin-radius-ip-addresses" {
+  type        = "list"
+  description = "Frontend RADIUS server IP addresses - Dublin"
+}
+
 variable "auth-sentry-dsn" {
   type = "string"
 }
@@ -219,3 +229,7 @@ variable "devops-notification-email" {
 }
 
 variable "production-prometheus-IPs" {}
+
+variable "prometheus-IP-london" {}
+
+variable "prometheus-IP-ireland" {}

@@ -98,3 +98,7 @@ variable "radius-CIDR-blocks" {
   description = "IP addresses for the London and Ireland Radius instances in CIDR block format"
   type        = "list"
 }
+
+variable "prometheus-IP-london" {}
+
+variable "prometheus-IP-ireland" {}

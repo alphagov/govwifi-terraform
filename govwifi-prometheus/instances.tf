@@ -77,7 +77,7 @@ resource "aws_ebs_volume" "prometheus_ebs" {
   count             = "${var.create_prometheus_server}"
   size              = 40
   encrypted         = true
-  availability_zone = "${var.aws-region}"
+  availability_zone = "${var.aws-region}a"
 
   tags = {
     Name = "Prometheus volume"

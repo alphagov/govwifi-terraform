@@ -260,3 +260,7 @@ variable "devops-notification-email" {
 }
 
 variable "production-prometheus-IPs" {}
+
+variable "prometheus-IP-london" {}
+
+variable "prometheus-IP-ireland" {}

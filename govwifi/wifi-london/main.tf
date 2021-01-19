@@ -116,7 +116,8 @@ module "backend" {
   # Whether or not to save Performance Platform backup data
   save-pp-data   = 1
   pp-domain-name = "www.performance.service.gov.uk"
-  prometheus-IPs = "${var.production-prometheus-IPs}/32"
+  prometheus-IP-london  = "${var.prometheus-IP-london}/32"
+  prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 }
 
 # London Frontend ======DIFFERENT AWS REGION===================================
