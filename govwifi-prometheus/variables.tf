@@ -1,8 +1,6 @@
 variable "Env-Name" {}
 
-variable "aws-region" {
-  default = "eu-west-2a"
-}
+variable "aws-region" {}
 
 variable "zone-subnets" {
   default = {

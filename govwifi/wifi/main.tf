@@ -121,7 +121,8 @@ module "backend" {
   user-db-hostname      = "${var.user-db-hostname}"
   user-db-storage-gb    = 20
   user-rr-hostname      = "${var.user-rr-hostname}"
-  prometheus-IPs        = "${var.production-prometheus-IPs}/32"
+  prometheus-IP-london  = "${var.prometheus-IP-london}/32"
+  prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 }
 
 # Emails ======================================================================
@@ -234,7 +235,9 @@ module "frontend" {
     "${split(",", var.backend-subnet-IPs)}",
   ]
 
-  prometheus-IPs = "${var.production-prometheus-IPs}/32"
+  prometheus-IPs        = "${var.production-prometheus-IPs}/32"
+  prometheus-IP-london  = "${var.prometheus-IP-london}/32"
+  prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 
   radius-CIDR-blocks = [
     "${split(",", var.frontend-radius-IPs)}",
@@ -354,4 +357,32 @@ module "route53-critical-notifications" {
   env-name   = "${var.Env-Name}"
   topic-name = "govwifi-wifi-critical"
   emails     = ["${var.critical-notification-email}"]
+}
+
+module "govwifi-prometheus" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source     = "../../govwifi-prometheus"
+  Env-Name   = "${var.Env-Name}"
+  aws-region = "${var.aws-region}"
+
+  ssh-key-name = "${var.ssh-key-name}"
+
+  frontend-vpc-id = "${module.frontend.frontend-vpc-id}"
+
+  fe-admin-in   = "${module.frontend.fe-admin-in}"
+  fe-ecs-out    = "${module.frontend.fe-ecs-out}"
+  fe-radius-in  = "${module.frontend.fe-radius-in}"
+  fe-radius-out = "${module.frontend.fe-radius-out}"
+
+  wifi-frontend-subnet       = "${module.frontend.wifi-frontend-subnet}"
+  london-radius-ip-addresses = "${var.london-radius-ip-addresses}"
+  dublin-radius-ip-addresses = "${var.dublin-radius-ip-addresses}"
+
+  # Feature toggle creating Prometheus server.
+  create_prometheus_server = 1
+
+  prometheus-IPs = "${var.production-prometheus-IPs}"
 }

@@ -63,10 +63,14 @@ resource "aws_security_group" "fe-prometheus-in" {
   }
 
   ingress {
-    from_port   = 9812
-    to_port     = 9812
-    protocol    = "tcp"
-    cidr_blocks = ["${var.prometheus-IPs}"]
+    from_port = 9812
+    to_port   = 9812
+    protocol  = "tcp"
+
+    cidr_blocks = [
+      "${var.prometheus-IP-ireland}",
+      "${var.prometheus-IP-london}",
+    ]
   }
 }
 
