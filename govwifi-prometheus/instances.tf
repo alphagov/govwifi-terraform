@@ -80,7 +80,7 @@ resource "aws_ebs_volume" "prometheus_ebs" {
   availability_zone = "${var.aws-region}a"
 
   tags = {
-    Name = "Prometheus volume"
+    Name = "${var.Env-Name} Prometheus volume"
   }
 }
 
