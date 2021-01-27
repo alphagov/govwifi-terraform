@@ -235,7 +235,6 @@ module "frontend" {
     "${split(",", var.backend-subnet-IPs)}",
   ]
 
-  prometheus-IPs        = "${var.production-prometheus-IPs}/32"
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 
@@ -384,5 +383,5 @@ module "govwifi-prometheus" {
   # Feature toggle creating Prometheus server.
   create_prometheus_server = 1
 
-  prometheus-IPs = "${var.production-prometheus-IPs}"
+  prometheus-IPs = "${var.prometheus-IP-ireland}"
 }
