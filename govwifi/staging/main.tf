@@ -118,7 +118,8 @@ module "backend" {
   user-db-hostname      = ""
   user-db-instance-type = ""
   user-db-storage-gb    = 0
-  prometheus-IPs        = "${var.staging-prometheus-IPs}/32"
+  prometheus-IP-london  = "${var.prometheus-IP-london}/32"
+  prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 }
 
 # Emails ======================================================================
@@ -216,7 +217,8 @@ module "frontend" {
     "${var.bastion-server-IP}",
   ]
 
-  prometheus-IPs = "${var.staging-prometheus-IPs}/32"
+  prometheus-IP-london  = "${var.prometheus-IP-london}/32"
+  prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 
   radius-CIDR-blocks = [
     "${split(",", var.frontend-radius-IPs)}",
@@ -349,5 +351,5 @@ module "govwifi-prometheus" {
   # Value defaults to 0 and should only be enabled (i.e., value = 1)
   create_prometheus_server = 0
 
-  prometheus-IPs = "${var.staging-prometheus-IPs}"
+  prometheus-IPs = "${var.prometheus-IP-ireland}"
 }

@@ -144,8 +144,6 @@ variable "auth-sentry-dsn" {
 
 variable "notification-email" {}
 
-variable "staging-prometheus-IPs" {}
-
 variable "london-radius-ip-addresses" {
   type        = "list"
   description = "Frontend RADIUS server IP addresses - London"
@@ -155,3 +153,7 @@ variable "dublin-radius-ip-addresses" {
   type        = "list"
   description = "Frontend RADIUS server IP addresses - Dublin"
 }
+
+variable "prometheus-IP-london" {}
+
+variable "prometheus-IP-ireland" {}
