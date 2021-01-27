@@ -345,6 +345,42 @@ resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
 }
 EOF
 }
+resource "aws_cloudwatch_event_target" "smoke-test-user-deletion" {
+  count     = "${var.user-signup-enabled}"
+  target_id = "${var.Env-Name}-smoke-test-user-deletion"
+  arn       = "${aws_ecs_cluster.api-cluster.arn}"
+  rule      = "${aws_cloudwatch_event_rule.smoke_test_user_deletion_event.name}"
+  role_arn  = "${aws_iam_role.user-signup-scheduled-task-role.arn}"
+
+  ecs_target = {
+    task_count          = 1
+    task_definition_arn = "${aws_ecs_task_definition.user-signup-api-scheduled-task.arn}"
+    launch_type         = "FARGATE"
+
+    network_configuration = {
+      subnets = ["${var.subnet-ids}"]
+
+      security_groups = [
+        "${var.backend-sg-list}",
+        "${aws_security_group.api-in.id}",
+        "${aws_security_group.api-out.id}",
+      ]
+
+      assign_public_ip = true
+    }
+  }
+
+  input = <<EOF
+{
+  "containerOverrides": [
+    {
+      "name": "user-signup",
+      "command": ["bundle", "exec", "rake", "delete_smoke_test_users"]
+    }
+  ]
+}
+EOF
+}
 
 resource "aws_ecs_task_definition" "user-signup-api-scheduled-task" {
   count                    = "${var.user-signup-enabled}"
