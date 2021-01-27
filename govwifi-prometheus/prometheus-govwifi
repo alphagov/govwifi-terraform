@@ -5,7 +5,9 @@ Documentation=https://github.com/alphagov/govwifi-terraform/blob/master/README.m
 [Service]
 Restart=always
 User=prometheus
-ExecStart=/usr/bin/prometheus --storage.tsdb.path=/srv/prometheus/metrics2
+ExecStart=/usr/bin/prometheus \
+  --storage.tsdb.path=/srv/prometheus/metrics2 \
+  --storage.tsdb.retention.time=90d
 TimeoutStopSec=30s
 
 [Install]

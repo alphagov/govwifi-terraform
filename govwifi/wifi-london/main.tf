@@ -188,7 +188,8 @@ module "frontend" {
     "${split(",", var.backend-subnet-IPs)}",
   ]
 
-  prometheus-IPs = "${var.production-prometheus-IPs}/32"
+  prometheus-IP-london  = "${var.prometheus-IP-london}/32"
+  prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 
   radius-CIDR-blocks = [
     "${split(",", var.frontend-radius-IPs)}",
@@ -416,8 +417,9 @@ module "govwifi-prometheus" {
     "aws" = "aws.AWS-main"
   }
 
-  source   = "../../govwifi-prometheus"
-  Env-Name = "${var.Env-Name}"
+  source     = "../../govwifi-prometheus"
+  Env-Name   = "${var.Env-Name}"
+  aws-region = "${var.aws-region}"
 
   ssh-key-name = "${var.ssh-key-name}"
 
@@ -436,5 +438,5 @@ module "govwifi-prometheus" {
   # Value defaults to 0 and should only be enabled (i.e., value = 1) in staging-london and wifi-london
   create_prometheus_server = 1
 
-  prometheus-IPs = "${var.production-prometheus-IPs}"
+  prometheus-IPs = "${var.prometheus-IP-london}"
 }
