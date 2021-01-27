@@ -345,6 +345,7 @@ resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
 }
 EOF
 }
+
 resource "aws_cloudwatch_event_target" "smoke-test-user-deletion" {
   count     = "${var.user-signup-enabled}"
   target_id = "${var.Env-Name}-smoke-test-user-deletion"
