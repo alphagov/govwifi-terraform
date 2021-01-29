@@ -426,3 +426,22 @@ module "govwifi-prometheus" {
 
   prometheus-IPs = "${var.prometheus-IP-london}"
 }
+
+module "govwifi-grafana" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source     = "../../govwifi-grafana"
+  Env-Name   = "${var.Env-Name}"
+  aws-region = "${var.aws-region}"
+
+  ssh-key-name = "${var.ssh-key-name}"
+
+  backend-subnet-ids = "${module.backend.backend-subnet-ids}"
+
+  be-admin-in = "${module.backend.be-admin-in}"
+
+  # Feature toggle so we only create the Grafana instance in Staging London
+  create_grafana_server = "1"
+}
