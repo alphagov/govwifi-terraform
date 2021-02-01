@@ -62,3 +62,11 @@ resource "aws_volume_attachment" "grafana_ebs_attach" {
   volume_id   = "${aws_ebs_volume.grafana_ebs.id}"
   instance_id = "${aws_instance.grafana_instance.id}"
 }
+
+data "template_file" "grafana_user_data" {
+  template = "${file("${path.module}/user_data.sh")}"
+
+  vars = {
+    grafana-log-group = "${var.Env-Name}-grafana-log-group"
+  }
+}
