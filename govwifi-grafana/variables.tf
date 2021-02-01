@@ -17,7 +17,7 @@ variable "ssh-key-name" {
 }
 
 variable "backend-subnet-ids" {
-  description = "The subnets associated with the backend VPC."
+  description = "List of AWS subnet IDs to place the EC2 instances and ELB into."
   type        = "list"
 }
 
@@ -40,9 +40,4 @@ variable "bastion-ips" {
   description = "The list of allowed hosts to connect to the EC2 instances."
   type        = "list"
   default     = []
-}
-
-variable "subnet-ids" {
-  description = "List of AWS subnet IDs to place the EC2 instances and ELB into."
-  type        = "list"
 }

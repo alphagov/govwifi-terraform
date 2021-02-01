@@ -1,7 +1,7 @@
 resource "aws_lb" "grafana-alb" {
   name     = "grafana-alb-${var.Env-Name}"
   internal = false
-  subnets  = ["${var.subnet-ids}"]
+  subnets  = ["${var.backend-subnet-ids}"]
 
   security_groups = [
     "${aws_security_group.grafana-alb-in.id}",
