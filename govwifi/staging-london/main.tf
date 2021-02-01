@@ -444,4 +444,11 @@ module "govwifi-grafana" {
 
   # Feature toggle so we only create the Grafana instance in Staging London
   create_grafana_server = "1"
+
+  vpc-id = "${module.backend.backend-vpc-id}"
+
+  bastion-ips = [
+    "${split(",", var.bastion-server-IP)}",
+    "${split(",", var.backend-subnet-IPs)}",
+  ]
 }
