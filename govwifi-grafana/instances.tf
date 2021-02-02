@@ -42,8 +42,6 @@ resource "aws_instance" "grafana_instance" {
   }
 }
 
-data "template_file" "grafana_user_data" {}
-
 resource "aws_ebs_volume" "grafana_ebs" {
   count             = "${var.create_grafana_server}"
   size              = 40
