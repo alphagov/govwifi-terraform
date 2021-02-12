@@ -440,3 +440,13 @@ module "govwifi-prometheus" {
 
   prometheus-IPs = "${var.prometheus-IP-london}"
 }
+
+module "govwifi-account" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source = "../../govwifi-account"
+
+  account-id = "${var.aws-account-id}"
+}
