@@ -77,4 +77,3 @@ resource "aws_iam_user" "dashboard-wifi-read-only-user" {
   path          = "/"
   force_destroy = false
 }
-
