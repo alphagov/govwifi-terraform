@@ -41,3 +41,8 @@ variable "bastion-ips" {
   type        = "list"
   default     = []
 }
+
+variable "grafana-staging-alb-certificate-arn" {
+  description = "The staging grafana ALB ARN"
+  type        = "string"
+}

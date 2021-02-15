@@ -19,6 +19,8 @@ resource "aws_alb_listener" "alb_listener" {
   load_balancer_arn = "${aws_lb.grafana-alb.arn}"
   port              = "443"
   protocol          = "HTTPS"
+  certificate_arn   = "${grafana-staging-alb-certificate-arn}"
+  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
 
   default_action {
     target_group_arn = "${aws_alb_target_group.grafana-tg.arn}"

@@ -264,3 +264,9 @@ variable "notification-email" {}
 variable "prometheus-IP-london" {}
 
 variable "prometheus-IP-ireland" {}
+
+variable "grafana-staging-alb-certificate-arn" {
+  type        = "string"
+  description = "ARN for the london staging grafana ALB"
+}
+
