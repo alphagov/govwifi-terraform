@@ -50,6 +50,19 @@ module "govwifi-keys" {
   source = "../../govwifi-keys"
 }
 
+# Global ====================================================================
+
+module "govwifi-account" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source     = "../../govwifi-account"
+  account-id = "${var.aws-account-id}"
+}
+
+# ====================================================================
+
 module "backend" {
   providers = {
     "aws" = "aws.AWS-main"
@@ -439,14 +452,4 @@ module "govwifi-prometheus" {
   create_prometheus_server = 1
 
   prometheus-IPs = "${var.prometheus-IP-london}"
-}
-
-module "govwifi-account" {
-  providers = {
-    "aws" = "aws.AWS-main"
-  }
-
-  source = "../../govwifi-account"
-
-  account-id = "${var.aws-account-id}"
 }

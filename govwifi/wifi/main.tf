@@ -148,14 +148,15 @@ module "emails" {
 }
 
 # Global ====================================================================
-module "account" {
-  providers = {
-    "aws" = "aws.AWS-main"
-  }
-
-  source     = "../../govwifi-account"
-  account-id = "${var.aws-parent-account-id}"
-}
+#moved for wifi-london
+#module "govwifi-account" {
+#  providers = {
+#    "aws" = "aws.AWS-main"
+#  }
+#
+#  source     = "../../govwifi-account"
+#  account-id = "${var.aws-parent-account-id}"
+#}
 
 module "dns" {
   providers = {
