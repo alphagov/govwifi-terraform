@@ -57,7 +57,7 @@ module "govwifi-account" {
     "aws" = "aws.AWS-main"
   }
 
-  source = "../../govwifi-account"
+  source     = "../../govwifi-account"
   account-id = "${var.aws-account-id}"
 }
 
