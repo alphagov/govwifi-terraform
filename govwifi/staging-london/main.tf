@@ -434,6 +434,7 @@ module "govwifi-grafana" {
 
   source     = "../../govwifi-grafana"
   Env-Name   = "${var.Env-Name}"
+  Env-Subdomain = "${var.Env-Subdomain}"
   aws-region = "${var.aws-region}"
 
   ssh-key-name = "${var.ssh-key-name}"
@@ -441,7 +442,7 @@ module "govwifi-grafana" {
   backend-subnet-ids = "${module.backend.backend-subnet-ids}"
 
   be-admin-in = "${module.backend.be-admin-in}"
-
+ 
   # Feature toggle so we only create the Grafana instance in Staging London
   create_grafana_server = "1"
 
