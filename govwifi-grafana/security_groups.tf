@@ -57,7 +57,7 @@ resource "aws_security_group" "grafana-staging-ec2-in" {
 }
 
 resource "aws_security_group" "grafana-staging-ec2-out" {
-  name        = "grafana-ec2-out"
+  name        = "grafana-staging-ec2-out"
   description = "Allow Outbound Traffic From the staging Grafana EC2 container"
   vpc_id      = "${var.vpc-id}"
 
