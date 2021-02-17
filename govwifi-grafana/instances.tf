@@ -28,16 +28,15 @@ resource "aws_instance" "grafana_instance" {
     "${var.be-admin-in}",
     "${aws_security_group.grafana-staging-ec2-in.id}",
     "${aws_security_group.grafana-staging-ec2-out.id}",
-
-    #"${var.grafana-staging-ec2-in}",
-    #"${var.grafana-staging-ec2-out}",
   ]
+
+  #"${var.grafana-staging-ec2-in}",
+  #"${var.grafana-staging-ec2-out}",
 
   tags = {
     Name = "${title(var.Env-Name)} Grafana-Server"
     Env  = "${title(var.Env-Name)}"
   }
-
   lifecycle {
     create_before_destroy = true
 

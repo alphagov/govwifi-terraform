@@ -5,9 +5,11 @@ variable "Env-Name" {
   description = "Environment name for the component."
   type        = "string"
 }
+
 variable "Env-Subdomain" {
   description = "E.g. grafana.staging.wifi"
 }
+
 variable "aws-region" {
   description = "AWS region for the component."
   type        = "string"
@@ -43,5 +45,3 @@ variable "bastion-ips" {
   type        = "list"
   default     = []
 }
-
-
