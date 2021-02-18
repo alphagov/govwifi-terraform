@@ -157,10 +157,11 @@ POLICY
 }
 
 resource "aws_iam_policy" "ITHC-Access-Key-Policy" {
-    name        = "ITHC-Access-Key-Policy"
-    path        = "/"
-    description = "Grant ITHC pentester permission to create an Access Key. Delete once ITHC is complete. This is a one-time-only access policy."
-    policy      = <<POLICY
+  name        = "ITHC-Access-Key-Policy"
+  path        = "/"
+  description = "Grant ITHC pentester permission to create an Access Key. Delete once ITHC is complete. This is a one-time-only access policy."
+
+  policy = <<POLICY
 {
   "Version": "2012-10-17",
   "Statement": [
