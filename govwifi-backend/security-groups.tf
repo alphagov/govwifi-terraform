@@ -115,6 +115,7 @@ resource "aws_security_group" "be-vpn-out" {
       "${split(",", var.frontend-radius-IPs)}",
       "${var.prometheus-IP-ireland}",
       "${var.prometheus-IP-london}",
+      "${var.grafana-IP-london}",
     ]
   }
 }
