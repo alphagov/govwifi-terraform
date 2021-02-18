@@ -3,7 +3,6 @@ resource "aws_acm_certificate" "grafana-staging_cert" {
   validation_method = "DNS"
 
   depends_on = ["aws_route53_record.grafana-staging"]
-
 }
 
 resource "aws_route53_record" "grafana-staging_cert_validation" {
@@ -14,7 +13,6 @@ resource "aws_route53_record" "grafana-staging_cert_validation" {
   ttl     = 60
 
   depends_on = ["aws_acm_certificate.grafana-staging_cert"]
-
 }
 
 resource "aws_acm_certificate_validation" "certificate" {

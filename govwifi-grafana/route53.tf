@@ -8,9 +8,7 @@ resource "aws_route53_record" "grafana-staging" {
     zone_id                = "${aws_lb.grafana-staging-alb.zone_id}"
     evaluate_target_health = true
   }
-
 }
-
 
 data "aws_route53_zone" "zone" {
   name         = "wifi.service.gov.uk."
