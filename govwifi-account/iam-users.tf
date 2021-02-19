@@ -81,23 +81,25 @@ resource "aws_iam_user" "dashboard-wifi-read-only-user" {
 # Groups for the users
 
 resource "aws_iam_user_group_membership" "govwifi-jenkins-terraform" {
-  user   = "govwifi-jenkins-terraform"
+  user = "govwifi-jenkins-terraform"
+
   groups = [
     "AWS-Admin",
   ]
 }
 
 resource "aws_iam_user_group_membership" "monitor" {
-  user   = "monitor"
+  user = "monitor"
+
   groups = [
     "Read-Only-Access",
   ]
 }
 
 resource "aws_iam_user_group_membership" "servicedesk" {
-  user   = "servicedesk"
+  user = "servicedesk"
+
   groups = [
     "Read-Only-Access",
   ]
 }
-
