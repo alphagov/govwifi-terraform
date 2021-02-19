@@ -120,6 +120,7 @@ module "backend" {
   user-db-storage-gb    = 0
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
+  grafana-IP            = "${var.grafana-IP}/32"
 }
 
 # Emails ======================================================================
