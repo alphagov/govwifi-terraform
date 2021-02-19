@@ -1,6 +1,12 @@
 resource "aws_eip" "grafana_staging" {
   instance = "${aws_instance.grafana_instance.id}"
   vpc      = true
+
+  tags = {
+    Name = "grafana_staging"
+    Env  = "Staging"
+  }
+  
 }
 
 resource "aws_eip_association" "grafana_eip_assoc" {
