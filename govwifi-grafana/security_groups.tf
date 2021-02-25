@@ -11,7 +11,7 @@ resource "aws_security_group" "grafana-staging-alb-in" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["${var.bastion-ips}"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 

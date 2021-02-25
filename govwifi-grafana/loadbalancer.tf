@@ -1,7 +1,7 @@
 resource "aws_lb" "grafana-staging-alb" {
   name     = "grafana-staging-alb-${var.Env-Name}"
   internal = false
-  subnets  = ["${var.backend-subnet-ids}"]
+  subnets  = ["${var.subnet-ids}"]
 
   security_groups = [
     "${aws_security_group.grafana-staging-alb-in.id}",

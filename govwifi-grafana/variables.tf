@@ -45,3 +45,8 @@ variable "bastion-ips" {
   type        = "list"
   default     = []
 }
+
+variable "subnet-ids" {
+  description = "List of AWS subnet IDs to place the EC2 instances and ELB into"
+  type        = "list"
+}

@@ -440,6 +440,8 @@ module "govwifi-grafana" {
 
   ssh-key-name = "${var.ssh-key-name}"
 
+  subnet-ids = "${module.backend.backend-subnet-ids}"
+
   backend-subnet-ids = "${module.backend.backend-subnet-ids}"
 
   be-admin-in = "${module.backend.be-admin-in}"
