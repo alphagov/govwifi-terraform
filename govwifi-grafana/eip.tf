@@ -6,7 +6,6 @@ resource "aws_eip" "grafana_staging" {
     Name = "grafana_staging"
     Env  = "${title(var.Env-Name)}"
   }
-
 }
 
 resource "aws_eip_association" "grafana_eip_assoc" {
