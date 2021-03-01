@@ -65,3 +65,5 @@ variable "google-client-id" {
   description = "Credential used for Single Sign On"
   type        = "string"
 }
+
+variable "create_staging_route53_record" {}

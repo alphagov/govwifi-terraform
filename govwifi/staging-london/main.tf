@@ -459,4 +459,7 @@ module "govwifi-grafana" {
   google-client-id     = "${var.google-client-id}"
   google-client-secret = "${var.google-client-secret}"
   grafana-admin        = "${var.grafana-admin}"
+
+  # Feature toggle for creating Route53 record and ACM. This is required because we only use one AWS account.
+  create_staging_route53_record = "1"
 }

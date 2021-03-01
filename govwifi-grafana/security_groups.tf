@@ -1,5 +1,5 @@
-resource "aws_security_group" "grafana-staging-alb-in" {
-  name        = "grafana-staging-alb-in"
+resource "aws_security_group" "grafana-alb-in" {
+  name        = "grafana-alb-in-${var.Env-Name}"
   description = "Allow Inbound Traffic to the Grafana ALB"
   vpc_id      = "${var.vpc-id}"
 
@@ -15,8 +15,8 @@ resource "aws_security_group" "grafana-staging-alb-in" {
   }
 }
 
-resource "aws_security_group" "grafana-staging-alb-out" {
-  name        = "grafana-staging-alb-out"
+resource "aws_security_group" "grafana-alb-out" {
+  name        = "grafana-alb-out-${var.Env-Name}"
   description = "Allow Outbound Traffic from the staging Grafana ALB"
   vpc_id      = "${var.vpc-id}"
 
@@ -32,8 +32,8 @@ resource "aws_security_group" "grafana-staging-alb-out" {
   }
 }
 
-resource "aws_security_group" "grafana-staging-ec2-in" {
-  name        = "grafana-staging-ec2-in"
+resource "aws_security_group" "grafana-ec2-in" {
+  name        = "grafana-ec2-in-${var.Env-Name}"
   description = "Allow Inbound Traffic To staging Grafana from the ALB"
   vpc_id      = "${var.vpc-id}"
 
@@ -45,7 +45,7 @@ resource "aws_security_group" "grafana-staging-ec2-in" {
     from_port       = 0
     to_port         = 65535
     protocol        = "tcp"
-    security_groups = ["${aws_security_group.grafana-staging-alb-out.id}"]
+    security_groups = ["${aws_security_group.grafana-alb-out.id}"]
   }
 
   ingress {
@@ -56,8 +56,8 @@ resource "aws_security_group" "grafana-staging-ec2-in" {
   }
 }
 
-resource "aws_security_group" "grafana-staging-ec2-out" {
-  name        = "grafana-staging-ec2-out"
+resource "aws_security_group" "grafana-ec2-out" {
+  name        = "grafana-ec2-out-${var.Env-Name}"
   description = "Allow Outbound Traffic From the staging Grafana EC2 container"
   vpc_id      = "${var.vpc-id}"
 

@@ -1,11 +1,11 @@
-resource "aws_lb" "grafana-staging-alb" {
-  name     = "grafana-staging-alb-${var.Env-Name}"
+resource "aws_lb" "grafana-alb" {
+  name     = "grafana-alb-${var.Env-Name}"
   internal = false
   subnets  = ["${var.subnet-ids}"]
 
   security_groups = [
-    "${aws_security_group.grafana-staging-alb-in.id}",
-    "${aws_security_group.grafana-staging-alb-out.id}",
+    "${aws_security_group.grafana-alb-in.id}",
+    "${aws_security_group.grafana-alb-out.id}",
   ]
 
   load_balancer_type = "application"
@@ -15,21 +15,21 @@ resource "aws_lb" "grafana-staging-alb" {
   }
 }
 
-resource "aws_alb_listener" "alb_listener" {
-  load_balancer_arn = "${aws_lb.grafana-staging-alb.arn}"
+resource "aws_alb_listener" "alb-listener" {
+  load_balancer_arn = "${aws_lb.grafana-alb.arn}"
   port              = "443"
   protocol          = "HTTPS"
   certificate_arn   = "${aws_acm_certificate_validation.certificate.certificate_arn}"
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
 
   default_action {
-    target_group_arn = "${aws_alb_target_group.grafana-staging-tg.arn}"
+    target_group_arn = "${aws_alb_target_group.grafana-tg.arn}"
     type             = "forward"
   }
 }
 
-resource "aws_alb_target_group" "grafana-staging-tg" {
-  depends_on           = ["aws_lb.grafana-staging-alb"]
+resource "aws_alb_target_group" "grafana-tg" {
+  depends_on           = ["aws_lb.grafana-alb"]
   name                 = "grafana-${var.Env-Name}-fg-tg"
   port                 = "3000"
   protocol             = "HTTP"

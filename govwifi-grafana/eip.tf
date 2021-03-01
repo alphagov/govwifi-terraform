@@ -3,7 +3,7 @@ resource "aws_eip" "grafana_staging" {
   vpc      = true
 
   tags = {
-    Name = "grafana_staging"
+    Name = "grafana-${var.Env-Name}"
     Env  = "${title(var.Env-Name)}"
   }
 }

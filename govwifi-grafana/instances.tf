@@ -26,8 +26,8 @@ resource "aws_instance" "grafana_instance" {
 
   vpc_security_group_ids = [
     "${var.be-admin-in}",
-    "${aws_security_group.grafana-staging-ec2-in.id}",
-    "${aws_security_group.grafana-staging-ec2-out.id}",
+    "${aws_security_group.grafana-ec2-in.id}",
+    "${aws_security_group.grafana-ec2-out.id}",
   ]
 
   #"${var.grafana-staging-ec2-in}",
