@@ -66,7 +66,7 @@ docker volume create grafana
 docker run -id --name=grafana --user root -v  grafana:/var/lib/grafana -v grafana-etc:/etc/grafana -p 3000:3000 grafana/grafana:7.4.0
 
 docker run -d --rm -p 3000:3000 --name grafana --user root \
-	-e "GF_SECURITY_ADMIN_PASSWORD=$(var.grafana-admin)" \
+	-e "GF_SECURITY_ADMIN_PASSWORD=${grafana-admin}" \
 	-e "GF_SERVER_ROOT_URL=https://grafana.staging.wifi.service.gov.uk" \
     -e "GF_AUTH_BASIC_ENABLED=false" \
     -e "GF_AUTH_GOOGLE_ENABLED=true" \
@@ -76,8 +76,8 @@ docker run -d --rm -p 3000:3000 --name grafana --user root \
 	-e "GF_SERVER_HTTP_ADDR=0.0.0.0" \
     -e "GF_AUTH_GOOGLE_AUTH_URL=https://accounts.google.com/o/oauth2/auth" \
     -e "GF_AUTH_GOOGLE_TOKEN_URL=https://accounts.google.com/o/oauth2/token" \
-    -e "GF_AUTH_GOOGLE_CLIENT_SECRET=$(var.google-client-secret)" \
-    -e "GF_AUTH_GOOGLE_CLIENT_ID=$(var.google-client-id)" \
+    -e "GF_AUTH_GOOGLE_CLIENT_SECRET=${google-client-secret}" \
+    -e "GF_AUTH_GOOGLE_CLIENT_ID=${google-client-id}" \
     -e "GF_ALLOWED_DOMAINS=digital.cabinet-office.gov.uk" \
     -v  grafana:/var/lib/grafana -v grafana-etc:/etc/grafana \
 grafana/grafana:7.4.0
