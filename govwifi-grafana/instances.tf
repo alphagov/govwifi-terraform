@@ -69,6 +69,9 @@ data "template_file" "grafana_user_data" {
   template = "${file("${path.module}/user_data.sh")}"
 
   vars = {
-    grafana-log-group = "${var.Env-Name}-grafana-log-group"
+    grafana-log-group    = "${var.Env-Name}-grafana-log-group"
+    grafana-admin        = "${var.grafana-admin}"
+    google-client-secret = "${var.google-client-secret}"
+    google-client-id     = "${var.google-client-id}"
   }
 }

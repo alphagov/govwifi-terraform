@@ -50,3 +50,18 @@ variable "subnet-ids" {
   description = "List of AWS subnet IDs to place the EC2 instances and ELB into"
   type        = "list"
 }
+
+variable "grafana-admin" {
+  description = "Credential used for Grafana Admin user"
+  type        = "string"
+}
+
+variable "google-client-secret" {
+  description = "Credential used for Single Sign On"
+  type        = "string"
+}
+
+variable "google-client-id" {
+  description = "Credential used for Single Sign On"
+  type        = "string"
+}

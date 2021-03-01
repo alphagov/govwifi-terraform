@@ -455,4 +455,8 @@ module "govwifi-grafana" {
     "${split(",", var.bastion-server-IP)}",
     "${split(",", var.backend-subnet-IPs)}",
   ]
+
+  google-client-id     = "${var.google-client-id}"
+  google-client-secret = "${var.google-client-secret}"
+  grafana-admin        = "${var.grafana-admin}"
 }
