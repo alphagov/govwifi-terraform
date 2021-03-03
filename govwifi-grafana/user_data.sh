@@ -60,28 +60,25 @@ systemctl stop docker
 systemctl daemon-reload
 systemctl enable --now docker
 
-# Create Dokcer volumes and run Grafana Docker image
+# Create Docker volumes and run Grafana Docker image
 docker volume create grafana-etc
 docker volume create grafana
-docker run -id --name=grafana --user root -v  grafana:/var/lib/grafana -v grafana-etc:/etc/grafana -p 3000:3000 grafana/grafana:7.4.0
-
-docker run -id --restart=always -p 3000:3000 --name grafana --user root \
-	-e "GF_SECURITY_ADMIN_PASSWORD=${grafana-admin}" \
-	-e "GF_SERVER_ROOT_URL=https://grafana.staging.wifi.service.gov.uk" \
-    -e "GF_AUTH_BASIC_ENABLED=false" \
-    -e "GF_AUTH_GOOGLE_ENABLED=true" \
-	-e "GF_AUTH_GOOGLE_ALLOW_SIGN_UP=true" \
-	-e "GF_SECURITY_COOKIE_SECURE=true" \
-	-e "GF_SESSION_COOKIE_SECURE=true" \
-	-e "GF_SERVER_HTTP_ADDR=0.0.0.0" \
-    -e "GF_AUTH_GOOGLE_AUTH_URL=https://accounts.google.com/o/oauth2/auth" \
-    -e "GF_AUTH_GOOGLE_TOKEN_URL=https://accounts.google.com/o/oauth2/token" \
-    -e "GF_AUTH_GOOGLE_CLIENT_SECRET=${google-client-secret}" \
-    -e "GF_AUTH_GOOGLE_CLIENT_ID=${google-client-id}" \
-    -e "GF_ALLOWED_DOMAINS=digital.cabinet-office.gov.uk" \
-    -v  grafana:/var/lib/grafana -v grafana-etc:/etc/grafana \
+docker pull grafana/grafana:7.4.0
+docker run -id --restart=always -p 3000:3000 --name grafana --user root -v grafana:/var/lib/grafana -v grafana-etc:/etc/grafana \
+-e "GF_SECURITY_ADMIN_PASSWORD=${grafana-admin}" \
+-e "GF_SERVER_ROOT_URL=https://grafana.staging.wifi.service.gov.uk" \
+-e "GF_AUTH_BASIC_ENABLED=true" \
+-e "GF_AUTH_GOOGLE_ENABLED=true" \
+-e "GF_AUTH_GOOGLE_ALLOW_SIGN_UP=true" \
+-e "GF_SECURITY_COOKIE_SECURE=true" \
+-e "GF_SESSION_COOKIE_SECURE=true" \
+-e "GF_SERVER_HTTP_ADDR=0.0.0.0" \
+-e "GF_AUTH_GOOGLE_AUTH_URL=https://accounts.google.com/o/oauth2/auth" \
+-e "GF_AUTH_GOOGLE_TOKEN_URL=https://accounts.google.com/o/oauth2/token" \
+-e "GF_AUTH_GOOGLE_CLIENT_SECRET=${google-client-secret}" \
+-e "GF_AUTH_GOOGLE_CLIENT_ID=${google-client-id}" \
+-e "GF_ALLOWED_DOMAINS=digital.cabinet-office.gov.uk" \
 grafana/grafana:7.4.0
-
 
 echo 'Installing awscli'
 run-until-success apt-get install --yes awscli
