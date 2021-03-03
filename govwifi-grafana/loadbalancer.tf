@@ -49,3 +49,8 @@ resource "aws_alb_target_group" "grafana-tg" {
     create_before_destroy = true
   }
 }
+resource "aws_alb_target_group_attachment" "grafana" {
+  target_group_arn = "${aws_alb_target_group.grafana-tg.arn}"
+  target_id        = "${aws_instance.grafana_instance.private_ip}"
+  port             = 3000
+}

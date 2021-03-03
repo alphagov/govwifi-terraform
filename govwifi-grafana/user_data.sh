@@ -65,7 +65,7 @@ docker volume create grafana-etc
 docker volume create grafana
 docker run -id --name=grafana --user root -v  grafana:/var/lib/grafana -v grafana-etc:/etc/grafana -p 3000:3000 grafana/grafana:7.4.0
 
-docker run -d --rm -p 3000:3000 --name grafana --user root \
+docker run -id --restart=always -p 3000:3000 --name grafana --user root \
 	-e "GF_SECURITY_ADMIN_PASSWORD=${grafana-admin}" \
 	-e "GF_SERVER_ROOT_URL=https://grafana.staging.wifi.service.gov.uk" \
     -e "GF_AUTH_BASIC_ENABLED=false" \
