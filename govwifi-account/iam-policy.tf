@@ -1,3 +1,5 @@
+variable "account-id" {}
+
 resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-e112f67b-c533-4923-98f7-38c38c5e51dc" {
   name        = "AWSLambdaBasicExecutionRole-e112f67b-c533-4923-98f7-38c38c5e51dc"
   path        = "/service-role/"
@@ -10,7 +12,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-e112f67b-c533-4923-98f7-3
     {
       "Effect": "Allow",
       "Action": "logs:CreateLogGroup",
-      "Resource": "arn:aws:logs:us-east-1:788375279931:*"
+      "Resource": "arn:aws:logs:us-east-1:${var.account-id}:*"
     },
     {
       "Effect": "Allow",
@@ -19,7 +21,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-e112f67b-c533-4923-98f7-3
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:us-east-1:788375279931:log-group:/aws/lambda/GovWifiMetricsAggregationPrototype:*"
+        "arn:aws:logs:us-east-1:${var.account-id}:log-group:/aws/lambda/GovWifiMetricsAggregationPrototype:*"
       ]
     }
   ]
@@ -39,7 +41,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-9d382291-dcd5-4d68-8a4d-a
     {
       "Effect": "Allow",
       "Action": "logs:CreateLogGroup",
-      "Resource": "arn:aws:logs:eu-west-1:788375279931:*"
+      "Resource": "arn:aws:logs:eu-west-1:${var.account-id}:*"
     },
     {
       "Effect": "Allow",
@@ -48,7 +50,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-9d382291-dcd5-4d68-8a4d-a
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:eu-west-1:788375279931:log-group:/aws/lambda/AggregateStagingMetrics:*"
+        "arn:aws:logs:eu-west-1:${var.account-id}:log-group:/aws/lambda/AggregateStagingMetrics:*"
       ]
     }
   ]
@@ -109,7 +111,7 @@ resource "aws_iam_policy" "CloudTrailPolicyForCloudWatchLogs_dab06026-75de-4ad1-
         "logs:CreateLogStream"
       ],
       "Resource": [
-        "arn:aws:logs:eu-west-1:788375279931:log-group:CloudTrail/DefaultLogGroup:log-stream:788375279931_CloudTrail_eu-west-1*"
+        "arn:aws:logs:eu-west-1:${var.account-id}:log-group:CloudTrail/DefaultLogGroup:log-stream:${var.account-id}_CloudTrail_eu-west-1*"
       ]
     },
     {
@@ -119,7 +121,7 @@ resource "aws_iam_policy" "CloudTrailPolicyForCloudWatchLogs_dab06026-75de-4ad1-
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:eu-west-1:788375279931:log-group:CloudTrail/DefaultLogGroup:log-stream:788375279931_CloudTrail_eu-west-1*"
+        "arn:aws:logs:eu-west-1:${var.account-id}:log-group:CloudTrail/DefaultLogGroup:log-stream:${var.account-id}_CloudTrail_eu-west-1*"
       ]
     }
   ]
@@ -139,7 +141,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-164db990-7033-4bb4-aaed-3
     {
       "Effect": "Allow",
       "Action": "logs:CreateLogGroup",
-      "Resource": "arn:aws:logs:eu-west-2:788375279931:*"
+      "Resource": "arn:aws:logs:eu-west-2:${var.account-id}:*"
     },
     {
       "Effect": "Allow",
@@ -148,7 +150,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-164db990-7033-4bb4-aaed-3
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:eu-west-2:788375279931:log-group:/aws/lambda/StagingMetricsAggregator-prototype:*"
+        "arn:aws:logs:eu-west-2:${var.account-id}:log-group:/aws/lambda/StagingMetricsAggregator-prototype:*"
       ]
     }
   ]
@@ -195,11 +197,11 @@ resource "aws_iam_policy" "AWS_Events_Invoke_ECS_961488249" {
         "ecs:RunTask"
       ],
       "Resource": [
-        "arn:aws:ecs:*:788375279931:task-definition/user-signup-api-task-staging:13"
+        "arn:aws:ecs:*:${var.account-id}:task-definition/user-signup-api-task-staging:13"
       ],
       "Condition": {
         "ArnLike": {
-          "ecs:cluster": "arn:aws:ecs:*:788375279931:cluster/staging-api-cluster"
+          "ecs:cluster": "arn:aws:ecs:*:${var.account-id}:cluster/staging-api-cluster"
         }
       }
     },
@@ -257,7 +259,7 @@ resource "aws_iam_policy" "s3crr_kms_for_govwifi-staging-london-tfstate_to_govwi
             "AES256"
           ],
           "s3:x-amz-server-side-encryption-aws-kms-key-id": [
-            "arn:aws:kms:eu-west-1:788375279931:key/a6535eb7-ca94-4abc-8ecb-94b8650be41a"
+            "arn:aws:kms:eu-west-1:${var.account-id}:key/a6535eb7-ca94-4abc-8ecb-94b8650be41a"
           ]
         }
       },
@@ -277,7 +279,7 @@ resource "aws_iam_policy" "s3crr_kms_for_govwifi-staging-london-tfstate_to_govwi
         }
       },
       "Resource": [
-        "arn:aws:kms:eu-west-2:788375279931:key/1d262f07-6e60-423a-b1e6-61fb6d95eca3"
+        "arn:aws:kms:eu-west-2:${var.account-id}:key/1d262f07-6e60-423a-b1e6-61fb6d95eca3"
       ]
     },
     {
@@ -294,7 +296,7 @@ resource "aws_iam_policy" "s3crr_kms_for_govwifi-staging-london-tfstate_to_govwi
         }
       },
       "Resource": [
-        "arn:aws:kms:eu-west-1:788375279931:key/a6535eb7-ca94-4abc-8ecb-94b8650be41a"
+        "arn:aws:kms:eu-west-1:${var.account-id}:key/a6535eb7-ca94-4abc-8ecb-94b8650be41a"
       ]
     }
   ]
@@ -761,7 +763,7 @@ resource "aws_iam_policy" "s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwi
             "AES256"
           ],
           "s3:x-amz-server-side-encryption-aws-kms-key-id": [
-            "arn:aws:kms:eu-west-2:788375279931:key/1d262f07-6e60-423a-b1e6-61fb6d95eca3"
+            "arn:aws:kms:eu-west-2:${var.account-id}:key/1d262f07-6e60-423a-b1e6-61fb6d95eca3"
           ]
         }
       },
@@ -781,7 +783,7 @@ resource "aws_iam_policy" "s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwi
         }
       },
       "Resource": [
-        "arn:aws:kms:eu-west-1:788375279931:key/a6535eb7-ca94-4abc-8ecb-94b8650be41a"
+        "arn:aws:kms:eu-west-1:${var.account-id}:key/a6535eb7-ca94-4abc-8ecb-94b8650be41a"
       ]
     },
     {
@@ -798,7 +800,7 @@ resource "aws_iam_policy" "s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwi
         }
       },
       "Resource": [
-        "arn:aws:kms:eu-west-2:788375279931:key/1d262f07-6e60-423a-b1e6-61fb6d95eca3"
+        "arn:aws:kms:eu-west-2:${var.account-id}:key/1d262f07-6e60-423a-b1e6-61fb6d95eca3"
       ]
     }
   ]
@@ -1475,7 +1477,7 @@ POLICY
 
 resource "aws_iam_policy_attachment" "AWSLambdaBasicExecutionRole-164db990-7033-4bb4-aaed-380d56e59518-policy-attachment" {
   name       = "AWSLambdaBasicExecutionRole-164db990-7033-4bb4-aaed-380d56e59518-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/service-role/AWSLambdaBasicExecutionRole-164db990-7033-4bb4-aaed-380d56e59518"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/service-role/AWSLambdaBasicExecutionRole-164db990-7033-4bb4-aaed-380d56e59518"
   groups     = []
   users      = []
   roles      = ["StagingMetricsAggregator-prototype-role-saci182v"]
@@ -1483,7 +1485,7 @@ resource "aws_iam_policy_attachment" "AWSLambdaBasicExecutionRole-164db990-7033-
 
 resource "aws_iam_policy_attachment" "AWSLambdaBasicExecutionRole-9d382291-dcd5-4d68-8a4d-aef9bab6e0b5-policy-attachment" {
   name       = "AWSLambdaBasicExecutionRole-9d382291-dcd5-4d68-8a4d-aef9bab6e0b5-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/service-role/AWSLambdaBasicExecutionRole-9d382291-dcd5-4d68-8a4d-aef9bab6e0b5"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/service-role/AWSLambdaBasicExecutionRole-9d382291-dcd5-4d68-8a4d-aef9bab6e0b5"
   groups     = []
   users      = []
   roles      = ["AggregateStagingMetrics-role-gej26flk"]
@@ -1491,7 +1493,7 @@ resource "aws_iam_policy_attachment" "AWSLambdaBasicExecutionRole-9d382291-dcd5-
 
 resource "aws_iam_policy_attachment" "AWSLambdaBasicExecutionRole-e112f67b-c533-4923-98f7-38c38c5e51dc-policy-attachment" {
   name       = "AWSLambdaBasicExecutionRole-e112f67b-c533-4923-98f7-38c38c5e51dc-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/service-role/AWSLambdaBasicExecutionRole-e112f67b-c533-4923-98f7-38c38c5e51dc"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/service-role/AWSLambdaBasicExecutionRole-e112f67b-c533-4923-98f7-38c38c5e51dc"
   groups     = []
   users      = []
   roles      = ["GovWifiMetricsAggregationPrototype-role-ayhlh17x"]
@@ -1499,7 +1501,7 @@ resource "aws_iam_policy_attachment" "AWSLambdaBasicExecutionRole-e112f67b-c533-
 
 resource "aws_iam_policy_attachment" "CloudTrailPolicyForCloudWatchLogs_dab06026-75de-4ad1-a922-e4fc41e01568-policy-attachment" {
   name       = "CloudTrailPolicyForCloudWatchLogs_dab06026-75de-4ad1-a922-e4fc41e01568-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/service-role/CloudTrailPolicyForCloudWatchLogs_dab06026-75de-4ad1-a922-e4fc41e01568"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/service-role/CloudTrailPolicyForCloudWatchLogs_dab06026-75de-4ad1-a922-e4fc41e01568"
   groups     = []
   users      = []
   roles      = ["CloudTrail_CloudWatchLogs_Role"]
@@ -1507,7 +1509,7 @@ resource "aws_iam_policy_attachment" "CloudTrailPolicyForCloudWatchLogs_dab06026
 
 resource "aws_iam_policy_attachment" "GovWifi-Admin-policy-attachment" {
   name       = "GovWifi-Admin-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/GovWifi-Admin"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/GovWifi-Admin"
   groups     = ["GovWifi-Admin"]
   users      = []
   roles      = []
@@ -1515,7 +1517,7 @@ resource "aws_iam_policy_attachment" "GovWifi-Admin-policy-attachment" {
 
 resource "aws_iam_policy_attachment" "GovWifi-Admin-S3-Policy-policy-attachment" {
   name       = "GovWifi-Admin-S3-Policy-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/GovWifi-Admin-S3-Policy"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/GovWifi-Admin-S3-Policy"
   groups     = ["GovWifi-Admin"]
   users      = []
   roles      = []
@@ -1523,7 +1525,7 @@ resource "aws_iam_policy_attachment" "GovWifi-Admin-S3-Policy-policy-attachment"
 
 resource "aws_iam_policy_attachment" "GovWifi-Audit-policy-attachment" {
   name       = "GovWifi-Audit-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/GovWifi-Audit"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/GovWifi-Audit"
   groups     = ["GovWifi-Audit"]
   users      = []
   roles      = []
@@ -1531,7 +1533,7 @@ resource "aws_iam_policy_attachment" "GovWifi-Audit-policy-attachment" {
 
 resource "aws_iam_policy_attachment" "GovWifi-Developers-policy-attachment" {
   name       = "GovWifi-Developers-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/GovWifi-Developers"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/GovWifi-Developers"
   groups     = ["GovWifi-Developers"]
   users      = []
   roles      = []
@@ -1539,7 +1541,7 @@ resource "aws_iam_policy_attachment" "GovWifi-Developers-policy-attachment" {
 
 resource "aws_iam_policy_attachment" "govwifi-staging-dublin-accesslogs-replication-policy-policy-attachment" {
   name       = "govwifi-staging-dublin-accesslogs-replication-policy-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/govwifi-staging-dublin-accesslogs-replication-policy"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/govwifi-staging-dublin-accesslogs-replication-policy"
   groups     = []
   users      = []
   roles      = ["govwifi-staging-dublin-accesslogs-replication-role"]
@@ -1547,7 +1549,7 @@ resource "aws_iam_policy_attachment" "govwifi-staging-dublin-accesslogs-replicat
 
 resource "aws_iam_policy_attachment" "govwifi-staging-dublin-tfstate-replication-policy-policy-attachment" {
   name       = "govwifi-staging-dublin-tfstate-replication-policy-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/govwifi-staging-dublin-tfstate-replication-policy"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/govwifi-staging-dublin-tfstate-replication-policy"
   groups     = []
   users      = []
   roles      = ["govwifi-staging-dublin-tfstate-replication-role"]
@@ -1555,7 +1557,7 @@ resource "aws_iam_policy_attachment" "govwifi-staging-dublin-tfstate-replication
 
 resource "aws_iam_policy_attachment" "govwifi-staging-london-accesslogs-replication-policy-policy-attachment" {
   name       = "govwifi-staging-london-accesslogs-replication-policy-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/govwifi-staging-london-accesslogs-replication-policy"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/govwifi-staging-london-accesslogs-replication-policy"
   groups     = []
   users      = []
   roles      = ["govwifi-staging-london-accesslogs-replication-role"]
@@ -1563,7 +1565,7 @@ resource "aws_iam_policy_attachment" "govwifi-staging-london-accesslogs-replicat
 
 resource "aws_iam_policy_attachment" "govwifi-staging-london-tfstate-replication-policy-policy-attachment" {
   name       = "govwifi-staging-london-tfstate-replication-policy-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/govwifi-staging-london-tfstate-replication-policy"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/govwifi-staging-london-tfstate-replication-policy"
   groups     = []
   users      = []
   roles      = ["govwifi-staging-london-tfstate-replication-role"]
@@ -1571,7 +1573,7 @@ resource "aws_iam_policy_attachment" "govwifi-staging-london-tfstate-replication
 
 resource "aws_iam_policy_attachment" "GovWifi-Support-policy-attachment" {
   name       = "GovWifi-Support-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/GovWifi-Support"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/GovWifi-Support"
   groups     = ["GovWifi-Support"]
   users      = []
   roles      = []
@@ -1579,7 +1581,7 @@ resource "aws_iam_policy_attachment" "GovWifi-Support-policy-attachment" {
 
 resource "aws_iam_policy_attachment" "govwifi-wifi-dublin-accesslogs-replication-policy-policy-attachment" {
   name       = "govwifi-wifi-dublin-accesslogs-replication-policy-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/govwifi-wifi-dublin-accesslogs-replication-policy"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/govwifi-wifi-dublin-accesslogs-replication-policy"
   groups     = []
   users      = []
   roles      = ["govwifi-wifi-dublin-accesslogs-replication-role"]
@@ -1587,7 +1589,7 @@ resource "aws_iam_policy_attachment" "govwifi-wifi-dublin-accesslogs-replication
 
 resource "aws_iam_policy_attachment" "govwifi-wifi-dublin-tfstate-replication-policy-policy-attachment" {
   name       = "govwifi-wifi-dublin-tfstate-replication-policy-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/govwifi-wifi-dublin-tfstate-replication-policy"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/govwifi-wifi-dublin-tfstate-replication-policy"
   groups     = []
   users      = []
   roles      = ["govwifi-wifi-dublin-tfstate-replication-role"]
@@ -1595,7 +1597,7 @@ resource "aws_iam_policy_attachment" "govwifi-wifi-dublin-tfstate-replication-po
 
 resource "aws_iam_policy_attachment" "govwifi-wifi-london-accesslogs-replication-policy-policy-attachment" {
   name       = "govwifi-wifi-london-accesslogs-replication-policy-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/govwifi-wifi-london-accesslogs-replication-policy"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/govwifi-wifi-london-accesslogs-replication-policy"
   groups     = []
   users      = []
   roles      = ["govwifi-wifi-london-accesslogs-replication-role"]
@@ -1603,7 +1605,7 @@ resource "aws_iam_policy_attachment" "govwifi-wifi-london-accesslogs-replication
 
 resource "aws_iam_policy_attachment" "govwifi-wifi-london-tfstate-replication-policy-policy-attachment" {
   name       = "govwifi-wifi-london-tfstate-replication-policy-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/govwifi-wifi-london-tfstate-replication-policy"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/govwifi-wifi-london-tfstate-replication-policy"
   groups     = []
   users      = []
   roles      = ["govwifi-wifi-london-tfstate-replication-role"]
@@ -1611,7 +1613,7 @@ resource "aws_iam_policy_attachment" "govwifi-wifi-london-tfstate-replication-po
 
 resource "aws_iam_policy_attachment" "ITHC-Access-Key-Policy-policy-attachment" {
   name       = "ITHC-Access-Key-Policy-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/ITHC-Access-Key-Policy"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/ITHC-Access-Key-Policy"
   groups     = ["ITHC-RO-SecAud-Group"]
   users      = []
   roles      = []
@@ -1619,7 +1621,7 @@ resource "aws_iam_policy_attachment" "ITHC-Access-Key-Policy-policy-attachment" 
 
 resource "aws_iam_policy_attachment" "ITHC-Staging-Cyberis-Policy-policy-attachment" {
   name       = "ITHC-Staging-Cyberis-Policy-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/ITHC-Staging-Cyberis-Policy"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/ITHC-Staging-Cyberis-Policy"
   groups     = ["ITHC-RO-SecAud-Group"]
   users      = []
   roles      = []
@@ -1627,7 +1629,7 @@ resource "aws_iam_policy_attachment" "ITHC-Staging-Cyberis-Policy-policy-attachm
 
 resource "aws_iam_policy_attachment" "LambdaUpdateFunctionCode-policy-attachment" {
   name       = "LambdaUpdateFunctionCode-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/LambdaUpdateFunctionCode"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/LambdaUpdateFunctionCode"
   groups     = []
   users      = ["govwifi-jenkins-deploy"]
   roles      = []
@@ -1635,7 +1637,7 @@ resource "aws_iam_policy_attachment" "LambdaUpdateFunctionCode-policy-attachment
 
 resource "aws_iam_policy_attachment" "s3crr_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate-policy-attachment" {
   name       = "s3crr_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/service-role/s3crr_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/service-role/s3crr_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate"
   groups     = []
   users      = []
   roles      = ["s3crr_role_for_govwifi-staging-dublin-tfstate_to_govwifi-staging"]
@@ -1643,7 +1645,7 @@ resource "aws_iam_policy_attachment" "s3crr_for_govwifi-staging-dublin-tfstate_t
 
 resource "aws_iam_policy_attachment" "s3crr_for_govwifi-staging-ireland-accesslogs_to_govwifi-staging-london-accesslogs-policy-attachment" {
   name       = "s3crr_for_govwifi-staging-ireland-accesslogs_to_govwifi-staging-london-accesslogs-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/service-role/s3crr_for_govwifi-staging-ireland-accesslogs_to_govwifi-staging-london-accesslogs"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/service-role/s3crr_for_govwifi-staging-ireland-accesslogs_to_govwifi-staging-london-accesslogs"
   groups     = []
   users      = []
   roles      = ["s3crr_role_for_govwifi-staging-ireland-accesslogs_to_govwifi-sta"]
@@ -1651,7 +1653,7 @@ resource "aws_iam_policy_attachment" "s3crr_for_govwifi-staging-ireland-accesslo
 
 resource "aws_iam_policy_attachment" "s3crr_for_govwifi-staging-london-accesslogs_to_govwifi-staging-ireland-accesslogs-policy-attachment" {
   name       = "s3crr_for_govwifi-staging-london-accesslogs_to_govwifi-staging-ireland-accesslogs-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/service-role/s3crr_for_govwifi-staging-london-accesslogs_to_govwifi-staging-ireland-accesslogs"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/service-role/s3crr_for_govwifi-staging-london-accesslogs_to_govwifi-staging-ireland-accesslogs"
   groups     = []
   users      = []
   roles      = ["s3crr_role_for_govwifi-staging-london-accesslogs_to_govwifi-stag"]
@@ -1659,7 +1661,7 @@ resource "aws_iam_policy_attachment" "s3crr_for_govwifi-staging-london-accesslog
 
 resource "aws_iam_policy_attachment" "s3crr_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate-policy-attachment" {
   name       = "s3crr_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/service-role/s3crr_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/service-role/s3crr_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate"
   groups     = []
   users      = []
   roles      = ["s3crr_role_for_govwifi-staging-london-tfstate_to_govwifi-staging"]
@@ -1667,7 +1669,7 @@ resource "aws_iam_policy_attachment" "s3crr_for_govwifi-staging-london-tfstate_t
 
 resource "aws_iam_policy_attachment" "s3crr_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replica-policy-attachment" {
   name       = "s3crr_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replica-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/service-role/s3crr_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replica"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/service-role/s3crr_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replica"
   groups     = []
   users      = []
   roles      = ["s3crr_role_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replic"]
@@ -1675,7 +1677,7 @@ resource "aws_iam_policy_attachment" "s3crr_for_test-wifi-mfadelete_to_test-wifi
 
 resource "aws_iam_policy_attachment" "s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate-policy-attachment" {
   name       = "s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/service-role/s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/service-role/s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate"
   groups     = []
   users      = []
   roles      = ["govwifi-staging-dublin-tfstate-replication-role"]
@@ -1683,7 +1685,7 @@ resource "aws_iam_policy_attachment" "s3crr_kms_for_govwifi-staging-dublin-tfsta
 
 resource "aws_iam_policy_attachment" "s3crr_kms_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate-policy-attachment" {
   name       = "s3crr_kms_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate-policy-attachment"
-  policy_arn = "arn:aws:iam::788375279931:policy/service-role/s3crr_kms_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate"
+  policy_arn = "arn:aws:iam::${var.account-id}:policy/service-role/s3crr_kms_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate"
   groups     = []
   users      = []
   roles      = ["govwifi-staging-london-tfstate-replication-role"]
