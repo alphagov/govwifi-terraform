@@ -30,9 +30,6 @@ resource "aws_instance" "grafana_instance" {
     "${aws_security_group.grafana-ec2-out.id}",
   ]
 
-  #"${var.grafana-staging-ec2-in}",
-  #"${var.grafana-staging-ec2-out}",
-
   tags = {
     Name = "${title(var.Env-Name)} Grafana-Server"
     Env  = "${title(var.Env-Name)}"
