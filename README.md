@@ -143,6 +143,6 @@ the console
 
 ## License
 
-This codebase is released under [the MIT Licence][mit].
+This codebase is released under [the MIT License][mit].
 
-[mit]: LICENCE
+[mit]: LICENSE
