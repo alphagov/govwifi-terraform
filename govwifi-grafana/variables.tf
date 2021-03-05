@@ -65,4 +65,3 @@ variable "google-client-id" {
   description = "Credential used for Single Sign On"
   type        = "string"
 }
-
