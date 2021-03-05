@@ -140,3 +140,9 @@ the console
 3. Make your changes (with tests if applicable)
 4. Run `terraform fmt` to ensure code is formatted correctly
 5. Raise a pull request
+
+## License
+
+This codebase is released under [the MIT Licence][mit].
+
+[mit]: LICENCE
