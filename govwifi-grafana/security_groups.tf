@@ -17,7 +17,7 @@ resource "aws_security_group" "grafana-alb-in" {
 
 resource "aws_security_group" "grafana-alb-out" {
   name        = "grafana-alb-out-${var.Env-Name}"
-  description = "Allow Outbound Traffic from the staging Grafana ALB"
+  description = "Allow Outbound Traffic from the Grafana ALB"
   vpc_id      = "${var.vpc-id}"
 
   tags = {
@@ -34,7 +34,7 @@ resource "aws_security_group" "grafana-alb-out" {
 
 resource "aws_security_group" "grafana-ec2-in" {
   name        = "grafana-ec2-in-${var.Env-Name}"
-  description = "Allow Inbound Traffic To staging Grafana from the ALB"
+  description = "Allow Inbound Traffic To Grafana from the ALB"
   vpc_id      = "${var.vpc-id}"
 
   tags = {
@@ -58,7 +58,7 @@ resource "aws_security_group" "grafana-ec2-in" {
 
 resource "aws_security_group" "grafana-ec2-out" {
   name        = "grafana-ec2-out-${var.Env-Name}"
-  description = "Allow Outbound Traffic From the staging Grafana EC2 container"
+  description = "Allow Outbound Traffic From the Grafana EC2 container"
   vpc_id      = "${var.vpc-id}"
 
   tags = {
