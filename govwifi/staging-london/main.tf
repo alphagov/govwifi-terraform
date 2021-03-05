@@ -459,5 +459,4 @@ module "govwifi-grafana" {
   google-client-id     = "${var.google-client-id}"
   google-client-secret = "${var.google-client-secret}"
   grafana-admin        = "${var.grafana-admin}"
-
 }
