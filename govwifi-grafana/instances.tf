@@ -34,6 +34,7 @@ resource "aws_instance" "grafana_instance" {
     Name = "${title(var.Env-Name)} Grafana-Server"
     Env  = "${title(var.Env-Name)}"
   }
+
   lifecycle {
     create_before_destroy = true
 
