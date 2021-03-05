@@ -132,3 +132,11 @@ certificate, and apply terraform
 
 Once you have applied terraform, you should clean up the unused certificates in
 the console
+
+## How to contribute
+
+1. Fork the project
+2. Create a feature or fix branch
+3. Make your changes (with tests if applicable)
+4. Run `terraform fmt` to ensure code is formatted correctly
+5. Raise a pull request
