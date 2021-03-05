@@ -123,3 +123,5 @@ variable "user-replica-source-db" {
 variable "prometheus-IP-london" {}
 
 variable "prometheus-IP-ireland" {}
+
+variable "grafana-IP" {}

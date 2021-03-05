@@ -131,6 +131,7 @@ module "backend" {
   pp-domain-name        = "www.performance.service.gov.uk"
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
+  grafana-IP            = "${var.grafana-IP}/32"
 }
 
 # London Frontend ======DIFFERENT AWS REGION===================================
