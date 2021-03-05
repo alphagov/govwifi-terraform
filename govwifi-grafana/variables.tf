@@ -66,4 +66,3 @@ variable "google-client-id" {
   type        = "string"
 }
 
-variable "create_staging_route53_record" {}

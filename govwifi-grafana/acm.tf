@@ -1,6 +1,5 @@
 resource "aws_acm_certificate" "grafana-cert" {
   domain_name       = "${aws_route53_record.grafana-route53-record.name}"
-  count             = "${var.create_staging_route53_record}"
   validation_method = "DNS"
 
   depends_on = ["aws_route53_record.grafana-route53-record"]

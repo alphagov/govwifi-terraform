@@ -1,7 +1,6 @@
 resource "aws_route53_record" "grafana-route53-record" {
   zone_id = "${data.aws_route53_zone.zone.id}"
   name    = "grafana.${var.Env-Subdomain}.service.gov.uk"
-  count   = "${var.create_staging_route53_record}"
   type    = "A"
 
   alias {
