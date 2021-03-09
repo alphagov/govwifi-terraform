@@ -264,3 +264,8 @@ variable "prometheus-IP-london" {}
 variable "prometheus-IP-ireland" {}
 
 variable "grafana-IP" {}
+
+variable "administrator-IPs-list" {
+  type        = "list"
+  description = "Administrator allowed IPs (VPN IPs)"
+}

@@ -58,7 +58,9 @@ module "govwifi-account" {
   }
 
   source     = "../../govwifi-account"
-  account-id = "${var.aws-account-id}"
+  aws-account-id = "${var.aws-account-id}"
+  administrator-IPs   = "${var.administrator-IPs}"
+  administrator-IPs-list   = [ "${split(",", var.administrator-IPs)}" ]
 }
 
 # ====================================================================
