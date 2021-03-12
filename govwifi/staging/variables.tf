@@ -157,3 +157,5 @@ variable "dublin-radius-ip-addresses" {
 variable "prometheus-IP-london" {}
 
 variable "prometheus-IP-ireland" {}
+
+variable "grafana-IP" {}

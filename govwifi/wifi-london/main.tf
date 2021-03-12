@@ -57,8 +57,10 @@ module "govwifi-account" {
     "aws" = "aws.AWS-main"
   }
 
-  source     = "../../govwifi-account"
-  account-id = "${var.aws-account-id}"
+  source                 = "../../govwifi-account"
+  aws-account-id         = "${var.aws-account-id}"
+  administrator-IPs      = "${var.administrator-IPs}"
+  administrator-IPs-list = ["${split(",", var.administrator-IPs)}"]
 }
 
 # ====================================================================
@@ -131,6 +133,7 @@ module "backend" {
   pp-domain-name        = "www.performance.service.gov.uk"
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
+  grafana-IP            = "${var.grafana-IP}/32"
 }
 
 # London Frontend ======DIFFERENT AWS REGION===================================

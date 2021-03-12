@@ -118,6 +118,7 @@ module "backend" {
   pp-domain-name        = "www.performance.service.gov.uk"
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
+  grafana-IP            = "${var.grafana-IP}/32"
 }
 
 # London Frontend ==================================================================
@@ -425,4 +426,37 @@ module "govwifi-prometheus" {
   create_prometheus_server = 1
 
   prometheus-IPs = "${var.prometheus-IP-london}"
+}
+
+module "govwifi-grafana" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source        = "../../govwifi-grafana"
+  Env-Name      = "${var.Env-Name}"
+  Env-Subdomain = "${var.Env-Subdomain}"
+  aws-region    = "${var.aws-region}"
+
+  ssh-key-name = "${var.ssh-key-name}"
+
+  subnet-ids = "${module.backend.backend-subnet-ids}"
+
+  backend-subnet-ids = "${module.backend.backend-subnet-ids}"
+
+  be-admin-in = "${module.backend.be-admin-in}"
+
+  # Feature toggle so we only create the Grafana instance in Staging London
+  create_grafana_server = "1"
+
+  vpc-id = "${module.backend.backend-vpc-id}"
+
+  bastion-ips = [
+    "${split(",", var.bastion-server-IP)}",
+    "${split(",", var.backend-subnet-IPs)}",
+  ]
+
+  google-client-id     = "${var.google-client-id}"
+  google-client-secret = "${var.google-client-secret}"
+  grafana-admin        = "${var.grafana-admin}"
 }
