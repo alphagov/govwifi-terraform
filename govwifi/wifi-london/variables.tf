@@ -264,3 +264,9 @@ variable "prometheus-IP-london" {}
 variable "prometheus-IP-ireland" {}
 
 variable "grafana-IP" {}
+
+variable "grafana-admin" {}
+
+variable "google-client-secret" {}
+
+variable "google-client-id" {}
