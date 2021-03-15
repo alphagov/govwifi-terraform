@@ -456,7 +456,8 @@ module "govwifi-grafana" {
     "${split(",", var.backend-subnet-IPs)}",
   ]
 
-  google-client-id     = "${var.google-client-id}"
-  google-client-secret = "${var.google-client-secret}"
-  grafana-admin        = "${var.grafana-admin}"
+  google-client-id        = "${var.google-client-id}"
+  google-client-secret    = "${var.google-client-secret}"
+  grafana-admin           = "${var.grafana-admin}"
+  grafana-server-root-url = "${var.grafana-server-root-url}"
 }
