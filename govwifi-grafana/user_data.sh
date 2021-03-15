@@ -66,7 +66,7 @@ docker volume create grafana
 docker pull grafana/grafana:7.4.0
 docker run -id --restart=always -p 3000:3000 --name grafana --user root -v grafana:/var/lib/grafana -v grafana-etc:/etc/grafana \
 -e "GF_SECURITY_ADMIN_PASSWORD=${grafana-admin}" \
--e "GF_SERVER_ROOT_URL=https://grafana.staging.wifi.service.gov.uk" \
+-e "GF_SERVER_ROOT_URL=${grafana-server-root-url}" \
 -e "GF_AUTH_BASIC_ENABLED=true" \
 -e "GF_AUTH_GOOGLE_ENABLED=true" \
 -e "GF_AUTH_GOOGLE_ALLOW_SIGN_UP=true" \
