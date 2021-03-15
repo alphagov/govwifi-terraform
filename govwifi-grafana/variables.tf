@@ -65,3 +65,8 @@ variable "google-client-id" {
   description = "Credential used for Single Sign On"
   type        = "string"
 }
+variable "grafana-server-root-url" {
+  description = "Grafana Server Root URL"
+  type        = "string"
+}
+
