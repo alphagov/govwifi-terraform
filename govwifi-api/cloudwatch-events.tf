@@ -70,6 +70,14 @@ resource "aws_cloudwatch_event_rule" "smoke_test_user_deletion_event" {
   is_enabled          = true
 }
 
+resource "aws_cloudwatch_event_rule" "trim_sessions_database_table_event" {
+  count               = "${var.event-rule-count}"
+  name                = "${var.Env-Name}-trim-sessions-database-table"
+  description         = "Triggers daily 00:00 am UTC"
+  schedule_expression = "cron(0 0 * * ? *)"
+  is_enabled          = true
+}
+
 resource "aws_cloudwatch_event_rule" "daily_gdpr_set_user_last_login" {
   count               = "${var.event-rule-count}"
   name                = "${var.Env-Name}-daily-gdpr-set-user-last-login"
