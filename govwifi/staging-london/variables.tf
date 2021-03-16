@@ -272,3 +272,5 @@ variable "grafana-admin" {}
 variable "google-client-secret" {}
 
 variable "google-client-id" {}
+
+variable "grafana-server-root-url" {}
