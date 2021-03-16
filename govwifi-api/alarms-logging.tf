@@ -32,7 +32,8 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-low" {
   namespace           = "AWS/ECS"
   period              = "300"
   statistic           = "Average"
-  threshold           = "10"
+  threshold           = "1"
+  datapoints_to_alarm = "2"
 
   dimensions = {
     ClusterName = "${aws_ecs_cluster.api-cluster.name}"
@@ -46,19 +47,20 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-low" {
   ]
 }
 
-resource "aws_cloudwatch_metric_alarm" "radius-access-reject" {
-  count               = "${var.alarm-count}"
-  alarm_name          = "${var.Env-Name}-radius-access-reject"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = "3"
-  period              = "60"
-  threshold           = "1000"
-  alarm_description   = "Access rejections has exceeded 1000"
-  metric_name         = "${aws_cloudwatch_log_metric_filter.radius-access-reject.metric_transformation.0.name}"
-  namespace           = "${local.logging_api_namespace}"
-  statistic           = "Sum"
+#resource "aws_cloudwatch_metric_alarm" "radius-access-reject" {
+#  count               = "${var.alarm-count}"
+#  alarm_name          = "${var.Env-Name}-radius-access-reject"
+#  comparison_operator = "GreaterThanThreshold"
+#  evaluation_periods  = "3"
+#  period              = "60"
+#  threshold           = "1000"
+#  alarm_description   = "Access rejections has exceeded 1000"
+#  metric_name         = "${aws_cloudwatch_log_metric_filter.radius-access-reject.metric_transformation.0.name}"
+#  namespace           = "${local.logging_api_namespace}"
+#  statistic           = "Sum"
+#
+#  alarm_actions = [
+#    "${var.devops-notifications-arn}",
+#  ]
+#}
 
-  alarm_actions = [
-    "${var.devops-notifications-arn}",
-  ]
-}

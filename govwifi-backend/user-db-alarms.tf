@@ -47,7 +47,8 @@ resource "aws_cloudwatch_metric_alarm" "user_db_storagealarm" {
   namespace           = "AWS/RDS"
   period              = "60"
   statistic           = "Minimum"
-  threshold           = "21474836480"
+  threshold           = "32212254720"
+  datapoints_to_alarm = "1"
 
   dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.users_db.identifier}"
@@ -147,7 +148,8 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_storagealarm" {
   namespace           = "AWS/RDS"
   period              = "60"
   statistic           = "Minimum"
-  threshold           = "21474836480"
+  threshold           = "16106127360"
+  datapoints_to_alarm = "1"
 
   dimensions = {
     DBInstanceIdentifier = "${aws_db_instance.users_read_replica.identifier}"
