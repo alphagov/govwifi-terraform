@@ -1,0 +1,802 @@
+resource "aws_cloudwatch_metric_alarm" "EAP-Outer-and-inner-identities-are-the-same" {
+    alarm_name          = "EAP Outer and inner identities are the same"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "EAP_Credentials_the_same"
+    namespace           = "LogMetrics"
+    period              = "86400"
+    statistic           = "Maximum"
+    threshold           = "1.0"
+    alarm_description   = "WLC using the real identity for the anonymous identity"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-newsite-config"]
+}
+
+resource "aws_cloudwatch_metric_alarm" "GovWifi---Production---admin-alb-wifi-Node-Unhealthy" {
+    alarm_name          = "GovWifi - Production - admin-alb-wifi Node Unhealthy"
+    comparison_operator = "GreaterThanThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "UnHealthyHostCount"
+    namespace           = "AWS/ApplicationELB"
+    period              = "300"
+    statistic           = "Minimum"
+    threshold           = "0.0"
+    alarm_description   = "Failure of any ALB Node in \"admin-alb-wifi\" consistently for a 5 minute period\n\nCheck the end points of the ALB to see if there is an issue"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:GovWifi-Capacity-Alert"]
+    dimensions {
+        TargetGroup = "targetgroup/admin-wifi-fg-tg/9148436d35702539"
+        LoadBalancer = "app/admin-alb-wifi/848c7a78a08a03c4"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "GovWifi---Production---api-alb-wifi-Node-Unhealthy" {
+    alarm_name          = "GovWifi - Production - api-alb-wifi Node Unhealthy"
+    comparison_operator = "GreaterThanThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "UnHealthyHostCount"
+    namespace           = "AWS/ApplicationELB"
+    period              = "300"
+    statistic           = "Minimum"
+    threshold           = "0.0"
+    alarm_description   = "Failure of any ALB Node in \"api-alb-wifi\" consistently for a 5 minute period\n\nCheck the end points of the ALB to see if there is an issue"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:GovWifi-Capacity-Alert"]
+    dimensions {
+        TargetGroup = "targetgroup/api-lb-tg-wifi/6e35c517d9b7e3a0"
+        LoadBalancer = "app/api-alb-wifi/8d2443984f749133"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "GovWifi---Production---user-signup-api-wifi-Node-Unhealthy" {
+    alarm_name          = "GovWifi - Production - user-signup-api-wifi Node Unhealthy"
+    comparison_operator = "GreaterThanThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "UnHealthyHostCount"
+    namespace           = "AWS/ApplicationELB"
+    period              = "300"
+    statistic           = "Minimum"
+    threshold           = "0.0"
+    alarm_description   = "Failure of any ALB Node in \"user-signup-api-wifi\" consistently for a 5 minute period\n\nCheck the end points of the ALB to see if there is an issue\nCheck the end points to see if there is an issue"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:GovWifi-Capacity-Alert"]
+    dimensions {
+        TargetGroup = "targetgroup/user-signup-api-wifi/f598f58edcbd2fcf"
+        LoadBalancer = "app/user-signup-api-wifi/66c01add80658024"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "GovWifi---Staging---admin-alb-staging-Node-Unhealthy" {
+    alarm_name          = "GovWifi - Staging - admin-alb-staging Node Unhealthy"
+    comparison_operator = "GreaterThanThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "UnHealthyHostCount"
+    namespace           = "AWS/ApplicationELB"
+    period              = "900"
+    statistic           = "Minimum"
+    threshold           = "0.0"
+    alarm_description   = "Failure of any ALB Node in \"admin-alb-staging\" consistently for a 15 minute period\n\nCheck the end points of the ALB to see if there is an issue"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:GovWifi-Capacity-Alert"]
+    dimensions {
+        TargetGroup = "targetgroup/admin-staging-fg-tg/0565fa2ac4c13f39"
+        LoadBalancer = "app/admin-alb-staging/1adbbb96bf303e76"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "GovWifi---Staging---api-alb-staging-Node-Unhealthy" {
+    alarm_name          = "GovWifi - Staging - api-alb-staging Node Unhealthy"
+    comparison_operator = "GreaterThanThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "UnHealthyHostCount"
+    namespace           = "AWS/ApplicationELB"
+    period              = "900"
+    statistic           = "Minimum"
+    threshold           = "0.0"
+    alarm_description   = "Failure of any ALB Node in \"api-alb-staging\" consistently for a 15 minute period\n\nCheck the end points of the ALB to see if there is an issue"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:GovWifi-Capacity-Alert"]
+    dimensions {
+        TargetGroup = "targetgroup/api-lb-tg-staging/9c8b89fbd21fab9f"
+        LoadBalancer = "app/api-alb-staging/6bf723c6f5e19383"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "GovWifi---Staging---user-signup-api-staging-Node-Unhealthy" {
+    alarm_name          = "GovWifi - Staging - user-signup-api-staging Node Unhealthy"
+    comparison_operator = "GreaterThanThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "UnHealthyHostCount"
+    namespace           = "AWS/ApplicationELB"
+    period              = "900"
+    statistic           = "Minimum"
+    threshold           = "0.0"
+    alarm_description   = "Failure of any ALB Node in \"user-signup-api-staging\" consistently for a 15 minute period\n\nCheck the end points of the ALB to see if there is an issue"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:GovWifi-Capacity-Alert"]
+    dimensions {
+        TargetGroup = "targetgroup/user-signup-api-staging/8127616bf1d96e4b"
+        LoadBalancer = "app/user-signup-api-staging/fe92a6ff88e02762"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "Read-Replica-lag-is-over-5-minutes" {
+    alarm_name          = "Read Replica lag is over 5 minutes"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "ReplicaLag"
+    namespace           = "AWS/RDS"
+    period              = "300"
+    statistic           = "Average"
+    threshold           = "300.0"
+    alarm_description   = ""
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-live-critical"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-db-rr"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "Shared-secret-is-incorrect" {
+    alarm_name          = "Shared-secret-is-incorrect"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "Shared-secret-is-incorrect"
+    namespace           = "LogMetrics"
+    period              = "86400"
+    statistic           = "Sum"
+    threshold           = "1.0"
+    alarm_description   = "Newsite - RADIUS Shared secret entered incorrectly"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:Newsite_Config"]
+}
+
+resource "aws_cloudwatch_metric_alarm" "Staging-EAP-Outer-and-inner-identities-are-the-same" {
+    alarm_name          = "Staging-EAP Outer and inner identities are the same"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "Staging_EAP_Credentials_the_same"
+    namespace           = "LogMetrics"
+    period              = "86400"
+    statistic           = "Maximum"
+    threshold           = "1.0"
+    alarm_description   = "WLC using the real identity for the anonymous identity"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:GovWifi-Staging"]
+}
+
+resource "aws_cloudwatch_metric_alarm" "Staging-Shared-secret-is-incorrect" {
+    alarm_name          = "Staging-Shared-secret-is-incorrect"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "Staging_Shared-secret-is-incorrect"
+    namespace           = "LogMetrics"
+    period              = "86400"
+    statistic           = "Maximum"
+    threshold           = "1.0"
+    alarm_description   = "Newsite - RADIUS Shared secret entered incorrectly"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:GovWifi-Staging"]
+}
+
+resource "aws_cloudwatch_metric_alarm" "Wifi-Burst-balance-below-45-" {
+    alarm_name          = "Wifi Burst balance below 45%"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "BurstBalance"
+    namespace           = "AWS/RDS"
+    period              = "300"
+    statistic           = "Sum"
+    threshold           = "45.0"
+    alarm_description   = ""
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-live-critical"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-wifi-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "Wifi-RR-Burst-balance-is-below-45-" {
+    alarm_name          = "Wifi RR Burst balance is below 45%"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "BurstBalance"
+    namespace           = "AWS/RDS"
+    period              = "300"
+    statistic           = "Average"
+    threshold           = "45.0"
+    alarm_description   = ""
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-live-critical"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-db-rr"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "Wifi-Cant-connect-to-MySQL" {
+    alarm_name          = "Wifi-Cant-connect-to-MySQL"
+    comparison_operator = "GreaterThanThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "Wifi-Cant-connect-to-MySQL"
+    namespace           = "LogMetrics"
+    period              = "300"
+    statistic           = "Sum"
+    threshold           = "0.0"
+    alarm_description   = "Backend connectivity with RDS lost"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:GovWifi-Critical-Failure"]
+}
+
+resource "aws_cloudwatch_metric_alarm" "production-user--db-cpu-alarm" {
+    alarm_name          = "production-user--db-cpu-alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "CPUUtilization"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Maximum"
+    threshold           = "80.0"
+    alarm_description   = "This metric monitors the cpu utilization of the User DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-critical"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-production-user-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "production-user-db-memory-alarm" {
+    alarm_name          = "production-user-db-memory-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeableMemory"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "524288000.0"
+    alarm_description   = "This metric monitors the freeable memory available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-critical"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-production-user-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "production-user-db-storage-alarm" {
+    alarm_name          = "production-user-db-storage-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeStorageSpace"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "32212254720.0"
+    alarm_description   = "This metric monitors the storage space available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-production-user-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "production-user-rr-burstbalanace-alarm" {
+    alarm_name          = "production-user-rr-burstbalanace-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "BurstBalance"
+    namespace           = "AWS/RDS"
+    period              = "180"
+    statistic           = "Minimum"
+    threshold           = "45.0"
+    alarm_description   = "This metric monitors the IOPS burst balance available for the DB read replica."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-production-user-rr"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "production-user-rr-cpu-alarm" {
+    alarm_name          = "production-user-rr-cpu-alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "CPUUtilization"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Maximum"
+    threshold           = "80.0"
+    alarm_description   = "This metric monitors the cpu utilization of the DB read replica."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-production-user-rr"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "production-user-rr-lagging-alarm" {
+    alarm_name          = "production-user-rr-lagging-alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "2"
+    metric_name         = "ReplicaLag"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "600.0"
+    alarm_description   = "This metric monitors the Replication Lag for the DB read replica."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-production-user-rr"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "production-user-rr-memory-alarm" {
+    alarm_name          = "production-user-rr-memory-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeableMemory"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "524288000.0"
+    alarm_description   = "This metric monitors the freeable memory available for the DB read replica."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-production-user-rr"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "production-user-rr-storage-alarm" {
+    alarm_name          = "production-user-rr-storage-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeStorageSpace"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "16106127360.0"
+    alarm_description   = "This metric monitors the storage space available for the DB read replica."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-production-user-rr"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-admin-db-burstbalanace-alarm" {
+    alarm_name          = "staging-admin-db-burstbalanace-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "BurstBalance"
+    namespace           = "AWS/RDS"
+    period              = "180"
+    statistic           = "Minimum"
+    threshold           = "45.0"
+    alarm_description   = "This metric monitors the IOPS burst balance available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-admin-staging-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-admin-db-cpu-alarm" {
+    alarm_name          = "staging-admin-db-cpu-alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "CPUUtilization"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Maximum"
+    threshold           = "80.0"
+    alarm_description   = "This metric monitors the cpu utilization of the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-admin-staging-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-admin-db-memory-alarm" {
+    alarm_name          = "staging-admin-db-memory-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeableMemory"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "524288000.0"
+    alarm_description   = "This metric monitors the freeable memory available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-admin-staging-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-admin-db-storage-alarm" {
+    alarm_name          = "staging-admin-db-storage-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeStorageSpace"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "21474836480.0"
+    alarm_description   = "This metric monitors the storage space available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-admin-staging-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-bastion-status-alarm" {
+    alarm_name          = "staging-bastion-status-alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "2"
+    metric_name         = "StatusCheckFailed"
+    namespace           = "AWS/EC2"
+    period              = "60"
+    statistic           = "Maximum"
+    threshold           = "1.0"
+    alarm_description   = "This metric monitors the status of the bastion server."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+    dimensions {
+        InstanceId = "i-0dbb0bf92dab2a428"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-db-burstbalanace-alarm" {
+    alarm_name          = "staging-db-burstbalanace-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "BurstBalance"
+    namespace           = "AWS/RDS"
+    period              = "180"
+    statistic           = "Minimum"
+    threshold           = "45.0"
+    alarm_description   = "This metric monitors the IOPS burst balance available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-staging-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-db-cpu-alarm" {
+    alarm_name          = "staging-db-cpu-alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "CPUUtilization"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Maximum"
+    threshold           = "80.0"
+    alarm_description   = "This metric monitors the cpu utilization of the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-staging-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-db-memory-alarm" {
+    alarm_name          = "staging-db-memory-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeableMemory"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "524288000.0"
+    alarm_description   = "This metric monitors the freeable memory available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-staging-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-db-storage-alarm" {
+    alarm_name          = "staging-db-storage-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeStorageSpace"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "32212254720.0"
+    alarm_description   = "This metric monitors the storage space available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-staging-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-radius-access-reject" {
+    alarm_name          = "staging-radius-access-reject"
+    comparison_operator = "GreaterThanThreshold"
+    evaluation_periods  = "3"
+    metric_name         = "staging-radius-access-reject-count"
+    namespace           = "staging-logging-api"
+    period              = "60"
+    statistic           = "Sum"
+    threshold           = "1000.0"
+    alarm_description   = "Access rejections has exceeded 1000"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-shared-secret-incorrect" {
+    alarm_name          = "staging-shared-secret-incorrect"
+    comparison_operator = "GreaterThanThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "auth-shared-secret-incorrect-count"
+    namespace           = "staging-frontend"
+    period              = "86400"
+    statistic           = "Sum"
+    threshold           = "0.0"
+    alarm_description   = ""
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-user--db-cpu-alarm" {
+    alarm_name          = "staging-user--db-cpu-alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "CPUUtilization"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Maximum"
+    threshold           = "80.0"
+    alarm_description   = "This metric monitors the cpu utilization of the User DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-staging-user-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-user-db-memory-alarm" {
+    alarm_name          = "staging-user-db-memory-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeableMemory"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "524288000.0"
+    alarm_description   = "This metric monitors the freeable memory available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-staging-user-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "staging-user-db-storage-alarm" {
+    alarm_name          = "staging-user-db-storage-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeStorageSpace"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "21474836480.0"
+    alarm_description   = "This metric monitors the storage space available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-staging"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-staging-user-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "user-signup-CPU-usage-high--snowflake-" {
+    alarm_name          = "user signup CPU usage high (snowflake)"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "3"
+    metric_name         = "CPUUtilization"
+    namespace           = "AWS/ECS"
+    period              = "60"
+    statistic           = "Average"
+    threshold           = "5.0"
+    alarm_description   = "user signup CPU high"
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-live-capacity"]
+    dimensions {
+        ClusterName = "wifi-api-cluster"
+        ServiceName = "user-signup-api-service-wifi"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-admin-db-burstbalanace-alarm" {
+    alarm_name          = "wifi-admin-db-burstbalanace-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "BurstBalance"
+    namespace           = "AWS/RDS"
+    period              = "180"
+    statistic           = "Minimum"
+    threshold           = "45.0"
+    alarm_description   = "This metric monitors the IOPS burst balance available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-critical"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-admin-wifi-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-admin-db-cpu-alarm" {
+    alarm_name          = "wifi-admin-db-cpu-alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "CPUUtilization"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Maximum"
+    threshold           = "80.0"
+    alarm_description   = "This metric monitors the cpu utilization of the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-critical"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-admin-wifi-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-admin-db-memory-alarm" {
+    alarm_name          = "wifi-admin-db-memory-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeableMemory"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "524288000.0"
+    alarm_description   = "This metric monitors the freeable memory available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-critical"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-admin-wifi-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-admin-db-storage-alarm" {
+    alarm_name          = "wifi-admin-db-storage-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeStorageSpace"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "16106127360.0"
+    alarm_description   = "This metric monitors the storage space available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-admin-wifi-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-bastion-status-alarm" {
+    alarm_name          = "wifi-bastion-status-alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "2"
+    metric_name         = "StatusCheckFailed"
+    namespace           = "AWS/EC2"
+    period              = "60"
+    statistic           = "Maximum"
+    threshold           = "1.0"
+    alarm_description   = "This metric monitors the status of the bastion server."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        InstanceId = "i-0f7385468ffb08b85"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-db-burstbalanace-alarm" {
+    alarm_name          = "wifi-db-burstbalanace-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "BurstBalance"
+    namespace           = "AWS/RDS"
+    period              = "180"
+    statistic           = "Minimum"
+    threshold           = "45.0"
+    alarm_description   = "This metric monitors the IOPS burst balance available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-critical"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-wifi-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-db-cpu-alarm" {
+    alarm_name          = "wifi-db-cpu-alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "CPUUtilization"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Maximum"
+    threshold           = "80.0"
+    alarm_description   = "This metric monitors the cpu utilization of the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-critical"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-wifi-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-db-memory-alarm" {
+    alarm_name          = "wifi-db-memory-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeableMemory"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "524288000.0"
+    alarm_description   = "This metric monitors the freeable memory available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-critical"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-wifi-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-db-storage-alarm" {
+    alarm_name          = "wifi-db-storage-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeStorageSpace"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "32212254720.0"
+    alarm_description   = "This metric monitors the storage space available for the DB."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-wifi-db"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-rr-burstbalanace-alarm" {
+    alarm_name          = "wifi-rr-burstbalanace-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "BurstBalance"
+    namespace           = "AWS/RDS"
+    period              = "180"
+    statistic           = "Minimum"
+    threshold           = "45.0"
+    alarm_description   = "This metric monitors the IOPS burst balance available for the DB read replica."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-db-rr"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-rr-cpu-alarm" {
+    alarm_name          = "wifi-rr-cpu-alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "CPUUtilization"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Maximum"
+    threshold           = "80.0"
+    alarm_description   = "This metric monitors the cpu utilization of the DB read replica."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-db-rr"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-rr-lagging-alarm" {
+    alarm_name          = "wifi-rr-lagging-alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods  = "2"
+    metric_name         = "ReplicaLag"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "30.0"
+    alarm_description   = "This metric monitors the Replication Lag for the DB read replica."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-db-rr"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-rr-memory-alarm" {
+    alarm_name          = "wifi-rr-memory-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeableMemory"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "524288000.0"
+    alarm_description   = "This metric monitors the freeable memory available for the DB read replica."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-db-rr"
+    }
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi-rr-storage-alarm" {
+    alarm_name          = "wifi-rr-storage-alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods  = "1"
+    metric_name         = "FreeStorageSpace"
+    namespace           = "AWS/RDS"
+    period              = "60"
+    statistic           = "Minimum"
+    threshold           = "32212254720.0"
+    alarm_description   = "This metric monitors the storage space available for the DB read replica."
+    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
+    dimensions {
+        DBInstanceIdentifier = "wifi-db-rr"
+    }
+}
+
