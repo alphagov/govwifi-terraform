@@ -86,6 +86,38 @@ resource "aws_iam_user_group_membership" "govwifi-jenkins-terraform" {
   ]
 }
 
+resource "aws_iam_user_group_membership" "govwifi-pipeline-terraform" {
+  user = "govwifi-pipeline-terraform"
+
+  groups = [
+    "AWS-Admin",
+  ]
+}
+
+resource "aws_iam_user_group_membership" "govwifi-pipeline-deploy-prod" {
+  user = "govwifi-pipeline-deploy-prod"
+
+  groups = [
+    "GovWifi-Pipeline",
+  ]
+}
+
+resource "aws_iam_user_group_membership" "govwifi-pipeline-deploy-staging" {
+  user = "govwifi-pipeline-deploy-staging"
+
+  groups = [
+    "GovWifi-Pipeline",
+  ]
+}
+
+resource "aws_iam_user_group_membership" "govwifi-pipeline-deploy-admin" {
+  user = "govwifi-pipeline-deploy-admin"
+
+  groups = [
+    "GovWifi-Pipeline",
+  ]
+}
+
 resource "aws_iam_user_group_membership" "monitor" {
   user = "monitor"
 
