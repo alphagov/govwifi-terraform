@@ -35,6 +35,13 @@ resource "aws_iam_user" "govwifi-pipeline-deploy-staging" {
   force_destroy = false
 }
 
+# New User from above for smoketest
+resource "aws_iam_user" "govwifi-pipeline-deploy-smoketest" {
+  name          = "govwifi-pipeline-deploy-smoketest"
+  path          = "/"
+  force_destroy = false
+}
+
 # Old username - rename from jenkins to pipeline to make agnostic
 resource "aws_iam_user" "govwifi-jenkins-terraform" {
   name          = "govwifi-jenkins-terraform"
@@ -104,6 +111,14 @@ resource "aws_iam_user_group_membership" "govwifi-pipeline-deploy-prod" {
 
 resource "aws_iam_user_group_membership" "govwifi-pipeline-deploy-staging" {
   user = "govwifi-pipeline-deploy-staging"
+
+  groups = [
+    "GovWifi-Pipeline",
+  ]
+}
+
+resource "aws_iam_user_group_membership" "govwifi-pipeline-deploy-smoketest" {
+  user = "govwifi-pipeline-deploy-smoketest"
 
   groups = [
     "GovWifi-Pipeline",
