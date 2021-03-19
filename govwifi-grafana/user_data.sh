@@ -70,14 +70,14 @@ docker run -id --restart=always -p 3000:3000 --name grafana --user root -v grafa
 -e "GF_AUTH_BASIC_ENABLED=true" \
 -e "GF_AUTH_GOOGLE_ENABLED=true" \
 -e "GF_AUTH_GOOGLE_ALLOW_SIGN_UP=true" \
--e "GF_SECURITY_COOKIE_SECURE=true" \
+-e "GF_SECURITY_COOKIE_SECURE=false" \
 -e "GF_SESSION_COOKIE_SECURE=true" \
 -e "GF_SERVER_HTTP_ADDR=0.0.0.0" \
 -e "GF_AUTH_GOOGLE_AUTH_URL=https://accounts.google.com/o/oauth2/auth" \
 -e "GF_AUTH_GOOGLE_TOKEN_URL=https://accounts.google.com/o/oauth2/token" \
 -e "GF_AUTH_GOOGLE_CLIENT_SECRET=${google-client-secret}" \
 -e "GF_AUTH_GOOGLE_CLIENT_ID=${google-client-id}" \
--e "GF_ALLOWED_DOMAINS=digital.cabinet-office.gov.uk" \
+-e "GF_AUTH_GOOGLE_ALLOWED_DOMAINS=digital.cabinet-office.gov.uk" \
 grafana/grafana:7.4.0
 
 echo 'Installing awscli'
