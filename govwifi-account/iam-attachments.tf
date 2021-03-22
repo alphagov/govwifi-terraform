@@ -17,3 +17,13 @@ resource "aws_iam_group_policy_attachment" "AmazonEC2ContainerRegistryPowerUser-
   group      = "GovWifi-Pipeline"
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
 }
+
+resource "aws_iam_group_policy_attachment" "read-wordlist-policy_GovWifi-Pipeline" {
+  group      = "GovWifi-Pipeline"
+  policy_arn = "arn:aws:iam::${var.aws-account-id}:policy/read-wordlist-policy"
+}
+
+resource "aws_iam_group_policy_attachment" "can-restart-ecs-services_GovWifi-Pipeline" {
+  group      = "GovWifi-Pipeline"
+  policy_arn = "arn:aws:iam::${var.aws-account-id}:policy/can-restart-ecs-services"
+}
