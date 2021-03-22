@@ -1475,8 +1475,8 @@ POLICY
 
 resource "aws_iam_policy" "can-restart-ecs-services" {
   name        = "can-restart-ecs-services"
-  path        = "/service-role/"
-  description = "Used by deploy pipeline group"
+  path        = "/"
+  description = "Allows deploy pipeline group to restart elasticsearch services"
 
   policy = <<POLICY
 {
@@ -1495,8 +1495,8 @@ POLICY
 
 resource "aws_iam_policy" "read-wordlist-policy" {
   name        = "read-wordlist-policy"
-  path        = "/service-role/"
-  description = "Used by deploy pipeline group"
+  path        = "/"
+  description = "Allows deploy pipeline group to read wordlist"
 
   policy = <<POLICY
 {
