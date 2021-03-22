@@ -1472,3 +1472,59 @@ resource "aws_iam_policy" "govwifi-staging-tfstate-nodelete" {
 }
 POLICY
 }
+
+resource "aws_iam_policy" "can-restart-ecs-services" {
+  name        = "can-restart-ecs-services"
+  path        = "/service-role/"
+  description = "Used by deploy pipeline group"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": "ecs:*",
+      "Resource": "*"
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_policy" "read-wordlist-policy" {
+  name        = "read-wordlist-policy"
+  path        = "/service-role/"
+  description = "Used by deploy pipeline group"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucketVersions",
+        "s3:GetBucketVersioning",
+        "s3:ListBucket"
+      ],
+      "Resource": "arn:aws:s3:::govwifi-wordlist"
+    },
+    {
+      "Sid": "VisualEditor1",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:PutObjectAcl",
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:PutObjectVersionAcl"
+      ],
+      "Resource": "arn:aws:s3:::govwifi-wordlist/*"
+    }
+  ]
+}
+POLICY
+}
