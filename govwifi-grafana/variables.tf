@@ -70,3 +70,5 @@ variable "grafana-server-root-url" {
   description = "Grafana Server Root URL"
   type        = "string"
 }
+
+variable "administrator-IPs" {}
