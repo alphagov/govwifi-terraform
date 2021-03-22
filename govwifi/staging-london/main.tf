@@ -463,3 +463,19 @@ module "govwifi-grafana" {
   grafana-admin           = "${var.grafana-admin}"
   grafana-server-root-url = "${var.grafana-server-root-url}"
 }
+
+module "govwifi-elasticsearch" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source        = "../../govwifi-elasticsearch"
+  Env-Name      = "${var.Env-Name}"
+  Env-Subdomain = "${var.Env-Subdomain}"
+  aws-region    = "${var.aws-region}"
+
+  vpc-id         = "${module.backend.backend-vpc-id}"
+  vpc-cidr-block = "${module.backend.vpc-cidr-block}"
+
+  backend-subnet-id = "${element(module.backend.backend-subnet-ids, 0)}"
+}

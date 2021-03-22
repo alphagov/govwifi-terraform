@@ -21,3 +21,7 @@ output "rds-monitoring-role" {
 output "be-admin-in" {
   value = "${aws_security_group.be-admin-in.id}"
 }
+
+output "vpc-cidr-block" {
+  value = "${var.vpc-cidr-block}"
+}
