@@ -277,5 +277,3 @@ variable "google-client-secret" {}
 variable "google-client-id" {}
 
 variable "grafana-server-root-url" {}
-
-variable "govwifi-monitoring-chatbot-endpoint" {}

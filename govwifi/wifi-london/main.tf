@@ -493,19 +493,14 @@ module "govwifi-grafana" {
   grafana-server-root-url = "${var.grafana-server-root-url}"
 }
 
-module "govwifi-monitoring" {
+module "govwifi-slack-alerts" {
   providers = {
     "aws" = "aws.AWS-main"
   }
 
-  source = "../../govwifi-monitoring"
+  source = "../../govwifi-slack-alerts"
 
-  govwifi-monitoring-chatbot-endpoint = "${var.govwifi-monitoring-chatbot-endpoint}"
-  aws-region                          = "${var.aws-region}"
-  aws-account-id                      = "${var.aws-account-id}"
-  critical_notifications_topic_arn    = "${module.critical-notifications.topic-arn}"
-
-  # env-name   = "${var.Env-Name}"
-  # topic-name = "govwifi-wifi-critical"
-  # emails     = ["${var.critical-notification-email}"]
+  critical-notifications-topic-arn         = "${module.critical-notifications.topic-arn}"
+  capacity-notifications-topic-arn         = "${module.capacity-notifications.topic-arn}"
+  route53-critical-notifications-topic-arn = "${module.route53-critical-notifications.topic-arn}"
 }
