@@ -492,3 +492,20 @@ module "govwifi-grafana" {
   grafana-admin           = "${var.grafana-admin}"
   grafana-server-root-url = "${var.grafana-server-root-url}"
 }
+
+module "govwifi-monitoring" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source = "../../govwifi-monitoring"
+
+  govwifi-monitoring-chatbot-endpoint = "${var.govwifi-monitoring-chatbot-endpoint}"
+  aws-region                          = "${var.aws-region}"
+  aws-account-id                      = "${var.aws-account-id}"
+  critical_notifications_topic_arn    = "${module.critical-notifications.topic-arn}"
+
+  # env-name   = "${var.Env-Name}"
+  # topic-name = "govwifi-wifi-critical"
+  # emails     = ["${var.critical-notification-email}"]
+}
