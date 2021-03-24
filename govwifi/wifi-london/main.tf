@@ -492,3 +492,15 @@ module "govwifi-grafana" {
   grafana-admin           = "${var.grafana-admin}"
   grafana-server-root-url = "${var.grafana-server-root-url}"
 }
+
+module "govwifi-slack-alerts" {
+  providers = {
+    "aws" = "aws.AWS-main"
+  }
+
+  source = "../../govwifi-slack-alerts"
+
+  critical-notifications-topic-arn         = "${module.critical-notifications.topic-arn}"
+  capacity-notifications-topic-arn         = "${module.capacity-notifications.topic-arn}"
+  route53-critical-notifications-topic-arn = "${module.route53-critical-notifications.topic-arn}"
+}
