@@ -3,7 +3,7 @@ resource "aws_appautoscaling_target" "logging-ecs-target" {
   service_namespace  = "ecs"
   resource_id        = "service/${aws_ecs_cluster.api-cluster.name}/${aws_ecs_service.logging-api-service.name}"
   max_capacity       = 20
-  min_capacity       = 2
+  min_capacity       = 3
   scalable_dimension = "ecs:service:DesiredCount"
 }
 
