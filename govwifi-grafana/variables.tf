@@ -71,4 +71,16 @@ variable "grafana-server-root-url" {
   type        = "string"
 }
 
+variable "grafana-drive-name" {
+  description = "Name of Grafana Persistent Drive Device Name"
+  type        = "string"
+  default     = "/dev/xvdp"
+}
+
+variable "grafana-docker-version" {
+  description = "Grafana Docker Version Number"
+  type        = "string"
+  default     = "7.4.0"
+}
+
 variable "administrator-IPs" {}

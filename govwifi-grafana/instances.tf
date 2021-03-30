@@ -58,7 +58,7 @@ resource "aws_ebs_volume" "grafana_ebs" {
 resource "aws_volume_attachment" "grafana_ebs_attach" {
   count       = "${var.create_grafana_server}"
   depends_on  = ["aws_ebs_volume.grafana_ebs"]
-  device_name = "/dev/xvdp"
+  device_name = "${var.grafana-device-name}"
   volume_id   = "${aws_ebs_volume.grafana_ebs.id}"
   instance_id = "${aws_instance.grafana_instance.id}"
 }
@@ -67,10 +67,12 @@ data "template_file" "grafana_user_data" {
   template = "${file("${path.module}/user_data.sh")}"
 
   vars = {
-    grafana-log-group       = "${var.Env-Name}-grafana-log-group"
-    grafana-admin           = "${var.grafana-admin}"
-    google-client-secret    = "${var.google-client-secret}"
-    google-client-id        = "${var.google-client-id}"
-    grafana-server-root-url = "${var.grafana-server-root-url}"
+    grafana_log_group       = "${var.Env-Name}-grafana-log-group"
+    grafana_admin           = "${var.grafana-admin}"
+    google_client_secret    = "${var.google-client-secret}"
+    google_client_id        = "${var.google-client-id}"
+    grafana_server_root_url = "${var.grafana-server-root-url}"
+    grafana_device_name     = "${var.grafana-device-name}"
+    grafana_docker_version  = "${var.grafana-docker-version}"
   }
 }
