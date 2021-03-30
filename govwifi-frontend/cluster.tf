@@ -11,18 +11,18 @@ resource "aws_cloudwatch_log_group" "frontend-log-group" {
 }
 
 resource "aws_ecr_repository" "govwifi-frontend-ecr" {
-  count = "${var.create-ecr}"
+  count = var.create-ecr
   name  = "govwifi/frontend"
 }
 
 resource "aws_ecr_repository" "govwifi-raddb-ecr" {
-  count = "${var.create-ecr}"
+  count = var.create-ecr
   name  = "govwifi/raddb"
 }
 
 resource "aws_ecs_task_definition" "radius-task" {
   family        = "radius-task-${var.Env-Name}"
-  task_role_arn = "${aws_iam_role.ecs-task-role.arn}"
+  task_role_arn = aws_iam_role.ecs-task-role.arn
 
   volume {
     name = "raddb-certs"
@@ -133,7 +133,7 @@ resource "aws_ecs_task_definition" "radius-task" {
         "value": "s3://${var.admin-bucket-name}"
       },{
         "name": "CERT_STORE_BUCKET",
-        "value": "s3://${aws_s3_bucket.frontend-cert-bucket.bucket}"
+        "value": "s3://${aws_s3_bucket.frontend-cert-bucket[0].bucket}"
       }
     ],
     "image": "${var.raddb-docker-image}",
@@ -151,16 +151,18 @@ resource "aws_ecs_task_definition" "radius-task" {
   }
 ]
 EOF
+
 }
 
 resource "aws_ecs_service" "frontend-service" {
   name            = "frontend-service-${var.Env-Name}"
-  cluster         = "${aws_ecs_cluster.frontend-cluster.id}"
-  task_definition = "${aws_ecs_task_definition.radius-task.arn}"
-  desired_count   = "${var.radius-instance-count}"
+  cluster         = aws_ecs_cluster.frontend-cluster.id
+  task_definition = aws_ecs_task_definition.radius-task.arn
+  desired_count   = var.radius-instance-count
 
   ordered_placement_strategy {
     type  = "spread"
     field = "instanceId"
   }
 }
+

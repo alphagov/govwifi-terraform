@@ -3,7 +3,7 @@
 resource "aws_security_group" "fe-ecs-out" {
   name        = "fe-ecs-out"
   description = "Allow the ECS agent to talk to the ECS endpoints"
-  vpc_id      = "${aws_vpc.wifi-frontend.id}"
+  vpc_id      = aws_vpc.wifi-frontend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Frontend ECS out"
@@ -37,7 +37,7 @@ resource "aws_security_group" "fe-ecs-out" {
 resource "aws_security_group" "fe-admin-in" {
   name        = "fe-admin-in"
   description = "Allow inbound traffic from administrators"
-  vpc_id      = "${aws_vpc.wifi-frontend.id}"
+  vpc_id      = aws_vpc.wifi-frontend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Frontend Admin in"
@@ -47,7 +47,7 @@ resource "aws_security_group" "fe-admin-in" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${var.bastion-ips}"]
+    cidr_blocks = var.bastion-ips
   }
 }
 
@@ -56,7 +56,7 @@ resource "aws_security_group" "fe-admin-in" {
 resource "aws_security_group" "fe-prometheus-in" {
   name        = "fe-prometheus-in"
   description = "Allow inbound traffic from Prometheus server in London"
-  vpc_id      = "${aws_vpc.wifi-frontend.id}"
+  vpc_id      = aws_vpc.wifi-frontend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Frontend Prometheus in"
@@ -67,10 +67,10 @@ resource "aws_security_group" "fe-prometheus-in" {
     to_port   = 9812
     protocol  = "tcp"
 
-    cidr_blocks = [
-      "${var.prometheus-IP-ireland}",
-      "${var.prometheus-IP-london}",
-    ]
+    cidr_blocks = distinct([
+      var.prometheus-IP-ireland,
+      var.prometheus-IP-london,
+    ])
   }
 }
 
@@ -79,7 +79,7 @@ resource "aws_security_group" "fe-prometheus-in" {
 resource "aws_security_group" "fe-radius-out" {
   name        = "fe-radius-out"
   description = "Allow outbound API calls from the RADIUS servers"
-  vpc_id      = "${aws_vpc.wifi-frontend.id}"
+  vpc_id      = aws_vpc.wifi-frontend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Frontend RADIUS out"
@@ -123,7 +123,7 @@ resource "aws_security_group" "fe-radius-out" {
 resource "aws_security_group" "fe-radius-in" {
   name        = "fe-radius-in"
   description = "Allow inbound API calls to the RADIUS servers"
-  vpc_id      = "${aws_vpc.wifi-frontend.id}"
+  vpc_id      = aws_vpc.wifi-frontend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Frontend RADIUS in"
@@ -150,7 +150,7 @@ resource "aws_security_group" "fe-radius-in" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["${data.aws_ip_ranges.route53_healthcheck.cidr_blocks}"]
+    cidr_blocks = data.aws_ip_ranges.route53_healthcheck.cidr_blocks
   }
 
   ingress {
@@ -158,7 +158,7 @@ resource "aws_security_group" "fe-radius-in" {
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
-    cidr_blocks = ["${data.aws_ip_ranges.route53_healthcheck.cidr_blocks}"]
+    cidr_blocks = data.aws_ip_ranges.route53_healthcheck.cidr_blocks
   }
 
   ingress {
@@ -167,9 +167,7 @@ resource "aws_security_group" "fe-radius-in" {
     to_port     = 9812
     protocol    = "tcp"
 
-    cidr_blocks = [
-      "${var.radius-CIDR-blocks}",
-    ]
+    cidr_blocks = var.radius-CIDR-blocks
   }
 }
 
@@ -177,3 +175,4 @@ data "aws_ip_ranges" "route53_healthcheck" {
   services = ["route53_healthchecks"]
   regions  = ["eu-west-1", "us-east-1", "us-west-1"]
 }
+

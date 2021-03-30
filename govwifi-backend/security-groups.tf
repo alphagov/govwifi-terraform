@@ -1,7 +1,7 @@
 resource "aws_security_group" "be-ecs-out" {
   name        = "be-ecs-out"
   description = "Allow the ECS agent to talk to the ECS endpoints"
-  vpc_id      = "${aws_vpc.wifi-backend.id}"
+  vpc_id      = aws_vpc.wifi-backend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend ECS out"
@@ -32,21 +32,21 @@ resource "aws_security_group" "be-ecs-out" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["${split(",", var.backend-subnet-IPs)}"]
+    cidr_blocks = split(",", var.backend-subnet-IPs)
   }
 
   egress {
     from_port   = 11211
     to_port     = 11211
     protocol    = "tcp"
-    cidr_blocks = ["${split(",", var.backend-subnet-IPs)}"]
+    cidr_blocks = split(",", var.backend-subnet-IPs)
   }
 }
 
 resource "aws_security_group" "be-db-in" {
   name        = "be-db-in"
   description = "Allow connections to the DB"
-  vpc_id      = "${aws_vpc.wifi-backend.id}"
+  vpc_id      = aws_vpc.wifi-backend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend DB in"
@@ -56,14 +56,14 @@ resource "aws_security_group" "be-db-in" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = ["${split(",", var.backend-subnet-IPs)}"]
+    cidr_blocks = split(",", var.backend-subnet-IPs)
   }
 }
 
 resource "aws_security_group" "be-admin-in" {
   name        = "be-admin-in"
   description = "Allow inbound SSH from administrators"
-  vpc_id      = "${aws_vpc.wifi-backend.id}"
+  vpc_id      = aws_vpc.wifi-backend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend Admin in"
@@ -73,14 +73,14 @@ resource "aws_security_group" "be-admin-in" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${split(",", var.bastion-server-IP)}", "${split(",", var.backend-subnet-IPs)}"]
+    cidr_blocks = concat(split(",", var.bastion-server-IP), split(",", var.backend-subnet-IPs))
   }
 }
 
 resource "aws_security_group" "be-vpn-in" {
   name        = "be-vpn-in"
   description = "Allow inbound SSH from VPN IPs to the bastion only"
-  vpc_id      = "${aws_vpc.wifi-backend.id}"
+  vpc_id      = aws_vpc.wifi-backend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend VPN in"
@@ -92,14 +92,14 @@ resource "aws_security_group" "be-vpn-in" {
     protocol  = "tcp"
 
     # Temporarily add ITHC IPs. Remove when ITHC complete.
-    cidr_blocks = ["${split(",", var.administrator-IPs)}"]
+    cidr_blocks = split(",", var.administrator-IPs)
   }
 }
 
 resource "aws_security_group" "be-vpn-out" {
   name        = "be-vpn-out"
   description = "Allow outbound SSH from bastion"
-  vpc_id      = "${aws_vpc.wifi-backend.id}"
+  vpc_id      = aws_vpc.wifi-backend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend VPN out"
@@ -110,20 +110,20 @@ resource "aws_security_group" "be-vpn-out" {
     to_port   = 22
     protocol  = "tcp"
 
-    cidr_blocks = [
-      "${split(",", var.backend-subnet-IPs)}",
-      "${split(",", var.frontend-radius-IPs)}",
-      "${var.prometheus-IP-ireland}",
-      "${var.prometheus-IP-london}",
-      "${var.grafana-IP}",
-    ]
+    cidr_blocks = distinct(concat(
+      split(",", var.backend-subnet-IPs),
+      split(",", var.frontend-radius-IPs),
+      [var.prometheus-IP-ireland],
+      [var.prometheus-IP-london],
+      [var.grafana-IP],
+    ))
   }
 }
 
 resource "aws_security_group" "be-radius-api-in" {
   name        = "be-radius-api-in"
   description = "Allow inbound API calls from the RADIUS servers"
-  vpc_id      = "${aws_vpc.wifi-backend.id}"
+  vpc_id      = aws_vpc.wifi-backend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend RADIUS API in"
@@ -133,13 +133,14 @@ resource "aws_security_group" "be-radius-api-in" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["${split(",",var.frontend-radius-IPs)}"]
+    cidr_blocks = split(",", var.frontend-radius-IPs)
   }
 
   ingress {
     from_port   = 8443
     to_port     = 8443
     protocol    = "tcp"
-    cidr_blocks = ["${split(",",var.frontend-radius-IPs)}"]
+    cidr_blocks = split(",", var.frontend-radius-IPs)
   }
 }
+

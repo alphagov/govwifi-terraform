@@ -9,15 +9,15 @@ resource "aws_cloudwatch_log_group" "admin-log-group" {
 }
 
 resource "aws_ecr_repository" "govwifi-admin-ecr" {
-  count = "${var.ecr-repository-count}"
+  count = var.ecr-repository-count
   name  = "govwifi/admin"
 }
 
 resource "aws_ecs_task_definition" "admin-task" {
   family                   = "admin-task-${var.Env-Name}"
   requires_compatibilities = ["FARGATE"]
-  task_role_arn            = "${aws_iam_role.ecs-admin-instance-role.arn}"
-  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  task_role_arn            = aws_iam_role.ecs-admin-instance-role.arn
+  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   cpu                      = "512"
   memory                   = "1024"
   network_mode             = "awsvpc"
@@ -158,28 +158,29 @@ resource "aws_ecs_task_definition" "admin-task" {
     }
 ]
 EOF
+
 }
 
 resource "aws_ecs_service" "admin-service" {
-  depends_on      = ["aws_alb_listener.alb_listener"]
+  depends_on      = [aws_alb_listener.alb_listener]
   name            = "admin-${var.Env-Name}"
-  cluster         = "${aws_ecs_cluster.admin-cluster.id}"
-  task_definition = "${aws_ecs_task_definition.admin-task.arn}"
-  desired_count   = "${var.instance-count}"
+  cluster         = aws_ecs_cluster.admin-cluster.id
+  task_definition = aws_ecs_task_definition.admin-task.arn
+  desired_count   = var.instance-count
   launch_type     = "FARGATE"
 
   load_balancer {
-    target_group_arn = "${aws_alb_target_group.admin-tg.arn}"
+    target_group_arn = aws_alb_target_group.admin-tg.arn
     container_name   = "admin"
     container_port   = "3000"
   }
 
   network_configuration {
-    subnets = ["${var.subnet-ids}"]
+    subnets = var.subnet-ids
 
     security_groups = [
-      "${aws_security_group.admin-ec2-in.id}",
-      "${aws_security_group.admin-ec2-out.id}",
+      aws_security_group.admin-ec2-in.id,
+      aws_security_group.admin-ec2-out.id,
     ]
 
     assign_public_ip = true
@@ -187,11 +188,11 @@ resource "aws_ecs_service" "admin-service" {
 }
 
 resource "aws_alb_target_group" "admin-tg" {
-  depends_on           = ["aws_lb.admin-alb"]
+  depends_on           = [aws_lb.admin-alb]
   name                 = "admin-${var.Env-Name}-fg-tg"
   port                 = "3000"
   protocol             = "HTTP"
-  vpc_id               = "${var.vpc-id}"
+  vpc_id               = var.vpc-id
   target_type          = "ip"
   deregistration_delay = 10
 
@@ -207,3 +208,4 @@ resource "aws_alb_target_group" "admin-tg" {
     create_before_destroy = true
   }
 }
+

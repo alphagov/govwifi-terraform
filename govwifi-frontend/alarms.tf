@@ -1,7 +1,10 @@
 resource "aws_cloudwatch_metric_alarm" "radius-hc" {
-  provider            = "aws.route53-alarms"
-  count               = "${aws_route53_health_check.radius.count}"
-  alarm_name          = "${element(aws_route53_health_check.radius.*.reference_name, count.index)}-hc"
+  provider = aws.route53-alarms
+  count    = length(aws_route53_health_check.radius)
+  alarm_name = "${element(
+    aws_route53_health_check.radius.*.reference_name,
+    count.index,
+  )}-hc"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "HealthCheckStatus"
@@ -12,18 +15,21 @@ resource "aws_cloudwatch_metric_alarm" "radius-hc" {
   treat_missing_data  = "breaching"
 
   dimensions = {
-    HealthCheckId = "${element(aws_route53_health_check.radius.*.id, count.index)}"
+    HealthCheckId = element(aws_route53_health_check.radius.*.id, count.index)
   }
 
   alarm_actions = [
-    "${var.route53-critical-notifications-arn}",
+    var.route53-critical-notifications-arn,
   ]
 }
 
 resource "aws_cloudwatch_metric_alarm" "radius-latency" {
-  provider            = "aws.route53-alarms"
-  count               = "${aws_route53_health_check.radius.count}"
-  alarm_name          = "${element(aws_route53_health_check.radius.*.reference_name, count.index)}-latency"
+  provider = aws.route53-alarms
+  count    = length(aws_route53_health_check.radius)
+  alarm_name = "${element(
+    aws_route53_health_check.radius.*.reference_name,
+    count.index,
+  )}-latency"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "TimeToFirstByte"
@@ -33,11 +39,11 @@ resource "aws_cloudwatch_metric_alarm" "radius-latency" {
   threshold           = "1000"
 
   dimensions = {
-    HealthCheckId = "${element(aws_route53_health_check.radius.*.id, count.index)}"
+    HealthCheckId = element(aws_route53_health_check.radius.*.id, count.index)
   }
 
   alarm_actions = [
-    "${var.route53-critical-notifications-arn}",
+    var.route53-critical-notifications-arn,
   ]
 }
 
@@ -49,10 +55,11 @@ resource "aws_cloudwatch_metric_alarm" "radius-cannot-connect-to-api" {
   period              = "60"
   statistic           = "Sum"
   treat_missing_data  = "breaching"
-  metric_name         = "${aws_cloudwatch_log_metric_filter.radius-cannot-connect-to-api.metric_transformation.0.name}"
-  namespace           = "${aws_cloudwatch_log_metric_filter.radius-cannot-connect-to-api.metric_transformation.0.namespace}"
+  metric_name         = aws_cloudwatch_log_metric_filter.radius-cannot-connect-to-api.metric_transformation[0].name
+  namespace           = aws_cloudwatch_log_metric_filter.radius-cannot-connect-to-api.metric_transformation[0].namespace
 
   alarm_actions = [
-    "${var.devops-notifications-arn}",
+    var.devops-notifications-arn,
   ]
 }
+

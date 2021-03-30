@@ -3,7 +3,7 @@
 
 variable "Env-Name" {
   description = "Environment name for the component."
-  type        = "string"
+  type        = string
 }
 
 variable "Env-Subdomain" {
@@ -12,22 +12,22 @@ variable "Env-Subdomain" {
 
 variable "aws-region" {
   description = "AWS region for the component."
-  type        = "string"
+  type        = string
 }
 
 variable "ssh-key-name" {
   description = "The SSH key name to use."
-  type        = "string"
+  type        = string
 }
 
 variable "backend-subnet-ids" {
   description = "List of AWS subnet IDs to place the EC2 instances and ELB into."
-  type        = "list"
+  type        = list(string)
 }
 
 variable "be-admin-in" {
   description = "The relevant security group for this component."
-  type        = "string"
+  type        = string
 }
 
 variable "create_grafana_server" {
@@ -37,50 +37,51 @@ variable "create_grafana_server" {
 
 variable "vpc-id" {
   description = "VPC ID used for the Application Load Balancer."
-  type        = "string"
+  type        = string
 }
 
 variable "bastion-ips" {
   description = "The list of allowed hosts to connect to the EC2 instances."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "subnet-ids" {
   description = "List of AWS subnet IDs to place the EC2 instances and ELB into"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "grafana-admin" {
   description = "Credential used for Grafana Admin user"
-  type        = "string"
+  type        = string
 }
 
 variable "google-client-secret" {
   description = "Credential used for Single Sign On"
-  type        = "string"
+  type        = string
 }
 
 variable "google-client-id" {
   description = "Credential used for Single Sign On"
-  type        = "string"
+  type        = string
 }
 
 variable "grafana-server-root-url" {
   description = "Grafana Server Root URL"
-  type        = "string"
+  type        = string
+}
+
+variable "administrator-IPs" {
 }
 
 variable "grafana-device-name" {
   description = "Name of Grafana Persistent Drive Device Name"
-  type        = "string"
+  type        = string
   default     = "/dev/xvdp"
 }
 
 variable "grafana-docker-version" {
   description = "Grafana Docker Version Number"
-  type        = "string"
+  type        = string
   default     = "7.4.0"
 }
-
-variable "administrator-IPs" {}

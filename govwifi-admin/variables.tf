@@ -16,22 +16,22 @@ variable "aws-region-name" {
 
 variable "ec2-sg-list" {
   description = "Security groups to apply to the EC2 instances used by ECS"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "elb-sg-list" {
   description = "Security groups to apply to the ELB in front of the admin"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "subnet-ids" {
   description = "List of AWS subnet IDs to place the EC2 instances and ELB into"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "users" {
   description = "List of users to be added to the EC2 instance"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "ami" {
@@ -43,9 +43,11 @@ variable "ecr-repository-count" {
   default     = 0
 }
 
-variable "ecs-service-role" {}
+variable "ecs-service-role" {
+}
 
-variable "ecs-instance-profile-id" {}
+variable "ecs-instance-profile-id" {
+}
 
 variable "rack-env" {
   description = "E.g. staging"
@@ -80,73 +82,101 @@ variable "health_check_grace_period" {
   description = "Time after instance comes into service before checking health"
 }
 
-variable "critical-notifications-arn" {}
-
-variable "capacity-notifications-arn" {}
-
-variable "db-instance-count" {}
-
-variable "admin-db-user" {}
-
-variable "admin-db-password" {}
-
-variable "db-backup-retention-days" {}
-
-variable "db-encrypt-at-rest" {}
-
-variable "db-instance-type" {}
-
-variable "db-monitoring-interval" {}
-
-variable "db-storage-gb" {}
-
-variable "db-maintenance-window" {}
-
-variable "db-backup-window" {}
-
-variable "db-sg-list" {
-  type = "list"
+variable "critical-notifications-arn" {
 }
 
-variable "rds-monitoring-role" {}
+variable "capacity-notifications-arn" {
+}
 
-variable "notify-api-key" {}
+variable "db-instance-count" {
+}
+
+variable "admin-db-user" {
+}
+
+variable "admin-db-password" {
+}
+
+variable "db-backup-retention-days" {
+}
+
+variable "db-encrypt-at-rest" {
+}
+
+variable "db-instance-type" {
+}
+
+variable "db-monitoring-interval" {
+}
+
+variable "db-storage-gb" {
+}
+
+variable "db-maintenance-window" {
+}
+
+variable "db-backup-window" {
+}
+
+variable "db-sg-list" {
+  type = list(string)
+}
+
+variable "rds-monitoring-role" {
+}
+
+variable "notify-api-key" {
+}
 
 variable "london-radius-ip-addresses" {
-  type = "list"
+  type = list(string)
 }
 
 variable "dublin-radius-ip-addresses" {
-  type = "list"
+  type = list(string)
 }
 
-variable "sentry-dsn" {}
+variable "sentry-dsn" {
+}
 
-variable "logging-api-search-url" {}
+variable "logging-api-search-url" {
+}
 
-variable "rr-db-user" {}
+variable "rr-db-user" {
+}
 
-variable "rr-db-password" {}
+variable "rr-db-password" {
+}
 
-variable "rr-db-host" {}
+variable "rr-db-host" {
+}
 
-variable "rr-db-name" {}
+variable "rr-db-name" {
+}
 
-variable "user-db-user" {}
+variable "user-db-user" {
+}
 
-variable "user-db-password" {}
+variable "user-db-password" {
+}
 
-variable "user-db-host" {}
+variable "user-db-host" {
+}
 
-variable "user-db-name" {}
+variable "user-db-name" {
+}
 
-variable "zendesk-api-endpoint" {}
+variable "zendesk-api-endpoint" {
+}
 
-variable "zendesk-api-user" {}
+variable "zendesk-api-user" {
+}
 
-variable "zendesk-api-token" {}
+variable "zendesk-api-token" {
+}
 
-variable "public-google-api-key" {}
+variable "public-google-api-key" {
+}
 
 variable "otp-secret-encryption-key" {
   description = "Encryption key used to verify OTP authentication codes"
@@ -154,6 +184,7 @@ variable "otp-secret-encryption-key" {
 
 variable "bastion-ips" {
   description = "The list of allowed hosts to connect to the ec2 instances"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
+

@@ -1,23 +1,21 @@
 # Using custom ubuntu AMI id, as the micro size is only supported for paravirtual images.
 resource "aws_instance" "management" {
-  count         = "${var.enable-bastion}"
-  ami           = "${var.bastion-ami}"
-  instance_type = "${var.bastion-instance-type}"
-  key_name      = "${var.bastion-ssh-key-name}"
-  subnet_id     = "${aws_subnet.wifi-backend-subnet.0.id}"
+  count         = var.enable-bastion
+  ami           = var.bastion-ami
+  instance_type = var.bastion-instance-type
+  key_name      = var.bastion-ssh-key-name
+  subnet_id     = aws_subnet.wifi-backend-subnet[0].id
 
   vpc_security_group_ids = [
-    "${aws_security_group.be-vpn-in.id}",
-    "${aws_security_group.be-vpn-out.id}",
-    "${aws_security_group.be-ecs-out.id}",
+    aws_security_group.be-vpn-in.id,
+    aws_security_group.be-vpn-out.id,
+    aws_security_group.be-ecs-out.id,
   ]
 
-  iam_instance_profile = "${aws_iam_instance_profile.bastion-instance-profile.id}"
-  monitoring           = "${var.enable-bastion-monitoring}"
+  iam_instance_profile = aws_iam_instance_profile.bastion-instance-profile[0].id
+  monitoring           = var.enable-bastion-monitoring
 
-  depends_on = [
-    "aws_iam_instance_profile.bastion-instance-profile",
-  ]
+  depends_on = [aws_iam_instance_profile.bastion-instance-profile]
 
   user_data = <<DATA
 Content-Type: multipart/mixed; boundary="==BOUNDARY=="
@@ -189,14 +187,15 @@ sudo python3 ./awslogs-agent-setup.py -n -r ${var.aws-region} -c ./initial-awslo
 --==BOUNDARY==--
 DATA
 
+
   tags = {
     Name = "${title(var.Env-Name)} Bastion - backend (${aws_vpc.wifi-backend.id})"
-    Env  = "${title(var.Env-Name)}"
+    Env  = title(var.Env-Name)
   }
 }
 
 resource "aws_iam_role" "bastion-instance-role" {
-  count = "${var.enable-bastion}"
+  count = var.enable-bastion
   name  = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-role"
 
   assume_role_policy = <<EOF
@@ -214,13 +213,14 @@ resource "aws_iam_role" "bastion-instance-role" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_role_policy" "bastion-instance-policy" {
-  count      = "${min((1 - (var.save-pp-data)), var.enable-bastion)}"
+  count      = min(1 - var.save-pp-data, var.enable-bastion)
   name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-policy"
-  role       = "${aws_iam_role.bastion-instance-role.id}"
-  depends_on = ["aws_iam_role.bastion-instance-role"]
+  role       = aws_iam_role.bastion-instance-role[0].id
+  depends_on = [aws_iam_role.bastion-instance-role]
 
   policy = <<EOF
 {
@@ -241,13 +241,17 @@ resource "aws_iam_role_policy" "bastion-instance-policy" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_role_policy" "bastion-instance-policy-pp" {
-  count      = "${min(var.save-pp-data, var.enable-bastion)}"
-  name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-policy"
-  role       = "${aws_iam_role.bastion-instance-role.id}"
-  depends_on = ["aws_iam_role.bastion-instance-role", "aws_s3_bucket.pp-data-bucket"]
+  count = min(var.save-pp-data, var.enable-bastion)
+  name  = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-policy"
+  role  = aws_iam_role.bastion-instance-role[0].id
+  depends_on = [
+    aws_iam_role.bastion-instance-role,
+    aws_s3_bucket.pp-data-bucket,
+  ]
 
   policy = <<EOF
 {
@@ -275,23 +279,24 @@ resource "aws_iam_role_policy" "bastion-instance-policy-pp" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_instance_profile" "bastion-instance-profile" {
-  count      = "${var.enable-bastion}"
+  count      = var.enable-bastion
   name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-profile"
-  role       = "${aws_iam_role.bastion-instance-role.name}"
-  depends_on = ["aws_iam_role.bastion-instance-role"]
+  role       = aws_iam_role.bastion-instance-role[0].name
+  depends_on = [aws_iam_role.bastion-instance-role]
 }
 
 resource "aws_eip_association" "eip_assoc" {
-  count       = "${var.enable-bastion}"
-  instance_id = "${aws_instance.management.id}"
-  public_ip   = "${replace(var.bastion-server-ip, "/32", "")}"
+  count       = var.enable-bastion
+  instance_id = aws_instance.management[0].id
+  public_ip   = replace(var.bastion-server-ip, "/32", "")
 }
 
 resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
-  count               = "${var.enable-bastion}"
+  count               = var.enable-bastion
   alarm_name          = "${lower(var.Env-Name)}-bastion-status-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
@@ -303,10 +308,11 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
   threshold           = "1"
 
   dimensions = {
-    InstanceId = "${aws_instance.management.id}"
+    InstanceId = aws_instance.management[0].id
   }
 
   alarm_description  = "This metric monitors the status of the bastion server."
-  alarm_actions      = ["${var.capacity-notifications-arn}"]
+  alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }
+

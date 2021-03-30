@@ -17,6 +17,7 @@ resource "aws_iam_role" "tfstate-replication" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "tfstate-replication" {
@@ -57,12 +58,13 @@ resource "aws_iam_policy" "tfstate-replication" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_policy_attachment" "tfstate-replication" {
   name       = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-replication"
-  roles      = ["${aws_iam_role.tfstate-replication.name}"]
-  policy_arn = "${aws_iam_policy.tfstate-replication.arn}"
+  roles      = [aws_iam_role.tfstate-replication.name]
+  policy_arn = aws_iam_policy.tfstate-replication.arn
 }
 
 resource "aws_kms_key" "tfstate-key" {
@@ -71,21 +73,21 @@ resource "aws_kms_key" "tfstate-key" {
   is_enabled              = true
 
   tags = {
-    Region      = "${title(var.aws-region-name)}"
-    Product     = "${var.product-name}"
-    Environment = "${title(var.Env-Name)}"
+    Region      = title(var.aws-region-name)
+    Product     = var.product-name
+    Environment = title(var.Env-Name)
     Category    = "TFstate"
   }
 }
 
 resource "aws_kms_alias" "tfstate-key-alias" {
   name          = "alias/${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-key"
-  target_key_id = "${aws_kms_key.tfstate-key.key_id}"
+  target_key_id = aws_kms_key.tfstate-key.key_id
 }
 
 resource "aws_s3_bucket" "state-bucket" {
   bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
-  region = "${var.aws-region}"
+  region = var.aws-region
 
   policy = <<EOF
 {
@@ -106,10 +108,11 @@ resource "aws_s3_bucket" "state-bucket" {
 }
 EOF
 
+
   tags = {
-    Region      = "${title(var.aws-region-name)}"
-    Product     = "${var.product-name}"
-    Environment = "${title(var.Env-Name)}"
+    Region      = title(var.aws-region-name)
+    Product     = var.product-name
+    Environment = title(var.Env-Name)
     Category    = "TFstate"
   }
 
@@ -123,7 +126,7 @@ EOF
   }
 
   replication_configuration {
-    role = "${aws_iam_role.tfstate-replication.arn}"
+    role = aws_iam_role.tfstate-replication.arn
 
     rules {
       # ID is necessary to prevent continuous change issue
@@ -141,9 +144,10 @@ EOF
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        kms_master_key_id = "${aws_kms_key.tfstate-key.arn}"
+        kms_master_key_id = aws_kms_key.tfstate-key.arn
         sse_algorithm     = "aws:kms"
       }
     }
   }
 }
+

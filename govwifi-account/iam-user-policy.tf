@@ -23,6 +23,7 @@ resource "aws_iam_user_policy" "dashboard-staging-read-only-user_dashboard-stagi
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_user_policy" "dashboard-wifi-read-only-user_dashboard-wifi-read-only-policy" {
@@ -50,6 +51,7 @@ resource "aws_iam_user_policy" "dashboard-wifi-read-only-user_dashboard-wifi-rea
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_user_policy" "govwifi-jenkins-deploy_can-restart-ecs-services" {
@@ -69,6 +71,7 @@ resource "aws_iam_user_policy" "govwifi-jenkins-deploy_can-restart-ecs-services"
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_user_policy" "govwifi-jenkins-deploy_read-wordlist-policy" {
@@ -104,6 +107,7 @@ resource "aws_iam_user_policy" "govwifi-jenkins-deploy_read-wordlist-policy" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_user_policy" "jenkins-read-wordlist-user_jenkins-read-wordlist-policy" {
@@ -124,4 +128,6 @@ resource "aws_iam_user_policy" "jenkins-read-wordlist-user_jenkins-read-wordlist
   ]
 }
 POLICY
+
 }
+

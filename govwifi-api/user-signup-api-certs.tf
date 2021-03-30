@@ -1,6 +1,6 @@
 resource "aws_acm_certificate" "user-signup-api-global" {
-  count             = "${aws_lb.user-signup-api.count}"
-  domain_name       = "${aws_route53_record.user-signup-api-global.fqdn}"
+  count             = length(aws_lb.user-signup-api)
+  domain_name       = aws_route53_record.user-signup-api-global[0].fqdn
   validation_method = "DNS"
 
   lifecycle {
@@ -9,14 +9,14 @@ resource "aws_acm_certificate" "user-signup-api-global" {
 }
 
 resource "aws_acm_certificate_validation" "user-signup-api-global" {
-  count                   = "${aws_acm_certificate.user-signup-api-global.count}"
-  certificate_arn         = "${aws_acm_certificate.user-signup-api-global.arn}"
-  validation_record_fqdns = ["${aws_route53_record.user-signup-api-global-verification.fqdn}"]
+  count                   = length(aws_acm_certificate.user-signup-api-global)
+  certificate_arn         = aws_acm_certificate.user-signup-api-global[0].arn
+  validation_record_fqdns = [aws_route53_record.user-signup-api-global-verification[0].fqdn]
 }
 
 resource "aws_acm_certificate" "user-signup-api-regional" {
-  count             = "${aws_lb.user-signup-api.count}"
-  domain_name       = "${aws_route53_record.user-signup-api-regional.fqdn}"
+  count             = length(aws_lb.user-signup-api)
+  domain_name       = aws_route53_record.user-signup-api-regional[0].fqdn
   validation_method = "DNS"
 
   lifecycle {
@@ -25,7 +25,8 @@ resource "aws_acm_certificate" "user-signup-api-regional" {
 }
 
 resource "aws_acm_certificate_validation" "user-signup-api-regional" {
-  count                   = "${aws_acm_certificate.user-signup-api-regional.count}"
-  certificate_arn         = "${aws_acm_certificate.user-signup-api-regional.arn}"
-  validation_record_fqdns = ["${aws_route53_record.user-signup-api-regional-verification.fqdn}"]
+  count                   = length(aws_acm_certificate.user-signup-api-regional)
+  certificate_arn         = aws_acm_certificate.user-signup-api-regional[0].arn
+  validation_record_fqdns = [aws_route53_record.user-signup-api-regional-verification[0].fqdn]
 }
+

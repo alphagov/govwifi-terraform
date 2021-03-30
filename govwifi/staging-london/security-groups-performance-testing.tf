@@ -1,7 +1,7 @@
 resource "aws_security_group" "be-perf-out" {
   name        = "be-perf-out"
   description = "Allow outbound RADIUS traffic from the performance testing instance"
-  vpc_id      = "${module.backend.backend-vpc-id}"
+  vpc_id      = module.backend.backend-vpc-id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend performance out"
@@ -12,7 +12,7 @@ resource "aws_security_group" "be-perf-out" {
     from_port   = 1812
     to_port     = 1812
     protocol    = "udp"
-    cidr_blocks = ["${split(",", var.frontend-radius-IPs)}"]
+    cidr_blocks = split(",", var.frontend-radius-IPs)
   }
 
   # accounting
@@ -20,7 +20,7 @@ resource "aws_security_group" "be-perf-out" {
     from_port   = 1813
     to_port     = 1813
     protocol    = "udp"
-    cidr_blocks = ["${split(",", var.frontend-radius-IPs)}"]
+    cidr_blocks = split(",", var.frontend-radius-IPs)
   }
 
   # healthchecks and direct calls to ELB
@@ -39,3 +39,4 @@ resource "aws_security_group" "be-perf-out" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+

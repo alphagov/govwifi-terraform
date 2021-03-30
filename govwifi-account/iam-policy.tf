@@ -25,6 +25,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-e112f67b-c533-4923-98f7-3
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-9d382291-dcd5-4d68-8a4d-aef9bab6e0b5" {
@@ -54,6 +55,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-9d382291-dcd5-4d68-8a4d-a
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "ITHC-Staging-Cyberis-Policy" {
@@ -91,6 +93,7 @@ resource "aws_iam_policy" "ITHC-Staging-Cyberis-Policy" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "CloudTrailPolicyForCloudWatchLogs_dab06026-75de-4ad1-a922-e4fc41e01568" {
@@ -125,6 +128,7 @@ resource "aws_iam_policy" "CloudTrailPolicyForCloudWatchLogs_dab06026-75de-4ad1-
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-164db990-7033-4bb4-aaed-380d56e59518" {
@@ -154,6 +158,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-164db990-7033-4bb4-aaed-3
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "ITHC-Access-Key-Policy" {
@@ -178,6 +183,7 @@ resource "aws_iam_policy" "ITHC-Access-Key-Policy" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "AWS_Events_Invoke_ECS_961488249" {
@@ -218,6 +224,7 @@ resource "aws_iam_policy" "AWS_Events_Invoke_ECS_961488249" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "s3crr_kms_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate" {
@@ -300,6 +307,7 @@ resource "aws_iam_policy" "s3crr_kms_for_govwifi-staging-london-tfstate_to_govwi
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "GovWifi-Admin" {
@@ -324,6 +332,7 @@ resource "aws_iam_policy" "GovWifi-Admin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "s3crr_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate" {
@@ -359,6 +368,7 @@ resource "aws_iam_policy" "s3crr_for_govwifi-staging-dublin-tfstate_to_govwifi-s
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "govwifi-staging-london-accesslogs-replication-policy" {
@@ -401,6 +411,7 @@ resource "aws_iam_policy" "govwifi-staging-london-accesslogs-replication-policy"
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "govwifi-staging-dublin-accesslogs-replication-policy" {
@@ -443,6 +454,7 @@ resource "aws_iam_policy" "govwifi-staging-dublin-accesslogs-replication-policy"
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "s3crr_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replica" {
@@ -478,6 +490,7 @@ resource "aws_iam_policy" "s3crr_for_test-wifi-mfadelete_to_test-wifi-mfadelete-
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "GovWifi-Developers" {
@@ -512,6 +525,7 @@ resource "aws_iam_policy" "GovWifi-Developers" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "govwifi-wifi-dublin-tfstate-replication-policy" {
@@ -554,6 +568,7 @@ resource "aws_iam_policy" "govwifi-wifi-dublin-tfstate-replication-policy" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "s3crr_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate" {
@@ -589,6 +604,7 @@ resource "aws_iam_policy" "s3crr_for_govwifi-staging-london-tfstate_to_govwifi-s
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "GovWifi-Audit" {
@@ -722,6 +738,7 @@ resource "aws_iam_policy" "GovWifi-Audit" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate" {
@@ -804,6 +821,7 @@ resource "aws_iam_policy" "s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwi
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "govwifi-wifi-london-tfstate-replication-policy" {
@@ -846,6 +864,7 @@ resource "aws_iam_policy" "govwifi-wifi-london-tfstate-replication-policy" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "govwifi-wifi-dublin-accesslogs-replication-policy" {
@@ -888,6 +907,7 @@ resource "aws_iam_policy" "govwifi-wifi-dublin-accesslogs-replication-policy" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "s3crr_for_govwifi-staging-london-accesslogs_to_govwifi-staging-ireland-accesslogs" {
@@ -923,6 +943,7 @@ resource "aws_iam_policy" "s3crr_for_govwifi-staging-london-accesslogs_to_govwif
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "LambdaUpdateFunctionCode" {
@@ -943,6 +964,7 @@ resource "aws_iam_policy" "LambdaUpdateFunctionCode" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "govwifi-staging-london-tfstate-replication-policy" {
@@ -985,6 +1007,7 @@ resource "aws_iam_policy" "govwifi-staging-london-tfstate-replication-policy" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "govwifi-wifi-london-accesslogs-replication-policy" {
@@ -1027,6 +1050,7 @@ resource "aws_iam_policy" "govwifi-wifi-london-accesslogs-replication-policy" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "govwifi-staging-dublin-tfstate-replication-policy" {
@@ -1069,6 +1093,7 @@ resource "aws_iam_policy" "govwifi-staging-dublin-tfstate-replication-policy" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "GovWifi-Admin-S3-Policy" {
@@ -1183,6 +1208,7 @@ resource "aws_iam_policy" "GovWifi-Admin-S3-Policy" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "s3crr_for_govwifi-staging-ireland-accesslogs_to_govwifi-staging-london-accesslogs" {
@@ -1218,6 +1244,7 @@ resource "aws_iam_policy" "s3crr_for_govwifi-staging-ireland-accesslogs_to_govwi
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "GovWifi-Support" {
@@ -1445,6 +1472,7 @@ resource "aws_iam_policy" "GovWifi-Support" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "govwifi-staging-tfstate-nodelete" {
@@ -1471,6 +1499,7 @@ resource "aws_iam_policy" "govwifi-staging-tfstate-nodelete" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "can-restart-ecs-services" {
@@ -1491,6 +1520,7 @@ resource "aws_iam_policy" "can-restart-ecs-services" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "read-wordlist-policy" {
@@ -1527,4 +1557,6 @@ resource "aws_iam_policy" "read-wordlist-policy" {
   ]
 }
 POLICY
+
 }
+

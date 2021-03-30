@@ -69,3 +69,4 @@ resource "aws_iam_instance_profile" "London-wifi-backend-bastion-instance-profil
   path = "/"
   role = "London-wifi-backend-bastion-instance-role"
 }
+

@@ -5,8 +5,8 @@ resource "aws_s3_bucket" "frontend-cert-bucket" {
 
   tags = {
     Name        = "${title(var.Env-Name)} Frontend certs"
-    Region      = "${title(var.aws-region-name)}"
-    Environment = "${title(var.rack-env)}"
+    Region      = title(var.aws-region-name)
+    Environment = title(var.rack-env)
   }
 
   server_side_encryption_configuration {
@@ -21,3 +21,4 @@ resource "aws_s3_bucket" "frontend-cert-bucket" {
     enabled = true
   }
 }
+

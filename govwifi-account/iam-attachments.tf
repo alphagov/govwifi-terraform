@@ -27,3 +27,4 @@ resource "aws_iam_group_policy_attachment" "can-restart-ecs-services_GovWifi-Pip
   group      = "GovWifi-Pipeline"
   policy_arn = "arn:aws:iam::${var.aws-account-id}:policy/can-restart-ecs-services"
 }
+
