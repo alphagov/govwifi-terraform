@@ -4,10 +4,14 @@ set -ueo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
-# set some vars
+# set some vars frequently used but not passed by terraformed to make script easy to change if needed
+#File system format
 drive_format="ext4"
+#path for where docker keeps its volumes that we need to make persistent
 docker_volumes_folder=/var/lib/docker/volumes
+#folder where the EBS volume will be mounted
 drive_mount_point=/mnt/grafana-persistent
+#Symlink location that will be linked to the $docker_volumes_folder
 symlink_folder=${drive_mount_point}/volumes
 
 function run-until-success() {
@@ -58,7 +62,7 @@ ExecStart=/usr/bin/dockerd --log-driver "local"
 # ExecStart=/usr/bin/dockerd --log-driver awslogs --log-opt awslogs-region=eu-west-2 --log-opt awslogs-group=${grafana_log_group} --dns 10.0.0.2
 EOF
 
-# Stop systemctl daemon to do some housekeeping
+# Stop systemctl daemon to do some housekeeping (mount folders etc)
 systemctl stop docker
 
 # format drive if needed and mount to mount point
@@ -74,23 +78,28 @@ if [ ! -d ${drive_mount_point} ]; then
   [ $? -ne 0 ] && echo "Failed to make mount point";
 fi
 
+# write a line to /etc/fstab so the folder is mounted upon reboot
 echo "${grafana_device_name}  ${drive_mount_point} ${drive_format} defaults  0 0" >> /etc/fstab
 [ $? -ne 0 ] && echo "Failed write to fstab";
 
+# go in here if the symlink_folder is not there as a symlink
 if [ ! -L ${symlink_folder} ]; then
+  # go in here if the symlink_folder IS there and is a normal folder
   if [ -d ${symlink_folder} ]; then
+    # remove the old folder (may need to copy contents out if any file missing post install)
     rmdir ${symlink_folder};
     [ $? -ne 0 ] && echo "Failed to remove ${symlink_folder} directory";
   fi
+  # now its removed we need to symlink the volumes folder from the mounted EBS volume
   ln -s ${docker_volumes_folder} ${symlink_folder};
   [ $? -ne 0 ] && echo "Failed to sym link ${symlink_folder}";
 fi
 
-# now mount the drive
+# now mount the drive as set in /etc/fstab
 mount ${drive_mount_point};
 [ $? -ne 0 ] && echo "Failed to mount drive";
 
-# Reload and restart docker
+# Reload and start docker
 systemctl daemon-reload
 systemctl enable --now docker
 
