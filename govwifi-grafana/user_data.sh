@@ -62,9 +62,9 @@ EOF
 systemctl stop docker
 
 # format drive if needed and mount to mount point
-if [ "$(lsblk --noheadings --output FSTYPE ${grafana_drive_name})" != "${drive_format}" ]; then
-  echo "Formatting blank drive ${grafana_drive_name} to ${drive_format}"
-  mkfs.${drive_format} ${grafana_drive_name};
+if [ "$(lsblk --noheadings --output FSTYPE ${grafana_device_name})" != "${drive_format}" ]; then
+  echo "Formatting blank drive ${grafana_device_name} to ${drive_format}"
+  mkfs.${drive_format} ${grafana_device_name};
   [ $? -ne 0 ] && echo "Failed to format drive";
 fi
 
@@ -74,7 +74,7 @@ if [ ! -d ${drive_mount_point} ]; then
   [ $? -ne 0 ] && echo "Failed to make mount point";
 fi
 
-echo "${grafana_drive_name}  ${drive_mount_point} ${drive_format} defaults  0 0" >> /etc/fstab
+echo "${grafana_device_name}  ${drive_mount_point} ${drive_format} defaults  0 0" >> /etc/fstab
 [ $? -ne 0 ] && echo "Failed write to fstab";
 
 if [ ! -L ${symlink_folder} ]; then
