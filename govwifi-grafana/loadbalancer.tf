@@ -5,7 +5,7 @@ resource "aws_lb" "grafana-alb" {
 
   security_groups = [
     aws_security_group.grafana-alb-in.id,
-    aws_security_group.grafana-alb-out.id,
+    aws_security_group.grafana-alb-out.id
   ]
 
   load_balancer_type = "application"

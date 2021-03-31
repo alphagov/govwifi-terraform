@@ -28,7 +28,7 @@ resource "aws_elasticsearch_domain" "govwifi-elasticsearch" {
 
   vpc_options {
     subnet_ids = [
-      var.backend-subnet-id,
+      var.backend-subnet-id
     ]
 
     security_group_ids = [

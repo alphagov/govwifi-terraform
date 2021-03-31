@@ -6,7 +6,7 @@ resource "aws_ses_receipt_rule" "user-signup-rule" {
 
   depends_on = [
     aws_sns_topic.user-signup-notifications,
-    aws_s3_bucket.emailbucket,
+    aws_s3_bucket.emailbucket
   ]
 
   recipients = [
