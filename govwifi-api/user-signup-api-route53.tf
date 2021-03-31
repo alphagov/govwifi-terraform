@@ -1,5 +1,5 @@
 resource "aws_route53_record" "user-signup-api-regional" {
-  count   = length(aws_lb.user-signup-api)
+  count   = var.user-signup-enabled
   zone_id = var.route53-zone-id
   name    = "user-signup-api.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   type    = "A"
@@ -12,7 +12,7 @@ resource "aws_route53_record" "user-signup-api-regional" {
 }
 
 resource "aws_route53_record" "user-signup-api-global" {
-  count          = length(aws_lb.user-signup-api)
+  count          = var.user-signup-enabled
   zone_id        = var.route53-zone-id
   name           = "user-signup-api.${var.Env-Subdomain}.service.gov.uk"
   type           = "A"
@@ -30,7 +30,7 @@ resource "aws_route53_record" "user-signup-api-global" {
 }
 
 resource "aws_route53_record" "user-signup-api-regional-verification" {
-  count   = length(aws_acm_certificate.user-signup-api-regional)
+  count   = var.user-signup-enabled
   name    = aws_acm_certificate.user-signup-api-regional[0].domain_validation_options[0].resource_record_name
   type    = aws_acm_certificate.user-signup-api-regional[0].domain_validation_options[0].resource_record_type
   zone_id = var.route53-zone-id
@@ -39,7 +39,7 @@ resource "aws_route53_record" "user-signup-api-regional-verification" {
 }
 
 resource "aws_route53_record" "user-signup-api-global-verification" {
-  count   = length(aws_acm_certificate.user-signup-api-global)
+  count   = var.user-signup-enabled
   name    = aws_acm_certificate.user-signup-api-global[0].domain_validation_options[0].resource_record_name
   type    = aws_acm_certificate.user-signup-api-global[0].domain_validation_options[0].resource_record_type
   zone_id = var.route53-zone-id

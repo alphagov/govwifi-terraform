@@ -187,7 +187,7 @@ module "frontend" {
   # where N = this base + 1 + server#
   dns-numbering-base = 0
 
-  elastic-ip-list       = [split(",", var.frontend-region-IPs)]
+  elastic-ip-list       = split(",", var.frontend-region-IPs)
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
   users                 = var.users
@@ -221,9 +221,7 @@ module "frontend" {
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 
-  radius-CIDR-blocks = [
-    split(",", var.frontend-radius-IPs),
-  ]
+  radius-CIDR-blocks = split(",", var.frontend-radius-IPs)
 }
 
 module "api" {

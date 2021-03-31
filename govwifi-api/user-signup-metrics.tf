@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_log_metric_filter" "notify-sms-successful-response" {
-  count = length(aws_cloudwatch_log_group.user-signup-api-log-group)
+  count = var.user-signup-enabled
   name  = "${var.Env-Name}-notify-sms-success"
 
   pattern        = "\"user-signup/sms-notification\" \"status=200\" -\"Processing\""
@@ -14,7 +14,7 @@ resource "aws_cloudwatch_log_metric_filter" "notify-sms-successful-response" {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "notify-sms-failed-response" {
-  count = length(aws_cloudwatch_log_group.user-signup-api-log-group)
+  count = var.user-signup-enabled
   name  = "${var.Env-Name}-notify-sms-failed"
 
   pattern        = "\"user-signup/sms-notification\" -\"status=200\" -\"Processing\""
@@ -29,7 +29,7 @@ resource "aws_cloudwatch_log_metric_filter" "notify-sms-failed-response" {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "notify-email-successful-response" {
-  count = length(aws_cloudwatch_log_group.user-signup-api-log-group)
+  count = var.user-signup-enabled
   name  = "${var.Env-Name}-notify-email-success"
 
   pattern        = "\"user-signup/email-notification\" \"status=200\" -\"Processing\""
@@ -44,7 +44,7 @@ resource "aws_cloudwatch_log_metric_filter" "notify-email-successful-response" {
 }
 
 resource "aws_cloudwatch_log_metric_filter" "notify-email-failed-response" {
-  count = length(aws_cloudwatch_log_group.user-signup-api-log-group)
+  count = var.user-signup-enabled
   name  = "${var.Env-Name}-notify-email-failed"
 
   pattern        = "\"user-signup/email-notification\" -\"status=200\" -\"Processing\" -\"Sending performance\""

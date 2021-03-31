@@ -18,7 +18,7 @@ resource "aws_lb" "user-signup-api" {
 }
 
 resource "aws_lb_listener" "user-signup-api" {
-  count             = length(aws_lb.user-signup-api)
+  count             = var.user-signup-enabled
   load_balancer_arn = aws_lb.user-signup-api[0].arn
   port              = "8443"
   protocol          = "HTTPS"
@@ -32,7 +32,7 @@ resource "aws_lb_listener" "user-signup-api" {
 }
 
 resource "aws_lb_listener_certificate" "user-signup-api-regional" {
-  count           = length(aws_lb.user-signup-api)
+  count           = var.user-signup-enabled
   listener_arn    = aws_lb_listener.user-signup-api[0].arn
   certificate_arn = aws_acm_certificate.user-signup-api-regional[0].arn
 
