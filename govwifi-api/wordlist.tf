@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "wordlist" {
   bucket = "govwifi-wordlist"
-  count  = "${var.wordlist-bucket-count}"
+  count  = var.wordlist-bucket-count
   acl    = "private"
 
   tags = {
@@ -13,17 +13,17 @@ resource "aws_s3_bucket" "wordlist" {
 }
 
 resource "aws_s3_bucket_object" "wordlist" {
-  bucket = "${aws_s3_bucket.wordlist.bucket}"
-  count  = "${var.wordlist-bucket-count}"
+  bucket = aws_s3_bucket.wordlist[0].bucket
+  count  = var.wordlist-bucket-count
   key    = "wordlist-short"
-  source = "${var.wordlist-file-path}"
-  etag   = "${md5(file(var.wordlist-file-path))}"
+  source = var.wordlist-file-path
+  etag   = filemd5(var.wordlist-file-path)
 }
 
 resource "aws_iam_user_policy" "jenkins-read-wordlist-policy" {
-  user  = "${aws_iam_user.jenkins-read-wordlist-bucket.name}"
+  user  = aws_iam_user.jenkins-read-wordlist-bucket[0].name
   name  = "jenkins-read-wordlist-policy"
-  count = "${var.wordlist-bucket-count}"
+  count = var.wordlist-bucket-count
 
   policy = <<EOF
 {
@@ -34,14 +34,16 @@ resource "aws_iam_user_policy" "jenkins-read-wordlist-policy" {
         "s3:GetObject"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${aws_s3_bucket.wordlist.bucket}/${aws_s3_bucket_object.wordlist.key}"
+      "Resource": "arn:aws:s3:::${aws_s3_bucket.wordlist[0].bucket}/${aws_s3_bucket_object.wordlist[0].key}"
     }
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_user" "jenkins-read-wordlist-bucket" {
   name  = "jenkins-read-wordlist-user"
-  count = "${var.wordlist-bucket-count}"
+  count = var.wordlist-bucket-count
 }
+

@@ -1,12 +1,13 @@
 variable "env-name" {
-  type = "string"
+  type = string
 }
 
 variable "topic-name" {
-  type = "string"
+  type = string
 }
 
 variable "emails" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
+

@@ -1,6 +1,6 @@
 resource "aws_iam_role_policy" "ecs-instance-policy" {
   name = "${var.aws-region-name}-ecs-instance-policy-${var.Env-Name}"
-  role = "${aws_iam_role.ecs-instance-role.id}"
+  role = aws_iam_role.ecs-instance-role.id
 
   policy = <<EOF
 {
@@ -48,6 +48,7 @@ resource "aws_iam_role_policy" "ecs-instance-policy" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_role" "ecs-instance-role" {
@@ -68,16 +69,17 @@ resource "aws_iam_role" "ecs-instance-role" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_instance_profile" "ecs-instance-profile" {
   name = "${var.aws-region-name}-ecs-instance-profile-${var.Env-Name}"
-  role = "${aws_iam_role.ecs-instance-role.name}"
+  role = aws_iam_role.ecs-instance-role.name
 }
 
 resource "aws_iam_role_policy" "ecs-service-policy" {
   name = "${var.aws-region-name}-ecs-service-policy-${var.Env-Name}"
-  role = "${aws_iam_role.ecs-service-role.id}"
+  role = aws_iam_role.ecs-service-role.id
 
   policy = <<EOF
 {
@@ -108,6 +110,7 @@ resource "aws_iam_role_policy" "ecs-service-policy" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_role" "ecs-service-role" {
@@ -128,6 +131,7 @@ resource "aws_iam_role" "ecs-service-role" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_role" "rds-monitoring-role" {
@@ -148,12 +152,13 @@ resource "aws_iam_role" "rds-monitoring-role" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_role_policy" "rds-monitoring-policy" {
-  depends_on = ["aws_iam_role.rds-monitoring-role"]
+  depends_on = [aws_iam_role.rds-monitoring-role]
   name       = "${var.aws-region-name}-${var.Env-Name}-rds-monitoring-policy"
-  role       = "${aws_iam_role.rds-monitoring-role.name}"
+  role       = aws_iam_role.rds-monitoring-role.name
 
   policy = <<EOF
 {
@@ -186,4 +191,6 @@ resource "aws_iam_role_policy" "rds-monitoring-policy" {
     ]
 }
 EOF
+
 }
+

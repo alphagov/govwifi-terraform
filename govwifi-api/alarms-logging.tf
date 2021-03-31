@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-high" {
-  count               = "${var.alarm-count}"
+  count               = var.alarm-count
   alarm_name          = "${var.Env-Name}-logging-ecs-cpu-alarm-high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -10,21 +10,21 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-high" {
   threshold           = "50"
 
   dimensions = {
-    ClusterName = "${aws_ecs_cluster.api-cluster.name}"
-    ServiceName = "${aws_ecs_service.logging-api-service.name}"
+    ClusterName = aws_ecs_cluster.api-cluster.name
+    ServiceName = aws_ecs_service.logging-api-service[0].name
   }
 
   alarm_description = "This alarm tells ECS to scale up based on high CPU - Logging"
 
   alarm_actions = [
-    "${aws_appautoscaling_policy.ecs-policy-up-logging.arn}",
+    aws_appautoscaling_policy.ecs-policy-up-logging[0].arn,
   ]
 
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-low" {
-  count               = "${var.alarm-count}"
+  count               = var.alarm-count
   alarm_name          = "${var.Env-Name}-logging-ecs-cpu-alarm-low"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "2"
@@ -36,14 +36,14 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-low" {
   datapoints_to_alarm = "2"
 
   dimensions = {
-    ClusterName = "${aws_ecs_cluster.api-cluster.name}"
-    ServiceName = "${aws_ecs_service.logging-api-service.name}"
+    ClusterName = aws_ecs_cluster.api-cluster.name
+    ServiceName = aws_ecs_service.logging-api-service[0].name
   }
 
   alarm_description = "This alarm tells ECS to scale in based on low CPU usage - Logging"
 
   alarm_actions = [
-    "${aws_appautoscaling_policy.ecs-policy-down-logging.arn}",
+    aws_appautoscaling_policy.ecs-policy-down-logging[0].arn,
   ]
 }
 
@@ -63,4 +63,3 @@ resource "aws_cloudwatch_metric_alarm" "logging-ecs-cpu-alarm-low" {
 #    "${var.devops-notifications-arn}",
 #  ]
 #}
-

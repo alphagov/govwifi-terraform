@@ -1,6 +1,8 @@
-variable "Env-Name" {}
+variable "Env-Name" {
+}
 
-variable "aws-region" {}
+variable "aws-region" {
+}
 
 variable "zone-subnets" {
   default = {
@@ -14,26 +16,33 @@ variable "prometheus_volume_size" {
   default = "40"
 }
 
-variable "prometheus-IPs" {}
+variable "prometheus-IPs" {
+}
 
-variable "frontend-vpc-id" {}
+variable "frontend-vpc-id" {
+}
 
-variable "ssh-key-name" {}
+variable "ssh-key-name" {
+}
 
-variable "fe-admin-in" {}
+variable "fe-admin-in" {
+}
 
-variable "fe-ecs-out" {}
+variable "fe-ecs-out" {
+}
 
-variable "fe-radius-in" {}
+variable "fe-radius-in" {
+}
 
-variable "fe-radius-out" {}
+variable "fe-radius-out" {
+}
 
 variable "wifi-frontend-subnet" {
-  type = "list"
+  type = list(string)
 }
 
 variable "radius-ip-addresses" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
 
@@ -45,11 +54,12 @@ variable "create_prometheus_server" {
 }
 
 variable "london-radius-ip-addresses" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
 
 variable "dublin-radius-ip-addresses" {
-  type    = "list"
+  type    = list(string)
   default = []
 }
+

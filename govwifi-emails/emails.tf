@@ -5,8 +5,8 @@ resource "aws_ses_receipt_rule" "user-signup-rule" {
   scan_enabled  = true
 
   depends_on = [
-    "aws_sns_topic.user-signup-notifications",
-    "aws_s3_bucket.emailbucket",
+    aws_sns_topic.user-signup-notifications,
+    aws_s3_bucket.emailbucket
   ]
 
   recipients = [
@@ -18,7 +18,7 @@ resource "aws_ses_receipt_rule" "user-signup-rule" {
 
   s3_action {
     bucket_name = "${var.Env-Name}-emailbucket"
-    topic_arn   = "${aws_sns_topic.user-signup-notifications.arn}"
+    topic_arn   = aws_sns_topic.user-signup-notifications.arn
     position    = 1
   }
 
@@ -36,9 +36,9 @@ resource "aws_ses_receipt_rule" "all-mail-rule" {
   after         = "${var.Env-Name}-user-signup-rule"
 
   depends_on = [
-    "aws_sns_topic.govwifi-email-notifications",
-    "aws_s3_bucket.emailbucket",
-    "aws_ses_receipt_rule.user-signup-rule",
+    aws_sns_topic.govwifi-email-notifications,
+    aws_s3_bucket.emailbucket,
+    aws_ses_receipt_rule.user-signup-rule,
   ]
 
   recipients = [
@@ -47,7 +47,7 @@ resource "aws_ses_receipt_rule" "all-mail-rule" {
 
   s3_action {
     bucket_name = "${var.Env-Name}-emailbucket"
-    topic_arn   = "${aws_sns_topic.govwifi-email-notifications.arn}"
+    topic_arn   = aws_sns_topic.govwifi-email-notifications.arn
     position    = 1
   }
 }
@@ -60,9 +60,9 @@ resource "aws_ses_receipt_rule" "newsite-mail-rule" {
   after         = "${var.Env-Name}-all-mail-rule"
 
   depends_on = [
-    "aws_sns_topic.govwifi-email-notifications",
-    "aws_s3_bucket.emailbucket",
-    "aws_ses_receipt_rule.user-signup-rule",
+    aws_sns_topic.govwifi-email-notifications,
+    aws_s3_bucket.emailbucket,
+    aws_ses_receipt_rule.user-signup-rule,
   ]
 
   recipients = [
@@ -70,7 +70,7 @@ resource "aws_ses_receipt_rule" "newsite-mail-rule" {
   ]
 
   sns_action {
-    topic_arn = "${var.devops-notifications-arn}"
+    topic_arn = var.devops-notifications-arn
     position  = 1
   }
 }
@@ -83,8 +83,8 @@ resource "aws_ses_receipt_rule" "admin-email-rule" {
   after         = "${var.Env-Name}-newsite-mail-rule"
 
   depends_on = [
-    "aws_s3_bucket.admin-emailbucket",
-    "aws_ses_receipt_rule.all-mail-rule",
+    aws_s3_bucket.admin-emailbucket,
+    aws_ses_receipt_rule.all-mail-rule,
   ]
 
   recipients = [
@@ -109,7 +109,8 @@ resource "aws_ses_receipt_rule" "log-request-rule" {
   ]
 
   sns_action {
-    topic_arn = "${var.devops-notifications-arn}"
+    topic_arn = var.devops-notifications-arn
     position  = 1
   }
 }
+

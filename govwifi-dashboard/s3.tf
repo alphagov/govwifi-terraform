@@ -4,10 +4,11 @@ resource "aws_s3_bucket" "metrics-bucket" {
 
   tags = {
     Name        = "${title(var.Env-Name)} Metrics data"
-    Environment = "${title(var.Env-Name)}"
+    Environment = title(var.Env-Name)
   }
 
   versioning {
     enabled = true
   }
 }
+

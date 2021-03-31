@@ -1,7 +1,7 @@
 resource "aws_security_group" "elasticsearch-inbound" {
   name        = "elasticsearch-inbound"
   description = "Allow Outbound Traffic From the API"
-  vpc_id      = "${var.vpc-id}"
+  vpc_id      = var.vpc-id
 
   tags = {
     Name = "${title(var.Env-Name)} Elasticsearch inbound traffic"
@@ -11,7 +11,7 @@ resource "aws_security_group" "elasticsearch-inbound" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["${var.vpc-cidr-block}"]
+    cidr_blocks = [var.vpc-cidr-block]
   }
 }
 
@@ -28,11 +28,11 @@ resource "aws_elasticsearch_domain" "govwifi-elasticsearch" {
 
   vpc_options {
     subnet_ids = [
-      "${var.backend-subnet-id}",
+      var.backend-subnet-id
     ]
 
     security_group_ids = [
-      "${aws_security_group.elasticsearch-inbound.id}",
+      aws_security_group.elasticsearch-inbound.id,
     ]
   }
 
@@ -41,3 +41,4 @@ resource "aws_elasticsearch_domain" "govwifi-elasticsearch" {
     volume_size = "10"
   }
 }
+

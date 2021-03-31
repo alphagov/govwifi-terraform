@@ -132,5 +132,8 @@ resource "aws_cloudwatch_dashboard" "SLIs" {
         }
     ]
 }
- EOF
+ 
+EOF
+
 }
+

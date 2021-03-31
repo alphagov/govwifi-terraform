@@ -23,7 +23,7 @@ resource "aws_appautoscaling_policy" "ecs-policy-up" {
     }
   }
 
-  depends_on = ["aws_appautoscaling_target.auth-ecs-target"]
+  depends_on = [aws_appautoscaling_target.auth-ecs-target]
 }
 
 resource "aws_appautoscaling_policy" "ecs-policy-down" {
@@ -43,5 +43,6 @@ resource "aws_appautoscaling_policy" "ecs-policy-down" {
     }
   }
 
-  depends_on = ["aws_appautoscaling_target.auth-ecs-target"]
+  depends_on = [aws_appautoscaling_target.auth-ecs-target]
 }
+

@@ -1,49 +1,49 @@
 variable "Env-Name" {
-  type    = "string"
+  type    = string
   default = "wifi"
 }
 
 variable "product-name" {
-  type    = "string"
+  type    = string
   default = "GovWifi"
 }
 
 variable "Env-Subdomain" {
-  type        = "string"
+  type        = string
   default     = "wifi"
   description = "Environment-specific subdomain to use under the service domain."
 }
 
 variable "ssh-key-name" {
-  type    = "string"
+  type    = string
   default = "govwifi-key-20180530"
 }
 
 # Entries below should probably stay as is for different environments
 #####################################################################
 variable "aws-region" {
-  type    = "string"
+  type    = string
   default = "eu-west-2"
 }
 
 variable "aws-region-name" {
-  type    = "string"
+  type    = string
   default = "London"
 }
 
 variable "backup-region-name" {
-  type    = "string"
+  type    = string
   default = "Dublin"
 }
 
 variable "zone-count" {
-  type    = "string"
+  type    = string
   default = "3"
 }
 
 # Zone names and subnets MUST be static, can not be constructed from vars.
 variable "zone-names" {
-  type = "map"
+  type = map(string)
 
   default = {
     zone0 = "eu-west-2a"
@@ -61,223 +61,232 @@ variable "ami" {
 # Secrets
 
 variable "auth-sentry-dsn" {
-  type = "string"
+  type = string
 }
 
 variable "safe-restart-sentry-dsn" {
-  type = "string"
+  type = string
 }
 
 variable "public-google-api-key" {
-  type    = "string"
+  type    = string
   default = "AIzaSyCz1cPYKamsA_ZJCygL9EY0Zq6stkazTco"
 }
 
 variable "otp-secret-encryption-key" {
-  type        = "string"
+  type        = string
   description = "Encryption key used to verify OTP authentication codes"
 }
 
 variable "user-signup-sentry-dsn" {
-  type = "string"
+  type = string
 }
 
 variable "logging-sentry-dsn" {
-  type = "string"
+  type = string
 }
 
 variable "admin-sentry-dsn" {
-  type = "string"
+  type = string
 }
 
 variable "db-user" {
-  type        = "string"
+  type        = string
   description = "Database username"
 }
 
 variable "db-password" {
-  type        = "string"
+  type        = string
   description = "Database main password"
 }
 
 variable "user-db-username" {
-  type        = "string"
+  type        = string
   description = "User details database username"
 }
 
 variable "user-db-password" {
-  type        = "string"
+  type        = string
   description = "User details database password"
 }
 
 variable "user-db-hostname" {
-  type        = "string"
+  type        = string
   description = "User details database hostname"
   default     = "users-db.london.production.wifi.service.gov.uk"
 }
 
 variable "user-rr-hostname" {
-  type        = "string"
+  type        = string
   description = "User details read replica hostname"
   default     = "users-rr.london.production.wifi.service.gov.uk"
 }
 
 variable "admin-db-username" {
-  type        = "string"
+  type        = string
   description = "Database main username for govwifi-admin"
 }
 
 variable "admin-db-password" {
-  type        = "string"
+  type        = string
   description = "Database main password for govwifi-admin"
 }
 
 variable "zendesk-api-user" {
-  type        = "string"
+  type        = string
   description = "User for authenticating with Zendesk API"
 }
 
 variable "zendesk-api-token" {
-  type        = "string"
+  type        = string
   description = "Token for authenticating with Zendesk API"
 }
 
 variable "hc-key" {
-  type        = "string"
+  type        = string
   description = "Health check process shared secret"
 }
 
 variable "hc-ssid" {
-  type        = "string"
+  type        = string
   description = "Healt check simulated SSID"
 }
 
 variable "hc-identity" {
-  type        = "string"
+  type        = string
   description = "Healt check identity"
 }
 
 variable "hc-password" {
-  type        = "string"
+  type        = string
   description = "Healt check password"
 }
 
 variable "shared-key" {
-  type        = "string"
+  type        = string
   description = "A random key to be shared between the fronend and backend to retrieve initial client setup."
 }
 
 variable "notify-api-key" {
-  type        = "string"
+  type        = string
   description = "API key used to authenticate with GOV.UK Notify"
 }
 
 variable "aws-account-id" {
-  type        = "string"
+  type        = string
   description = "The ID of the AWS tenancy."
 }
 
 variable "admin-secret-key-base" {
-  type        = "string"
+  type        = string
   description = "Rails secret key base for the Admin platform"
 }
 
 variable "docker-image-path" {
-  type        = "string"
+  type        = string
   description = "ARN used to identify the common path element used for the docker image repositories in London."
 }
 
 variable "route53-zone-id" {
-  type        = "string"
+  type        = string
   description = "Zone ID used by the Route53 DNS service."
 }
 
 variable "performance-url" {
-  type        = "string"
+  type        = string
   description = "URL endpoint leading to Performance platform API, with a trailing slash at the end"
 }
 
 variable "performance-dataset" {
-  type        = "string"
+  type        = string
   description = "Dataset to which Performance statistics should be saved e.g `gov-wifi`"
 }
 
 variable "performance-bearer-volumetrics" {
-  type        = "string"
+  type        = string
   description = "Bearer token for `volumetrics` Performance platform statistics"
 }
 
 variable "performance-bearer-completion-rate" {
-  type        = "string"
+  type        = string
   description = "Bearer token for `completion-rate` Performance platform statistics"
 }
 
 variable "performance-bearer-active-users" {
-  type        = "string"
+  type        = string
   description = "Bearer token for `active-users` Performance platform statistics"
 }
 
 variable "performance-bearer-unique-users" {
-  type        = "string"
+  type        = string
   description = "Bearer token for `unique-users` Performance platform statistics"
 }
 
 variable "performance-bearer-roaming-users" {
-  type        = "string"
+  type        = string
   description = "Bearer token for `roaming-users` Performance platform statistics"
 }
 
 variable "london-radius-ip-addresses" {
-  type        = "list"
+  type        = list(string)
   description = "Frontend RADIUS server IP addresses - London"
 }
 
 variable "dublin-radius-ip-addresses" {
-  type        = "list"
+  type        = list(string)
   description = "Frontend RADIUS server IP addresses - Dublin"
 }
 
 variable "london-api-base-url" {
-  type        = "string"
+  type        = string
   description = "Base URL for authentication, user signup and logging APIs"
   default     = "https://api-elb.london.wifi.service.gov.uk:8443"
 }
 
 variable "govnotify-bearer-token" {
-  type = "string"
+  type = string
 }
 
 variable "critical-notification-email" {
-  type = "string"
+  type = string
 }
 
 variable "capacity-notification-email" {
-  type = "string"
+  type = string
 }
 
 variable "devops-notification-email" {
-  type = "string"
+  type = string
 }
 
-variable "prometheus-IP-london" {}
+variable "prometheus-IP-london" {
+}
 
-variable "prometheus-IP-ireland" {}
+variable "prometheus-IP-ireland" {
+}
 
-variable "grafana-IP" {}
+variable "grafana-IP" {
+}
 
 variable "administrator-IPs-list" {
-  type        = "list"
+  type        = list(string)
   description = "Administrator allowed IPs (VPN IPs)"
 }
 
-variable "grafana-admin" {}
+variable "grafana-admin" {
+}
 
-variable "google-client-secret" {}
+variable "google-client-secret" {
+}
 
-variable "google-client-id" {}
+variable "google-client-id" {
+}
 
-variable "grafana-server-root-url" {}
+variable "grafana-server-root-url" {
+}
 
-variable "gds-slack-workplace-id" {}
+variable "gds-slack-workplace-id" {
+}
 
-variable "gds-slack-channel-id" {}
+variable "gds-slack-channel-id" {
+}

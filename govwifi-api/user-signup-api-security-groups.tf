@@ -1,7 +1,7 @@
 resource "aws_security_group" "user-signup-api-lb-in" {
-  count  = "${var.user-signup-api-is-public}"
+  count  = var.user-signup-api-is-public
   name   = "${var.Env-Name} User Signup API world inbound"
-  vpc_id = "${var.vpc-id}"
+  vpc_id = var.vpc-id
 
   ingress {
     from_port   = 8443
@@ -10,3 +10,4 @@ resource "aws_security_group" "user-signup-api-lb-in" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+

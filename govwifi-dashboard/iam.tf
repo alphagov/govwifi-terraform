@@ -1,5 +1,5 @@
 resource "aws_iam_user_policy" "dashboard-read-only-policy" {
-  user = "${aws_iam_user.dashboard-read-only-user.name}"
+  user = aws_iam_user.dashboard-read-only-user.name
   name = "dashboard-${var.Env-Name}-read-only-policy"
 
   policy = <<EOF
@@ -23,8 +23,10 @@ resource "aws_iam_user_policy" "dashboard-read-only-policy" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_user" "dashboard-read-only-user" {
   name = "dashboard-${var.Env-Name}-read-only-user"
 }
+

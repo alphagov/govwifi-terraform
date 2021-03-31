@@ -1,7 +1,7 @@
 resource "aws_db_subnet_group" "db-subnets" {
   name        = "wifi-${var.Env-Name}-subnets"
   description = "GovWifi ${var.Env-Name} backend subnets"
-  subnet_ids  = ["${aws_subnet.wifi-backend-subnet.*.id}"]
+  subnet_ids  = aws_subnet.wifi-backend-subnet.*.id
 
   tags = {
     Name = "wifi-${var.Env-Name}-subnets"
@@ -9,7 +9,7 @@ resource "aws_db_subnet_group" "db-subnets" {
 }
 
 resource "aws_db_parameter_group" "db-parameters" {
-  count       = "${var.db-instance-count}"
+  count       = var.db-instance-count
   name        = "${var.Env-Name}-db-parameter-group"
   family      = "mysql5.7"
   description = "DB parameter configuration"
@@ -40,7 +40,7 @@ resource "aws_db_parameter_group" "db-parameters" {
 }
 
 resource "aws_db_parameter_group" "user-db-parameters" {
-  count       = "${var.db-instance-count}"
+  count       = var.db-instance-count
   name        = "${var.Env-Name}-user-db-parameter-group"
   family      = "mysql8.0"
   description = "User DB parameter configuration"
@@ -102,7 +102,7 @@ resource "aws_db_parameter_group" "rr-parameters" {
 }
 
 resource "aws_db_parameter_group" "user-rr-parameters" {
-  count = "${var.user-db-replica-count}"
+  count = var.user-db-replica-count
   name  = "${var.Env-Name}-user-rr-parameter-group"
 
   family      = "mysql8.0"
@@ -152,7 +152,7 @@ resource "aws_db_option_group" "mariadb-audit" {
 }
 
 resource "aws_db_option_group" "user-mariadb-audit" {
-  count = "${var.db-instance-count}"
+  count = var.db-instance-count
   name  = "${var.env}-user-db-audit"
 
   option_group_description = "Mariadb audit configuration"
@@ -163,3 +163,4 @@ resource "aws_db_option_group" "user-mariadb-audit" {
     Name = "${title(var.env)} User DB Audit configuration"
   }
 }
+

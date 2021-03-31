@@ -40,12 +40,12 @@ resource "aws_s3_bucket" "emailbucket" {
 }
 EOF
 
+
   tags = {
     Name   = "${title(var.Env-Name)} Email Bucket"
-    Region = "${title(var.aws-region-name)}"
-
+    Region = title(var.aws-region-name)
     #   Product     = "${var.product-name}"
-    Environment = "${title(var.Env-Name)}"
+    Environment = title(var.Env-Name)
     Category    = "User emails"
   }
 
@@ -114,12 +114,12 @@ resource "aws_s3_bucket" "admin-emailbucket" {
 }
 EOF
 
+
   tags = {
     Name   = "${title(var.Env-Name)} Admin Email Bucket"
-    Region = "${title(var.aws-region-name)}"
-
+    Region = title(var.aws-region-name)
     #   Product     = "${var.product-name}"
-    Environment = "${title(var.Env-Name)}"
+    Environment = title(var.Env-Name)
     Category    = "Admin emails"
   }
 
@@ -171,6 +171,7 @@ resource "aws_sns_topic" "govwifi-email-notifications" {
 }
 EOF
 
+
   delivery_policy = <<EOF
 {
   "http": {
@@ -187,16 +188,17 @@ EOF
   }
 }
 EOF
+
 }
 
 # Subscription
 resource "aws_sns_topic_subscription" "email-notifications-target" {
-  topic_arn                       = "${aws_sns_topic.govwifi-email-notifications.arn}"
+  topic_arn                       = aws_sns_topic.govwifi-email-notifications.arn
   protocol                        = "https"
-  endpoint                        = "${var.sns-endpoint}"
+  endpoint                        = var.sns-endpoint
   endpoint_auto_confirms          = true
   confirmation_timeout_in_minutes = 2
-  depends_on                      = ["aws_sns_topic.govwifi-email-notifications"]
+  depends_on                      = [aws_sns_topic.govwifi-email-notifications]
 }
 
 # SNS topic to notify the new user-signup API when an email arrives
@@ -206,9 +208,10 @@ resource "aws_sns_topic" "user-signup-notifications" {
 }
 
 resource "aws_sns_topic_subscription" "user-signup-notifications-target" {
-  topic_arn              = "${aws_sns_topic.user-signup-notifications.arn}"
+  topic_arn              = aws_sns_topic.user-signup-notifications.arn
   protocol               = "https"
-  endpoint               = "${var.user-signup-notifications-endpoint}"
+  endpoint               = var.user-signup-notifications-endpoint
   endpoint_auto_confirms = true
-  depends_on             = ["aws_sns_topic.user-signup-notifications"]
+  depends_on             = [aws_sns_topic.user-signup-notifications]
 }
+

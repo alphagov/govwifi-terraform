@@ -47,3 +47,4 @@ resource "aws_iam_group" "Read-Only-Access" {
   name = "Read-Only-Access"
   path = "/"
 }
+

@@ -1,17 +1,17 @@
 resource "aws_cloudwatch_log_group" "user-signup-api-log-group" {
-  count = "${var.user-signup-enabled}"
+  count = var.user-signup-enabled
   name  = "${var.Env-Name}-user-signup-api-docker-log-group"
 
   retention_in_days = 90
 }
 
 resource "aws_ecr_repository" "user-signup-api-ecr" {
-  count = "${var.ecr-repository-count}"
+  count = var.ecr-repository-count
   name  = "govwifi/user-signup-api"
 }
 
 resource "aws_iam_role" "user-signup-api-task-role" {
-  count = "${var.user-signup-enabled}"
+  count = var.user-signup-enabled
   name  = "${var.Env-Name}-user-signup-api-task-role"
 
   assume_role_policy = <<EOF
@@ -29,13 +29,14 @@ resource "aws_iam_role" "user-signup-api-task-role" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_role_policy" "user-signup-api-task-policy" {
-  count      = "${var.user-signup-enabled}"
+  count      = var.user-signup-enabled
   name       = "${var.Env-Name}-user-signup-api-task-policy"
-  role       = "${aws_iam_role.user-signup-api-task-role.id}"
-  depends_on = ["aws_iam_role.user-signup-api-task-role"]
+  role       = aws_iam_role.user-signup-api-task-role[0].id
+  depends_on = [aws_iam_role.user-signup-api-task-role]
 
   policy = <<EOF
 {
@@ -52,7 +53,7 @@ resource "aws_iam_role_policy" "user-signup-api-task-policy" {
       "Action": [
         "s3:GetObject"
       ],
-      "Resource": ["${data.aws_s3_bucket.admin-bucket.arn}/signup-whitelist.conf"]
+      "Resource": ["${data.aws_s3_bucket.admin-bucket[0].arn}/signup-whitelist.conf"]
     },
     {
       "Effect": "Allow",
@@ -64,19 +65,20 @@ resource "aws_iam_role_policy" "user-signup-api-task-policy" {
   ]
 }
 EOF
+
 }
 
 data "aws_s3_bucket" "admin-bucket" {
-  count  = "${var.user-signup-enabled}"
-  bucket = "${var.admin-bucket-name}"
+  count  = var.user-signup-enabled
+  bucket = var.admin-bucket-name
 }
 
 resource "aws_ecs_task_definition" "user-signup-api-task" {
-  count                    = "${var.user-signup-enabled}"
+  count                    = var.user-signup-enabled
   family                   = "user-signup-api-task-${var.Env-Name}"
-  task_role_arn            = "${aws_iam_role.user-signup-api-task-role.arn}"
+  task_role_arn            = aws_iam_role.user-signup-api-task-role[0].arn
   requires_compatibilities = ["FARGATE"]
-  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   memory                   = 512
   cpu                      = "256"
   network_mode             = "awsvpc"
@@ -142,7 +144,7 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
           "value": "${var.performance-bearer-completion-rate}"
         },{
           "name": "S3_SIGNUP_WHITELIST_BUCKET",
-          "value": "${data.aws_s3_bucket.admin-bucket.bucket}"
+          "value": "${data.aws_s3_bucket.admin-bucket[0].bucket}"
         },{
           "name": "S3_SIGNUP_WHITELIST_OBJECT_KEY",
           "value": "signup-whitelist.conf"
@@ -164,7 +166,7 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.user-signup-api-log-group.name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.user-signup-api-log-group[0].name}",
           "awslogs-region": "${var.aws-region}",
           "awslogs-stream-prefix": "${var.Env-Name}-user-signup-api-docker-logs"
         }
@@ -175,41 +177,42 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
     }
 ]
 EOF
+
 }
 
 resource "aws_ecs_service" "user-signup-api-service" {
-  count           = "${var.user-signup-enabled}"
+  count           = var.user-signup-enabled
   name            = "user-signup-api-service-${var.Env-Name}"
-  cluster         = "${aws_ecs_cluster.api-cluster.id}"
-  task_definition = "${aws_ecs_task_definition.user-signup-api-task.arn}"
-  desired_count   = "${var.backend-instance-count}"
+  cluster         = aws_ecs_cluster.api-cluster.id
+  task_definition = aws_ecs_task_definition.user-signup-api-task[0].arn
+  desired_count   = var.backend-instance-count
   launch_type     = "FARGATE"
 
   network_configuration {
-    security_groups = [
-      "${var.backend-sg-list}",
-      "${aws_security_group.api-in.id}",
-      "${aws_security_group.api-out.id}",
-    ]
+    security_groups = concat(
+      var.backend-sg-list,
+      [aws_security_group.api-in.id],
+      [aws_security_group.api-out.id]
+    )
 
-    subnets          = ["${var.subnet-ids}"]
+    subnets          = var.subnet-ids
     assign_public_ip = true
   }
 
   load_balancer {
-    target_group_arn = "${aws_alb_target_group.user-signup-api-tg.arn}"
+    target_group_arn = aws_alb_target_group.user-signup-api-tg[0].arn
     container_name   = "user-signup"
     container_port   = "8080"
   }
 }
 
 resource "aws_alb_target_group" "user-signup-api-tg" {
-  count       = "${var.user-signup-enabled}"
-  depends_on  = ["aws_lb.api-alb"]
+  count       = var.user-signup-enabled
+  depends_on  = [aws_lb.api-alb]
   name        = "user-signup-api-${var.Env-Name}"
   port        = "8080"
   protocol    = "HTTP"
-  vpc_id      = "${var.vpc-id}"
+  vpc_id      = var.vpc-id
   target_type = "ip"
 
   tags = {
@@ -224,3 +227,4 @@ resource "aws_alb_target_group" "user-signup-api-tg" {
     path                = "/healthcheck"
   }
 }
+

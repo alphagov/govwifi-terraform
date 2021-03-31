@@ -20,6 +20,7 @@ resource "aws_iam_role" "accesslogs-replication" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_policy" "accesslogs-replication" {
@@ -60,23 +61,24 @@ resource "aws_iam_policy" "accesslogs-replication" {
   ]
 }
 EOF
+
 }
 
 resource "aws_iam_policy_attachment" "accesslogs-replication" {
   name       = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-accesslogs-replication"
-  roles      = ["${aws_iam_role.accesslogs-replication.name}"]
-  policy_arn = "${aws_iam_policy.accesslogs-replication.arn}"
+  roles      = [aws_iam_role.accesslogs-replication.name]
+  policy_arn = aws_iam_policy.accesslogs-replication.arn
 }
 
 resource "aws_s3_bucket" "accesslogs-bucket" {
   bucket = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
-  region = "${var.aws-region}"
+  region = var.aws-region
   acl    = "log-delivery-write"
 
   tags = {
-    Region      = "${title(var.aws-region-name)}"
-    Product     = "${var.product-name}"
-    Environment = "${title(var.Env-Name)}"
+    Region      = title(var.aws-region-name)
+    Product     = var.product-name
+    Environment = title(var.Env-Name)
     Category    = "Accesslogs"
   }
 
@@ -89,17 +91,17 @@ resource "aws_s3_bucket" "accesslogs-bucket" {
     enabled = true
 
     transition {
-      days          = "${var.accesslogs-glacier-transition-days}"
+      days          = var.accesslogs-glacier-transition-days
       storage_class = "GLACIER"
     }
 
     expiration {
-      days = "${var.accesslogs-expiration-days}"
+      days = var.accesslogs-expiration-days
     }
   }
 
   replication_configuration {
-    role = "${aws_iam_role.accesslogs-replication.arn}"
+    role = aws_iam_role.accesslogs-replication.arn
 
     rules {
       # ID is necessary to prevent continuous change issue
@@ -114,3 +116,4 @@ resource "aws_s3_bucket" "accesslogs-bucket" {
     }
   }
 }
+

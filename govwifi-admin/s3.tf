@@ -6,8 +6,8 @@ resource "aws_s3_bucket" "admin-bucket" {
 
   tags = {
     Name        = "${title(var.Env-Name)} Admin data"
-    Region      = "${title(var.aws-region-name)}"
-    Environment = "${title(var.rack-env)}"
+    Region      = title(var.aws-region-name)
+    Environment = title(var.rack-env)
   }
 
   versioning {
@@ -23,8 +23,8 @@ resource "aws_s3_bucket" "product-page-data-bucket" {
 
   tags = {
     Name        = "${title(var.rack-env)} Product page data"
-    Region      = "${title(var.aws-region-name)}"
-    Environment = "${title(var.rack-env)}"
+    Region      = title(var.aws-region-name)
+    Environment = title(var.rack-env)
   }
 
   versioning {
@@ -40,8 +40,8 @@ resource "aws_s3_bucket" "admin-mou-bucket" {
 
   tags = {
     Name        = "${title(var.Env-Name)} MOU documents from Admin"
-    Region      = "${title(var.aws-region-name)}"
-    Environment = "${title(var.rack-env)}"
+    Region      = title(var.aws-region-name)
+    Environment = title(var.rack-env)
   }
 
   versioning {
@@ -50,7 +50,7 @@ resource "aws_s3_bucket" "admin-mou-bucket" {
 }
 
 resource "aws_s3_bucket_policy" "admin-bucket-policy" {
-  bucket = "${aws_s3_bucket.admin-bucket.id}"
+  bucket = aws_s3_bucket.admin-bucket[0].id
 
   policy = <<POLICY
 {
@@ -66,7 +66,16 @@ resource "aws_s3_bucket_policy" "admin-bucket-policy" {
       "Condition": {
         "IpAddress": {
           "aws:SourceIp": [
-            ${join(",", formatlist("\"%s\"", concat(var.london-radius-ip-addresses, var.dublin-radius-ip-addresses)))}
+            ${join(
+  ",",
+  formatlist(
+    "\"%s\"",
+    concat(
+      var.london-radius-ip-addresses,
+      var.dublin-radius-ip-addresses,
+    ),
+  ),
+)}
           ]
         }
       }
@@ -74,10 +83,11 @@ resource "aws_s3_bucket_policy" "admin-bucket-policy" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_s3_bucket_policy" "product-page-data-bucket-policy" {
-  bucket = "${aws_s3_bucket.product-page-data-bucket.id}"
+  bucket = aws_s3_bucket.product-page-data-bucket[0].id
 
   policy = <<POLICY
 {
@@ -108,4 +118,6 @@ resource "aws_s3_bucket_policy" "product-page-data-bucket-policy" {
     ]
 }
 POLICY
+
 }
+

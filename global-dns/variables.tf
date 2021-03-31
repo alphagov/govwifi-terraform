@@ -1,7 +1,12 @@
-variable "Env-Name" {}
+variable "Env-Name" {
+}
 
-variable "Env-Subdomain" {}
+variable "Env-Subdomain" {
+}
 
-variable "route53-zone-id" {}
+variable "route53-zone-id" {
+}
 
-variable "status-page-domain" {}
+variable "status-page-domain" {
+}
+

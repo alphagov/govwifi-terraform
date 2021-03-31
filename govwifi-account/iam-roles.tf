@@ -17,6 +17,7 @@ resource "aws_iam_role" "admin-ecsTaskExecutionRole-production-London" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "admin-ecsTaskExecutionRole-staging-London" {
@@ -38,6 +39,7 @@ resource "aws_iam_role" "admin-ecsTaskExecutionRole-staging-London" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AggregateStagingMetrics-role-gej26flk" {
@@ -58,6 +60,7 @@ resource "aws_iam_role" "AggregateStagingMetrics-role-gej26flk" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForAmazonGuardDuty" {
@@ -78,6 +81,7 @@ resource "aws_iam_role" "AWSServiceRoleForAmazonGuardDuty" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForApplicationAutoScaling_ECSService" {
@@ -98,6 +102,7 @@ resource "aws_iam_role" "AWSServiceRoleForApplicationAutoScaling_ECSService" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForAutoScaling" {
@@ -119,6 +124,7 @@ resource "aws_iam_role" "AWSServiceRoleForAutoScaling" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForCloudTrail" {
@@ -139,6 +145,7 @@ resource "aws_iam_role" "AWSServiceRoleForCloudTrail" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForCloudWatchCrossAccount" {
@@ -160,6 +167,7 @@ resource "aws_iam_role" "AWSServiceRoleForCloudWatchCrossAccount" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForECS" {
@@ -181,6 +189,7 @@ resource "aws_iam_role" "AWSServiceRoleForECS" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForElastiCache" {
@@ -202,6 +211,7 @@ resource "aws_iam_role" "AWSServiceRoleForElastiCache" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForElasticLoadBalancing" {
@@ -223,6 +233,7 @@ resource "aws_iam_role" "AWSServiceRoleForElasticLoadBalancing" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForGlobalAccelerator" {
@@ -244,6 +255,7 @@ resource "aws_iam_role" "AWSServiceRoleForGlobalAccelerator" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForOrganizations" {
@@ -265,6 +277,7 @@ resource "aws_iam_role" "AWSServiceRoleForOrganizations" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForRDS" {
@@ -286,6 +299,7 @@ resource "aws_iam_role" "AWSServiceRoleForRDS" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForSecurityHub" {
@@ -306,6 +320,7 @@ resource "aws_iam_role" "AWSServiceRoleForSecurityHub" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForSupport" {
@@ -327,6 +342,7 @@ resource "aws_iam_role" "AWSServiceRoleForSupport" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "AWSServiceRoleForTrustedAdvisor" {
@@ -348,6 +364,7 @@ resource "aws_iam_role" "AWSServiceRoleForTrustedAdvisor" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "camille-descartes-admin" {
@@ -376,6 +393,7 @@ resource "aws_iam_role" "camille-descartes-admin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "charles-chani-admin" {
@@ -404,6 +422,7 @@ resource "aws_iam_role" "charles-chani-admin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "chris-banks-admin" {
@@ -432,6 +451,7 @@ resource "aws_iam_role" "chris-banks-admin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "CloudTrail_CloudWatchLogs_Role" {
@@ -453,6 +473,7 @@ resource "aws_iam_role" "CloudTrail_CloudWatchLogs_Role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "colin-burn-murdoch-readonly" {
@@ -489,6 +510,7 @@ resource "aws_iam_role" "colin-burn-murdoch-readonly" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "Dublin-ecs-instance-role-staging" {
@@ -510,6 +532,7 @@ resource "aws_iam_role" "Dublin-ecs-instance-role-staging" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "Dublin-ecs-instance-role-wifi" {
@@ -531,6 +554,7 @@ resource "aws_iam_role" "Dublin-ecs-instance-role-wifi" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "Dublin-ecs-service-role-staging" {
@@ -552,6 +576,7 @@ resource "aws_iam_role" "Dublin-ecs-service-role-staging" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "Dublin-ecs-service-role-wifi" {
@@ -573,6 +598,7 @@ resource "aws_iam_role" "Dublin-ecs-service-role-wifi" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "Dublin-frontend-ecs-instance-role-staging" {
@@ -594,6 +620,7 @@ resource "aws_iam_role" "Dublin-frontend-ecs-instance-role-staging" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "Dublin-frontend-ecs-instance-role-wifi" {
@@ -615,6 +642,7 @@ resource "aws_iam_role" "Dublin-frontend-ecs-instance-role-wifi" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "Dublin-frontend-ecs-task-role-staging" {
@@ -636,6 +664,7 @@ resource "aws_iam_role" "Dublin-frontend-ecs-task-role-staging" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "Dublin-frontend-ecs-task-role-wifi" {
@@ -657,6 +686,7 @@ resource "aws_iam_role" "Dublin-frontend-ecs-task-role-wifi" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "Dublin-staging-rds-monitoring-role" {
@@ -678,6 +708,7 @@ resource "aws_iam_role" "Dublin-staging-rds-monitoring-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "Dublin-wifi-backend-bastion-instance-role" {
@@ -699,6 +730,7 @@ resource "aws_iam_role" "Dublin-wifi-backend-bastion-instance-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "Dublin-wifi-rds-monitoring-role" {
@@ -720,6 +752,7 @@ resource "aws_iam_role" "Dublin-wifi-rds-monitoring-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole-production-dublin" {
@@ -741,6 +774,7 @@ resource "aws_iam_role" "ecsTaskExecutionRole-production-dublin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole-production-London" {
@@ -762,6 +796,7 @@ resource "aws_iam_role" "ecsTaskExecutionRole-production-London" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole-staging-Dublin" {
@@ -783,6 +818,7 @@ resource "aws_iam_role" "ecsTaskExecutionRole-staging-Dublin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole-staging-London" {
@@ -804,6 +840,7 @@ resource "aws_iam_role" "ecsTaskExecutionRole-staging-London" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "flowlogsRole" {
@@ -825,6 +862,7 @@ resource "aws_iam_role" "flowlogsRole" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "frederic-francois-admin" {
@@ -853,6 +891,7 @@ resource "aws_iam_role" "frederic-francois-admin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "frontend-execution-role" {
@@ -875,6 +914,7 @@ resource "aws_iam_role" "frontend-execution-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "GDSAdminAccessGovWifi" {
@@ -905,6 +945,7 @@ resource "aws_iam_role" "GDSAdminAccessGovWifi" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "govwifi-staging-dublin-accesslogs-replication-role" {
@@ -926,6 +967,7 @@ resource "aws_iam_role" "govwifi-staging-dublin-accesslogs-replication-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "govwifi-staging-dublin-tfstate-replication-role" {
@@ -947,6 +989,7 @@ resource "aws_iam_role" "govwifi-staging-dublin-tfstate-replication-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "govwifi-staging-london-accesslogs-replication-role" {
@@ -968,6 +1011,7 @@ resource "aws_iam_role" "govwifi-staging-london-accesslogs-replication-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "govwifi-staging-london-tfstate-replication-role" {
@@ -989,6 +1033,7 @@ resource "aws_iam_role" "govwifi-staging-london-tfstate-replication-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "govwifi-wifi-dublin-accesslogs-replication-role" {
@@ -1010,6 +1055,7 @@ resource "aws_iam_role" "govwifi-wifi-dublin-accesslogs-replication-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "govwifi-wifi-dublin-tfstate-replication-role" {
@@ -1031,6 +1077,7 @@ resource "aws_iam_role" "govwifi-wifi-dublin-tfstate-replication-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "govwifi-wifi-london-accesslogs-replication-role" {
@@ -1052,6 +1099,7 @@ resource "aws_iam_role" "govwifi-wifi-london-accesslogs-replication-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "govwifi-wifi-london-tfstate-replication-role" {
@@ -1073,6 +1121,7 @@ resource "aws_iam_role" "govwifi-wifi-london-tfstate-replication-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "GovWifiMetricsAggregationPrototype-role-ayhlh17x" {
@@ -1093,6 +1142,7 @@ resource "aws_iam_role" "GovWifiMetricsAggregationPrototype-role-ayhlh17x" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "ian-nicholls-admin" {
@@ -1121,6 +1171,7 @@ resource "aws_iam_role" "ian-nicholls-admin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "ITHC-RO-SecAud-Access" {
@@ -1144,6 +1195,7 @@ resource "aws_iam_role" "ITHC-RO-SecAud-Access" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "jos-koetsier-admin" {
@@ -1172,6 +1224,7 @@ resource "aws_iam_role" "jos-koetsier-admin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-ecs-admin-instance-role-staging" {
@@ -1193,6 +1246,7 @@ resource "aws_iam_role" "London-ecs-admin-instance-role-staging" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-ecs-admin-instance-role-wifi" {
@@ -1214,6 +1268,7 @@ resource "aws_iam_role" "London-ecs-admin-instance-role-wifi" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-ecs-instance-role-staging" {
@@ -1235,6 +1290,7 @@ resource "aws_iam_role" "London-ecs-instance-role-staging" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-ecs-instance-role-wifi" {
@@ -1256,6 +1312,7 @@ resource "aws_iam_role" "London-ecs-instance-role-wifi" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-ecs-service-role-staging" {
@@ -1277,6 +1334,7 @@ resource "aws_iam_role" "London-ecs-service-role-staging" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-ecs-service-role-wifi" {
@@ -1298,6 +1356,7 @@ resource "aws_iam_role" "London-ecs-service-role-wifi" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-frontend-ecs-instance-role-staging" {
@@ -1319,6 +1378,7 @@ resource "aws_iam_role" "London-frontend-ecs-instance-role-staging" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-frontend-ecs-instance-role-wifi" {
@@ -1340,6 +1400,7 @@ resource "aws_iam_role" "London-frontend-ecs-instance-role-wifi" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-frontend-ecs-task-role-staging" {
@@ -1361,6 +1422,7 @@ resource "aws_iam_role" "London-frontend-ecs-task-role-staging" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-frontend-ecs-task-role-wifi" {
@@ -1382,6 +1444,7 @@ resource "aws_iam_role" "London-frontend-ecs-task-role-wifi" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-staging-backend-bastion-instance-role" {
@@ -1403,6 +1466,7 @@ resource "aws_iam_role" "London-staging-backend-bastion-instance-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-staging-rds-monitoring-role" {
@@ -1424,6 +1488,7 @@ resource "aws_iam_role" "London-staging-rds-monitoring-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-wifi-backend-bastion-instance-role" {
@@ -1445,6 +1510,7 @@ resource "aws_iam_role" "London-wifi-backend-bastion-instance-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "London-wifi-rds-monitoring-role" {
@@ -1466,6 +1532,7 @@ resource "aws_iam_role" "London-wifi-rds-monitoring-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "NewsiteRedirect-SESEmailForwardRole-1BAO15HN9AO0C" {
@@ -1486,6 +1553,7 @@ resource "aws_iam_role" "NewsiteRedirect-SESEmailForwardRole-1BAO15HN9AO0C" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "rds-monitoring-role" {
@@ -1507,6 +1575,7 @@ resource "aws_iam_role" "rds-monitoring-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "roch-trinque-admin" {
@@ -1535,6 +1604,7 @@ resource "aws_iam_role" "roch-trinque-admin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "s3crr_role_for_govwifi-staging-dublin-tfstate_to_govwifi-staging" {
@@ -1555,6 +1625,7 @@ resource "aws_iam_role" "s3crr_role_for_govwifi-staging-dublin-tfstate_to_govwif
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "s3crr_role_for_govwifi-staging-ireland-accesslogs_to_govwifi-sta" {
@@ -1575,6 +1646,7 @@ resource "aws_iam_role" "s3crr_role_for_govwifi-staging-ireland-accesslogs_to_go
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "s3crr_role_for_govwifi-staging-london-accesslogs_to_govwifi-stag" {
@@ -1595,6 +1667,7 @@ resource "aws_iam_role" "s3crr_role_for_govwifi-staging-london-accesslogs_to_gov
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "s3crr_role_for_govwifi-staging-london-tfstate_to_govwifi-staging" {
@@ -1615,6 +1688,7 @@ resource "aws_iam_role" "s3crr_role_for_govwifi-staging-london-tfstate_to_govwif
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "s3crr_role_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replic" {
@@ -1635,6 +1709,7 @@ resource "aws_iam_role" "s3crr_role_for_test-wifi-mfadelete_to_test-wifi-mfadele
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "sarah-young-admin" {
@@ -1663,6 +1738,7 @@ resource "aws_iam_role" "sarah-young-admin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "sebastian-szypowicz-readonly" {
@@ -1691,6 +1767,7 @@ resource "aws_iam_role" "sebastian-szypowicz-readonly" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "SNSSuccessFeedback" {
@@ -1711,6 +1788,7 @@ resource "aws_iam_role" "SNSSuccessFeedback" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "staging-logging-api-task-role" {
@@ -1732,6 +1810,7 @@ resource "aws_iam_role" "staging-logging-api-task-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "staging-logging-scheduled-task-role" {
@@ -1753,6 +1832,7 @@ resource "aws_iam_role" "staging-logging-scheduled-task-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "staging-safe-restart-scheduled-task-role" {
@@ -1774,6 +1854,7 @@ resource "aws_iam_role" "staging-safe-restart-scheduled-task-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "staging-safe-restart-task-role" {
@@ -1795,6 +1876,7 @@ resource "aws_iam_role" "staging-safe-restart-task-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "staging-user-signup-api-task-role" {
@@ -1816,6 +1898,7 @@ resource "aws_iam_role" "staging-user-signup-api-task-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "staging-user-signup-scheduled-task-role" {
@@ -1837,6 +1920,7 @@ resource "aws_iam_role" "staging-user-signup-scheduled-task-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "StagingMetricsAggregator-prototype-role-saci182v" {
@@ -1857,6 +1941,7 @@ resource "aws_iam_role" "StagingMetricsAggregator-prototype-role-saci182v" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "stephen-ford-admin" {
@@ -1885,6 +1970,7 @@ resource "aws_iam_role" "stephen-ford-admin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "test-assume-role" {
@@ -1911,6 +1997,7 @@ resource "aws_iam_role" "test-assume-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "test-staging-rds-role" {
@@ -1932,6 +2019,7 @@ resource "aws_iam_role" "test-staging-rds-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "tom-whitwell-admin" {
@@ -1960,6 +2048,7 @@ resource "aws_iam_role" "tom-whitwell-admin" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "wifi-logging-api-task-role" {
@@ -1981,6 +2070,7 @@ resource "aws_iam_role" "wifi-logging-api-task-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "wifi-logging-scheduled-task-role" {
@@ -2002,6 +2092,7 @@ resource "aws_iam_role" "wifi-logging-scheduled-task-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "wifi-safe-restart-scheduled-task-role" {
@@ -2023,6 +2114,7 @@ resource "aws_iam_role" "wifi-safe-restart-scheduled-task-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "wifi-safe-restart-task-role" {
@@ -2044,6 +2136,7 @@ resource "aws_iam_role" "wifi-safe-restart-task-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "wifi-user-signup-api-task-role" {
@@ -2065,6 +2158,7 @@ resource "aws_iam_role" "wifi-user-signup-api-task-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role" "wifi-user-signup-scheduled-task-role" {
@@ -2086,6 +2180,7 @@ resource "aws_iam_role" "wifi-user-signup-scheduled-task-role" {
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "CloudTrail_CloudWatchLogs_Role_oneClick_CloudTrail_CloudWatchLogs_Role_1510330346083" {
@@ -2119,6 +2214,7 @@ resource "aws_iam_role_policy" "CloudTrail_CloudWatchLogs_Role_oneClick_CloudTra
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-ecs-instance-role-staging_Dublin-ecs-instance-policy-staging" {
@@ -2173,6 +2269,7 @@ resource "aws_iam_role_policy" "Dublin-ecs-instance-role-staging_Dublin-ecs-inst
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-ecs-instance-role-wifi_Dublin-ecs-instance-policy-wifi" {
@@ -2227,6 +2324,7 @@ resource "aws_iam_role_policy" "Dublin-ecs-instance-role-wifi_Dublin-ecs-instanc
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-ecs-service-role-staging_Dublin-ecs-service-policy-staging" {
@@ -2262,6 +2360,7 @@ resource "aws_iam_role_policy" "Dublin-ecs-service-role-staging_Dublin-ecs-servi
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-ecs-service-role-wifi_Dublin-ecs-service-policy-wifi" {
@@ -2297,6 +2396,7 @@ resource "aws_iam_role_policy" "Dublin-ecs-service-role-wifi_Dublin-ecs-service-
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-frontend-ecs-instance-role-staging_Dublin-frontend-ecs-instance-policy-staging" {
@@ -2351,6 +2451,7 @@ resource "aws_iam_role_policy" "Dublin-frontend-ecs-instance-role-staging_Dublin
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-frontend-ecs-instance-role-wifi_Dublin-frontend-ecs-instance-policy-wifi" {
@@ -2405,6 +2506,7 @@ resource "aws_iam_role_policy" "Dublin-frontend-ecs-instance-role-wifi_Dublin-fr
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-frontend-ecs-task-role-staging_Dublin-frontend-admin-bucket-staging" {
@@ -2430,6 +2532,7 @@ resource "aws_iam_role_policy" "Dublin-frontend-ecs-task-role-staging_Dublin-fro
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-frontend-ecs-task-role-staging_Dublin-frontend-cert-bucket-staging" {
@@ -2455,6 +2558,7 @@ resource "aws_iam_role_policy" "Dublin-frontend-ecs-task-role-staging_Dublin-fro
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-frontend-ecs-task-role-staging_Dublin-frontend-ecs-service-policy-staging" {
@@ -2476,6 +2580,7 @@ resource "aws_iam_role_policy" "Dublin-frontend-ecs-task-role-staging_Dublin-fro
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-frontend-ecs-task-role-wifi_Dublin-frontend-admin-bucket-wifi" {
@@ -2501,6 +2606,7 @@ resource "aws_iam_role_policy" "Dublin-frontend-ecs-task-role-wifi_Dublin-fronte
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-frontend-ecs-task-role-wifi_Dublin-frontend-cert-bucket-wifi" {
@@ -2526,6 +2632,7 @@ resource "aws_iam_role_policy" "Dublin-frontend-ecs-task-role-wifi_Dublin-fronte
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-frontend-ecs-task-role-wifi_Dublin-frontend-ecs-service-policy-wifi" {
@@ -2547,6 +2654,7 @@ resource "aws_iam_role_policy" "Dublin-frontend-ecs-task-role-wifi_Dublin-fronte
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-staging-rds-monitoring-role_Dublin-staging-rds-monitoring-policy" {
@@ -2584,6 +2692,7 @@ resource "aws_iam_role_policy" "Dublin-staging-rds-monitoring-role_Dublin-stagin
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-wifi-backend-bastion-instance-role_Dublin-wifi-backend-bastion-instance-policy" {
@@ -2609,6 +2718,7 @@ resource "aws_iam_role_policy" "Dublin-wifi-backend-bastion-instance-role_Dublin
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "Dublin-wifi-rds-monitoring-role_Dublin-wifi-rds-monitoring-policy" {
@@ -2646,6 +2756,7 @@ resource "aws_iam_role_policy" "Dublin-wifi-rds-monitoring-role_Dublin-wifi-rds-
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "flowlogsRole_oneClick_flowlogsRole_1480343201952" {
@@ -2669,6 +2780,7 @@ resource "aws_iam_role_policy" "flowlogsRole_oneClick_flowlogsRole_1480343201952
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-ecs-admin-instance-role-staging_London-ecs-admin-instance-policy-staging" {
@@ -2774,6 +2886,7 @@ resource "aws_iam_role_policy" "London-ecs-admin-instance-role-staging_London-ec
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-ecs-admin-instance-role-wifi_London-ecs-admin-instance-policy-wifi" {
@@ -2879,6 +2992,7 @@ resource "aws_iam_role_policy" "London-ecs-admin-instance-role-wifi_London-ecs-a
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-ecs-instance-role-staging_London-ecs-instance-policy-staging" {
@@ -2933,6 +3047,7 @@ resource "aws_iam_role_policy" "London-ecs-instance-role-staging_London-ecs-inst
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-ecs-instance-role-wifi_London-ecs-instance-policy-wifi" {
@@ -2987,6 +3102,7 @@ resource "aws_iam_role_policy" "London-ecs-instance-role-wifi_London-ecs-instanc
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-ecs-service-role-staging_London-ecs-service-policy-staging" {
@@ -3022,6 +3138,7 @@ resource "aws_iam_role_policy" "London-ecs-service-role-staging_London-ecs-servi
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-ecs-service-role-wifi_London-ecs-service-policy-wifi" {
@@ -3057,6 +3174,7 @@ resource "aws_iam_role_policy" "London-ecs-service-role-wifi_London-ecs-service-
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-frontend-ecs-instance-role-staging_London-frontend-ecs-instance-policy-staging" {
@@ -3111,6 +3229,7 @@ resource "aws_iam_role_policy" "London-frontend-ecs-instance-role-staging_London
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-frontend-ecs-instance-role-wifi_London-frontend-ecs-instance-policy-wifi" {
@@ -3165,6 +3284,7 @@ resource "aws_iam_role_policy" "London-frontend-ecs-instance-role-wifi_London-fr
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-frontend-ecs-task-role-staging_London-frontend-admin-bucket-staging" {
@@ -3190,6 +3310,7 @@ resource "aws_iam_role_policy" "London-frontend-ecs-task-role-staging_London-fro
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-frontend-ecs-task-role-staging_London-frontend-cert-bucket-staging" {
@@ -3215,6 +3336,7 @@ resource "aws_iam_role_policy" "London-frontend-ecs-task-role-staging_London-fro
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-frontend-ecs-task-role-staging_London-frontend-ecs-service-policy-staging" {
@@ -3236,6 +3358,7 @@ resource "aws_iam_role_policy" "London-frontend-ecs-task-role-staging_London-fro
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-frontend-ecs-task-role-wifi_London-frontend-admin-bucket-wifi" {
@@ -3261,6 +3384,7 @@ resource "aws_iam_role_policy" "London-frontend-ecs-task-role-wifi_London-fronte
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-frontend-ecs-task-role-wifi_London-frontend-cert-bucket-wifi" {
@@ -3286,6 +3410,7 @@ resource "aws_iam_role_policy" "London-frontend-ecs-task-role-wifi_London-fronte
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-frontend-ecs-task-role-wifi_London-frontend-ecs-service-policy-wifi" {
@@ -3307,6 +3432,7 @@ resource "aws_iam_role_policy" "London-frontend-ecs-task-role-wifi_London-fronte
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-staging-backend-bastion-instance-role_London-staging-backend-bastion-instance-policy" {
@@ -3339,6 +3465,7 @@ resource "aws_iam_role_policy" "London-staging-backend-bastion-instance-role_Lon
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-staging-rds-monitoring-role_London-staging-rds-monitoring-policy" {
@@ -3376,6 +3503,7 @@ resource "aws_iam_role_policy" "London-staging-rds-monitoring-role_London-stagin
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-wifi-backend-bastion-instance-role_London-wifi-backend-bastion-instance-policy" {
@@ -3408,6 +3536,7 @@ resource "aws_iam_role_policy" "London-wifi-backend-bastion-instance-role_London
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "London-wifi-rds-monitoring-role_London-wifi-rds-monitoring-policy" {
@@ -3445,6 +3574,7 @@ resource "aws_iam_role_policy" "London-wifi-rds-monitoring-role_London-wifi-rds-
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "NewsiteRedirect-SESEmailForwardRole-1BAO15HN9AO0C_SESEmailForward" {
@@ -3475,6 +3605,7 @@ resource "aws_iam_role_policy" "NewsiteRedirect-SESEmailForwardRole-1BAO15HN9AO0
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "SNSSuccessFeedback_oneClick_SNSSuccessFeedback_1479821088561" {
@@ -3501,6 +3632,7 @@ resource "aws_iam_role_policy" "SNSSuccessFeedback_oneClick_SNSSuccessFeedback_1
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "staging-logging-api-task-role_staging-logging-api-task-policy" {
@@ -3528,6 +3660,7 @@ resource "aws_iam_role_policy" "staging-logging-api-task-role_staging-logging-ap
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "staging-logging-scheduled-task-role_staging-logging-scheduled-task-policy" {
@@ -3558,6 +3691,7 @@ resource "aws_iam_role_policy" "staging-logging-scheduled-task-role_staging-logg
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "staging-safe-restart-scheduled-task-role_staging-safe-restart-scheduled-task-policy" {
@@ -3588,6 +3722,7 @@ resource "aws_iam_role_policy" "staging-safe-restart-scheduled-task-role_staging
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "staging-safe-restart-task-role_staging-safe-restart-task-policy" {
@@ -3612,6 +3747,7 @@ resource "aws_iam_role_policy" "staging-safe-restart-task-role_staging-safe-rest
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "staging-user-signup-api-task-role_staging-user-signup-api-task-policy" {
@@ -3648,6 +3784,7 @@ resource "aws_iam_role_policy" "staging-user-signup-api-task-role_staging-user-s
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "staging-user-signup-scheduled-task-role_staging-user-signup-scheduled-task-policy" {
@@ -3678,6 +3815,7 @@ resource "aws_iam_role_policy" "staging-user-signup-scheduled-task-role_staging-
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "wifi-logging-api-task-role_wifi-logging-api-task-policy" {
@@ -3705,6 +3843,7 @@ resource "aws_iam_role_policy" "wifi-logging-api-task-role_wifi-logging-api-task
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "wifi-logging-scheduled-task-role_wifi-logging-scheduled-task-policy" {
@@ -3735,6 +3874,7 @@ resource "aws_iam_role_policy" "wifi-logging-scheduled-task-role_wifi-logging-sc
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "wifi-safe-restart-scheduled-task-role_wifi-safe-restart-scheduled-task-policy" {
@@ -3765,6 +3905,7 @@ resource "aws_iam_role_policy" "wifi-safe-restart-scheduled-task-role_wifi-safe-
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "wifi-safe-restart-task-role_wifi-safe-restart-task-policy" {
@@ -3789,6 +3930,7 @@ resource "aws_iam_role_policy" "wifi-safe-restart-task-role_wifi-safe-restart-ta
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "wifi-user-signup-api-task-role_wifi-user-signup-api-task-policy" {
@@ -3825,6 +3967,7 @@ resource "aws_iam_role_policy" "wifi-user-signup-api-task-role_wifi-user-signup-
   ]
 }
 POLICY
+
 }
 
 resource "aws_iam_role_policy" "wifi-user-signup-scheduled-task-role_wifi-user-signup-scheduled-task-policy" {
@@ -3855,4 +3998,6 @@ resource "aws_iam_role_policy" "wifi-user-signup-scheduled-task-role_wifi-user-s
   ]
 }
 POLICY
+
 }
+
