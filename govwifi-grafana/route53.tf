@@ -16,6 +16,7 @@ data "aws_route53_zone" "zone" {
 }
 
 resource "aws_route53_health_check" "grafana-healthcheck" {
+  count             = "${aws_eip_association.grafana_eip_assoc.count}"
   reference_name    = "${var.Env-Name}-${var.aws-region-name}-grafana"
   ip_address        = "${aws_eip_association.grafana_eip_assoc.public_ip}"
   port              = 3000
@@ -26,6 +27,6 @@ resource "aws_route53_health_check" "grafana-healthcheck" {
   regions           = ["eu-west-1", "us-east-1", "us-west-1"]
 
   tags = {
-      Name = "${var.Env-Name}-${lower${"var.aws-region-name"}-grafana"
+    Name = "${format("${var.Env-Name}-${var.aws-region-name}-%d", count.index + 1)}"
   }
 }

@@ -433,11 +433,11 @@ module "govwifi-grafana" {
     "aws" = "aws.AWS-main"
   }
 
-  source        = "../../govwifi-grafana"
-  Env-Name           = "${var.Env-Name}"
-  Env-Subdomain      = "${var.Env-Subdomain}"
-  aws-region         = "${var.aws-region}"
-  aws-region-name    = "${var.aws-region-name}"
+  source          = "../../govwifi-grafana"
+  Env-Name        = "${var.Env-Name}"
+  Env-Subdomain   = "${var.Env-Subdomain}"
+  aws-region      = "${var.aws-region}"
+  aws-region-name = "${var.aws-region-name}"
 
   ssh-key-name = "${var.ssh-key-name}"
 

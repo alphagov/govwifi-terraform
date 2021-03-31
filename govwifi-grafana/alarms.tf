@@ -1,6 +1,7 @@
 resource "aws_cloudwatch_metric_alarm" "grafana" {
-  provider            = "aws.route53-alarms"
-#  alarm_name          = "${aws_route53_health_check.grafana-healthcheck.reference_name}-hc"
+  provider = "aws.route53-alarms"
+
+  #  alarm_name          = "${aws_route53_health_check.grafana-healthcheck.reference_name}-hc"
   alarm_name          = "${aws_route53_health_check.grafana-healthcheck.reference_name}"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
