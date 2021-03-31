@@ -209,7 +209,7 @@ resource "aws_cloudwatch_event_target" "daily-safe-restart" {
       security_groups = concat(
         var.backend-sg-list,
         [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id],
+        [aws_security_group.api-out.id]
       )
 
       assign_public_ip = true

@@ -30,7 +30,7 @@ resource "aws_route53_record" "elb_global" {
 }
 
 resource "aws_route53_record" "elb_global_cert_validation" {
-  count   = length(aws_acm_certificate.api-elb-global)
+  count   = var.backend-elb-count
   name    = aws_acm_certificate.api-elb-global[0].domain_validation_options[0].resource_record_name
   type    = aws_acm_certificate.api-elb-global[0].domain_validation_options[0].resource_record_type
   zone_id = var.route53-zone-id
@@ -39,7 +39,7 @@ resource "aws_route53_record" "elb_global_cert_validation" {
 }
 
 resource "aws_route53_record" "elb_regional_cert_validation" {
-  count   = length(aws_acm_certificate.api-elb-regional)
+  count   = var.backend-elb-count
   name    = aws_acm_certificate.api-elb-regional[0].domain_validation_options[0].resource_record_name
   type    = aws_acm_certificate.api-elb-regional[0].domain_validation_options[0].resource_record_type
   zone_id = var.route53-zone-id

@@ -74,7 +74,7 @@ resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
       security_groups = concat(
         var.backend-sg-list,
         [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id],
+        [aws_security_group.api-out.id]
       )
 
       assign_public_ip = true
@@ -112,7 +112,7 @@ resource "aws_cloudwatch_event_target" "gdpr-set-user-last-login" {
       security_groups = concat(
         var.backend-sg-list,
         [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id],
+        [aws_security_group.api-out.id]
       )
 
       assign_public_ip = true
@@ -227,7 +227,7 @@ resource "aws_cloudwatch_event_target" "publish-daily-metrics-logging" {
       security_groups = concat(
         var.backend-sg-list,
         [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id],
+        [aws_security_group.api-out.id]
       )
 
       assign_public_ip = true

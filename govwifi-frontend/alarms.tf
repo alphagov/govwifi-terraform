@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_metric_alarm" "radius-hc" {
   provider = aws.route53-alarms
-  count    = length(aws_route53_health_check.radius)
+  count    = var.radius-instance-count
   alarm_name = "${element(
     aws_route53_health_check.radius.*.reference_name,
     count.index,
@@ -25,7 +25,7 @@ resource "aws_cloudwatch_metric_alarm" "radius-hc" {
 
 resource "aws_cloudwatch_metric_alarm" "radius-latency" {
   provider = aws.route53-alarms
-  count    = length(aws_route53_health_check.radius)
+  count    = var.radius-instance-count
   alarm_name = "${element(
     aws_route53_health_check.radius.*.reference_name,
     count.index,
