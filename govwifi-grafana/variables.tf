@@ -71,7 +71,7 @@ variable "grafana-server-root-url" {
   type        = "string"
 }
 
-variable "grafana-drive-name" {
+variable "grafana-device-name" {
   description = "Name of Grafana Persistent Drive Device Name"
   type        = "string"
   default     = "/dev/xvdp"
