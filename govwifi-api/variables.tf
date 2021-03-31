@@ -35,7 +35,7 @@ variable "backend-instance-count" {
 }
 
 variable "authorisation-api-count" {
-  default = 2
+  default = 3
 }
 
 variable "backend-min-size" {
