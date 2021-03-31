@@ -92,7 +92,7 @@ if [ ! -L $symlink_folder ]; then
   fi
   # now its removed we need to symlink the volumes folder from the mounted EBS volume
   logger "Linking in '$symlink_folder'";
-  run-until-success ln -s $docker_volumes_folder $symlink_folder;
+  run-until-success ln -s $symlink_folder $docker_volumes_folder;
 fi
 
 # now mount the drive as set in /etc/fstab
