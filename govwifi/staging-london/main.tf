@@ -434,9 +434,10 @@ module "govwifi-grafana" {
   }
 
   source        = "../../govwifi-grafana"
-  Env-Name      = "${var.Env-Name}"
-  Env-Subdomain = "${var.Env-Subdomain}"
-  aws-region    = "${var.aws-region}"
+  Env-Name           = "${var.Env-Name}"
+  Env-Subdomain      = "${var.Env-Subdomain}"
+  aws-region         = "${var.aws-region}"
+  aws-region-name    = "${var.aws-region-name}"
 
   ssh-key-name = "${var.ssh-key-name}"
 
@@ -462,6 +463,10 @@ module "govwifi-grafana" {
   google-client-secret    = "${var.google-client-secret}"
   grafana-admin           = "${var.grafana-admin}"
   grafana-server-root-url = "${var.grafana-server-root-url}"
+
+  # This must be based on us-east-1, as that's where the alarms go
+  route53-critical-notifications-arn = "${module.route53-notifications.topic-arn}"
+  devops-notifications-arn           = "${module.notifications.topic-arn}"
 }
 
 module "govwifi-elasticsearch" {

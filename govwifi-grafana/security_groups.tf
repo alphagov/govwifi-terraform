@@ -54,6 +54,19 @@ resource "aws_security_group" "grafana-ec2-in" {
     protocol    = "tcp"
     cidr_blocks = ["${var.bastion-ips}"]
   }
+  ingress {
+    description = "Allow route53 healthcheck"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["15.177.0.0/18"]
+  }
+
+}
+
+data "aws_ip_ranges" "route53_healthcheck" {
+  services = ["route53_healthchecks"]
+  regions  = ["eu-west-1", "us-east-1", "us-west-1"]
 }
 
 resource "aws_security_group" "grafana-ec2-out" {

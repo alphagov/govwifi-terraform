@@ -72,3 +72,13 @@ variable "grafana-server-root-url" {
 }
 
 variable "administrator-IPs" {}
+
+variable "aws-region-name" {}
+
+variable "route53-critical-notifications-arn" {
+  type = "string"
+}
+
+variable "devops-notifications-arn" {
+  type = "string"
+}
