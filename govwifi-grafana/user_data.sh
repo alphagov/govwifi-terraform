@@ -62,7 +62,9 @@ ExecStart=/usr/bin/dockerd --log-driver "local"
 # ExecStart=/usr/bin/dockerd --log-driver awslogs --log-opt awslogs-region=eu-west-2 --log-opt awslogs-group=${grafana_log_group} --dns 10.0.0.2
 EOF
 
-# Stop systemctl daemon to do some housekeeping (mount folders etc)
+# Start and then stop systemctl daemon to do some housekeeping (mount folders etc)
+logger "Starting docker";
+run-until-success systemctl start docker
 logger "Stopping docker";
 run-until-success systemctl stop docker
 
