@@ -283,3 +283,27 @@ variable "google-client-id" {
 variable "grafana-server-root-url" {
 }
 
+variable "allowed-sites-api-elb-ssl-cert-arn" {
+  description = "Unused in this configuration"
+}
+
+variable "backend-subnet-IPs-list" {
+  description = "Unused in this configuration"
+}
+
+variable "metrics-aws-secret-access-key" {
+  description = "Unused in this configuration"
+}
+
+variable "administrator-IPs-list" {
+  description = "Unused in this configuration"
+}
+
+variable "metrics-aws-access-key" {
+  description = "Unused in this configuration"
+}
+
+variable "aws-parent-account-id" {
+  description = "Unused in this configuration"
+}
+

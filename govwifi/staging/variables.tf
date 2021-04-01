@@ -164,3 +164,18 @@ variable "prometheus-IP-ireland" {
 variable "grafana-IP" {
 }
 
+variable "administrator-IPs-list" {
+  description = "Unused in this configuration"
+}
+
+variable "backend-subnet-IPs-list" {
+  description = "Unused in this configuration"
+}
+
+variable "elb-public-IPs" {
+  description = "Unused in this configuration"
+}
+
+variable "aws-parent-account-id" {
+  description = "Unused in this configuration"
+}
