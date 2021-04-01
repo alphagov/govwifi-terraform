@@ -496,7 +496,7 @@ module "govwifi-grafana" {
 
 module "govwifi-slack-alerts" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source = "../../govwifi-slack-alerts"
