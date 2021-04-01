@@ -88,11 +88,8 @@ logger "Mounting '$drive_mount_point'";
 run-until-success mount $drive_mount_point;
 
 if [ ! -d $symlink_folder ]; then
-  logger "Making persistent folder '$symlink_folder' as not currently created";
-  run-until-success mkdir -p $symlink_folder;
-  if [ -d $docker_volumes_folder ]; then
-    logger "As fresh drive/folder moving any files in pre-exisiting folder '$symlink_folder'";
-    run-until-success mv $docker_volumes_folder/* $symlink_folder;
+  logger "Moving docker volumes folder to persistent folder '$symlink_folder' as not currently present";
+  run-until-success mv $docker_volumes_folder $symlink_folder;
 fi
 
 # go in here if the symlink_folder is not there as a symlink
