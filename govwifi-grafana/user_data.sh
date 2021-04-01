@@ -84,22 +84,27 @@ logger "Writing mount line to /etc/fstab";
 run-until-success echo "${grafana_device_name}  $drive_mount_point $drive_format defaults  0 0" >> /etc/fstab
 
 # go in here if the symlink_folder is not there as a symlink
-if [ ! -L $symlink_folder ]; then
+if [ ! -L $docker_volumes_folder ]; then
   # go in here if the symlink_folder IS there and is a normal folder
-  logger "'$symlink_folder' does not exist as a symlink";
-  if [ -d $symlink_folder ]; then
+  logger "'$docker_volumes_folder' does not exist as a symlink";
+  if [ -d $docker_volumes_folder ]; then
     # remove the old folder (may need to copy contents out if any file missing post install)
-    logger "'$symlink_folder' does exist as a folder";
-    run-until-success rmdir $symlink_folder;
+    logger "'$docker_volumes_folder' does exist as a folder";
+    run-until-success rmdir $docker_volumes_folder;
   fi
   # now its removed we need to symlink the volumes folder from the mounted EBS volume
-  logger "Linking in '$symlink_folder'";
+  logger "Linking '$symlink_folder' to '$docker_volumes_folder'";
   run-until-success ln -s $symlink_folder $docker_volumes_folder;
 fi
 
 # now mount the drive as set in /etc/fstab
 logger "Mounting '$drive_mount_point'";
 run-until-success mount $drive_mount_point;
+
+if [ ! -d $symlink_folder ]; then
+  logger "Making persistent folder '$symlink_folder' as not currently created";
+  run-until-success mkdir -p $symlink_folder;
+fi
 
 # Reload and start docker
 logger "Reloading systemctl and enabling docker";
