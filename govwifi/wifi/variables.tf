@@ -237,3 +237,10 @@ variable "prometheus-IP-ireland" {
 variable "grafana-IP" {
 }
 
+variable "administrator-IPs-list" {
+  description = "Unused in this configuration"
+}
+
+variable "backend-subnet-IPs-list" {
+  description = "Unused in this configuration"
+}

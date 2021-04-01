@@ -290,3 +290,23 @@ variable "gds-slack-workplace-id" {
 
 variable "gds-slack-channel-id" {
 }
+
+variable "metrics-aws-access-key" {
+  description = "Unused in this configuration"
+}
+
+variable "metrics-aws-secret-access-key" {
+  description = "Unused in this configuration"
+}
+
+variable "aws-parent-account-id" {
+  description = "Unused in this configuration"
+}
+
+variable "allowed-sites-api-elb-ssl-cert-arn" {
+  description = "Unused in this configuration"
+}
+
+variable "backend-subnet-IPs-list" {
+  description = "Unused in this configuration"
+}
