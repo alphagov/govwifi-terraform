@@ -131,21 +131,31 @@ logger "Pulling the grafana docker image for version ${grafana_docker_version}"
 run-until-success docker pull grafana/grafana:${grafana_docker_version}
 
 # run Grafana Docker image
-run-until-success docker run -id --restart=always -p 3000:3000 --name grafana --user root -v grafana:/var/lib/grafana -v grafana-etc:/etc/grafana \
--e "GF_SECURITY_ADMIN_PASSWORD=${grafana_admin}" \
--e "GF_SERVER_ROOT_URL=${grafana_server_root_url}" \
--e "GF_AUTH_BASIC_ENABLED=true" \
--e "GF_AUTH_GOOGLE_ENABLED=true" \
--e "GF_AUTH_GOOGLE_ALLOW_SIGN_UP=false" \
--e "GF_SECURITY_COOKIE_SECURE=true" \
--e "GF_SESSION_COOKIE_SECURE=true" \
--e "GF_SERVER_HTTP_ADDR=0.0.0.0" \
--e "GF_AUTH_GOOGLE_AUTH_URL=https://accounts.google.com/o/oauth2/auth" \
--e "GF_AUTH_GOOGLE_TOKEN_URL=https://accounts.google.com/o/oauth2/token" \
--e "GF_AUTH_GOOGLE_CLIENT_SECRET=${google_client_secret}" \
--e "GF_AUTH_GOOGLE_CLIENT_ID=${google_client_id}" \
--e "GF_AUTH_GOOGLE_ALLOWED_DOMAINS=digital.cabinet-office.gov.uk" \
-grafana/grafana:${grafana_docker_version}
+logger "Starting docker for Grafana";
+run-until-success docker run \
+  --interactive \
+  --detach \
+  --restart=always \
+  --publish=3000:3000 \
+  --name=grafana \
+  --user=root \
+  --volume=grafana:/var/lib/grafana \
+  --volume=grafana-etc:/etc/grafana \
+  --env="GF_SERVER_ROOT_URL=${grafana_server_root_url}" \
+  --env="GF_SERVER_HTTP_ADDR=0.0.0.0" \
+  --env="GF_AUTH_BASIC_ENABLED=true" \
+  --env="GF_SECURITY_ADMIN_USER=admin" \
+  --env="GF_SECURITY_ADMIN_PASSWORD=${grafana_admin}" \
+  --env="GF_SECURITY_COOKIE_SECURE=true" \
+  --env="GF_SESSION_COOKIE_SECURE=true" \
+  --env="GF_AUTH_GOOGLE_ENABLED=true" \
+  --env="GF_AUTH_GOOGLE_ALLOW_SIGN_UP=true" \
+  --env="GF_AUTH_GOOGLE_ALLOWED_DOMAINS=digital.cabinet-office.gov.uk" \
+  --env="GF_AUTH_GOOGLE_AUTH_URL=https://accounts.google.com/o/oauth2/auth" \
+  --env="GF_AUTH_GOOGLE_TOKEN_URL=https://accounts.google.com/o/oauth2/token" \
+  --env="GF_AUTH_GOOGLE_CLIENT_SECRET=${google_client_secret}" \
+  --env="GF_AUTH_GOOGLE_CLIENT_ID=${google_client_id}" \
+  grafana/grafana:${grafana_docker_version}
 
 logger 'Installing awscli with apt-get'
 run-until-success apt-get install --yes awscli
