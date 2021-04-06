@@ -131,7 +131,7 @@ logger "Pulling the grafana docker image for version ${grafana_docker_version}"
 run-until-success docker pull grafana/grafana:${grafana_docker_version}
 
 # run Grafana Docker image
-# run Grafana Docker image
+logger "Starting docker for Grafana";
 run-until-success docker run \
   --interactive \
   --detach \
