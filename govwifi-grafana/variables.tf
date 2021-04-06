@@ -83,5 +83,5 @@ variable "grafana-device-name" {
 variable "grafana-docker-version" {
   description = "Grafana Docker Version Number"
   type        = string
-  default     = "7.4.0"
+  default     = "7.5.2"
 }
