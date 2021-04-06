@@ -113,17 +113,17 @@ run-until-success systemctl enable --now docker
 
 # If not already there create Docker volumes
 if [ -d $docker_volumes_folder/grafana-etc ]; then
+  logger "docker image for grafana-etc already present"
+else
   logger "Creating docker image for grafana-etc"
   run-until-success docker volume create grafana-etc
-else
-  logger "docker image for grafana-etc already present"
 fi
 
 if [ -d $docker_volumes_folder/grafana ]; then
+  logger "docker image for grafana already present"
+else
   logger "Creating docker image for grafana"
   run-until-success docker volume create grafana
-else
-  logger "docker image for grafana already present"
 fi
 
 # pull the Grafana Docker image 
