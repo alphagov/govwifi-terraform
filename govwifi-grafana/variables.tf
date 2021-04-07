@@ -72,7 +72,7 @@ variable "grafana-server-root-url" {
 }
 
 variable "administrator-IPs" {
-  description = "IPs associated with the GDS/CDIO VPN"
+  description = "IPs associated with the GDS/CDIO VPN to allow access"
 }
 
 variable "grafana-device-name" {
