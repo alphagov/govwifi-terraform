@@ -9,7 +9,7 @@ jobs:
       - name: terraform fmt
         run: |
           brew install tfenv
-          tfenv install $(cat ~/work/govwifi-terraform/govwifi-terraform/.terraform_version)
-          tfenv use $(cat ~/work/govwifi-terraform/govwifi-terraform/.terraform_version)
+          tfenv install $(cat .terraform-version)
+          tfenv use $(cat .terraform_version)
           find . -name '*.tf' | xargs tools/terraform-format.sh
 
