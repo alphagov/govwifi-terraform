@@ -9,6 +9,6 @@ jobs:
       - name: terraform fmt
         run: |
           brew install tfenv
-          tfenv install
+          tfenv install $(cat .terraform_version)
           find . -name '*.tf' | xargs tools/terraform-format.sh
 
