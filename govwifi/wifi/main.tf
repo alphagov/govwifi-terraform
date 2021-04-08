@@ -383,6 +383,7 @@ module "govwifi-prometheus" {
   # Feature toggle creating Prometheus server.
   create_prometheus_server = 1
 
-  prometheus-IPs = var.prometheus-IP-ireland
+  prometheus-IP = var.prometheus-IP-ireland
+  grafana-IP    = "${var.grafana-IP}/32"
 }
 

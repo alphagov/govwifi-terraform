@@ -350,6 +350,7 @@ module "govwifi-prometheus" {
   # Value defaults to 0 and should only be enabled (i.e., value = 1)
   create_prometheus_server = 0
 
-  prometheus-IPs = var.prometheus-IP-ireland
+  prometheus-IP = var.prometheus-IP-ireland
+  grafana-IP    = "${var.grafana-IP}/32"
 }
 

@@ -455,7 +455,8 @@ module "govwifi-prometheus" {
   # Value defaults to 0 and should only be enabled (i.e., value = 1) in staging-london and wifi-london
   create_prometheus_server = 1
 
-  prometheus-IPs = var.prometheus-IP-london
+  prometheus-IP = var.prometheus-IP-london
+  grafana-IP    = "${var.grafana-IP}/32"
 }
 
 module "govwifi-grafana" {
@@ -492,6 +493,11 @@ module "govwifi-grafana" {
   google-client-secret    = var.google-client-secret
   grafana-admin           = var.grafana-admin
   grafana-server-root-url = var.grafana-server-root-url
+
+  prometheus-IPs = concat(
+    split(",", "${var.prometheus-IP-london}/32"),
+    split(",", "${var.prometheus-IP-ireland}/32")
+  )
 }
 
 module "govwifi-slack-alerts" {

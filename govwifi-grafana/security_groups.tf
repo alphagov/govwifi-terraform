@@ -95,4 +95,3 @@ resource "aws_security_group" "grafana-ec2-out" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
