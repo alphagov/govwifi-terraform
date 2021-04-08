@@ -1,16 +1,3 @@
-provider "aws" {
-  # Workaround for import issue, see https://github.com/hashicorp/terraform/issues/13018#issuecomment-291547317
-  version = "2.17.0"
-  alias   = "AWS-main"
-  region  = var.aws-region
-}
-
-provider "aws" {
-  version = "2.17.0"
-  alias   = "route53-alarms"
-  region  = "us-east-1"
-}
-
 module "tfstate" {
   providers = {
     aws = aws.AWS-main
@@ -40,6 +27,22 @@ terraform {
     key    = "london-tfstate"
     region = "eu-west-2"
   }
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "2.10.0"
+    }
+  }
+}
+
+provider "aws" {
+  alias  = "AWS-main"
+  region = var.aws-region
+}
+
+provider "aws" {
+  alias  = "route53-alarms"
+  region = "us-east-1"
 }
 
 module "govwifi-keys" {
