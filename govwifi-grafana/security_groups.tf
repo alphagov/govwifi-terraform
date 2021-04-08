@@ -75,10 +75,10 @@ resource "aws_security_group" "grafana-ec2-out" {
   }
 
   egress {
-    from_port   = 0
-    to_port     = 65535
+    from_port   = 9090
+    to_port     = 9090
     protocol    = "tcp"
-    cidr_blocks = var.bastion-ips
+    cidr_blocks = var.prometheus-IPs
   }
 
   egress {

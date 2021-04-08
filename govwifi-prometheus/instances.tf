@@ -60,6 +60,7 @@ resource "aws_instance" "prometheus_instance" {
     var.fe-admin-in,
     var.fe-radius-out,
     var.fe-radius-in,
+    aws_security_group.grafana-data-in.id,
   ]
 
   tags = {
@@ -97,6 +98,6 @@ resource "aws_eip_association" "prometheus_eip_assoc" {
   count       = var.create_prometheus_server
   depends_on  = [aws_instance.prometheus_instance]
   instance_id = aws_instance.prometheus_instance[0].id
-  public_ip   = var.prometheus-IPs
+  public_ip   = var.prometheus-IP
 }
 
