@@ -32,14 +32,14 @@ resource "aws_security_group" "be-ecs-out" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = split(",", var.backend-subnet-IPs)
+    cidr_blocks = distinct(split(",", var.backend-subnet-IPs))
   }
 
   egress {
     from_port   = 11211
     to_port     = 11211
     protocol    = "tcp"
-    cidr_blocks = split(",", var.backend-subnet-IPs)
+    cidr_blocks = distinct(split(",", var.backend-subnet-IPs))
   }
 }
 
@@ -56,7 +56,7 @@ resource "aws_security_group" "be-db-in" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = split(",", var.backend-subnet-IPs)
+    cidr_blocks = distinct(split(",", var.backend-subnet-IPs))
   }
 }
 
@@ -73,7 +73,7 @@ resource "aws_security_group" "be-admin-in" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = concat(split(",", var.bastion-server-IP), split(",", var.backend-subnet-IPs))
+    cidr_blocks = distinct(concat(split(",", var.bastion-server-IP), split(",", var.backend-subnet-IPs)))
   }
 }
 
@@ -92,7 +92,7 @@ resource "aws_security_group" "be-vpn-in" {
     protocol  = "tcp"
 
     # Temporarily add ITHC IPs. Remove when ITHC complete.
-    cidr_blocks = split(",", var.administrator-IPs)
+    cidr_blocks = distinct(split(",", var.administrator-IPs))
   }
 }
 
@@ -133,14 +133,14 @@ resource "aws_security_group" "be-radius-api-in" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = split(",", var.frontend-radius-IPs)
+    cidr_blocks = distinct(split(",", var.frontend-radius-IPs))
   }
 
   ingress {
     from_port   = 8443
     to_port     = 8443
     protocol    = "tcp"
-    cidr_blocks = split(",", var.frontend-radius-IPs)
+    cidr_blocks = distinct(split(",", var.frontend-radius-IPs))
   }
 }
 

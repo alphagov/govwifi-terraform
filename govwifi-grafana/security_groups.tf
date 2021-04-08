@@ -8,10 +8,11 @@ resource "aws_security_group" "grafana-alb-in" {
   }
 
   ingress {
+    description = ""
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = split(",", var.administrator-IPs)
+    cidr_blocks = distinct(split(",", var.administrator-IPs))
   }
 }
 
@@ -25,10 +26,11 @@ resource "aws_security_group" "grafana-alb-out" {
   }
 
   egress {
+    description = ""
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = var.bastion-ips
+    cidr_blocks = distinct(var.bastion-ips)
   }
 }
 
@@ -54,7 +56,7 @@ resource "aws_security_group" "grafana-ec2-in" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.bastion-ips
+    cidr_blocks = distinct(var.bastion-ips)
   }
 }
 
@@ -68,20 +70,23 @@ resource "aws_security_group" "grafana-ec2-out" {
   }
 
   egress {
+    description = ""
     from_port   = 0
     to_port     = 65535
     protocol    = "tcp"
-    cidr_blocks = var.bastion-ips
+    cidr_blocks = distinct(var.bastion-ips)
   }
 
   egress {
+    description = ""
     from_port   = 9090
     to_port     = 9090
     protocol    = "tcp"
-    cidr_blocks = var.prometheus-IPs
+    cidr_blocks = distinct(var.prometheus-IPs)
   }
 
   egress {
+    description = ""
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -89,6 +94,7 @@ resource "aws_security_group" "grafana-ec2-out" {
   }
 
   egress {
+    description = ""
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"

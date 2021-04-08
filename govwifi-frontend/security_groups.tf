@@ -47,7 +47,7 @@ resource "aws_security_group" "fe-admin-in" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.bastion-ips
+    cidr_blocks = distinct(var.bastion-ips)
   }
 }
 
@@ -150,7 +150,7 @@ resource "aws_security_group" "fe-radius-in" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = data.aws_ip_ranges.route53_healthcheck.cidr_blocks
+    cidr_blocks = distinct(data.aws_ip_ranges.route53_healthcheck.cidr_blocks)
   }
 
   ingress {
@@ -158,7 +158,7 @@ resource "aws_security_group" "fe-radius-in" {
     from_port   = 3000
     to_port     = 3000
     protocol    = "tcp"
-    cidr_blocks = data.aws_ip_ranges.route53_healthcheck.cidr_blocks
+    cidr_blocks = distinct(data.aws_ip_ranges.route53_healthcheck.cidr_blocks)
   }
 
   ingress {
@@ -167,7 +167,7 @@ resource "aws_security_group" "fe-radius-in" {
     to_port     = 9812
     protocol    = "tcp"
 
-    cidr_blocks = var.radius-CIDR-blocks
+    cidr_blocks = distinct(var.radius-CIDR-blocks)
   }
 }
 
