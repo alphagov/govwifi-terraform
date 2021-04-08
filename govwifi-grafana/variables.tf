@@ -46,6 +46,12 @@ variable "bastion-ips" {
   default     = []
 }
 
+variable "prometheus-IPs" {
+  description = "The list of allowed prometheus servers to connect to the EC2 instances on 9090."
+  type        = list(string)
+  default     = []
+}
+
 variable "subnet-ids" {
   description = "List of AWS subnet IDs to place the EC2 instances and ELB into"
   type        = list(string)
