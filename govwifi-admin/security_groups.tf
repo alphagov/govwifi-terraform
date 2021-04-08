@@ -52,7 +52,7 @@ resource "aws_security_group" "admin-ec2-in" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.bastion-ips
+    cidr_blocks = distinct(var.bastion-ips)
   }
 }
 
@@ -86,7 +86,7 @@ resource "aws_security_group" "admin-db-in" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = data.aws_subnet.backend_subnet.*.cidr_block
+    cidr_blocks = distinct(data.aws_subnet.backend_subnet.*.cidr_block)
   }
 }
 

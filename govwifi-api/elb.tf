@@ -50,7 +50,7 @@ resource "aws_security_group" "api-alb-in" {
     from_port   = 8443
     to_port     = 8443
     protocol    = "tcp"
-    cidr_blocks = var.radius-server-ips
+    cidr_blocks = distinct(var.radius-server-ips)
   }
 }
 
