@@ -367,93 +367,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "camille-descartes-admin" {
-  name = "camille.descartes-admin"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::622626885786:user/camille.descartes@digital.cabinet-office.gov.uk"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "Bool": {
-          "aws:MultiFactorAuthPresent": "true"
-        },
-        "IpAddress": {
-          "aws:SourceIp": [ "${join("\", \"", var.administrator-IPs-list)}" ]
-        }
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "charles-chani-admin" {
-  name = "charles.chani-admin"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::622626885786:user/charles.chani@digital.cabinet-office.gov.uk"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "Bool": {
-          "aws:MultiFactorAuthPresent": "true"
-        },
-        "IpAddress": {
-          "aws:SourceIp": [ "${join("\", \"", var.administrator-IPs-list)}" ]
-        }
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "chris-banks-admin" {
-  name = "chris.banks-admin"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::622626885786:user/chris.banks@digital.cabinet-office.gov.uk"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "Bool": {
-          "aws:MultiFactorAuthPresent": "true"
-        },
-        "IpAddress": {
-          "aws:SourceIp": [ "${join("\", \"", var.administrator-IPs-list)}" ]
-        }
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "CloudTrail_CloudWatchLogs_Role" {
   name = "CloudTrail_CloudWatchLogs_Role"
   path = "/"
@@ -469,43 +382,6 @@ resource "aws_iam_role" "CloudTrail_CloudWatchLogs_Role" {
         "Service": "cloudtrail.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "colin-burn-murdoch-readonly" {
-  name = "colin.burn-murdoch-readonly"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::622626885786:user/colin.burn-murdoch@digital.cabinet-office.gov.uk"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "Bool": {
-          "aws:MultiFactorAuthPresent": "true"
-        },
-        "IpAddress": {
-          "aws:SourceIp": [
-            "213.86.153.212/32",
-            "213.86.153.213/32",
-            "213.86.153.214/32",
-            "213.86.153.235/32",
-            "213.86.153.236/32",
-            "213.86.153.237/32",
-            "85.133.67.244/32"
-          ]
-        }
-      }
     }
   ]
 }
@@ -865,35 +741,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "frederic-francois-admin" {
-  name = "frederic.francois-admin"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::622626885786:user/frederic.francois@digital.cabinet-office.gov.uk"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "Bool": {
-          "aws:MultiFactorAuthPresent": "true"
-        },
-        "IpAddress": {
-          "aws:SourceIp": [ "${join("\", \"", var.administrator-IPs-list)}" ]
-        }
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "frontend-execution-role" {
   name        = "frontend-execution-role"
   path        = "/"
@@ -1145,35 +992,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "ian-nicholls-admin" {
-  name = "ian.nicholls-admin"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::622626885786:user/ian.nicholls@digital.cabinet-office.gov.uk"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "Bool": {
-          "aws:MultiFactorAuthPresent": "true"
-        },
-        "IpAddress": {
-          "aws:SourceIp": [ "${join("\", \"", var.administrator-IPs-list)}" ]
-        }
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "ITHC-RO-SecAud-Access" {
   name                 = "ITHC-RO-SecAud-Access"
   path                 = "/"
@@ -1190,35 +1008,6 @@ resource "aws_iam_role" "ITHC-RO-SecAud-Access" {
       },
       "Action": "sts:AssumeRole",
       "Condition": {
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "jos-koetsier-admin" {
-  name = "jos.koetsier-admin"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::622626885786:user/jos.koetsier@digital.cabinet-office.gov.uk"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "Bool": {
-          "aws:MultiFactorAuthPresent": "true"
-        },
-        "IpAddress": {
-          "aws:SourceIp": [ "${join("\", \"", var.administrator-IPs-list)}" ]
-        }
       }
     }
   ]
@@ -1578,35 +1367,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "roch-trinque-admin" {
-  name = "roch.trinque-admin"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::622626885786:user/roch.trinque@digital.cabinet-office.gov.uk"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "Bool": {
-          "aws:MultiFactorAuthPresent": "true"
-        },
-        "IpAddress": {
-          "aws:SourceIp": [ "${join("\", \"", var.administrator-IPs-list)}" ]
-        }
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "s3crr_role_for_govwifi-staging-dublin-tfstate_to_govwifi-staging" {
   name = "s3crr_role_for_govwifi-staging-dublin-tfstate_to_govwifi-staging"
   path = "/service-role/"
@@ -1705,64 +1465,6 @@ resource "aws_iam_role" "s3crr_role_for_test-wifi-mfadelete_to_test-wifi-mfadele
         "Service": "s3.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "sarah-young-admin" {
-  name = "sarah.young-admin"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::622626885786:user/sarah.young@digital.cabinet-office.gov.uk"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "Bool": {
-          "aws:MultiFactorAuthPresent": "true"
-        },
-        "IpAddress": {
-          "aws:SourceIp": [ "${join("\", \"", var.administrator-IPs-list)}" ]
-        }
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "sebastian-szypowicz-readonly" {
-  name = "sebastian.szypowicz-readonly"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::622626885786:user/sebastian.szypowicz@digital.cabinet-office.gov.uk"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "Bool": {
-          "aws:MultiFactorAuthPresent": "true"
-        },
-        "IpAddress": {
-          "aws:SourceIp": [ "${join("\", \"", var.administrator-IPs-list)}" ]
-        }
-      }
     }
   ]
 }
@@ -1944,35 +1646,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "stephen-ford-admin" {
-  name = "stephen.ford-admin"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::622626885786:user/stephen.ford@digital.cabinet-office.gov.uk"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "Bool": {
-          "aws:MultiFactorAuthPresent": "true"
-        },
-        "IpAddress": {
-          "aws:SourceIp": [ "${join("\", \"", var.administrator-IPs-list)}" ]
-        }
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "test-assume-role" {
   name        = "test-assume-role"
   path        = "/"
@@ -2015,35 +1688,6 @@ resource "aws_iam_role" "test-staging-rds-role" {
         "Service": "monitoring.rds.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "tom-whitwell-admin" {
-  name = "tom.whitwell-admin"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::622626885786:user/tom.whitwell@digital.cabinet-office.gov.uk"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-        "Bool": {
-          "aws:MultiFactorAuthPresent": "true"
-        },
-        "IpAddress": {
-          "aws:SourceIp": [ "${join("\", \"", var.administrator-IPs-list)}" ]
-        }
-      }
     }
   ]
 }
