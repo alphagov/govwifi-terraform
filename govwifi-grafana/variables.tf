@@ -92,3 +92,8 @@ variable "grafana-docker-version" {
   type        = string
   default     = "7.5.2"
 }
+
+variable "critical-notifications-arn" {
+  description = "Arn of the critical-nofications sns topic"
+  type        = string
+}
