@@ -149,3 +149,9 @@ resource "aws_iam_user_group_membership" "servicedesk" {
   ]
 }
 
+resource "aws_iam_user" "monitoring-stats-user" {
+  name          = "monitoring-stats-user"
+  path          = "/"
+  force_destroy = false
+}
+
