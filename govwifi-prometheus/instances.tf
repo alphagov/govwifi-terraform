@@ -71,7 +71,7 @@ resource "aws_instance" "prometheus_instance" {
   lifecycle {
     create_before_destroy = true
 
-    ignore_changes = [user_data]
+    ignore_changes = [user_data, volume_tags]
   }
 }
 
