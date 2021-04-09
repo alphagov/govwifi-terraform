@@ -6,37 +6,37 @@ export DEBIAN_FRONTEND=noninteractive
 function run-until-success() {
   until $*
   do
-    echo "Executing $* failed. Sleeping..."
+    logger "Executing $* failed. Sleeping..."
     sleep 5
   done
 }
 
 ## CREATE A VOLUME FOR PROMETHEUS INSTANCE DELETE AND ADD THIS TO TERRAFORM
-echo 'Configuring prometheus EBS'
+logger 'Configuring prometheus EBS'
 vol=""
 while [ -z "$vol" ]; do
   # adapted from
   # https://medium.com/@moonape1226/mount-aws-ebs-on-ec2-automatically-with-cloud-init-e5e837e5438a
   # [Last accessed on 2020-04-02]
   vol=$(lsblk | grep -e disk | awk '{sub("G","",$4)} {if ($4+0 == ${data_volume_size}) print $1}')
-  echo "still waiting for data volume ; sleeping 5"
+  logger "still waiting for data volume ; sleeping 5"
   sleep 5
 done
 mkdir -p /srv/prometheus
-echo "found volume /dev/$vol"
+logger "found volume /dev/$vol"
 if [ -z "$(lsblk | grep "$vol" | awk '{print $7}')" ] ; then
   if [ -z "$(blkid /dev/$vol | grep ext4)" ] ; then
-    echo "volume /dev/$vol is not formatted ; formatting"
+    logger "volume /dev/$vol is not formatted ; formatting"
     mkfs -F -t ext4 "/dev/$vol"
   else
-    echo "volume /dev/$vol is already formatted"
+    logger "volume /dev/$vol is already formatted"
   fi
 
-  echo "volume /dev/$vol is not mounted ; mounting"
+  logger "volume /dev/$vol is not mounted ; mounting"
   mount "/dev/$vol" /srv/prometheus
   UUID=$(blkid /dev/$vol -s UUID -o value)
   if [ -z "$(grep $UUID /etc/fstab)" ] ; then
-    echo "writing fstab entry"
+    logger "writing fstab entry"
 
     echo "UUID=$UUID /srv/prometheus ext4 defaults,nofail 0 2" >> /etc/fstab
   fi
@@ -53,7 +53,7 @@ run-until-success apt-get upgrade --yes
 
 # We want to make sure that the journal does not write to syslog
 # This would fill up the disk, with logs we already have in the journal
-echo "Ensure journal does not write to syslog"
+logger "Ensure journal does not write to syslog"
 mkdir -p /etc/systemd/journald.conf.d/
 cat <<JOURNAL > /etc/systemd/journald.conf.d/override.conf
 [Journal]
@@ -68,7 +68,7 @@ systemctl restart systemd-journald
 
 # Use Amazon NTP
 # An implementation of Network Time Protocol (NTP). It can synchronise the system clock with NTP servers
-echo 'Installing and configuring chrony'
+logger 'Installing and configuring chrony'
 run-until-success apt-get install --yes chrony
 sed '/pool/d' /etc/chrony/chrony.conf \
 | cat <(echo "server 169.254.169.123 prefer iburst") - > /tmp/chrony.conf
@@ -77,7 +77,7 @@ mv /tmp/chrony.conf /etc/chrony/chrony.conf
 systemctl restart chrony
 
 # Install Docker and Send Logs to cloudwatch
-echo 'Installing and configuring docker'
+logger 'Installing and configuring docker'
 mkdir -p /etc/systemd/system/docker.service.d
 run-until-success apt-get install --yes docker.io
 cat <<EOF > /etc/systemd/system/docker.service.d/override.conf
@@ -94,7 +94,7 @@ systemctl enable --now docker
 # Configure systemd to write prometheus data to the EBS volume on start up.
 # This script will start prometheus automatically with the correct storage location,
 # even if the instance is rebooted or the service crashes.
-echo 'Configuring Prometheus start up script'
+logger 'Configuring Prometheus start up script'
 cat << EOF > /etc/systemd/system/prometheus-govwifi.service
  ${prometheus_startup}
 EOF
@@ -102,7 +102,7 @@ EOF
 systemctl daemon-reload
 
 # Install Prometheus
-echo 'Installing prometheus'
+logger 'Installing prometheus'
 run-until-success apt-get install --yes prometheus
 
 ## Configure Prometheus to write to EBS volume
@@ -110,13 +110,13 @@ chown -R prometheus:prometheus /srv/prometheus/metrics2
 
 ## Configure Prometheus scrape points
 ## This overwrites the existing prometheus configuration
-echo 'Overwriting default Prometheus scraping configuation'
+logger 'Overwriting default Prometheus scraping configuation'
 cat << EOF > /etc/prometheus/prometheus.yml
  ${prometheus_config}
 EOF
 
 ## Install Prometheus Node exporter
-echo 'Installing prometheus node exporter'
+logger 'Installing prometheus node exporter'
 run-until-success apt-get install --yes prometheus-node-exporter
 mkdir /etc/systemd/system/prometheus-node-exporter.service.d
 # Create an environment file for prometheus node exporter
@@ -132,7 +132,7 @@ systemctl daemon-reload
 systemctl enable prometheus-node-exporter
 systemctl restart prometheus-node-exporter
 
-echo 'Installing awscli'
+logger 'Installing awscli'
 run-until-success apt-get install --yes awscli
 
 #Initialise a node_creation_time metric to enable the predict_linear function to handle new nodes
@@ -160,10 +160,10 @@ $(crontab -l | grep -v 'no crontab')
 EOF
 
 # Run prometheus with the EBS volume configuration
-echo 'Stop Out of Box Prometheus'
+logger 'Stop Out of Box Prometheus'
 service prometheus stop
 systemctl disable prometheus
-echo 'Enable Prometheus-Govwifi'
+logger 'Enable Prometheus-Govwifi'
 systemctl enable --now prometheus-govwifi
 systemctl start prometheus-govwifi
 
