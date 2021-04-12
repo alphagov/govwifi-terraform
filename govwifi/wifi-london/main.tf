@@ -467,10 +467,11 @@ module "govwifi-grafana" {
     aws = aws.AWS-main
   }
 
-  source        = "../../govwifi-grafana"
-  Env-Name      = var.Env-Name
-  Env-Subdomain = var.Env-Subdomain
-  aws-region    = var.aws-region
+  source                     = "../../govwifi-grafana"
+  Env-Name                   = var.Env-Name
+  Env-Subdomain              = var.Env-Subdomain
+  aws-region                 = var.aws-region
+  critical-notifications-arn = module.notifications.topic-arn
 
   ssh-key-name = var.ssh-key-name
 
