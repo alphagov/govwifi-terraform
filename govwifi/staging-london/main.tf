@@ -479,11 +479,11 @@ module "govwifi-elasticsearch" {
     aws = aws.AWS-main
   }
 
-  source        = "../../govwifi-elasticsearch"
-  Env-Name      = var.Env-Name
-  Env-Subdomain = var.Env-Subdomain
-  aws-region    = var.aws-region
-
+  source         = "../../govwifi-elasticsearch"
+  Env-Name       = var.Env-Name
+  Env-Subdomain  = var.Env-Subdomain
+  aws-region     = var.aws-region
+  aws-account-id = var.aws-account-id
   vpc-id         = module.backend.backend-vpc-id
   vpc-cidr-block = module.backend.vpc-cidr-block
 
