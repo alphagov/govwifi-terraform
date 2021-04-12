@@ -16,3 +16,5 @@ variable "vpc-id" {
 variable "vpc-cidr-block" {
 }
 
+variable "aws-account-id" {
+}

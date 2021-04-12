@@ -40,5 +40,20 @@ resource "aws_elasticsearch_domain" "govwifi-elasticsearch" {
     ebs_enabled = true
     volume_size = "10"
   }
-}
 
+  access_policies = <<DOC
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Action": "es:*",
+      "Resource": "arn:aws:es:${var.aws-region}:${var.aws-account-id}:domain/govwifi-elasticsearch/*"
+    }
+  ]
+}
+DOC
+}
