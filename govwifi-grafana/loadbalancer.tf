@@ -42,7 +42,7 @@ resource "aws_alb_target_group" "grafana-tg" {
     unhealthy_threshold = 10
     timeout             = 5
     interval            = 10
-    path                = "/healthcheck"
+    path                = "/login"
   }
 
   lifecycle {
@@ -55,4 +55,3 @@ resource "aws_alb_target_group_attachment" "grafana" {
   target_id        = aws_instance.grafana_instance[0].private_ip
   port             = 3000
 }
-
