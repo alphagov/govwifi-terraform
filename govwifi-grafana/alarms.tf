@@ -49,15 +49,16 @@ resource "aws_cloudwatch_metric_alarm" "grafana-service-status" {
 
   namespace           = "AWS/ApplicationELB"
   metric_name         = "UnHealthyHostCount"
-  period              = "10"
+  period              = "60"
   evaluation_periods  = "1"
   statistic           = "Maximum"
   comparison_operator = "GreaterThanThreshold"
   threshold           = "0"
 
   dimensions = {
-    TargetGroup  = aws_alb_target_group.grafana-tg.id,
-    LoadBalancer = aws_lb.grafana-alb.id
+    TargetGroup      = aws_alb_target_group.grafana-tg.arn_suffix,
+    AvailabilityZone = "${var.aws-region}a",
+    LoadBalancer     = aws_lb.grafana-alb.arn_suffix
   }
 
 }
