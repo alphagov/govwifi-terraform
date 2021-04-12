@@ -39,3 +39,25 @@ resource "aws_cloudwatch_metric_alarm" "grafana-system-status" {
   }
 
 }
+
+resource "aws_cloudwatch_metric_alarm" "grafana-service-status" {
+
+  alarm_name         = "${var.Env-Name}-grafana-service-status"
+  alarm_description  = "Alert in event of ${var.Env-Name}-granfana can not load the login page. This likely indicates the Grafana service is not running"
+  alarm_actions      = [var.critical-notifications-arn]
+  treat_missing_data = "breaching"
+
+  namespace           = "AWS/ApplicationELB"
+  metric_name         = "UnHealthyHostCount"
+  period              = "10"
+  evaluation_periods  = "1"
+  statistic           = "Maximum"
+  comparison_operator = "GreaterThanThreshold"
+  threshold           = "0"
+
+  dimensions = {
+    TargetGroup  = aws_alb_target_group.grafana-tg.id,
+    LoadBalancer = aws_lb.grafana-alb.id
+  }
+
+}
