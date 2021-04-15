@@ -207,9 +207,10 @@ module "govwifi-admin" {
     aws = aws.AWS-main
   }
 
-  source        = "../../govwifi-admin"
-  Env-Name      = var.Env-Name
-  Env-Subdomain = var.Env-Subdomain
+  source             = "../../govwifi-admin"
+  Env-Name           = var.Env-Name
+  Env-Subdomain      = var.Env-Subdomain
+  aws-account-id     = var.aws-account-id
 
   ami             = var.ami
   ssh-key-name    = var.ssh-key-name
