@@ -18,3 +18,6 @@ variable "vpc-cidr-block" {
 
 variable "aws-account-id" {
 }
+
+variable "domain-name" {
+}

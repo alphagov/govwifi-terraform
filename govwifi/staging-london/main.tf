@@ -480,6 +480,7 @@ module "govwifi-elasticsearch" {
   }
 
   source         = "../../govwifi-elasticsearch"
+  domain-name    = "${var.Env-Name}-elasticsearch"
   Env-Name       = var.Env-Name
   Env-Subdomain  = var.Env-Subdomain
   aws-region     = var.aws-region
@@ -487,5 +488,5 @@ module "govwifi-elasticsearch" {
   vpc-id         = module.backend.backend-vpc-id
   vpc-cidr-block = module.backend.vpc-cidr-block
 
-  backend-subnet-id = element(module.backend.backend-subnet-ids, 0)
+  backend-subnet-id = module.backend.backend-subnet-ids[0]
 }

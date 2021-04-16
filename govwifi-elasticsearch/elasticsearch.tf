@@ -16,7 +16,7 @@ resource "aws_security_group" "elasticsearch-inbound" {
 }
 
 resource "aws_elasticsearch_domain" "govwifi-elasticsearch" {
-  domain_name           = "govwifi-elasticsearch"
+  domain_name           = var.domain-name
   elasticsearch_version = "7.9"
 
   cluster_config {
@@ -51,7 +51,7 @@ resource "aws_elasticsearch_domain" "govwifi-elasticsearch" {
         "AWS": "*"
       },
       "Action": "es:*",
-      "Resource": "arn:aws:es:${var.aws-region}:${var.aws-account-id}:domain/govwifi-elasticsearch/*"
+      "Resource": "arn:aws:es:${var.aws-region}:${var.aws-account-id}:domain/${var.domain-name}/*"
     }
   ]
 }
