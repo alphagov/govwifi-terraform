@@ -85,7 +85,7 @@ resource "aws_ecs_task_definition" "radius-task" {
         "value": "${var.healthcheck-ssid}"
       },{
         "name": "HEALTH_CHECK_IDENTITY",
-        "value": "${var.healthcheck-identity}"
+        "value": "${local.healthcheck_identity}"
       },{
         "name": "HEALTH_CHECK_PASSWORD",
         "value": "${var.healthcheck-password}"
