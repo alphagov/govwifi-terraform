@@ -104,7 +104,6 @@ EOF
 
 }
 
-# Unused until a loadbalancer is set up
 resource "aws_iam_role" "ecs-task-role" {
   name = "${var.aws-region-name}-frontend-ecs-task-role-${var.Env-Name}"
 
