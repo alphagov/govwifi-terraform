@@ -165,13 +165,38 @@ data "aws_iam_policy_document" "admin_bucket_policy" {
   }
 }
 
-resource "aws_iam_role_policy" "radius_access_secrets_manager_policy" {
-  name   = "${var.aws-region-name}-radius-access-secrets-manager-${var.Env-Name}"
-  role   = aws_iam_role.ecs-task-role.id
-  policy = data.aws_iam_policy_document.radius_access_secrets_manager_policy.json
+resource "aws_iam_role" "ecsTaskExecutionRole" {
+  name               = "ecsTaskExecutionRole-${var.rack-env}-${var.aws-region-name}"
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
-data "aws_iam_policy_document" "radius_access_secrets_manager_policy" {
+data "aws_iam_policy_document" "assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
+  role       = aws_iam_role.ecsTaskExecutionRole.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role" "access_secrets_manager" {
+  assume_role_policy = ""
+}
+
+resource "aws_iam_role_policy" "secrets_manager_policy" {
+  name   = "${var.aws-region-name}-radius-access-secrets-manager-${var.Env-Name}"
+  role   = aws_iam_role.ecs-task-role.id
+  policy = data.aws_iam_policy_document.secrets_manager_policy.json
+}
+
+data "aws_iam_policy_document" "secrets_manager_policy" {
   statement {
     actions = [
       "secretsmanager:GetSecretValue"
