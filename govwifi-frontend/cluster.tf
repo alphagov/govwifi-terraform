@@ -82,10 +82,10 @@ resource "aws_ecs_task_definition" "radius-task" {
         "value": "${var.healthcheck-radius-key}"
       },{
         "name": "HEALTH_CHECK_SSID",
-        "value": "${local.healthcheck_ssid}"
+        "value": "${var.healthcheck-ssid}"
       },{
         "name": "HEALTH_CHECK_IDENTITY",
-        "value": "${local.healthcheck_identity}"
+        "value": "${var.healthcheck-identity}"
       },{
         "name": "HEALTH_CHECK_PASSWORD",
         "value": "${var.healthcheck-password}"
@@ -100,6 +100,10 @@ resource "aws_ecs_task_definition" "radius-task" {
         "value": "${var.rack-env}"
       }
     ],
+    "secrets": [{
+      "name": "TEST",
+      "valueFrom": "${data.aws_secretsmanager_secret.test}"
+    }]
     "image": "${var.frontend-docker-image}",
     "logConfiguration": {
       "logDriver": "awslogs",
