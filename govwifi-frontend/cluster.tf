@@ -103,7 +103,7 @@ resource "aws_ecs_task_definition" "radius-task" {
     "secrets": [{
       "name": "TEST",
       "valueFrom": "${data.aws_secretsmanager_secret.test}"
-    }]
+    }],
     "image": "${var.frontend-docker-image}",
     "logConfiguration": {
       "logDriver": "awslogs",
