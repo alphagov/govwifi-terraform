@@ -165,3 +165,21 @@ data "aws_iam_policy_document" "admin_bucket_policy" {
   }
 }
 
+resource "aws_iam_role_policy" "radius_access_secrets_manager_policy" {
+  name   = "${var.aws-region-name}-radius-access-secrets-manager-${var.Env-Name}"
+  role   = aws_iam_role.ecs-task-role.id
+  policy = data.aws_iam_policy_document.radius_access_secrets_manager_policy.json
+}
+
+data "aws_iam_policy_document" "radius_access_secrets_manager_policy" {
+  statement {
+    actions = [
+      "secretsmanager:GetSecretValue"
+    ]
+
+    resources = [
+      data.aws_secretsmanager_secret.test.arn
+    ]
+  }
+}
+
