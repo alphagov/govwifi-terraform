@@ -100,7 +100,7 @@ module "backend" {
 
   # eu-west-2, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
   #bastion-ami                = "ami-ae6d81c9"
- # eu-west-2, CIS Ubuntu Linux 20.04 LTS
+  # eu-west-2, CIS Ubuntu Linux 20.04 LTS
   bastion-ami                = "ami-096cb92bb3580c759"
   bastion-instance-type      = "t2.micro"
   bastion-server-ip          = var.bastion-server-IP
