@@ -24,6 +24,8 @@ resource "aws_ecs_task_definition" "radius-task" {
   family        = "radius-task-${var.Env-Name}"
   task_role_arn = aws_iam_role.ecs-task-role.arn
 
+  execution_role_arn = aws_iam_role.ecsTaskExecutionRole_SecretsManagerTest.arn
+
   volume {
     name = "raddb-certs"
   }
@@ -102,7 +104,7 @@ resource "aws_ecs_task_definition" "radius-task" {
     ],
     "secrets": [{
       "name": "TEST",
-      "valueFrom": "${data.aws_secretsmanager_secret.test}"
+      "valueFrom": "${data.aws_secretsmanager_secret.test.arn}"
     }],
     "image": "${var.frontend-docker-image}",
     "logConfiguration": {
