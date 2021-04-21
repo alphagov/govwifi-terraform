@@ -20,7 +20,7 @@ resource "aws_elasticsearch_domain" "govwifi-elasticsearch" {
   elasticsearch_version = "7.9"
 
   cluster_config {
-    instance_type            = "t2.small.elasticsearch"
+    instance_type            = "t3.medium.elasticsearch"
     instance_count           = 1
     dedicated_master_enabled = false
     zone_awareness_enabled   = false
