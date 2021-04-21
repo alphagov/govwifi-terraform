@@ -107,6 +107,7 @@ Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 # Set cluster name
 echo ECS_CLUSTER=${aws_ecs_cluster.frontend-cluster.name} >> /etc/ecs/ecs.config
+echo ECS_ENABLE_AWSLOGS_EXECUTIONROLE_OVERRIDE=true >> /etc/ecs/ecs.config
 
 --==BOUNDARY==
 MIME-Version: 1.0
