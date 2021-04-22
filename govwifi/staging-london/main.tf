@@ -353,6 +353,7 @@ module "api" {
   admin-bucket-name                  = "govwifi-staging-admin"
   govnotify-bearer-token             = var.govnotify-bearer-token
   user-signup-api-is-public          = 1
+  volumetrics-elasticsearch-endpoint = var.volumetrics-elasticsearch-endpoint
 
   elb-sg-list = []
 
