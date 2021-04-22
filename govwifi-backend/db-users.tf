@@ -66,5 +66,4 @@ resource "aws_db_instance" "users_read_replica" {
     Name = "${title(var.Env-Name)} DB Read Replica"
   }
 
-  kms_key_id = "${var.rds-kms-key-id}"
 }
