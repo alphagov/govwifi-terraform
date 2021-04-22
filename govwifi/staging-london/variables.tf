@@ -307,3 +307,7 @@ variable "aws-parent-account-id" {
   description = "Unused in this configuration"
 }
 
+variable "volumetrics-elasticsearch-endpoint" {
+  type        = string
+  description = "URL for the ElasticSearch instance endpoint"
+}
