@@ -11,5 +11,5 @@ data "aws_secretsmanager_secret_version" "docker_image_path" {
 }
 
 data "aws_secretsmanager_secret" "docker_image_path" {
-  name = "staging/aws/docker-image-path"
+  name = "staging/aws/ecr/docker-image-path"
 }
