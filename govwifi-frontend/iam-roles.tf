@@ -201,7 +201,8 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
     ]
 
     resources = [
-      data.aws_secretsmanager_secret.healthcheck_identity.arn
+      data.aws_secretsmanager_secret.healthcheck_identity.arn,
+      data.aws_secretsmanager_secret.healthcheck_ssid.arn
     ]
   }
 }
