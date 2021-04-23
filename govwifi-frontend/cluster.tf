@@ -79,9 +79,6 @@ resource "aws_ecs_task_definition" "radius-task" {
         "name": "BACKEND_API_KEY",
         "value": "${var.shared-key}"
       },{
-        "name": "HEALTH_CHECK_PASSWORD",
-        "value": "${var.healthcheck-password}"
-      },{
         "name": "SERVICE_DOMAIN",
         "value": "${var.Env-Subdomain}"
       },{
@@ -102,6 +99,9 @@ resource "aws_ecs_task_definition" "radius-task" {
       },{
         "name": "HEALTH_CHECK_RADIUS_KEY",
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck_ssid.arn}:key::"
+      },{
+        "name": "HEALTH_CHECK_PASSWORD",
+        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck_pass.arn}:pass::"
       }
     ],
     "image": "${var.frontend-docker-image}",
