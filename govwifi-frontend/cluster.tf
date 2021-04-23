@@ -24,8 +24,6 @@ resource "aws_ecs_task_definition" "radius-task" {
   family        = "radius-task-${var.Env-Name}"
   task_role_arn = aws_iam_role.ecs-task-role.arn
 
-  execution_role_arn = aws_iam_role.ecsTaskExecutionRole_SecretsManagerTest.arn
-
   volume {
     name = "raddb-certs"
   }
@@ -86,6 +84,9 @@ resource "aws_ecs_task_definition" "radius-task" {
         "name": "HEALTH_CHECK_SSID",
         "value": "${var.healthcheck-ssid}"
       },{
+        "name": "HEALTH_CHECK_IDENTITY",
+        "value": "${var.healthcheck-identity}"
+      },{
         "name": "HEALTH_CHECK_PASSWORD",
         "value": "${var.healthcheck-password}"
       },{
@@ -99,10 +100,6 @@ resource "aws_ecs_task_definition" "radius-task" {
         "value": "${var.rack-env}"
       }
     ],
-    "secrets": [{
-      "name": "HEALTH_CHECK_IDENTITY",
-      "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck_identity.arn}:identity::"
-    }],
     "image": "${var.frontend-docker-image}",
     "logConfiguration": {
       "logDriver": "awslogs",
