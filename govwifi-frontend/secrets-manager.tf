@@ -21,3 +21,11 @@ data "aws_secretsmanager_secret_version" "healthcheck_key" {
 data "aws_secretsmanager_secret" "healthcheck_key" {
   name = "staging/radius/healthcheck-key"
 }
+
+data "aws_secretsmanager_secret_version" "healthcheck_pass" {
+  secret_id = data.aws_secretsmanager_secret.healthcheck_pass.id
+}
+
+data "aws_secretsmanager_secret" "healthcheck_pass" {
+  name = "staging/radius/healthcheck-pass"
+}
