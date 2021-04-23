@@ -79,9 +79,6 @@ resource "aws_ecs_task_definition" "radius-task" {
         "name": "BACKEND_API_KEY",
         "value": "${var.shared-key}"
       },{
-        "name": "HEALTH_CHECK_RADIUS_KEY",
-        "value": "${var.healthcheck-radius-key}"
-      },{
         "name": "HEALTH_CHECK_PASSWORD",
         "value": "${var.healthcheck-password}"
       },{
