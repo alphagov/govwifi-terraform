@@ -13,3 +13,11 @@ data "aws_secretsmanager_secret_version" "healthcheck_ssid" {
 data "aws_secretsmanager_secret" "healthcheck_ssid" {
   name = "staging/radius/healthcheck-ssid"
 }
+
+data "aws_secretsmanager_secret_version" "healthcheck_key" {
+  secret_id = data.aws_secretsmanager_secret.healthcheck_key.id
+}
+
+data "aws_secretsmanager_secret" "healthcheck_key" {
+  name = "staging/radius/healthcheck-key"
+}
