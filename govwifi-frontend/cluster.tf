@@ -76,9 +76,6 @@ resource "aws_ecs_task_definition" "radius-task" {
         "name": "LOGGING_API_BASE_URL",
         "value": "${var.logging-api-base-url}"
       },{
-        "name": "BACKEND_API_KEY",
-        "value": "${var.shared-key}"
-      },{
         "name": "SERVICE_DOMAIN",
         "value": "${var.Env-Subdomain}"
       },{
@@ -102,6 +99,9 @@ resource "aws_ecs_task_definition" "radius-task" {
       },{
         "name": "HEALTH_CHECK_PASSWORD",
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck_pass.arn}:pass::"
+      },{
+        "name": "BACKEND_API_KEY",
+        "valueFrom": "${data.aws_secretsmanager_secret_version.shared_key.arn}:shared-key::"
       }
     ],
     "image": "${var.frontend-docker-image}",
