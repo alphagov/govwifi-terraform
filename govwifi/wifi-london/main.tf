@@ -99,7 +99,9 @@ module "backend" {
   frontend-radius-IPs = var.frontend-radius-IPs
 
   # eu-west-2, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
-  bastion-ami                = "ami-ae6d81c9"
+  #bastion-ami                = "ami-ae6d81c9"
+  # eu-west-2, CIS Ubuntu Linux 20.04 LTS
+  bastion-ami                = "ami-096cb92bb3580c759"
   bastion-instance-type      = "t2.micro"
   bastion-server-ip          = var.bastion-server-IP
   bastion-ssh-key-name       = "govwifi-bastion-key-20181025"

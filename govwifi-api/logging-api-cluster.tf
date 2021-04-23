@@ -94,6 +94,9 @@ resource "aws_ecs_task_definition" "logging-api-task" {
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
+        },{
+          "name": "VOLUMETRICS_ENDPOINT",
+          "value": "${var.volumetrics-elasticsearch-endpoint}"
         }
       ],
       "links": null,
