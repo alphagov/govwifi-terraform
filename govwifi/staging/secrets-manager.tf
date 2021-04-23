@@ -5,3 +5,11 @@ data "aws_secretsmanager_secret_version" "aws_account_id" {
 data "aws_secretsmanager_secret" "aws_account_id" {
   name = "staging/aws/account-id"
 }
+
+data "aws_secretsmanager_secret_version" "docker_image_path" {
+  secret_id = data.aws_secretsmanager_secret.docker_image_path.id
+}
+
+data "aws_secretsmanager_secret" "docker_image_path" {
+  name = "staging/aws/docker-image-path"
+}

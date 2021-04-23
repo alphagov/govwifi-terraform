@@ -195,8 +195,8 @@ module "frontend" {
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
   users                 = var.users
-  frontend-docker-image = format("%s/frontend:staging", var.docker-image-path)
-  raddb-docker-image    = format("%s/raddb:staging", var.docker-image-path)
+  frontend-docker-image = format("%s/frontend:staging", local.docker_image_path)
+  raddb-docker-image    = format("%s/raddb:staging", local.docker_image_path)
 
   # admin bucket
   admin-bucket-name = "govwifi-staging-admin"
@@ -261,7 +261,7 @@ module "api" {
   capacity-notifications-arn = module.notifications.topic-arn
   devops-notifications-arn   = module.notifications.topic-arn
 
-  auth-docker-image         = format("%s/authorisation-api:staging", var.docker-image-path)
+  auth-docker-image         = format("%s/authorisation-api:staging", local.docker_image_path)
   user-signup-docker-image  = ""
   logging-docker-image      = ""
   safe-restart-docker-image = ""
