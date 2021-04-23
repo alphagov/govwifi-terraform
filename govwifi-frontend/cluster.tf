@@ -95,7 +95,7 @@ resource "aws_ecs_task_definition" "radius-task" {
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck_ssid.arn}:ssid::"
       },{
         "name": "HEALTH_CHECK_RADIUS_KEY",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck_ssid.arn}:key::"
+        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck_key.arn}:key::"
       },{
         "name": "HEALTH_CHECK_PASSWORD",
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck_pass.arn}:pass::"
