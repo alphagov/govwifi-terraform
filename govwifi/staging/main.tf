@@ -6,7 +6,7 @@ module "tfstate" {
   source             = "../../terraform-state"
   product-name       = var.product-name
   Env-Name           = var.Env-Name
-  aws-account-id     = var.aws-account-id
+  aws-account-id     = local.aws_account_id
   aws-region         = var.aws-region
   aws-region-name    = var.aws-region-name
   backup-region-name = var.backup-region-name
@@ -87,7 +87,7 @@ module "backend" {
   bastion-ssh-key-name      = "govwifi-staging-bastion-key-20181025"
   enable-bastion-monitoring = false
   users                     = var.users
-  aws-account-id            = var.aws-account-id
+  aws-account-id            = local.aws_account_id
 
   db-encrypt-at-rest       = true
   db-maintenance-window    = "sat:00:42-sat:01:12"
@@ -104,7 +104,7 @@ module "backend" {
   rr-storage-gb    = 0
 
   user-db-replica-count  = 1
-  user-replica-source-db = "arn:aws:rds:eu-west-2:${var.aws-account-id}:db:wifi-staging-user-db"
+  user-replica-source-db = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-staging-user-db"
   user-rr-instance-type  = "db.t2.small"
 
   user-rr-hostname           = var.user-rr-hostname
@@ -137,7 +137,7 @@ module "emails" {
   product-name             = var.product-name
   Env-Name                 = var.Env-Name
   Env-Subdomain            = var.Env-Subdomain
-  aws-account-id           = var.aws-account-id
+  aws-account-id           = local.aws_account_id
   route53-zone-id          = var.route53-zone-id
   aws-region               = var.aws-region
   aws-region-name          = var.aws-region-name
