@@ -3,5 +3,5 @@ data "aws_secretsmanager_secret_version" "users_db_credentials" {
 }
 
 data "aws_secretsmanager_secret" "users_db_credentials" {
-  name = "staging/rds/users-db/credentials"
+  name = "${var.Env-Name}/rds/users-db/credentials"
 }
