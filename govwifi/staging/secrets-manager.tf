@@ -11,7 +11,7 @@ data "aws_secretsmanager_secret_version" "docker_image_path" {
 }
 
 data "aws_secretsmanager_secret" "docker_image_path" {
-  name = "${var.Env-Name}/aws/ecr/docker-image-path"
+  name = "${var.Env-Name}/aws/ecr/docker-image-path/govwifi"
 }
 
 data "aws_secretsmanager_secret_version" "route53_zone_id" {
