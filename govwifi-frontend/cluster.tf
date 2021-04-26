@@ -89,16 +89,16 @@ resource "aws_ecs_task_definition" "radius-task" {
     "secrets": [
       {
         "name": "HEALTH_CHECK_IDENTITY",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck_identity.arn}:identity::"
+        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:identity::"
       },{
         "name": "HEALTH_CHECK_SSID",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck_ssid.arn}:ssid::"
+        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:ssid::"
       },{
         "name": "HEALTH_CHECK_RADIUS_KEY",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck_key.arn}:key::"
+        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:key::"
       },{
         "name": "HEALTH_CHECK_PASSWORD",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck_pass.arn}:pass::"
+        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:pass::"
       },{
         "name": "BACKEND_API_KEY",
         "valueFrom": "${data.aws_secretsmanager_secret_version.shared_key.arn}:shared-key::"
