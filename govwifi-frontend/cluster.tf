@@ -76,32 +76,32 @@ resource "aws_ecs_task_definition" "radius-task" {
         "name": "LOGGING_API_BASE_URL",
         "value": "${var.logging-api-base-url}"
       },{
-        "name": "SERVICE_DOMAIN",
-        "value": "${var.Env-Subdomain}"
-      },{
         "name": "RADIUSD_PARAMS",
         "value": "${var.radiusd-params}"
       },{
         "name": "RACK_ENV",
         "value": "${var.rack-env}"
+      },{
+        "name": "SERVICE_DOMAIN",
+        "value": "${var.Env-Subdomain}"
       }
     ],
     "secrets": [
       {
+        "name": "BACKEND_API_KEY",
+        "valueFrom": "${data.aws_secretsmanager_secret_version.shared_key.arn}:shared-key::"
+      },{
         "name": "HEALTH_CHECK_IDENTITY",
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:identity::"
-      },{
-        "name": "HEALTH_CHECK_SSID",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:ssid::"
-      },{
-        "name": "HEALTH_CHECK_RADIUS_KEY",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:key::"
       },{
         "name": "HEALTH_CHECK_PASSWORD",
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:pass::"
       },{
-        "name": "BACKEND_API_KEY",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.shared_key.arn}:shared-key::"
+        "name": "HEALTH_CHECK_RADIUS_KEY",
+        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:key::"
+      },{
+        "name": "HEALTH_CHECK_SSID",
+        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:ssid::"
       }
     ],
     "image": "${var.frontend-docker-image}",
