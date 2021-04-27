@@ -104,6 +104,7 @@ EOF
 
 }
 
+# Unused until a loadbalancer is set up
 resource "aws_iam_role" "ecs-task-role" {
   name = "${var.aws-region-name}-frontend-ecs-task-role-${var.Env-Name}"
 
@@ -165,44 +166,3 @@ data "aws_iam_policy_document" "admin_bucket_policy" {
   }
 }
 
-resource "aws_iam_role" "ecsTaskExecutionRole" {
-  name               = "ecsTaskExecutionRole-${var.rack-env}-${var.aws-region-name}-SecretsManager"
-  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
-}
-
-data "aws_iam_policy_document" "assume_role_policy" {
-  statement {
-    actions = [
-      "sts:AssumeRole",
-    ]
-
-    principals {
-      type        = "Service"
-      identifiers = ["ecs-tasks.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole" {
-  role       = aws_iam_role.ecsTaskExecutionRole.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-}
-
-resource "aws_iam_role_policy" "secrets_manager_policy" {
-  name   = "${var.aws-region-name}-radius-access-secrets-manager-${var.Env-Name}"
-  role   = aws_iam_role.ecsTaskExecutionRole.id
-  policy = data.aws_iam_policy_document.secrets_manager_policy.json
-}
-
-data "aws_iam_policy_document" "secrets_manager_policy" {
-  statement {
-    actions = [
-      "secretsmanager:GetSecretValue"
-    ]
-
-    resources = [
-      data.aws_secretsmanager_secret.healthcheck.arn,
-      data.aws_secretsmanager_secret.shared_key.arn
-    ]
-  }
-}
