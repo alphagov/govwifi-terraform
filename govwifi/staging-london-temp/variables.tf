@@ -255,3 +255,12 @@ variable "govnotify-bearer-token" {
 
 variable "notification-email" {
 }
+
+variable "prometheus-IP-london" {
+}
+
+variable "prometheus-IP-ireland" {
+}
+
+variable "grafana-IP" {
+}

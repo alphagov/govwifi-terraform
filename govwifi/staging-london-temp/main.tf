@@ -1,28 +1,15 @@
-provider "aws" {
-  # Workaround for import issue, see https://github.com/hashicorp/terraform/issues/13018#issuecomment-291547317
-  version = "2.17.0"
-  alias   = "AWS-main"
-  region  = "${var.aws-region}"
-}
-
-provider "aws" {
-  version = "2.17.0"
-  alias   = "route53-alarms"
-  region  = "us-east-1"
-}
-
 module "tfstate" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source             = "../../terraform-state"
-  product-name       = "${var.product-name}"
-  Env-Name           = "${var.Env-Name}"
-  aws-account-id     = "${var.aws-account-id}"
-  aws-region         = "${var.aws-region}"
-  aws-region-name    = "${var.aws-region-name}"
-  backup-region-name = "${var.backup-region-name}"
+  product-name       = var.product-name
+  Env-Name           = var.Env-Name
+  aws-account-id     = var.aws-account-id
+  aws-region         = var.aws-region
+  aws-region-name    = var.aws-region-name
+  backup-region-name = var.backup-region-name
 
   # TODO: separate module for accesslogs
   accesslogs-glacier-transition-days = 7
@@ -31,16 +18,36 @@ module "tfstate" {
 
 terraform {
   backend "s3" {
-   bucket  = "govwifi-staging-temp-london-tfstate"
-   key     = "staging-temp-london-tfstate"
-   encrypt = true
-   region  = "eu-west-2"
+    # Interpolation is not allowed here.
+    #bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
+    #key    = "${lower(var.aws-region-name)}-tfstate"
+    #region = "${var.aws-region}"
+    bucket = "govwifi-staging-temp-london-tfstate"
+
+    key    = "london-tfstate"
+    region = "eu-west-2"
   }
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "2.10.0"
+    }
+  }
+}
+
+provider "aws" {
+  alias  = "AWS-main"
+  region = var.aws-region
+}
+
+provider "aws" {
+  alias  = "route53-alarms"
+  region = "us-east-1"
 }
 
 module "govwifi-keys" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source = "../../govwifi-keys"
@@ -113,34 +120,40 @@ module "backend" {
   # Whether or not to save Performance Platform backup data
   save-pp-data   = 1
   pp-domain-name = "www.performance.service.gov.uk"
+  prometheus-IP-london  = "${var.prometheus-IP-london}/32"
+  prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
+
+  grafana-IP            = "${var.grafana-IP}/32"
+
 }
 
 # London Frontend ==================================================================
+# London Frontend ==================================================================
 module "frontend" {
   providers = {
-    "aws"                = "aws.AWS-main"
-    "aws.route53-alarms" = "aws.route53-alarms"
+    aws                = aws.AWS-main
+    aws.route53-alarms = aws.route53-alarms
   }
 
   source        = "../../govwifi-frontend"
-  Env-Name      = "${var.Env-Name}"
-  Env-Subdomain = "${var.Env-Subdomain}"
+  Env-Name      = var.Env-Name
+  Env-Subdomain = var.Env-Subdomain
 
   # AWS VPC setup -----------------------------------------
   # LONDON
-  aws-region = "${var.aws-region}"
+  aws-region = var.aws-region
 
-  aws-region-name = "${var.aws-region-name}"
-  route53-zone-id = "${var.route53-zone-id}"
-  vpc-cidr-block  = "10.107.0.0/16"
-  zone-count      = "${var.zone-count}"
-  zone-names      = "${var.zone-names}"
-  rack-env        = "staging-temp"
+  aws-region-name = var.aws-region-name
+  route53-zone-id = var.route53-zone-id
+  vpc-cidr-block  = "10.102.0.0/16"
+  zone-count      = var.zone-count
+  zone-names      = var.zone-names
+  rack-env        = "staging"
 
   zone-subnets = {
-    zone0 = "10.107.1.0/24"
-    zone1 = "10.107.2.0/24"
-    zone2 = "10.107.3.0/24"
+    zone0 = "10.102.1.0/24"
+    zone1 = "10.102.2.0/24"
+    zone2 = "10.102.3.0/24"
   }
 
   # Instance-specific setup -------------------------------
@@ -151,39 +164,44 @@ module "frontend" {
   # where N = this base + 1 + server#
   dns-numbering-base = 3
 
-  elastic-ip-list       = ["${split(",", var.frontend-region-IPs)}"]
-  ami                   = "${var.ami}"
-  ssh-key-name          = "${var.ssh-key-name}"
-  users                 = "${var.users}"
-  frontend-docker-image = "${format("%s/frontend:staging", var.docker-image-path)}"
-  raddb-docker-image    = "${format("%s/raddb:staging", var.docker-image-path)}"
-  create-ecr            = true
+  elastic-ip-list       = split(",", var.frontend-region-IPs)
+  ami                   = var.ami
+  ssh-key-name          = var.ssh-key-name
+  users                 = var.users
+  frontend-docker-image = format("%s/frontend:staging", var.docker-image-path)
+  raddb-docker-image    = format("%s/raddb:staging", var.docker-image-path)
+  create-ecr            = 1
 
   # admin bucket
-  admin-bucket-name = "govwifi-staging-temp-admin"
+  admin-bucket-name = "govwifi-staging-admin"
 
-  logging-api-base-url = "${var.london-api-base-url}"
-  auth-api-base-url    = "${var.london-api-base-url}"
+  logging-api-base-url = var.london-api-base-url
+  auth-api-base-url    = var.london-api-base-url
 
-  shared-key = "${var.shared-key}"
+  shared-key = var.shared-key
 
   # A site with this radkey must exist in the database for health checks to work
-  healthcheck-radius-key = "${var.hc-key}"
-  healthcheck-ssid       = "${var.hc-ssid}"
-  healthcheck-identity   = "${var.hc-identity}"
-  healthcheck-password   = "${var.hc-password}"
+  healthcheck-radius-key = var.hc-key
+  healthcheck-ssid       = var.hc-ssid
+  healthcheck-identity   = var.hc-identity
+  healthcheck-password   = var.hc-password
 
   # This must be based on us-east-1, as that's where the alarms go
-  route53-critical-notifications-arn = "${module.route53-notifications.topic-arn}"
-  devops-notifications-arn           = "${module.notifications.topic-arn}"
+  route53-critical-notifications-arn = module.route53-notifications.topic-arn
+  devops-notifications-arn           = module.notifications.topic-arn
 
   # Security groups ---------------------------------------
   radius-instance-sg-ids = []
 
-  bastion-ips = [
-    "${var.bastion-server-IP}",
-    "${split(",", var.backend-subnet-IPs)}",
-  ]
+  bastion-ips = concat(
+    [var.bastion-server-IP],
+    split(",", var.backend-subnet-IPs),
+  )
+
+  prometheus-IP-london  = "${var.prometheus-IP-london}/32"
+  prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
+
+  radius-CIDR-blocks = split(",", var.frontend-radius-IPs)
 }
 
 module "govwifi-admin" {
@@ -259,10 +277,10 @@ module "govwifi-admin" {
   zendesk-api-user     = "${var.zendesk-api-user}"
   zendesk-api-token    = "${var.zendesk-api-token}"
 
-  bastion-ips = [
-    "${split(",", var.bastion-server-IP)}",
-    "${split(",", var.backend-subnet-IPs)}",
-  ]
+  bastion-ips = concat(
+    split(",", var.bastion-server-IP),
+    split(",", var.backend-subnet-IPs),
+  )
 }
 
 module "api" {
@@ -334,7 +352,7 @@ module "api" {
   user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
   admin-bucket-name                  = "govwifi-staging-temp-admin"
   govnotify-bearer-token             = "${var.govnotify-bearer-token}"
-  user-signup-api-is-public          = true
+  user-signup-api-is-public          = 1
 
   elb-sg-list = []
 
