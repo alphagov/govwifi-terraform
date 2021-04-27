@@ -21,9 +21,8 @@ resource "aws_ecr_repository" "govwifi-raddb-ecr" {
 }
 
 resource "aws_ecs_task_definition" "radius-task" {
-  family             = "radius-task-${var.Env-Name}"
-  task_role_arn      = aws_iam_role.ecs-task-role.arn
-  execution_role_arn = aws_iam_role.ecsTaskExecutionRole.arn
+  family        = "radius-task-${var.Env-Name}"
+  task_role_arn = aws_iam_role.ecs-task-role.arn
 
   volume {
     name = "raddb-certs"
@@ -76,32 +75,29 @@ resource "aws_ecs_task_definition" "radius-task" {
         "name": "LOGGING_API_BASE_URL",
         "value": "${var.logging-api-base-url}"
       },{
+        "name": "BACKEND_API_KEY",
+        "value": "${var.shared-key}"
+      },{
+        "name": "HEALTH_CHECK_RADIUS_KEY",
+        "value": "${var.healthcheck-radius-key}"
+      },{
+        "name": "HEALTH_CHECK_SSID",
+        "value": "${var.healthcheck-ssid}"
+      },{
+        "name": "HEALTH_CHECK_IDENTITY",
+        "value": "${var.healthcheck-identity}"
+      },{
+        "name": "HEALTH_CHECK_PASSWORD",
+        "value": "${var.healthcheck-password}"
+      },{
+        "name": "SERVICE_DOMAIN",
+        "value": "${var.Env-Subdomain}"
+      },{
         "name": "RADIUSD_PARAMS",
         "value": "${var.radiusd-params}"
       },{
         "name": "RACK_ENV",
         "value": "${var.rack-env}"
-      },{
-        "name": "SERVICE_DOMAIN",
-        "value": "${var.Env-Subdomain}"
-      }
-    ],
-    "secrets": [
-      {
-        "name": "BACKEND_API_KEY",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.shared_key.arn}:shared-key::"
-      },{
-        "name": "HEALTH_CHECK_IDENTITY",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:identity::"
-      },{
-        "name": "HEALTH_CHECK_PASSWORD",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:pass::"
-      },{
-        "name": "HEALTH_CHECK_RADIUS_KEY",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:key::"
-      },{
-        "name": "HEALTH_CHECK_SSID",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:ssid::"
       }
     ],
     "image": "${var.frontend-docker-image}",

@@ -10,8 +10,8 @@ resource "aws_db_instance" "users_db" {
   instance_class              = var.user-db-instance-type
   identifier                  = "wifi-${var.env}-user-db"
   name                        = "govwifi_${var.env}_users"
-  username                    = local.users_db_username
-  password                    = local.users_db_password
+  username                    = var.user-db-username
+  password                    = var.user-db-password
   backup_retention_period     = var.db-backup-retention-days
   multi_az                    = true
   storage_encrypted           = var.db-encrypt-at-rest
@@ -37,7 +37,7 @@ resource "aws_db_instance" "users_db" {
 resource "aws_db_instance" "users_read_replica" {
   count                       = var.user-db-replica-count
   replicate_source_db         = var.user-replica-source-db
-  kms_key_id                  = data.aws_kms_key.rds_kms_key.arn
+  kms_key_id                  = var.rds-kms-key-id
   storage_encrypted           = var.db-encrypt-at-rest
   storage_type                = "gp2"
   engine_version              = "8.0"
@@ -46,8 +46,8 @@ resource "aws_db_instance" "users_read_replica" {
   apply_immediately           = true
   instance_class              = var.user-rr-instance-type
   identifier                  = "wifi-${var.env}-user-rr"
-  username                    = local.users_db_username
-  password                    = local.users_db_username
+  username                    = var.user-db-username
+  password                    = var.user-db-password
   backup_retention_period     = 0
   multi_az                    = true
   vpc_security_group_ids      = [aws_security_group.be-db-in.id]
