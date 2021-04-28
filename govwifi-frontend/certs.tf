@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "frontend-cert-bucket" {
   count  = 1
-  bucket = "govwifi-${var.rack-env}-${lower(var.aws-region-name)}-frontend-cert"
+  bucket = "govwifi-frontend-cert"
   acl    = "private"
 
   tags = {
@@ -21,4 +21,3 @@ resource "aws_s3_bucket" "frontend-cert-bucket" {
     enabled = true
   }
 }
-

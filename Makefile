@@ -82,4 +82,4 @@ format-terraform:
 	git clone git@github.com:alphagov/govwifi-build.git .private
 
 update-secrets: .private
-	cd .private && git pull
+#	cd .private && git pull

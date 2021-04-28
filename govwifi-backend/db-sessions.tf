@@ -9,9 +9,15 @@ resource "aws_db_instance" "db" {
   apply_immediately           = true
   instance_class              = var.session-db-instance-type
   identifier                  = "wifi-${var.Env-Name}-db"
+<<<<<<< HEAD
   name                        = "govwifi_${var.Env-Name}"
   username                    = local.session_db_username
   password                    = local.session_db_password
+=======
+  name                        = "sessions"
+  username                    = var.db-user
+  password                    = var.db-password
+>>>>>>> Update Secondary Staging Account To Terraform 13
   backup_retention_period     = var.db-backup-retention-days
   multi_az                    = true
   storage_encrypted           = var.db-encrypt-at-rest

@@ -19,7 +19,7 @@ resource "aws_route53_record" "radius" {
 resource "aws_route53_health_check" "radius" {
   count = var.radius-instance-count
   reference_name = format(
-    "${var.Env-Name}-${var.aws-region-name}-frontend-%d",
+    "${var.aws-region-name}-frontend-%d",
     count.index + 1
   )
   ip_address        = element(aws_eip_association.eip_assoc.*.public_ip, count.index)
