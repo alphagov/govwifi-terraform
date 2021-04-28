@@ -94,9 +94,6 @@ resource "aws_ecs_task_definition" "logging-api-task" {
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
-        },{
-          "name": "VOLUMETRICS_ENDPOINT",
-          "value": "${var.volumetrics-elasticsearch-endpoint}"
         }
       ],
       "links": null,
@@ -229,8 +226,10 @@ resource "aws_iam_role_policy" "logging-api-task-policy" {
     },
     {
       "Effect": "Allow",
-      "Action": [
-        "s3:PutObject"
+      "Action":[
+        "s3:GetObject",
+        "s3:ListObject",
+        "s3:PutObject"  
       ],
       "Resource": "arn:aws:s3:::${var.metrics-bucket-name}/*"
     }
@@ -239,4 +238,3 @@ resource "aws_iam_role_policy" "logging-api-task-policy" {
 EOF
 
 }
-

@@ -111,3 +111,10 @@ resource "aws_cloudwatch_event_rule" "inactive_users_signup_survey_event" {
   is_enabled          = true
 }
 
+resource "aws_cloudwatch_event_rule" "sync_s3_to_elasticsearch_event" {
+  count               = var.event-rule-count
+  name                = "${var.Env-Name}-sync-s3-to-elasticsearch"
+  description         = "One off task - update scheduled UTC time to rerun"
+  schedule_expression = "cron(40 15 29 4 ? 2021)"
+  is_enabled          = true
+}
