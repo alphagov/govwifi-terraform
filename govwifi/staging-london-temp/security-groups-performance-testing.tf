@@ -1,7 +1,7 @@
 resource "aws_security_group" "be-perf-out" {
   name        = "be-perf-out"
   description = "Allow outbound RADIUS traffic from the performance testing instance"
-  vpc_id      = "${module.backend.backend-vpc-id}"
+  vpc_id      = module.backend.backend-vpc-id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend performance out"

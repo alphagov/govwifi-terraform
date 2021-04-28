@@ -24,7 +24,7 @@ terraform {
     #region = "${var.aws-region}"
     bucket = "govwifi-staging-temp-london-tfstate"
 
-    key    = "london-tfstate"
+    key    = "staging-temp-london-tfstate"
     region = "eu-west-2"
   }
   required_providers {
@@ -56,7 +56,7 @@ module "govwifi-keys" {
 # London Backend ==================================================================
 module "backend" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source        = "../../govwifi-backend"
@@ -206,7 +206,7 @@ module "frontend" {
 
 module "govwifi-admin" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source        = "../../govwifi-admin"
@@ -285,7 +285,7 @@ module "govwifi-admin" {
 
 module "api" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source        = "../../govwifi-api"
@@ -363,7 +363,7 @@ module "api" {
 
 module "notifications" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source = "../../sns-notification"
@@ -375,7 +375,7 @@ module "notifications" {
 
 module "route53-notifications" {
   providers = {
-    "aws" = "aws.route53-alarms"
+    aws = aws.route53-alarms
   }
 
   source = "../../sns-notification"
