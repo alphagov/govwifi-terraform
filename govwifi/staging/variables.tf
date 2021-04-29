@@ -181,7 +181,7 @@ variable "aws-parent-account-id" {
 }
 
 variable "use_env_prefix" {
-  default = true
-  type = bool
+  default     = true
+  type        = bool
   description = "Conditional to indicate whether to retrieve a secret with a env prefix in its name."
 }
