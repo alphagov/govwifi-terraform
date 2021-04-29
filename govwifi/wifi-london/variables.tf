@@ -310,3 +310,7 @@ variable "allowed-sites-api-elb-ssl-cert-arn" {
 variable "backend-subnet-IPs-list" {
   description = "Unused in this configuration"
 }
+
+variable "use_env_prefix" {
+  default = false
+}
