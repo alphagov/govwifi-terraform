@@ -1,12 +1,3 @@
-# Current users
-
-resource "aws_iam_user" "monitor" {
-  name = "monitor"
-  path = "/"
-}
-
-### Users to be changed
-
 resource "aws_iam_user" "govwifi-pipeline-deploy-prod" {
   name          = "govwifi-pipeline-deploy-prod"
   path          = "/"
@@ -76,14 +67,6 @@ resource "aws_iam_user_group_membership" "govwifi-pipeline-deploy-admin" {
 
   groups = [
     "GovWifi-Pipeline",
-  ]
-}
-
-resource "aws_iam_user_group_membership" "monitor" {
-  user = "monitor"
-
-  groups = [
-    "Read-Only-Access",
   ]
 }
 
