@@ -126,7 +126,7 @@ module "backend" {
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
   grafana-IP            = "${var.grafana-IP}/32"
 
-  use_env_prefix = true
+  use_env_prefix = var.use_env_prefix
 }
 
 # Emails ======================================================================
@@ -229,7 +229,7 @@ module "frontend" {
 
   radius-CIDR-blocks = split(",", var.frontend-radius-IPs)
 
-  use_env_prefix = true
+  use_env_prefix = var.use_env_prefix
 }
 
 module "api" {
