@@ -141,14 +141,6 @@ resource "aws_iam_user_group_membership" "monitor" {
   ]
 }
 
-resource "aws_iam_user_group_membership" "servicedesk" {
-  user = "servicedesk"
-
-  groups = [
-    "Read-Only-Access",
-  ]
-}
-
 resource "aws_iam_user" "monitoring-stats-user" {
   name          = "monitoring-stats-user"
   path          = "/"
