@@ -3,7 +3,7 @@ data "aws_secretsmanager_secret_version" "healthcheck" {
 }
 
 data "aws_secretsmanager_secret" "healthcheck" {
-  name = "${var.Env-Name}/radius/healthcheck"
+  name = var.use_env_prefix ? "staging/radius/healthcheck" : "radius/healthcheck"
 }
 
 data "aws_secretsmanager_secret_version" "shared_key" {
@@ -11,5 +11,5 @@ data "aws_secretsmanager_secret_version" "shared_key" {
 }
 
 data "aws_secretsmanager_secret" "shared_key" {
-  name = "${var.Env-Name}/radius/shared-key"
+  name = var.use_env_prefix ? "staging/radius/shared-key" : "radius/shared-key"
 }

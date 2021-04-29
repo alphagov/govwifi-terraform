@@ -171,3 +171,6 @@ variable "prometheus-IP-ireland" {
 variable "grafana-IP" {
 }
 
+variable "use_env_prefix" {
+}
+
