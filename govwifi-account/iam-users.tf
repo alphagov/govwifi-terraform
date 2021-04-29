@@ -39,14 +39,6 @@ resource "aws_iam_user" "govwifi-pipeline-terraform" {
 
 # Groups for the users
 
-resource "aws_iam_user_group_membership" "govwifi-jenkins-terraform" {
-  user = "govwifi-jenkins-terraform"
-
-  groups = [
-    "AWS-Admin",
-  ]
-}
-
 resource "aws_iam_user_group_membership" "govwifi-pipeline-terraform" {
   user = "govwifi-pipeline-terraform"
 
