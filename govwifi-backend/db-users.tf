@@ -10,8 +10,8 @@ resource "aws_db_instance" "users_db" {
   instance_class              = var.user-db-instance-type
   identifier                  = "wifi-${var.env}-user-db"
   name                        = "govwifi_${var.env}_users"
-  username                    = local.users_db_username
-  password                    = local.users_db_password
+  username                    = var.user-db-username
+  password                    = var.user-db-password
   backup_retention_period     = var.db-backup-retention-days
   multi_az                    = true
   storage_encrypted           = var.db-encrypt-at-rest
@@ -46,8 +46,8 @@ resource "aws_db_instance" "users_read_replica" {
   apply_immediately           = true
   instance_class              = var.user-rr-instance-type
   identifier                  = "wifi-${var.env}-user-rr"
-  username                    = local.users_db_username
-  password                    = local.users_db_username
+  username                    = var.user-db-username
+  password                    = var.user-db-password
   backup_retention_period     = 0
   multi_az                    = true
   vpc_security_group_ids      = [aws_security_group.be-db-in.id]
