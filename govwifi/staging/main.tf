@@ -6,7 +6,7 @@ module "tfstate" {
   source             = "../../terraform-state"
   product-name       = var.product-name
   Env-Name           = var.Env-Name
-  aws-account-id     = var.aws-account-id
+  aws-account-id     = local.aws_account_id
   aws-region         = var.aws-region
   aws-region-name    = var.aws-region-name
   backup-region-name = var.backup-region-name
@@ -58,7 +58,7 @@ module "backend" {
 
   # AWS VPC setup -----------------------------------------
   aws-region      = var.aws-region
-  route53-zone-id = var.route53-zone-id
+  route53-zone-id = local.route53_zone_id
   aws-region-name = var.aws-region-name
   vpc-cidr-block  = "10.100.0.0/16"
   zone-count      = var.zone-count
@@ -87,7 +87,7 @@ module "backend" {
   bastion-ssh-key-name      = "govwifi-staging-bastion-key-20181025"
   enable-bastion-monitoring = false
   users                     = var.users
-  aws-account-id            = var.aws-account-id
+  aws-account-id            = local.aws_account_id
 
   db-encrypt-at-rest       = true
   db-maintenance-window    = "sat:00:42-sat:01:12"
@@ -104,7 +104,7 @@ module "backend" {
   rr-storage-gb    = 0
 
   user-db-replica-count  = 1
-  user-replica-source-db = "arn:aws:rds:eu-west-2:${var.aws-account-id}:db:wifi-staging-user-db"
+  user-replica-source-db = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-staging-user-db"
   user-rr-instance-type  = "db.t2.small"
 
   user-rr-hostname           = var.user-rr-hostname
@@ -139,8 +139,8 @@ module "emails" {
   product-name             = var.product-name
   Env-Name                 = var.Env-Name
   Env-Subdomain            = var.Env-Subdomain
-  aws-account-id           = var.aws-account-id
-  route53-zone-id          = var.route53-zone-id
+  aws-account-id           = local.aws_account_id
+  route53-zone-id          = local.route53_zone_id
   aws-region               = var.aws-region
   aws-region-name          = var.aws-region-name
   mail-exchange-server     = "10 inbound-smtp.eu-west-1.amazonaws.com"
@@ -173,7 +173,7 @@ module "frontend" {
   # AWS VPC setup -----------------------------------------
   aws-region      = var.aws-region
   aws-region-name = var.aws-region-name
-  route53-zone-id = var.route53-zone-id
+  route53-zone-id = local.route53_zone_id
   vpc-cidr-block  = "10.101.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
@@ -197,8 +197,8 @@ module "frontend" {
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
   users                 = var.users
-  frontend-docker-image = format("%s/frontend:staging", var.docker-image-path)
-  raddb-docker-image    = format("%s/raddb:staging", var.docker-image-path)
+  frontend-docker-image = format("%s/frontend:staging", local.docker_image_path)
+  raddb-docker-image    = format("%s/raddb:staging", local.docker_image_path)
 
   # admin bucket
   admin-bucket-name = "govwifi-staging-admin"
@@ -252,7 +252,7 @@ module "api" {
   aws-account-id         = var.aws-account-id
   aws-region-name        = var.aws-region-name
   aws-region             = var.aws-region
-  route53-zone-id        = var.route53-zone-id
+  route53-zone-id        = local.route53_zone_id
   vpc-id                 = module.backend.backend-vpc-id
 
   user-signup-enabled  = 0
@@ -265,7 +265,7 @@ module "api" {
   capacity-notifications-arn = module.notifications.topic-arn
   devops-notifications-arn   = module.notifications.topic-arn
 
-  auth-docker-image         = format("%s/authorisation-api:staging", var.docker-image-path)
+  auth-docker-image         = format("%s/authorisation-api:staging", local.docker_image_path)
   user-signup-docker-image  = ""
   logging-docker-image      = ""
   safe-restart-docker-image = ""
