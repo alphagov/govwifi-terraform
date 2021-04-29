@@ -126,6 +126,8 @@ module "backend" {
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
   grafana-IP            = "${var.grafana-IP}/32"
+
+  use_env_prefix = var.use_env_prefix
 }
 
 # London Frontend ==================================================================
@@ -202,6 +204,8 @@ module "frontend" {
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 
   radius-CIDR-blocks = split(",", var.frontend-radius-IPs)
+
+  use_env_prefix = var.use_env_prefix
 }
 
 module "govwifi-admin" {
