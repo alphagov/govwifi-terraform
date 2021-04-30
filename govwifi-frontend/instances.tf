@@ -121,4 +121,3 @@ resource "aws_eip_association" "eip_assoc" {
   instance_id = element(aws_instance.radius.*.id, count.index)
   public_ip   = replace(element(var.elastic-ip-list, count.index), "/32", "")
 }
-
