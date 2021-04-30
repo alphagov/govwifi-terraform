@@ -188,3 +188,5 @@ variable "bastion-ips" {
   default     = []
 }
 
+variable "use_env_prefix" {
+}

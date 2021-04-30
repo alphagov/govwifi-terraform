@@ -48,9 +48,6 @@ resource "aws_ecs_task_definition" "admin-task" {
           "name": "DB_HOST",
           "value": "${aws_db_instance.admin_db.address}"
         },{
-          "name": "NOTIFY_API_KEY",
-          "value": "${var.notify-api-key}"
-        },{
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{
@@ -143,6 +140,12 @@ resource "aws_ecs_task_definition" "admin-task" {
         },{
           "name": "OTP_SECRET_ENCRYPTION_KEY",
           "value": "${var.otp-secret-encryption-key}"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "NOTIFY_API_KEY",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.notify_api_key.arn}:notify-api-key::"
         }
       ],
       "image": "${var.admin-docker-image}",

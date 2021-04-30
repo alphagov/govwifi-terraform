@@ -118,3 +118,20 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+resource "aws_iam_role_policy" "secrets_manager_policy" {
+  name   = "${var.aws-region-name}-admin-api-access-secrets-manager-${var.Env-Name}"
+  role   = aws_iam_role.ecsTaskExecutionRole.id
+  policy = data.aws_iam_policy_document.secrets_manager_policy.json
+}
+
+data "aws_iam_policy_document" "secrets_manager_policy" {
+  statement {
+    actions = [
+      "secretsmanager:GetSecretValue"
+    ]
+
+    resources = [
+      data.aws_secretsmanager_secret_version.notify_api_key.arn
+    ]
+  }
+}
