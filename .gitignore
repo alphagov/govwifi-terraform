@@ -8,6 +8,7 @@ terraform.tfstate
 terraform.tfstate.*.backup
 *.tfstate.backup
 terraform/*/*.zip
+*terraform.lock.hcl
 
 secrets.auto.tfvars
 variables.auto.tfvars

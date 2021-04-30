@@ -13,7 +13,7 @@ provider "aws" {
 
 module "tfstate" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source             = "../../terraform-state"
@@ -46,7 +46,7 @@ terraform {
 # Backend ==================================================================
 module "backend" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source        = "../../govwifi-backend"
@@ -75,7 +75,7 @@ module "backend" {
 
   # Instance-specific setup -------------------------------
   # eu-west-1, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
-  enable-bastion = false
+  enable-bastion = 0
 
   bastion-ami = "ami-51d3e928"
 
@@ -134,7 +134,7 @@ module "backend" {
 /*
 module "emails" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source                   = "../../govwifi-emails"
@@ -156,7 +156,7 @@ module "emails" {
 
 module "govwifi-keys" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source = "../../govwifi-keys"
@@ -180,7 +180,7 @@ module "frontend" {
   vpc-cidr-block  = "10.105.0.0/16"
   zone-count      = "${var.zone-count}"
   zone-names      = "${var.zone-names}"
-  rack-env        = "staging-temp"
+  rack-env        = "staging-t"
 
   zone-subnets = {
     zone0 = "10.105.1.0/24"
@@ -196,7 +196,7 @@ module "frontend" {
   # where N = this base + 1 + server#
   dns-numbering-base = 0
 
-  elastic-ip-list       = ["${split(",", var.frontend-region-IPs)}"]
+  elastic-ip-list       = split(",", var.frontend-region-IPs)
   ami                   = "${var.ami}"
   ssh-key-name          = "${var.ssh-key-name}"
   users                 = "${var.users}"
@@ -229,12 +229,13 @@ module "frontend" {
 
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
-  grafana-IP            = "${var.grafana-IP}/32"
+
+  radius-CIDR-blocks = split(",", var.frontend-radius-IPs)
 }
 
 module "api" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source        = "../../govwifi-api"
@@ -310,7 +311,7 @@ module "api" {
 
 module "notifications" {
   providers = {
-    "aws" = "aws.AWS-main"
+    aws = aws.AWS-main
   }
 
   source = "../../sns-notification"

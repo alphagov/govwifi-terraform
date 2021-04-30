@@ -148,7 +148,7 @@ module "frontend" {
   vpc-cidr-block  = "10.102.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
-  rack-env        = "staging"
+  rack-env        = "staging-t"
 
   zone-subnets = {
     zone0 = "10.102.1.0/24"
