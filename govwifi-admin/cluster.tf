@@ -36,12 +36,6 @@ resource "aws_ecs_task_definition" "admin-task" {
       "name": "admin",
       "environment": [
         {
-          "name": "DB_USER",
-          "value": "${var.admin-db-user}"
-        },{
-          "name": "DB_PASS",
-          "value": "${var.admin-db-password}"
-        },{
           "name": "DB_NAME",
           "value": "govwifi_admin_${var.rack-env}"
         },{
@@ -96,23 +90,11 @@ resource "aws_ecs_task_definition" "admin-task" {
           "name": "LOGGING_API_SEARCH_ENDPOINT",
           "value": "${var.logging-api-search-url}"
         },{
-          "name": "RR_DB_USER",
-          "value": "${var.rr-db-user}"
-        },{
-          "name": "RR_DB_PASS",
-          "value": "${var.rr-db-password}"
-        },{
           "name": "RR_DB_HOST",
           "value": "${var.rr-db-host}"
         },{
           "name": "RR_DB_NAME",
           "value": "${var.rr-db-name}"
-        },{
-          "name": "USER_DB_USER",
-          "value": "${var.user-db-user}"
-        },{
-          "name": "USER_DB_PASS",
-          "value": "${var.user-db-password}"
         },{
           "name": "USER_DB_HOST",
           "value": "${var.user-db-host}"
@@ -132,20 +114,38 @@ resource "aws_ecs_task_definition" "admin-task" {
       ],
       "secrets": [
         {
-          "name": "NOTIFY_API_KEY",
-          "valueFrom": "${data.aws_secretsmanager_secret_version.notify_api_key.arn}:notify-api-key::"
+          "name": "DB_PASS",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.admin_db.arn}:username::"
         },{
-          "name": "ZENDESK_API_TOKEN",
-          "valueFrom": "${data.aws_secretsmanager_secret_version.zendesk_api_token.arn}:zendesk-api-token::"
-        },{
-          "name": "SECRET_KEY_BASE",
-          "valueFrom": "${data.aws_secretsmanager_secret_version.key_base.arn}:secret-key-base::"
+          "name": "DB_USER",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.admin_db.arn}:password::"
         },{
           "name": "DEVISE_SECRET_KEY",
           "valueFrom": "${data.aws_secretsmanager_secret_version.key_base.arn}:secret-key-base::"
         },{
+          "name": "NOTIFY_API_KEY",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.notify_api_key.arn}:notify-api-key::"
+        },{
           "name": "OTP_SECRET_ENCRYPTION_KEY",
           "valueFrom": "${data.aws_secretsmanager_secret_version.otp_encryption_key.arn}:key::"
+        },{
+          "name": "RR_DB_PASS",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.session_db.arn}:password::"
+        },{
+          "name": "RR_DB_USER",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.session_db.arn}:username::"
+        },{
+          "name": "SECRET_KEY_BASE",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.key_base.arn}:secret-key-base::"
+        },{
+          "name": "USER_DB_PASS",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:password::"
+        },{
+          "name": "USER_DB_USER",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:username::"
+        },{
+          "name": "ZENDESK_API_TOKEN",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.zendesk_api_token.arn}:zendesk-api-token::"
         }
       ],
       "image": "${var.admin-docker-image}",
