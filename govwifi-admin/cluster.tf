@@ -115,10 +115,10 @@ resource "aws_ecs_task_definition" "admin-task" {
       "secrets": [
         {
           "name": "DB_PASS",
-          "valueFrom": "${data.aws_secretsmanager_secret_version.admin_db.arn}:username::"
+          "valueFrom": "${data.aws_secretsmanager_secret_version.admin_db.arn}:password::"
         },{
           "name": "DB_USER",
-          "valueFrom": "${data.aws_secretsmanager_secret_version.admin_db.arn}:password::"
+          "valueFrom": "${data.aws_secretsmanager_secret_version.admin_db.arn}:username::"
         },{
           "name": "DEVISE_SECRET_KEY",
           "valueFrom": "${data.aws_secretsmanager_secret_version.key_base.arn}:secret-key-base::"
