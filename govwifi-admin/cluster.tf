@@ -51,12 +51,6 @@ resource "aws_ecs_task_definition" "admin-task" {
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{
-          "name": "SECRET_KEY_BASE",
-          "value": "${var.secret-key-base}"
-        },{
-          "name": "DEVISE_SECRET_KEY",
-          "value": "${var.secret-key-base}"
-        },{
           "name": "RAILS_LOG_TO_STDOUT",
           "value": "1"
         },{
@@ -132,20 +126,26 @@ resource "aws_ecs_task_definition" "admin-task" {
           "name": "ZENDESK_API_USER",
           "value": "${var.zendesk-api-user}"
         },{
-          "name": "ZENDESK_API_TOKEN",
-          "value": "${var.zendesk-api-token}"
-        },{
           "name": "GOOGLE_MAPS_PUBLIC_API_KEY",
           "value": "${var.public-google-api-key}"
-        },{
-          "name": "OTP_SECRET_ENCRYPTION_KEY",
-          "value": "${var.otp-secret-encryption-key}"
         }
       ],
       "secrets": [
         {
           "name": "NOTIFY_API_KEY",
           "valueFrom": "${data.aws_secretsmanager_secret_version.notify_api_key.arn}:notify-api-key::"
+        },{
+          "name": "ZENDESK_API_TOKEN",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.zendesk_api_token.arn}:zendesk-api-token::"
+        },{
+          "name": "SECRET_KEY_BASE",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.key_base.arn}:secret-key-base::"
+        },{
+          "name": "DEVISE_SECRET_KEY",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.key_base.arn}:secret-key-base::"
+        },{
+          "name": "OTP_SECRET_ENCRYPTION_KEY",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.otp_encryption_key.arn}:key::"
         }
       ],
       "image": "${var.admin-docker-image}",

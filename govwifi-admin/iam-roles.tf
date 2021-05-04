@@ -131,7 +131,10 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
     ]
 
     resources = [
-      data.aws_secretsmanager_secret_version.notify_api_key.arn
+      data.aws_secretsmanager_secret_version.notify_api_key.arn,
+      data.aws_secretsmanager_secret_version.zendesk_api_token.arn,
+      data.aws_secretsmanager_secret_version.key_base.arn,
+      data.aws_secretsmanager_secret_version.otp_encryption_key.arn
     ]
   }
 }
