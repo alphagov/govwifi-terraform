@@ -174,3 +174,9 @@ variable "grafana-IP" {
 variable "use_env_prefix" {
 }
 
+variable "backup_mysql_rds" {
+  description = "Whether or not to create objects to and make backups of MySQL RDS data"
+  default     = false
+  type        = bool
+}
+
