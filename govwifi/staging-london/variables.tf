@@ -177,6 +177,11 @@ variable "aws-account-id" {
   description = "The ID of the AWS tenancy."
 }
 
+variable "aws-secondary-account-id" {
+  type        = string
+  description = "The ID of the Secondary Staging AWS Account."
+}
+
 variable "admin-secret-key-base" {
   type        = string
   description = "Rails secret key base for the Admin platform"

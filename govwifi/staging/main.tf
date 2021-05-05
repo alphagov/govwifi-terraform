@@ -79,7 +79,7 @@ module "backend" {
   # eu-west-1, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
   enable-bastion = 0
   #bastion-ami = "ami-51d3e928"
-  # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS 
+  # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS
   bastion-ami = "ami-08bac620dc84221eb"
 
   bastion-instance-type     = "t2.micro"
@@ -122,6 +122,8 @@ module "backend" {
   user-db-hostname      = ""
   user-db-instance-type = ""
   user-db-storage-gb    = 0
+  govwifi-db-key        = module.govwifi-db-kms.govwifi-db-key-key-id
+
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
   grafana-IP            = "${var.grafana-IP}/32"
@@ -362,3 +364,13 @@ module "govwifi-prometheus" {
   grafana-IP    = "${var.grafana-IP}/32"
 }
 
+module "govwifi-db-kms" {
+  providers = {
+    aws = aws.AWS-main
+  }
+
+  source                   = "../../govwifi-db-kms"
+  aws-account-id           = var.aws-account-id
+  aws-secondary-account-id = var.aws-secondary-account-id
+  Env-Name                 = var.Env-Name
+}

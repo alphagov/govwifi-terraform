@@ -12,6 +12,7 @@ resource "aws_db_instance" "db" {
   name                        = "govwifi_${var.Env-Name}"
   username                    = var.db-user
   password                    = var.db-password
+  kms_key_id                  = "${var.govwifi-db-key == "" ? data.aws_kms_key.rds_kms_key.arn : var.govwifi-db-key}"
   backup_retention_period     = var.db-backup-retention-days
   multi_az                    = true
   storage_encrypted           = var.db-encrypt-at-rest
@@ -66,4 +67,3 @@ resource "aws_db_instance" "read_replica" {
     Name = "${title(var.Env-Name)} DB Read Replica"
   }
 }
-

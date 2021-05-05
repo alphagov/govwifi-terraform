@@ -86,7 +86,7 @@ module "backend" {
 
   # eu-west-2, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
   #  bastion-ami                = "ami-ae6d81c9"
-  # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS 
+  # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS
   bastion-ami                = "ami-096cb92bb3580c759"
   bastion-instance-type      = "t2.micro"
   bastion-server-ip          = var.bastion-server-IP
@@ -119,6 +119,7 @@ module "backend" {
   user-db-hostname      = var.user-db-hostname
   user-db-instance-type = "db.t2.small"
   user-db-storage-gb    = 20
+  govwifi-db-key        = module.govwifi-db-kms.govwifi-db-key-key-id
 
   # Whether or not to save Performance Platform backup data
   save-pp-data          = 1
@@ -260,6 +261,7 @@ module "govwifi-admin" {
   user-db-password = var.user-db-password
   user-db-host     = var.user-db-hostname
   user-db-name     = "govwifi_staging_users"
+  govwifi-db-key   = module.govwifi-db-kms.govwifi-db-key-key-id
 
   db-sg-list = []
 
@@ -496,4 +498,15 @@ module "govwifi-elasticsearch" {
   vpc-cidr-block = module.backend.vpc-cidr-block
 
   backend-subnet-id = module.backend.backend-subnet-ids[0]
+}
+
+module "govwifi-db-kms" {
+  providers = {
+    aws = aws.AWS-main
+  }
+
+  source                   = "../../govwifi-db-kms"
+  aws-account-id           = var.aws-account-id
+  aws-secondary-account-id = var.aws-secondary-account-id
+  Env-Name                 = var.Env-Name
 }

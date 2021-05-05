@@ -12,6 +12,7 @@ resource "aws_db_instance" "users_db" {
   name                        = "govwifi_${var.env}_users"
   username                    = var.user-db-username
   password                    = var.user-db-password
+  kms_key_id                  = "${var.govwifi-db-key == "" ? data.aws_kms_key.rds_kms_key.arn : var.govwifi-db-key}"
   backup_retention_period     = var.db-backup-retention-days
   multi_az                    = true
   storage_encrypted           = var.db-encrypt-at-rest
@@ -37,7 +38,7 @@ resource "aws_db_instance" "users_db" {
 resource "aws_db_instance" "users_read_replica" {
   count                       = var.user-db-replica-count
   replicate_source_db         = var.user-replica-source-db
-  kms_key_id                  = data.aws_kms_key.rds_kms_key.arn
+  kms_key_id                  = "${var.govwifi-db-key == "" ? data.aws_kms_key.rds_kms_key.arn : var.govwifi-db-key}"
   storage_encrypted           = var.db-encrypt-at-rest
   storage_type                = "gp2"
   engine_version              = "8.0"
@@ -66,4 +67,3 @@ resource "aws_db_instance" "users_read_replica" {
     Name = "${title(var.Env-Name)} DB Read Replica"
   }
 }
-

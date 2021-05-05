@@ -57,6 +57,7 @@ resource "aws_db_instance" "admin_db" {
   name                        = "govwifi_admin_${var.rack-env}"
   username                    = var.admin-db-user
   password                    = var.admin-db-password
+  kms_key_id                  = "${var.govwifi-db-key == "" ? data.aws_kms_key.rds_kms_key.arn : var.govwifi-db-key}"
   backup_retention_period     = var.db-backup-retention-days
   multi_az                    = true
   storage_encrypted           = var.db-encrypt-at-rest
@@ -158,4 +159,3 @@ resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
   alarm_actions      = [var.critical-notifications-arn]
   treat_missing_data = "missing"
 }
-

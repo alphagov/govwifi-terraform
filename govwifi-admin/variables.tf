@@ -188,3 +188,8 @@ variable "bastion-ips" {
   default     = []
 }
 
+variable "govwifi-db-key" {
+  type    = string
+  default = ""
+  description = "Govwifi manged kms key id for encrypting database snapshots"
+}

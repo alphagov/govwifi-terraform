@@ -174,3 +174,8 @@ variable "grafana-IP" {
 variable "use_env_prefix" {
 }
 
+variable "govwifi-db-key" {
+  type    = string
+  default = ""
+  description = "Govwifi manged kms key id for encrypting database snapshots"
+}
