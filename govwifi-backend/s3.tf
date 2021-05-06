@@ -32,6 +32,24 @@ resource "aws_s3_bucket" "rds-mysql-backup-bucket" {
     Category    = "MySQL RDS data backup"
   }
 
+  lifecycle_rule {
+    enabled = true
+
+    noncurrent_version_transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+
+    noncurrent_version_transition {
+      days          = 60
+      storage_class = "GLACIER"
+    }
+
+    noncurrent_version_expiration {
+      days = 180
+    }
+  }
+
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
@@ -45,4 +63,3 @@ resource "aws_s3_bucket" "rds-mysql-backup-bucket" {
     enabled = true
   }
 }
-
