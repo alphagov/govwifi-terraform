@@ -248,6 +248,44 @@ EOF
 
 }
 
+resource "aws_cloudwatch_event_target" "publish-metrics-to-elasticsearch" {
+  count     = var.logging-enabled
+  target_id = "${var.Env-Name}-metrics-to-elasticsearch"
+  arn       = aws_ecs_cluster.api-cluster.arn
+  rule      = aws_cloudwatch_event_rule.daily_metrics_logging_event[0].name
+  role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
+
+  ecs_target {
+    task_count          = 1
+    task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
+    launch_type         = "FARGATE"
+
+    network_configuration {
+      subnets = var.subnet-ids
+
+      security_groups = concat(
+        var.backend-sg-list,
+        [aws_security_group.api-in.id],
+        [aws_security_group.api-out.id]
+      )
+
+      assign_public_ip = true
+    }
+  }
+
+  input = <<EOF
+{
+  "containerOverrides": [
+    {
+      "name": "logging",
+      "command": ["bundle", "exec", "rake", "publish_metrics_to_elasticsearch"]
+    }
+  ]
+}
+EOF
+
+}
+
 resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
   count                    = var.logging-enabled
   family                   = "logging-api-scheduled-task-${var.Env-Name}"
