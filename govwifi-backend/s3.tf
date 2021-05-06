@@ -26,8 +26,8 @@ resource "aws_s3_bucket" "rds-mysql-backup-bucket" {
   acl           = "private"
 
   tags = {
-    Name   = "${title(var.Env-Name)} RDS MySQL data backup"
-    Region = title(var.aws-region-name)
+    Name        = "${title(var.Env-Name)} RDS MySQL data backup"
+    Region      = title(var.aws-region-name)
     Environment = title(var.Env-Name)
     Category    = "MySQL RDS data backup"
   }
