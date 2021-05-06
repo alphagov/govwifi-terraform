@@ -21,7 +21,7 @@ resource "aws_s3_bucket" "pp-data-bucket" {
 # Bucket to store MySQL RDS backups
 resource "aws_s3_bucket" "rds-mysql-backup-bucket" {
   count         = var.backup_mysql_rds ? 0 : 1
-  bucket        = "${var.Env-Name}-${lower(var.aws-region-name)}-pp-data"
+  bucket        = "${var.Env-Name}-${lower(var.aws-region-name)}-mysql-backup-data"
   force_destroy = true
   acl           = "private"
 
