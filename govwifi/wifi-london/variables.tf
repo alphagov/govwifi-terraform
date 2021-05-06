@@ -316,3 +316,9 @@ variable "use_env_prefix" {
   type        = bool
   description = "Conditional to indicate whether to retrieve a secret with a env prefix in its name."
 }
+
+variable "backup_mysql_rds" {
+  description = "Conditional to indicate whether to make artifacts for and run RDS MySQL backups."
+  default     = true
+  type        = bool
+}
