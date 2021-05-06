@@ -96,6 +96,11 @@ variable "aws-account-id" {
   description = "The ID of the AWS tenancy."
 }
 
+variable "aws-secondary-account-id" {
+  type        = string
+  description = "The ID the Secondary Staging AWS Account."
+}
+
 variable "docker-image-path" {
   type        = string
   description = "ARN used to identify the common path element used for the docker image repositories."
