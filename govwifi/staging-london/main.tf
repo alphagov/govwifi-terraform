@@ -285,6 +285,8 @@ module "govwifi-admin" {
     split(",", var.bastion-server-IP),
     split(",", var.backend-subnet-IPs),
   )
+
+  use_env_prefix = true
 }
 
 module "api" {
