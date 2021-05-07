@@ -3,9 +3,14 @@ data "aws_kms_key" "rds_kms_key" {
 }
 
 resource "aws_kms_key" "mysql_rds_backup_s3_key" {
-  is_enabled              = var.backup_mysql_rds
+  count                   = var.backup_mysql_rds ? 0 : 1
   description             = "This key is used to encrypt RDS MySQL backup bucket objects"
   enable_key_rotation     = true
   deletion_window_in_days = 30
 }
 
+resource "aws_kms_alias" "mysql_rds_backup_s3_key_alias" {
+  count         = var.backup_mysql_rds ? 0 : 1
+  name          = "alias/mysql_rds_backup_s3_key"
+  target_key_id = aws_kms_key.mysql_rds_backup_s3_key[0].key_id
+}
