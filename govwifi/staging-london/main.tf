@@ -128,6 +128,7 @@ module "backend" {
   grafana-IP            = "${var.grafana-IP}/32"
 
   use_env_prefix = var.use_env_prefix
+  backup_mysql_rds = var.backup_mysql_rds
 }
 
 # London Frontend ==================================================================
