@@ -143,7 +143,7 @@ module "backend" {
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
   grafana-IP            = "${var.grafana-IP}/32"
 
-  use_env_prefix = var.use_env_prefix
+  use_env_prefix   = var.use_env_prefix
   backup_mysql_rds = var.backup_mysql_rds
 }
 
