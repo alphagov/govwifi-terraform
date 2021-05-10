@@ -37,8 +37,7 @@ apply: check-env unencrypt-secrets apply_task delete-secrets ## Run terraform ap
 terraform_task: check-env
 terraform: check-env unencrypt-secrets delete-secrets
 	scripts/run-terraform.sh ${terraform_cmd}
-# running a targeted terraform plan/apply, we had to remove `delete-secrets` command from the list and run after or doesnt work
-terraform_targetted: check-env unencrypt-secrets
+terraform_target: check-env unencrypt-secrets
 	scripts/run-terraform.sh ${terraform_cmd}; scripts/unencrypt-secrets.sh delete-secrets
 destroy_task: check-env
 	scripts/run-terraform.sh destroy
