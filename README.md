@@ -58,6 +58,12 @@ make <ENV> plan
 make <ENV> apply
 ```
 
+Use the `terraform_target` command to run a targeted `plan | apply`:
+
+```bash
+$ make <env> terraform_target terraform_cmd="<plan | apply> -target=<module name>"
+```
+
 ## Bootstrapping terraform
 
 Because we use remote state, but there is a chicken and egg problem of creating
