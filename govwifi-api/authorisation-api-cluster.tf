@@ -39,12 +39,6 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
           "name": "DB_NAME",
           "value": "govwifi_${var.env}_users"
         },{
-          "name": "DB_PASS",
-          "value": "${var.user-db-password}"
-        },{
-          "name": "DB_USER",
-          "value": "${var.user-db-username}"
-        },{
           "name": "DB_HOSTNAME",
           "value": "${var.user-rr-hostname}"
         },{
@@ -56,6 +50,14 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
+        }
+      ],"secrets": [
+        {
+          "name": "DB_PASS",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:password::"
+        },{
+          "name": "DB_USER",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:username::"
         }
       ],
       "links": null,
