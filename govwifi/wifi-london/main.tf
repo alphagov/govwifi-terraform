@@ -376,6 +376,8 @@ module "api" {
   ]
 
   metrics-bucket-name = module.govwifi-dashboard.metrics-bucket-name
+
+  use_env_prefix = var.use_env_prefix
 }
 
 module "critical-notifications" {

@@ -258,3 +258,6 @@ variable "volumetrics-elasticsearch-endpoint" {
   description = "URL for the ElasticSearch instance endpoint"
 }
 
+variable "use_env_prefix" {
+
+}

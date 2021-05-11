@@ -316,6 +316,8 @@ module "api" {
   backend-sg-list = [
     module.backend.be-admin-in,
   ]
+
+  use_env_prefix = var.use_env_prefix
 }
 
 module "critical-notifications" {
