@@ -384,3 +384,13 @@ module "route53-notifications" {
   topic-name = "govwifi-staging-london-temp"
   emails     = ["${var.notification-email}"]
 }
+
+module "govwifi-datasync" {
+  providers = {
+    aws = aws.route53-alarms
+  }
+  source = "../../govwifi-datasync"
+
+  aws-region = var.aws-region
+  rack-env        = "staging-temp"
+}
