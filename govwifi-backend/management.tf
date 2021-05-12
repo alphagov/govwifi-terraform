@@ -17,6 +17,11 @@ resource "aws_instance" "management" {
 
   depends_on = [aws_iam_instance_profile.bastion-instance-profile]
 
+  provisioner "file" {
+    source      = "backup.sh"
+    destination = "/backup_scripts/backup.sh"
+  }
+
   user_data = <<DATA
 Content-Type: multipart/mixed; boundary="==BOUNDARY=="
 MIME-Version: 1.0
@@ -185,8 +190,15 @@ sleep 10
 sudo python3 ./awslogs-agent-setup.py -n -r ${var.aws-region} -c ./initial-awslogs.conf
 
 --==BOUNDARY==--
-DATA
 
+#Install backup cron tab
+crontab -l > mycron
+#echo new cron into cron file
+echo "00 09 * * * sh /backup_scripts/backup.sh" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
+DATA
 
   tags = {
     Name = "${title(var.Env-Name)} Bastion - backend (${aws_vpc.wifi-backend.id})"
@@ -315,4 +327,3 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }
-
