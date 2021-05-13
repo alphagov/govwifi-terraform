@@ -5,3 +5,19 @@ data "aws_secretsmanager_secret_version" "users_db" {
 data "aws_secretsmanager_secret" "users_db" {
   name = var.use_env_prefix ? "staging/rds/users-db/credentials" : "rds/users-db/credentials"
 }
+
+data "aws_secretsmanager_secret_version" "notify_api_key" {
+  secret_id = data.aws_secretsmanager_secret.notify_api_key.id
+}
+
+data "aws_secretsmanager_secret" "notify_api_key" {
+  name = var.use_env_prefix ? "staging/admin-api/notify-api-key" : "admin-api/notify-api-key"
+}
+
+data "aws_secretsmanager_secret_version" "notify_bearer_token" {
+  secret_id = data.aws_secretsmanager_secret.notify_bearer_token.id
+}
+
+data "aws_secretsmanager_secret" "notify_bearer_token" {
+  name = var.use_env_prefix ? "staging/user-signup-api/notify-bearer-token" : "user-signup-api/notify-bearer-token"
+}

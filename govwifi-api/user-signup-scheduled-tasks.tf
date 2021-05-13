@@ -359,12 +359,6 @@ resource "aws_ecs_task_definition" "user-signup-api-scheduled-task" {
           "name": "DB_NAME",
           "value": "govwifi_${var.env}_users"
         },{
-          "name": "DB_PASS",
-          "value": "${var.user-db-password}"
-        },{
-          "name": "DB_USER",
-          "value": "${var.user-db-username}"
-        },{
           "name": "DB_HOSTNAME",
           "value": "${var.user-db-hostname}"
         },{
@@ -376,9 +370,6 @@ resource "aws_ecs_task_definition" "user-signup-api-scheduled-task" {
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
-        },{
-          "name": "NOTIFY_API_KEY",
-          "value": "${var.notify-api-key}"
         },{
           "name": "PERFORMANCE_URL",
           "value": "${var.performance-url}"
@@ -395,11 +386,23 @@ resource "aws_ecs_task_definition" "user-signup-api-scheduled-task" {
           "name": "FIRETEXT_TOKEN",
           "value": "${var.firetext-token}"
         },{
-          "name": "GOVNOTIFY_BEARER_TOKEN",
-          "value": "${var.govnotify-bearer-token}"
-        },{
           "name": "S3_METRICS_BUCKET",
           "value": "${var.metrics-bucket-name}"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DB_PASS",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:password::"
+        },{
+          "name": "DB_USER",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:username::"
+        },{
+          "name": "NOTIFY_API_KEY",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.notify_api_key.arn}:notify-api-key::"
+        },{
+          "name": "GOVNOTIFY_BEARER_TOKEN",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.notify_bearer_token.arn}:token::"
         }
       ],
       "links": null,

@@ -20,7 +20,7 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
 }
 
 resource "aws_iam_role_policy" "secrets_manager_policy" {
-  name   = "${var.aws-region-name}-auth-api-access-secrets-manager-${var.Env-Name}"
+  name   = "${var.aws-region-name}-api-cluster-access-secrets-manager-${var.Env-Name}"
   role   = aws_iam_role.ecsTaskExecutionRole.id
   policy = data.aws_iam_policy_document.secrets_manager_policy.json
 }
@@ -32,7 +32,10 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
     ]
 
     resources = [
-      data.aws_secretsmanager_secret.users_db.arn
+      data.aws_secretsmanager_secret.users_db.arn,
+      data.aws_secretsmanager_secret.notify_api_key.arn,
+      data.aws_secretsmanager_secret.notify_bearer_token.arn
+
     ]
   }
 }
