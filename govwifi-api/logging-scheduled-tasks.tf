@@ -400,23 +400,11 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
           "name": "DB_NAME",
           "value": "govwifi_${var.Env-Name}"
         },{
-          "name": "DB_PASS",
-          "value": "${var.db-password}"
-        },{
-          "name": "DB_USER",
-          "value": "${var.db-user}"
-        },{
           "name": "DB_HOSTNAME",
           "value": "${var.db-hostname}"
         },{
           "name": "USER_DB_NAME",
           "value": "govwifi_${var.env}_users"
-        },{
-          "name": "USER_DB_PASS",
-          "value": "${var.user-db-password}"
-        },{
-          "name": "USER_DB_USER",
-          "value": "${var.user-db-username}"
         },{
           "name": "USER_DB_HOSTNAME",
           "value": "${var.user-db-hostname}"
@@ -450,13 +438,28 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
-        },
-        {
+        },{
           "name": "S3_METRICS_BUCKET",
           "value": "${var.metrics-bucket-name}"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DB_PASS",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.session_db.arn}:password::"
+        },{
+          "name": "DB_USER",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.session_db.arn}:username::"
+        },
+        {
+          "name": "USER_DB_PASS",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:password::"
+        },{
+          "name": "USER_DB_USER",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:username::"
         },{
           "name": "VOLUMETRICS_ENDPOINT",
-          "value": "${var.volumetrics-elasticsearch-endpoint}"
+          "valueFrom": "${data.aws_secretsmanager_secret_version.volumentrics_elasticsearch_endpoint.arn}:endpoint::"
         }
       ],
       "links": null,
