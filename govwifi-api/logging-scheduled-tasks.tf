@@ -250,7 +250,7 @@ EOF
 
 resource "aws_cloudwatch_event_target" "publish-monthly-metrics-to-elasticsearch" {
   count     = var.logging-enabled
-  target_id = "${var.Env-Name}-logging-monthly-metrics"
+  target_id = "${var.Env-Name}-logging-monthly-metrics-to-elasticsearch"
   arn       = aws_ecs_cluster.api-cluster.arn
   rule      = aws_cloudwatch_event_rule.monthly_metrics_logging_event[0].name
   role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
@@ -288,7 +288,7 @@ EOF
 
 resource "aws_cloudwatch_event_target" "publish-weekly-metrics-to-elasticsearch" {
   count     = var.logging-enabled
-  target_id = "${var.Env-Name}-logging-weekly-metrics"
+  target_id = "${var.Env-Name}-logging-weekly-metrics-to-elasticsearch"
   arn       = aws_ecs_cluster.api-cluster.arn
   rule      = aws_cloudwatch_event_rule.weekly_metrics_logging_event[0].name
   role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
@@ -326,7 +326,7 @@ EOF
 
 resource "aws_cloudwatch_event_target" "publish-daily-metrics-to-elasticsearch" {
   count     = var.logging-enabled
-  target_id = "${var.Env-Name}-logging-daily-metrics"
+  target_id = "${var.Env-Name}-logging-daily-metrics-to-elasticsearch"
   arn       = aws_ecs_cluster.api-cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_metrics_logging_event[0].name
   role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
