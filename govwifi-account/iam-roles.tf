@@ -3279,34 +3279,6 @@ POLICY
 
 }
 
-resource "aws_iam_role_policy" "staging-logging-api-task-role_staging-logging-api-task-policy" {
-  name = "staging-logging-api-task-policy"
-  role = "staging-logging-api-task-role"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject"
-      ],
-      "Resource": "arn:aws:s3:::govwifi-staging-admin/*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject"
-      ],
-      "Resource": "arn:aws:s3:::govwifi-staging-metrics-bucket/*"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role_policy" "staging-logging-scheduled-task-role_staging-logging-scheduled-task-policy" {
   name = "staging-logging-scheduled-task-policy"
   role = "staging-logging-scheduled-task-role"
@@ -3455,34 +3427,6 @@ resource "aws_iam_role_policy" "staging-user-signup-scheduled-task-role_staging-
           "iam:PassedToService": "ecs-tasks.amazonaws.com"
         }
       }
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "wifi-logging-api-task-role_wifi-logging-api-task-policy" {
-  name = "wifi-logging-api-task-policy"
-  role = "wifi-logging-api-task-role"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject"
-      ],
-      "Resource": "arn:aws:s3:::govwifi-production-admin/*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject"
-      ],
-      "Resource": "arn:aws:s3:::govwifi-wifi-metrics-bucket/*"
     }
   ]
 }
