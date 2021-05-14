@@ -228,10 +228,13 @@ resource "aws_iam_role_policy" "logging-api-task-policy" {
       "Effect": "Allow",
       "Action":[
         "s3:GetObject",
-        "s3:ListObject",
+        "s3:ListBucket",
         "s3:PutObject"  
       ],
-      "Resource": "arn:aws:s3:::${var.metrics-bucket-name}/*"
+      "Resource": [
+        "arn:aws:s3:::${var.metrics-bucket-name}",
+        "arn:aws:s3:::${var.metrics-bucket-name}/*"
+      ]
     }
   ]
 }
