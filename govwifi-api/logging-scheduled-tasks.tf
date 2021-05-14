@@ -450,8 +450,7 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
         },{
           "name": "DB_USER",
           "valueFrom": "${data.aws_secretsmanager_secret_version.session_db.arn}:username::"
-        },
-        {
+        },{
           "name": "USER_DB_PASS",
           "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:password::"
         },{
