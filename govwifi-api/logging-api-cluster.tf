@@ -47,12 +47,6 @@ resource "aws_ecs_task_definition" "logging-api-task" {
           "name": "DB_NAME",
           "value": "govwifi_${var.Env-Name}"
         },{
-          "name": "DB_PASS",
-          "value": "${var.db-password}"
-        },{
-          "name": "DB_USER",
-          "value": "${var.db-user}"
-        },{
           "name": "DB_HOSTNAME",
           "value": "${var.db-hostname}"
         },{
@@ -97,8 +91,7 @@ resource "aws_ecs_task_definition" "logging-api-task" {
         },{
           "name": "DB_USER",
           "valueFrom": "${data.aws_secretsmanager_secret_version.session_db.arn}:username::"
-        },
-        {
+        },{
           "name": "USER_DB_PASS",
           "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:password::"
         },{
