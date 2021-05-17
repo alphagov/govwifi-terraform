@@ -58,10 +58,12 @@ make <ENV> plan
 make <ENV> apply
 ```
 
+### Running terraform target
+
 Use the `terraform_target` command to run a targeted `plan | apply`:
 
 ```bash
-$ make <env> terraform_target terraform_cmd="<plan | apply> -target=<module name>"
+$ make <ENV> terraform_target terraform_cmd="<plan | apply> -target=<module name>"
 ```
 
 ## Bootstrapping terraform
