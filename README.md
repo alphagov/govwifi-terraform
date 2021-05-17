@@ -60,18 +60,37 @@ make <ENV> apply
 
 ### Running terraform target
 
-There are two ways to do this
+Terraform allows for ["resource targeting"](https://www.terraform.io/docs/cli/commands/plan.html#resource-targeting), or running `plan`/`apply` on specific resources. 
 
-1 - use the above commands with 'module="moduleA moduleB"' space seperated list of module(s)
+We've incorporated this functionality into our `make` commands. **Note**: this should only be done in exceptional circumstances.
+
+To `plan`/`apply` a specific resource use the standard `make <ENV> plan | apply` followed by a space separated list of one or more modules:
 
 ```
-make <ENV> plan modules="backend api"
-make <ENV> apply modules="backend"
+$ make <ENV> plan modules="module.backend.some.resource module.api.some.resource"
+$ make <ENV> apply modules="module.frontend.some.resource"
 ```
-2 - to do more intricate work that may need more terraform commands you use the `terraform_target` command to run a targeted `plan | apply`:
+
+To retrieve the module name, run a `plan` and copy the module name from the Terraform output:
 
 ```bash
-$ make <ENV> terraform_target terraform_cmd="<plan | apply> -target=<module name> [-target=<module name>]..."
+$ make staging plan
+...
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # module.api.aws_iam_role_policy.some_policy  <-- module name
+...
+```
+
+If combining other Terraform commands (e.g., `-var` or `-replace`) with targeting a resource, use the `terraform_target` command:
+
+```bash
+$ make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
 ```
 
 ## Bootstrapping terraform
