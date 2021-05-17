@@ -60,10 +60,18 @@ make <ENV> apply
 
 ### Running terraform target
 
-Use the `terraform_target` command to run a targeted `plan | apply`:
+There are two ways to do this
+
+1 - use the above commands with 'module="moduleA moduleB"' space seperated list of module(s)
+
+```
+make <ENV> plan modules="backend api"
+make <ENV> apply modules="backend"
+```
+2 - to do more intricate work that may need more terraform commands you use the `terraform_target` command to run a targeted `plan | apply`:
 
 ```bash
-$ make <ENV> terraform_target terraform_cmd="<plan | apply> -target=<module name>"
+$ make <ENV> terraform_target terraform_cmd="<plan | apply> -target=<module name> [-target=<module name>]..."
 ```
 
 ## Bootstrapping terraform
