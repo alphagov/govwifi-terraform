@@ -29,10 +29,10 @@ wifi:
 	$(eval export AWS_REGION=eu-west-1)
 
 plan_task: check-env
-	for variable in ${modules}; do module_flags="$$module_flags -target=module.$$variable"; done; scripts/run-terraform.sh plan ${terraform_flags} $$module_flags
+	@for variable in ${modules}; do module_flags="$$module_flags -target=module.$$variable"; done; [ "$$module_flags" != "" ] && echo " Plan Warning: Modules have been set to '$$module_flags'"; scripts/run-terraform.sh plan ${terraform_flags} $$module_flags
 plan: check-env unencrypt-secrets plan_task delete-secrets ## Run terraform plan after decrypting secrets. Must run in form make <env> plan
 apply_task: check-env
-	for variable in ${modules}; do module_flags="$$module_flags -target=module.$$variable"; done; scripts/run-terraform.sh apply ${terraform_flags} $$module_flags
+	@for variable in ${modules}; do module_flags="$$module_flags -target=module.$$variable"; done; [ "$$module_flags" != "" ] && echo " Apply Warning: Modules have been set to '$$module_flags'"; scripts/run-terraform.sh apply ${terraform_flags} $$module_flags
 apply: check-env unencrypt-secrets apply_task delete-secrets ## Run terraform apply after decrypting secrets. Must run in form make <env> apply
 .PHONY: terraform
 terraform_task: check-env
