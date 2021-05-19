@@ -325,11 +325,11 @@ module "api" {
   safe-restart-docker-image     = format("%s/safe-restarter:staging", var.docker-image-path)
   backup-rds-to-s3-docker-image = format("%s/database-backup:staging", var.docker-image-path)
 
-  notify-api-key           = var.notify-api-key
-  wordlist-bucket-count    = 1
-  wordlist-file-path       = "../wordlist-short"
-  ecr-repository-count     = 1
-  background-jobs-enabled  = 1
+  notify-api-key          = var.notify-api-key
+  wordlist-bucket-count   = 1
+  wordlist-file-path      = "../wordlist-short"
+  ecr-repository-count    = 1
+  background-jobs-enabled = 1
 
   db-user     = var.db-user
   db-password = var.db-password
@@ -372,7 +372,7 @@ module "api" {
 
   metrics-bucket-name = module.govwifi-dashboard.metrics-bucket-name
 
-  use_env_prefix = var.use_env_prefix
+  use_env_prefix   = var.use_env_prefix
   backup_mysql_rds = var.backup_mysql_rds
 }
 
