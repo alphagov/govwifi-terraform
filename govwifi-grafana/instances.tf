@@ -76,3 +76,53 @@ data "template_file" "grafana_user_data" {
     grafana_docker_version  = var.grafana-docker-version
   }
 }
+
+resource "aws_vpc_endpoint" "vpc-endpoint" {
+
+  policy = data.aws_iam_policy_document.secrets_manager_policy.json
+
+  private_dns_enabled = true
+
+  security_group_ids = [
+    aws_security_group.grafana-alb-in.id,
+    aws_security_group.grafana-alb-out.id,
+    aws_security_group.grafana-ec2-in.id,
+    aws_security_group.grafana-ec2-out.id
+  ]
+
+  service_name = "com.amazonaws.eu-west-2.secretsmanager"
+
+  subnet_ids = [
+    # Need to add the following subnets
+    # staging Backend - AZ: eu-west-2a - GovWifi subnet
+    # staging Backend - AZ: eu-west-2b - GovWifi subnet
+    # staging Backend - AZ: eu-west-2c - GovWifi subnet
+    var.backend-subnet-ids
+  ]
+
+  vpc_endpoint_type = "Interface"
+
+  vpc_id            = var.vpc-id
+
+  timeouts {}
+}
+
+data "aws_iam_policy_document" "secrets_manager_policy" {
+  statement {
+    actions = [
+      "secretsmanager:GetSecretValue"
+    ]
+
+    resources = [
+      data.aws_secretsmanager_secret.google_client_id.arn,
+      data.aws_secretsmanager_secret.google_client_secret.arn,
+      data.aws_secretsmanager_secret.grafana_admin.arn,
+      data.aws_secretsmanager_secret.grafana_server_root_url.arn,
+    ]
+
+    principals {
+      identifiers = ["ec2.amazonaws.com"]
+      type = "Service"
+    }
+  }
+}
