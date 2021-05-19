@@ -97,3 +97,6 @@ variable "critical-notifications-arn" {
   description = "Arn of the critical-nofications sns topic"
   type        = string
 }
+
+variable "use_env_prefix" {
+}
