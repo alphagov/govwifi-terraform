@@ -265,10 +265,11 @@ module "api" {
   capacity-notifications-arn = module.notifications.topic-arn
   devops-notifications-arn   = module.notifications.topic-arn
 
-  auth-docker-image         = format("%s/authorisation-api:staging", local.docker_image_path)
-  user-signup-docker-image  = ""
-  logging-docker-image      = ""
-  safe-restart-docker-image = ""
+  auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
+  user-signup-docker-image      = ""
+  logging-docker-image          = ""
+  safe-restart-docker-image     = ""
+  backup-rds-to-s3-docker-image = ""
 
   background-jobs-enabled = 0
 
