@@ -67,8 +67,8 @@ We've incorporated this functionality into our `make` commands. **Note**: this s
 To `plan`/`apply` a specific resource use the standard `make <ENV> plan | apply` followed by a space separated list of one or more modules:
 
 ```
-$ make <ENV> plan modules="module.backend.some.resource module.api.some.resource"
-$ make <ENV> apply modules="module.frontend.some.resource"
+$ make <ENV> plan modules="backend.some.resource module.api.some.resource"
+$ make <ENV> apply modules="frontend.some.resource"
 ```
 
 To retrieve the module name, run a `plan` and copy the module name from the Terraform output:
