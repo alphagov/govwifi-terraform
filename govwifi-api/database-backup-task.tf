@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_rule" "backup-rds-to-s3" {
   count               = var.backup_mysql_rds ? 1 : 0
-  name                = "${var.Env-Name}-"
-  description         = "Triggers at 0:30 Daily"
+  name                = "${var.Env-Name}-backup-rds-to-s3"
+  description         = "Triggers at 00:30 UTC Daily"
   schedule_expression = "cron(30 0 * * ? *)"
   is_enabled          = true
 }
