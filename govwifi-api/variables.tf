@@ -189,6 +189,9 @@ variable "logging-docker-image" {
 variable "safe-restart-docker-image" {
 }
 
+variable "backup-rds-to-s3-docker-image" {
+}
+
 variable "notify-api-key" {
   default     = ""
   description = "API key used to authenticate with GOV.UK Notify"
@@ -260,4 +263,10 @@ variable "volumetrics-elasticsearch-endpoint" {
 
 variable "use_env_prefix" {
 
+}
+
+variable "backup_mysql_rds" {
+  description = "Whether or not to create objects to and make backups of MySQL RDS data"
+  default     = false
+  type        = bool
 }

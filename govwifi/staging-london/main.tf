@@ -319,10 +319,12 @@ module "api" {
   capacity-notifications-arn = module.notifications.topic-arn
   devops-notifications-arn   = module.notifications.topic-arn
 
-  auth-docker-image         = format("%s/authorisation-api:staging", var.docker-image-path)
-  user-signup-docker-image  = format("%s/user-signup-api:staging", var.docker-image-path)
-  logging-docker-image      = format("%s/logging-api:staging", var.docker-image-path)
-  safe-restart-docker-image = format("%s/safe-restarter:staging", var.docker-image-path)
+  auth-docker-image             = format("%s/authorisation-api:staging", var.docker-image-path)
+  user-signup-docker-image      = format("%s/user-signup-api:staging", var.docker-image-path)
+  logging-docker-image          = format("%s/logging-api:staging", var.docker-image-path)
+  safe-restart-docker-image     = format("%s/safe-restarter:staging", var.docker-image-path)
+  backup-rds-to-s3-docker-image = format("%s/database-backup:staging", var.docker-image-path)
+
   notify-api-key            = var.notify-api-key
   wordlist-bucket-count     = 1
   wordlist-file-path        = "../wordlist-short"
@@ -371,6 +373,7 @@ module "api" {
   metrics-bucket-name = module.govwifi-dashboard.metrics-bucket-name
 
   use_env_prefix = var.use_env_prefix
+  backup_mysql_rds = var.backup_mysql_rds
 }
 
 module "notifications" {

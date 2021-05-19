@@ -285,9 +285,10 @@ module "api" {
   capacity-notifications-arn = module.capacity-notifications.topic-arn
   devops-notifications-arn   = module.devops-notifications.topic-arn
 
-  auth-docker-image         = format("%s/authorisation-api:production", var.docker-image-path)
-  logging-docker-image      = format("%s/logging-api:production", var.docker-image-path)
-  safe-restart-docker-image = format("%s/safe-restarter:production", var.docker-image-path)
+  auth-docker-image             = format("%s/authorisation-api:production", var.docker-image-path)
+  logging-docker-image          = format("%s/logging-api:production", var.docker-image-path)
+  safe-restart-docker-image     = format("%s/safe-restarter:production", var.docker-image-path)
+  backup-rds-to-s3-docker-image = ""
 
   db-user                   = var.db-user
   db-password               = var.db-password
