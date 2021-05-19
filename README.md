@@ -58,10 +58,39 @@ make <ENV> plan
 make <ENV> apply
 ```
 
-Use the `terraform_target` command to run a targeted `plan | apply`:
+### Running terraform target
+
+Terraform allows for ["resource targeting"](https://www.terraform.io/docs/cli/commands/plan.html#resource-targeting), or running `plan`/`apply` on specific resources. 
+
+We've incorporated this functionality into our `make` commands. **Note**: this should only be done in exceptional circumstances.
+
+To `plan`/`apply` a specific resource use the standard `make <ENV> plan | apply` followed by a space separated list of one or more modules:
+
+```
+$ make <ENV> plan modules="backend.some.resource module.api.some.resource"
+$ make <ENV> apply modules="frontend.some.resource"
+```
+
+To retrieve the module name, run a `plan` and copy the module name from the Terraform output:
 
 ```bash
-$ make <env> terraform_target terraform_cmd="<plan | apply> -target=<module name>"
+$ make staging plan
+...
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  ~ update in-place
+
+Terraform will perform the following actions:
+
+  # module.api.aws_iam_role_policy.some_policy  <-- module name
+...
+```
+
+If combining other Terraform commands (e.g., `-var` or `-replace`) with targeting a resource, use the `terraform_target` command:
+
+```bash
+$ make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
 ```
 
 ## Bootstrapping terraform
@@ -82,12 +111,12 @@ in the main.tf file of the new environment / environment to be migrated
 Run
 
 ```
-make <env> plan
+make <ENV> plan
 ```
 And then
 
 ```
-make <env> apply
+make <ENV> apply
 ```
 
 This should create the remote state bucket for you if migrating, or create the
@@ -96,13 +125,13 @@ entire infrastructure with a local state file if creating a new env
 Then uncomment the backend section and run
 
 ```
-make <env> init-backend
+make <ENV> init-backend
 ```
 
 Then run
 
 ```
-make <env> apply
+make <ENV> apply
 ```
 
 This should then copy the state file to s3 and use this for all operations
@@ -122,12 +151,12 @@ Where validation-domain is wifi.service.gov.uk for prod, and wifi.staging.servic
 
 Once this is created, you will need to validate the domain. There is some logic
 to listen to emails on the required domain and copy them to an s3 bucket in the
-govwifi-terraform repo. You can look in the `<env>-admin-emailbucket` to find
+govwifi-terraform repo. You can look in the `<ENV>-admin-emailbucket` to find
 this - it will likely be the last modified file. You can also use the CLI
 
 ```
-aws s3 ls s3://<env>-admin-emailbucket/
-aws s3 cp s3://<env>-admin-emailbucket/<filename-of-last-modified-file> -
+aws s3 ls s3://<ENV>-admin-emailbucket/
+aws s3 cp s3://<ENV>-admin-emailbucket/<filename-of-last-modified-file> -
 ```
 
 Find the validation link and load it in a browser
