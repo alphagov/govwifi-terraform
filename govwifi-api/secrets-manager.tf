@@ -14,11 +14,11 @@ data "aws_secretsmanager_secret" "users_db" {
   name = var.use_env_prefix ? "staging/rds/users-db/credentials" : "rds/users-db/credentials"
 }
 
-data "aws_secretsmanager_secret_version" "volumentrics_elasticsearch_endpoint" {
-  secret_id = data.aws_secretsmanager_secret.volumentrics_elasticsearch_endpoint.id
+data "aws_secretsmanager_secret_version" "volumetrics_elasticsearch_endpoint" {
+  secret_id = data.aws_secretsmanager_secret.volumetrics_elasticsearch_endpoint.id
 }
 
-data "aws_secretsmanager_secret" "volumentrics_elasticsearch_endpoint" {
+data "aws_secretsmanager_secret" "volumetrics_elasticsearch_endpoint" {
   name = var.use_env_prefix ? "staging/logging-api/volumetrics-elasticsearch-endpoint" : "logging-api/volumetrics-elasticsearch-endpoint"
 }
 
