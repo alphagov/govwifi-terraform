@@ -458,7 +458,7 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
           "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:username::"
         },{
           "name": "VOLUMETRICS_ENDPOINT",
-          "valueFrom": "${data.aws_secretsmanager_secret_version.volumentrics_elasticsearch_endpoint.arn}:endpoint::"
+          "valueFrom": "${data.aws_secretsmanager_secret_version.volumetrics_elasticsearch_endpoint.arn}:endpoint::"
         }
       ],
       "links": null,
