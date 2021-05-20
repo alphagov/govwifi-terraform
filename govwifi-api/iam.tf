@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
     resources = [
       data.aws_secretsmanager_secret.users_db.arn,
       data.aws_secretsmanager_secret.session_db.arn,
-      data.aws_secretsmanager_secret.volumentrics_elasticsearch_endpoint.arn,
+      data.aws_secretsmanager_secret.volumetrics_elasticsearch_endpoint.arn,
       data.aws_secretsmanager_secret.users_db.arn,
       data.aws_secretsmanager_secret.notify_api_key.arn,
       data.aws_secretsmanager_secret.notify_bearer_token.arn
