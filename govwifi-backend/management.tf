@@ -191,13 +191,13 @@ sudo python3 ./awslogs-agent-setup.py -n -r ${var.aws-region} -c ./initial-awslo
 
 --==BOUNDARY==--
 
-#Install backup cron tab
-crontab -l > mycron
-#echo new cron into cron file
-echo "00 09 * * * sh /backup_scripts/backup.sh" >> mycron
-#install new cron file
-crontab mycron
-rm mycron
+# Install backup cron tab
+# crontab -l > mycron
+# echo new cron into cron file
+# echo "00 09 * * * sh /backup_scripts/backup.sh" >> mycron
+# install new cron file
+# crontab mycron
+# rm mycron
 DATA
 
   tags = {
