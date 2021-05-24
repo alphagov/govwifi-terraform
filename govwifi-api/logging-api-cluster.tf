@@ -97,6 +97,9 @@ resource "aws_ecs_task_definition" "logging-api-task" {
         },{
           "name": "USER_DB_USER",
           "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:username::"
+        },{
+          "name": "VOLUMETRICS_ENDPOINT",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.volumetrics_elasticsearch_endpoint.arn}:endpoint::"
         }
       ],
       "links": null,
