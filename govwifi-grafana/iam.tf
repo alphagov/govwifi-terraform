@@ -13,7 +13,7 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
 
     principals {
       identifiers = ["ec2.amazonaws.com"]
-      type = "Service"
+      type        = "Service"
     }
   }
 }

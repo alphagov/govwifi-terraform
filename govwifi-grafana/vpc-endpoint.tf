@@ -17,5 +17,5 @@ resource "aws_vpc_endpoint" "vpc-endpoint" {
 
   vpc_endpoint_type = "Interface"
 
-  vpc_id            = var.vpc-id
+  vpc_id = var.vpc-id
 }
