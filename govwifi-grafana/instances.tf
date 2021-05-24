@@ -92,13 +92,7 @@ resource "aws_vpc_endpoint" "vpc-endpoint" {
 
   service_name = "com.amazonaws.eu-west-2.secretsmanager"
 
-  subnet_ids = [
-    # Need to add the following subnets
-    # staging Backend - AZ: eu-west-2a - GovWifi subnet
-    # staging Backend - AZ: eu-west-2b - GovWifi subnet
-    # staging Backend - AZ: eu-west-2c - GovWifi subnet
-    var.backend-subnet-ids
-  ]
+  subnet_ids = var.backend-subnet-ids
 
   vpc_endpoint_type = "Interface"
 
@@ -117,7 +111,7 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
       data.aws_secretsmanager_secret.google_client_id.arn,
       data.aws_secretsmanager_secret.google_client_secret.arn,
       data.aws_secretsmanager_secret.grafana_admin.arn,
-      data.aws_secretsmanager_secret.grafana_server_root_url.arn,
+      data.aws_secretsmanager_secret.grafana_server_root_url.arn
     ]
 
     principals {
