@@ -68,11 +68,12 @@ data "template_file" "grafana_user_data" {
 
   vars = {
     grafana_log_group       = "${var.Env-Name}-grafana-log-group"
-    grafana_admin           = var.grafana-admin
-    google_client_secret    = var.google-client-secret
-    google_client_id        = var.google-client-id
-    grafana_server_root_url = var.grafana-server-root-url
+    grafana_admin           = local.grafana-admin
+    google_client_secret    = local.google-client-secret
+    google_client_id        = local.google-client-id
+    grafana_server_root_url = local.grafana-server-root-url
     grafana_device_name     = var.grafana-device-name
     grafana_docker_version  = var.grafana-docker-version
   }
 }
+

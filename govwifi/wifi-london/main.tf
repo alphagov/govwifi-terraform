@@ -515,6 +515,8 @@ module "govwifi-grafana" {
     split(",", "${var.prometheus-IP-london}/32"),
     split(",", "${var.prometheus-IP-ireland}/32")
   )
+
+  use_env_prefix = var.use_env_prefix
 }
 
 module "govwifi-slack-alerts" {
