@@ -13,9 +13,9 @@ resource "aws_cloudwatch_log_group" "backup-rds-to-s3-log-group" {
   retention_in_days = 90
 }
 
-resource "aws_ecr_repository" "backup-database-ecr" {
+resource "aws_ecr_repository" "database-backup-ecr" {
   count = var.ecr-repository-count
-  name  = "govwifi/backup-database"
+  name  = "govwifi/database-backup"
 }
 
 resource "aws_ecs_task_definition" "backup-rds-to-s3-task-definition" {
