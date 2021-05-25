@@ -42,3 +42,9 @@ resource "aws_subnet" "wifi-backend-subnet" {
   }
 }
 
+# log group for db backup
+resource "aws_cloudwatch_log_group" "database-backup-log-group" {
+  count             = var.backup_mysql_rds ? 1 : 0
+  name              = "${var.Env-Name}-database-backup-log-group"
+  retention_in_days = 90
+}
