@@ -51,5 +51,5 @@ data "aws_secretsmanager_secret_version" "database_s3_encryption" {
 }
 
 data "aws_secretsmanager_secret" "database_s3_encryption" {
-  name = var.use_env_prefix ? "staging/rds/database_s3_encryption" : "rds/database_s3_encryption"
+  name = var.use_env_prefix ? "staging/rds/database-s3-encryption" : "rds/database-s3-encryption"
 }
