@@ -37,3 +37,19 @@ data "aws_secretsmanager_secret_version" "notify_bearer_token" {
 data "aws_secretsmanager_secret" "notify_bearer_token" {
   name = var.use_env_prefix ? "staging/user-signup-api/notify-bearer-token" : "user-signup-api/notify-bearer-token"
 }
+
+data "aws_secretsmanager_secret_version" "admin_db" {
+  secret_id = data.aws_secretsmanager_secret.admin_db.id
+}
+
+data "aws_secretsmanager_secret" "admin_db" {
+  name = var.use_env_prefix ? "staging/rds/admin-db/credentials" : "rds/admin-db/credentials"
+}
+
+data "aws_secretsmanager_secret_version" "database_s3_encryption" {
+  secret_id = data.aws_secretsmanager_secret.database_s3_encryption.id
+}
+
+data "aws_secretsmanager_secret" "database_s3_encryption" {
+  name = var.use_env_prefix ? "staging/rds/database_s3_encryption" : "rds/database_s3_encryption"
+}
