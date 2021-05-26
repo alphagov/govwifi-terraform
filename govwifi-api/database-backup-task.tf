@@ -53,8 +53,53 @@ resource "aws_ecs_task_definition" "backup-rds-to-s3-task-definition" {
       "dockerSecurityOptions": null,
       "environment": [
         {
-          "name": "RACK_ENV",
-          "value": "${var.rack-env}"
+          "name": "ADMIN_DB_NAME",
+          "value": "govwifi_${var.Env-Name}"
+        },{
+          "name": "ADMIN_DB_HOSTNAME",
+          "value": "${var.db-hostname}"
+        },{
+          "name": "BACKUP_ENPOINT_ARG",
+          "value": "${var.user-db-hostname}"
+        },{
+          "name": "S3_BUCKET",
+          "value": "${var.s3-bucket}"
+        },{
+          "name": "USER_DB_NAME",
+          "value": "govwifi_${var.env}_users"
+        },{
+          "name": "USER_DB_HOSTNAME",
+          "value": "${var.user-db-hostname}"
+        },{
+          "name": "WIFI_DB_NAME",
+          "value": "govwifi_${var.env}_users"
+        },{
+          "name": "WIFI_DB_HOSTNAME",
+          "value": "${var.user-db-hostname}"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "ADMIN_DB_PASS",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.admin_db.arn}:password::"
+        },{
+          "name": "ADMIN_DB_USER",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.admin_db.arn}:username::"
+        },{
+          "name": "ENCRYPTION_KEY",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.database_s3_encryption.arn}:key::"
+        },{
+          "name": "USER_DB_PASS",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:password::"
+        },{
+          "name": "USER_DB_USER",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:username::"
+        },{
+          "name": "WIFI_DB_PASS",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.session_db.arn}:password::"
+        },{
+          "name": "WIFI_DB_USER",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.session_db.arn}:username::"
         }
       ],
       "links": null,
@@ -218,7 +263,7 @@ resource "aws_cloudwatch_event_target" "backup-rds-to-s3" {
   "containerOverrides": [
     {
       "name": "database-backup",
-      "command": ["bundle", "exec", "rake", "database_backup.sh[${var.rack-env}]"]
+      "command": ["pwd; ls -l; ./database_backup.sh"]
     }
   ]
 }
