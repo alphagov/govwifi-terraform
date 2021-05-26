@@ -63,7 +63,7 @@ resource "aws_ecs_task_definition" "backup-rds-to-s3-task-definition" {
           "value": "${var.user-db-hostname}"
         },{
           "name": "S3_BUCKET",
-          "value": "${var.s3-bucket}"
+          "value": "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-mysql-backup-data"
         },{
           "name": "USER_DB_NAME",
           "value": "govwifi_${var.env}_users"
