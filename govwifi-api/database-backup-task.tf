@@ -54,13 +54,13 @@ resource "aws_ecs_task_definition" "backup-rds-to-s3-task-definition" {
       "environment": [
         {
           "name": "ADMIN_DB_NAME",
-          "value": "govwifi_${var.Env-Name}"
+          "value": "govwifi_${var.Env-Name}_admin"
         },{
           "name": "ADMIN_DB_HOSTNAME",
           "value": "${var.db-hostname}"
         },{
           "name": "BACKUP_ENPOINT_ARG",
-          "value": "${var.user-db-hostname}"
+          "value": ""
         },{
           "name": "S3_BUCKET",
           "value": "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-mysql-backup-data"
@@ -72,10 +72,10 @@ resource "aws_ecs_task_definition" "backup-rds-to-s3-task-definition" {
           "value": "${var.user-db-hostname}"
         },{
           "name": "WIFI_DB_NAME",
-          "value": "govwifi_${var.env}_users"
+          "value": "govwifi_${var.env}"
         },{
           "name": "WIFI_DB_HOSTNAME",
-          "value": "${var.user-db-hostname}"
+          "value": "${var.db-hostname}"
         }
       ],
       "secrets": [
