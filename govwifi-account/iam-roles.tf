@@ -3558,6 +3558,37 @@ POLICY
 
 }
 
+resource "aws_iam_role_policy" "backup-rds-to-s3-scheduled-task-role_backup-rds-to-s3-scheduled-task-policy" {
+  name = "backup-rds-to-s3-scheduled-task-policy"
+  role = "backup-rds-to-s3-scheduled-task-role"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "ecs:RunTask",
+      "Resource": "arn:aws:ecs:eu-west-2:${var.aws-account-id}:task-definition/backup-rds-to-s3-task-staging:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": [
+        "*"
+      ],
+      "Condition": {
+        "StringLike": {
+          "iam:PassedToService": "ecs-tasks.amazonaws.com"
+        }
+      }
+    }
+  ]
+}
+POLICY
+
+}
+
 resource "aws_iam_role_policy" "wifi-user-signup-scheduled-task-role_wifi-user-signup-scheduled-task-policy" {
   name = "wifi-user-signup-scheduled-task-policy"
   role = "wifi-user-signup-scheduled-task-role"
