@@ -262,7 +262,6 @@ resource "aws_cloudwatch_event_target" "backup-rds-to-s3" {
 {
   "containerOverrides": [
     {
-      "name": "database-backup",
       "command": ["pwd; ls -l; ./database_backup.sh"]
     }
   ]
