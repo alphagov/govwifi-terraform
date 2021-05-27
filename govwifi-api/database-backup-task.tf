@@ -21,8 +21,8 @@ resource "aws_ecr_repository" "database-backup-ecr" {
 resource "aws_ecs_task_definition" "backup-rds-to-s3-task-definition" {
   count                    = var.backup_mysql_rds ? 1 : 0
   family                   = "backup-rds-to-s3-task-${var.Env-Name}"
-  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   task_role_arn            = aws_iam_role.backup-rds-to-s3-task-role[0].arn
+  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   requires_compatibilities = ["FARGATE"]
   cpu                      = 256
   memory                   = 1024
@@ -251,7 +251,7 @@ resource "aws_cloudwatch_event_target" "backup-rds-to-s3" {
       security_groups = concat(
         var.backend-sg-list,
         [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id]
+        [aws_security_group.api-out.id],
       )
 
       assign_public_ip = true
@@ -262,7 +262,8 @@ resource "aws_cloudwatch_event_target" "backup-rds-to-s3" {
 {
   "containerOverrides": [
     {
-      "command": ["pwd; ls -l; ./database_backup.sh"]
+      "name": "database-backup-to-s3",
+      "command": ["./database_backup.sh"]
     }
   ]
 }
