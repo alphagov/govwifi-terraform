@@ -56,7 +56,6 @@ DOC
 
 }
 
-
 resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
   count     = var.logging-enabled
   target_id = "${var.Env-Name}-logging-daily-session-deletion"
@@ -145,6 +144,7 @@ resource "aws_cloudwatch_event_target" "publish-monthly-metrics-logging" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
@@ -183,6 +183,7 @@ resource "aws_cloudwatch_event_target" "publish-weekly-metrics-logging" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
@@ -221,6 +222,7 @@ resource "aws_cloudwatch_event_target" "publish-daily-metrics-logging" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
@@ -259,6 +261,7 @@ resource "aws_cloudwatch_event_target" "publish-monthly-metrics-to-elasticsearch
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
@@ -297,6 +300,7 @@ resource "aws_cloudwatch_event_target" "publish-weekly-metrics-to-elasticsearch"
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
@@ -335,6 +339,7 @@ resource "aws_cloudwatch_event_target" "publish-daily-metrics-to-elasticsearch" 
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
