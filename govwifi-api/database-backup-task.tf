@@ -190,6 +190,15 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-task-policy" {
         "route53:GetHealthCheckStatus"
       ],
       "Resource": "*"
+  }, {
+      "Effect": "Allow",
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data",
+        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data/*"
+      ]
     }
   ]
 }
@@ -226,7 +235,27 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-scheduled-task-policy" {
               "iam:PassedToService": "ecs-tasks.amazonaws.com"
             }
           }
-        }
+        },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ecs:ListClusters",
+        "ecs:ListTasks",
+        "ecs:StopTask",
+        "route53:ListHealthChecks",
+        "route53:GetHealthCheckStatus"
+      ],
+      "Resource": "*"
+  }, {
+      "Effect": "Allow",
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data",
+        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data/*"
+      ]
+    }
     ]
 }
 DOC
@@ -262,7 +291,7 @@ resource "aws_cloudwatch_event_target" "backup-rds-to-s3" {
 {
   "containerOverrides": [
     {
-      "name": "database-backup-to-s3",
+      "name": "backup-rds-to-s3",
       "command": ["./database_backup.sh"]
     }
   ]
