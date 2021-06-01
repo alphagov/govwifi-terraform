@@ -127,12 +127,13 @@ EOF
 }
 
 resource "aws_ecs_service" "logging-api-service" {
-  count           = var.logging-enabled
-  name            = "logging-api-service-${var.Env-Name}"
-  cluster         = aws_ecs_cluster.api-cluster.id
-  task_definition = aws_ecs_task_definition.logging-api-task[0].arn
-  desired_count   = var.backend-instance-count
-  launch_type     = "FARGATE"
+  count            = var.logging-enabled
+  name             = "logging-api-service-${var.Env-Name}"
+  cluster          = aws_ecs_cluster.api-cluster.id
+  task_definition  = aws_ecs_task_definition.logging-api-task[0].arn
+  desired_count    = var.backend-instance-count
+  launch_type      = "FARGATE"
+  platform_version = "1.3.0"
 
   network_configuration {
     security_groups = concat(

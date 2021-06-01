@@ -85,11 +85,12 @@ EOF
 }
 
 resource "aws_ecs_service" "authorisation-api-service" {
-  name            = "authorisation-api-service-${var.Env-Name}"
-  cluster         = aws_ecs_cluster.api-cluster.id
-  task_definition = aws_ecs_task_definition.authorisation-api-task.arn
-  desired_count   = var.authorisation-api-count
-  launch_type     = "FARGATE"
+  name             = "authorisation-api-service-${var.Env-Name}"
+  cluster          = aws_ecs_cluster.api-cluster.id
+  task_definition  = aws_ecs_task_definition.authorisation-api-task.arn
+  desired_count    = var.authorisation-api-count
+  launch_type      = "FARGATE"
+  platform_version = "1.3.0"
 
   network_configuration {
     security_groups = concat(

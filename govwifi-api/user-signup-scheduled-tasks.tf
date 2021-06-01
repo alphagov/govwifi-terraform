@@ -9,6 +9,7 @@ resource "aws_cloudwatch_event_target" "retrieve-notifications" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.user-signup-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
@@ -105,6 +106,7 @@ resource "aws_cloudwatch_event_target" "user-signup-daily-user-deletion" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.user-signup-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
@@ -143,6 +145,7 @@ resource "aws_cloudwatch_event_target" "smoke-test-user-deletion" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.user-signup-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
@@ -181,6 +184,7 @@ resource "aws_cloudwatch_event_target" "trim-sessions-database-table" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.user-signup-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
@@ -326,6 +330,7 @@ resource "aws_cloudwatch_event_target" "active-users-signup-surveys" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.user-signup-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
@@ -364,6 +369,7 @@ resource "aws_cloudwatch_event_target" "inactive-users-signup-surveys" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.user-signup-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
