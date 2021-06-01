@@ -147,7 +147,6 @@ resource "aws_cloudwatch_event_target" "publish-monthly-metrics-logging" {
     task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
-    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
