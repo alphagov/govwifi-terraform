@@ -67,6 +67,7 @@ resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
@@ -105,6 +106,7 @@ resource "aws_cloudwatch_event_target" "gdpr-set-user-last-login" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids
@@ -144,6 +146,7 @@ resource "aws_cloudwatch_event_target" "publish-monthly-metrics-logging" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
     platform_version    = "1.3.0"
 
     network_configuration {
@@ -501,6 +504,7 @@ resource "aws_cloudwatch_event_target" "sync-s3-to-elasticsearch" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
     launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
 
     network_configuration {
       subnets = var.subnet-ids

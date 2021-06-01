@@ -165,12 +165,13 @@ EOF
 }
 
 resource "aws_ecs_service" "admin-service" {
-  depends_on      = [aws_alb_listener.alb_listener]
-  name            = "admin-${var.Env-Name}"
-  cluster         = aws_ecs_cluster.admin-cluster.id
-  task_definition = aws_ecs_task_definition.admin-task.arn
-  desired_count   = var.instance-count
-  launch_type     = "FARGATE"
+  depends_on       = [aws_alb_listener.alb_listener]
+  name             = "admin-${var.Env-Name}"
+  cluster          = aws_ecs_cluster.admin-cluster.id
+  task_definition  = aws_ecs_task_definition.admin-task.arn
+  desired_count    = var.instance-count
+  launch_type      = "FARGATE"
+  platform_version = "1.3.0"
 
   load_balancer {
     target_group_arn = aws_alb_target_group.admin-tg.arn
