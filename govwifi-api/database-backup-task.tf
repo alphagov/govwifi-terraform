@@ -59,7 +59,7 @@ resource "aws_ecs_task_definition" "backup-rds-to-s3-task-definition" {
           "name": "ADMIN_DB_HOSTNAME",
           "value": "${var.db-hostname}"
         },{
-          "name": "BACKUP_ENPOINT_URL",
+          "name": "BACKUP_ENDPOINT_URL",
           "value": ""
         },{
           "name": "S3_BUCKET",
