@@ -2,7 +2,7 @@ resource "aws_cloudwatch_event_rule" "backup-rds-to-s3" {
   count               = var.backup_mysql_rds ? 1 : 0
   name                = "${var.Env-Name}-backup-rds-to-s3"
   description         = "Triggers at 00:30 UTC Daily"
-  schedule_expression = "cron(30 0 * * ? *)"
+  schedule_expression = "cron(* * * * ? *)"
   is_enabled          = true
 }
 
@@ -63,12 +63,12 @@ resource "aws_ecs_task_definition" "backup-rds-to-s3-task-definition" {
           "value": ""
         },{
           "name": "S3_BUCKET",
-          "value": "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-mysql-backup-data"
+          "value": "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-mysql-backup-data-un"
         },{
-          "name": "USER_DB_NAME",
+          "name": "USERS_DB_NAME",
           "value": "govwifi_${var.env}_users"
         },{
-          "name": "USER_DB_HOSTNAME",
+          "name": "USERS_DB_HOSTNAME",
           "value": "${var.user-db-hostname}"
         },{
           "name": "WIFI_DB_NAME",
@@ -89,10 +89,10 @@ resource "aws_ecs_task_definition" "backup-rds-to-s3-task-definition" {
           "name": "ENCRYPTION_KEY",
           "valueFrom": "${data.aws_secretsmanager_secret_version.database_s3_encryption.arn}:key::"
         },{
-          "name": "USER_DB_PASS",
+          "name": "USERS_DB_PASS",
           "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:password::"
         },{
-          "name": "USER_DB_USER",
+          "name": "USERS_DB_USER",
           "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:username::"
         },{
           "name": "WIFI_DB_PASS",
@@ -135,12 +135,12 @@ resource "aws_iam_role" "backup-rds-to-s3-task-role" {
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Sid": "sid1",
       "Action": "sts:AssumeRole",
       "Principal": {
         "Service": "ecs-tasks.amazonaws.com"
       },
-      "Effect": "Allow",
-      "Sid": ""
+      "Effect": "Allow"
     }
   ]
 }
@@ -157,7 +157,7 @@ resource "aws_iam_role" "backup-rds-to-s3-scheduled-task-role" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "",
+      "Sid": "sid1",
       "Effect": "Allow",
       "Principal": {
         "Service": "events.amazonaws.com"
@@ -181,6 +181,7 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-task-policy" {
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Sid": "sid1",
       "Effect": "Allow",
       "Action": [
         "ecs:ListClusters",
@@ -191,13 +192,33 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-task-policy" {
       ],
       "Resource": "*"
   }, {
+      "Sid": "sid2",
       "Effect": "Allow",
       "Action": [
-        "s3:*"
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket",
+        "s3:HeadBucket"
+      ],
+      "Resource": "*"
+  }, {
+      "Sid": "sid3",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject"
       ],
       "Resource": [
-        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data",
-        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data/*"
+        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data-un",
+        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data-un/*"
+      ]
+  }, {
+      "Sid": "sid4",
+      "Effect": "Allow",
+      "Action": [
+        "kms:*"
+      ],
+      "Resource": [
+        "arn:aws:kms:eu-west-2:788375279931:key/staging_mysql_rds_backup_s3_key"
       ]
     }
   ]
@@ -216,6 +237,7 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-scheduled-task-policy" {
     "Version": "2012-10-17",
     "Statement": [
         {
+            "Sid": "sid0",
             "Effect": "Allow",
             "Action": "ecs:RunTask",
             "Resource": "${replace(
@@ -225,6 +247,7 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-scheduled-task-policy" {
 )}"
         },
         {
+          "Sid": "sid1",
           "Effect": "Allow",
           "Action": "iam:PassRole",
           "Resource": [
@@ -235,25 +258,34 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-scheduled-task-policy" {
               "iam:PassedToService": "ecs-tasks.amazonaws.com"
             }
           }
-        },
-    {
+  }, {
+      "Sid": "sid2",
       "Effect": "Allow",
       "Action": [
-        "ecs:ListClusters",
-        "ecs:ListTasks",
-        "ecs:StopTask",
-        "route53:ListHealthChecks",
-        "route53:GetHealthCheckStatus"
+        "s3:ListAllMyBuckets",
+        "s3:ListBucket",
+        "s3:HeadBucket"
       ],
       "Resource": "*"
   }, {
+      "Sid": "sid3",
       "Effect": "Allow",
       "Action": [
-        "s3:*"
+        "s3:GetObject",
+        "s3:PutObject"
       ],
       "Resource": [
-        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data",
-        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data/*"
+        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data-un",
+        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data-un/*"
+      ]
+  }, {
+      "Sid": "sid4",
+      "Effect": "Allow",
+      "Action": [
+        "kms:*"
+      ],
+      "Resource": [
+        "arn:aws:kms:eu-west-2:788375279931:key/staging_mysql_rds_backup_s3_key"
       ]
     }
     ]
