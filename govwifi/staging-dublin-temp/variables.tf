@@ -3,6 +3,11 @@ variable "Env-Name" {
   default = "staging-temp"
 }
 
+variable "Stage-Name" {
+  type    = string
+  default = "staging"
+}
+
 variable "product-name" {
   type    = string
   default = "GovWifi"
