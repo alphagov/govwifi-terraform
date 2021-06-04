@@ -290,7 +290,7 @@ module "api" {
 
   source        = "../../govwifi-api"
   env           = "staging-temp"
-  Env-Name      = "${var.Env-Name}"
+  Env-Name      = "${var.Stage-Name}"
   Env-Subdomain = "${var.Env-Subdomain}"
 
   ami                    = "${var.ami}"

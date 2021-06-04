@@ -15,6 +15,11 @@ resource "aws_ecr_repository" "govwifi-frontend-ecr" {
   name  = "govwifi/frontend"
 }
 
+resource "aws_ecr_repository" "govwifi-frontend-base-ecr" {
+  count = var.create-ecr
+  name  = "govwifi/frontend-base"
+}
+
 resource "aws_ecr_repository" "govwifi-raddb-ecr" {
   count = var.create-ecr
   name  = "govwifi/raddb"
@@ -165,4 +170,3 @@ resource "aws_ecs_service" "frontend-service" {
     field = "instanceId"
   }
 }
-

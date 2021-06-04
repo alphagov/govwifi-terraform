@@ -17,10 +17,14 @@ resource "aws_instance" "management" {
 
   depends_on = [aws_iam_instance_profile.bastion-instance-profile]
 
-  provisioner "file" {
-    source      = "backup.sh"
-    destination = "/backup_scripts/backup.sh"
-  }
+  # provisioner "file" {
+  #   source      = "backup.sh"
+  #   destination = "/backup_scripts/backup.sh"
+  #
+  #   connection {
+  #     host        = self.public_ip
+  #   }
+  # }
 
   user_data = <<DATA
 Content-Type: multipart/mixed; boundary="==BOUNDARY=="
