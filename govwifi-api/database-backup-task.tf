@@ -243,7 +243,7 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-scheduled-task-policy" {
       "Sid": "sid0",
           "Effect": "Allow",
           "Action": "ecs:RunTask",
-          "Resource": "${replace( aws_ecs_task_definition.backup-rds-to-s3-task-definition[0].arn, "/:\\d+$/", ":*",)}"
+          "Resource": "${replace(aws_ecs_task_definition.backup-rds-to-s3-task-definition[0].arn, "/:\\d+$/", ":*",)}"
     },{
       "Sid": "sid1",
       "Effect": "Allow",
