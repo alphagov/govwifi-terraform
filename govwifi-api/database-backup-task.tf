@@ -220,7 +220,7 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-task-policy" {
       "Resource": "*",
       "Condition": {
         "StringLike": {
-          "kms:RequestAlias": "alias/${var.Env-Name}_mysql_rds_backup_s3_key*"
+          "kms:RequestAlias": "alias/${var.Env-Name}_mysql_rds_backup_s3_key"
         }
       }
     }
