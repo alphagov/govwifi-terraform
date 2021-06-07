@@ -76,12 +76,6 @@ resource "aws_iam_user" "monitoring-stats-user" {
   force_destroy = false
 }
 
-resource "aws_iam_user" "mysql-s3-bucket-push-user" {
-  name          = "mysql-s3-bucket-push-user"
-  path          = "/"
-  force_destroy = false
-}
-
 resource "aws_iam_user" "it-govwifi-backup-reader" {
   name          = "it-govwifi-backup-reader"
   path          = "/"
