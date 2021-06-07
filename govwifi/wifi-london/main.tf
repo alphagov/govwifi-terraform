@@ -380,6 +380,7 @@ module "api" {
   metrics-bucket-name = module.govwifi-dashboard.metrics-bucket-name
 
   use_env_prefix = var.use_env_prefix
+  backup_mysql_rds = var.backup_mysql_rds
 }
 
 module "critical-notifications" {
