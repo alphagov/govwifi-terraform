@@ -24,8 +24,8 @@ resource "aws_ecs_task_definition" "backup-rds-to-s3-task-definition" {
   task_role_arn            = aws_iam_role.backup-rds-to-s3-task-role[0].arn
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   requires_compatibilities = ["FARGATE"]
-  cpu                      = 256
-  memory                   = 1024
+  cpu                      = 2048
+  memory                   = 8192
   network_mode             = "awsvpc"
 
   container_definitions = <<EOF
