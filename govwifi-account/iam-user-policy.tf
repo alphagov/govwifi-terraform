@@ -49,3 +49,46 @@ resource "aws_iam_user_policy" "monitoring-stats-user_monitoring-stats-user-poli
 POLICY
 
 }
+
+resource "aws_iam_user_policy" "backup-s3-read-buckets-user-policy" {
+  name = "backup-s3-read-buckets"
+  user = "it-govwifi-backup-reader"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "sid1",
+      "Effect": "Allow",
+      "Action": [
+        "s3:Get*",
+        "s3:List*"
+      ],
+      "Resource": [
+        "arn:aws:s3:::govwifi-*-mysql-backup-data",
+        "arn:aws:s3:::govwifi-*-mysql-backup-data/*"
+      ]
+    }, {
+      "Sid": "sid2",
+      "Effect": "Allow",
+      "Action": [
+         "kms:GetParametersForImport",
+         "kms:GetPublicKey",
+         "kms:GetKeyRotationStatus",
+         "kms:GetKeyPolicy",
+         "kms:DescribeKey"
+       ],
+      "Resource": "arn:aws:kms:*:788375279931:key/*",
+      "Condition": {
+        "StringLike": {
+          "kms:RequestAlias": "alias/*_mysql_rds_backup_s3_key"
+        }
+      }
+    }
+  ]
+}
+POLICY
+
+}
+

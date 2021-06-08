@@ -1559,4 +1559,3 @@ resource "aws_iam_policy" "read-wordlist-policy" {
 POLICY
 
 }
-
