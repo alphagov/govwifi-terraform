@@ -62,24 +62,22 @@ resource "aws_iam_user_policy" "backup-s3-read-buckets-user-policy" {
       "Sid": "sid1",
       "Effect": "Allow",
       "Action": [
-        "s3:Get*",
+        "s3:GetObject*",
         "s3:List*"
       ],
       "Resource": [
-        "arn:aws:s3:::govwifi-*-mysql-backup-data",
-        "arn:aws:s3:::govwifi-*-mysql-backup-data/*"
+        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data",
+        "arn:aws:s3:::govwifi-staging-london-mysql-backup-data/*",
+        "arn:aws:s3:::govwifi-wifi-london-mysql-backup-data",
+        "arn:aws:s3:::govwifi-wifi-london-mysql-backup-data/*"
       ]
     }, {
       "Sid": "sid2",
       "Effect": "Allow",
       "Action": [
-         "kms:GetParametersForImport",
-         "kms:GetPublicKey",
-         "kms:GetKeyRotationStatus",
-         "kms:GetKeyPolicy",
-         "kms:DescribeKey"
+         "kms:*"
        ],
-      "Resource": "arn:aws:kms:*:788375279931:key/*",
+      "Resource": "*",
       "Condition": {
         "StringLike": {
           "kms:RequestAlias": "alias/*_mysql_rds_backup_s3_key"
