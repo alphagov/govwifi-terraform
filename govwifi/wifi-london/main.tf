@@ -6,7 +6,7 @@ module "tfstate" {
   source             = "../../terraform-state"
   product-name       = var.product-name
   Env-Name           = var.Env-Name
-  aws-account-id     = var.aws-account-id
+  aws-account-id     = local.aws_account_id
   aws-region         = var.aws-region
   aws-region-name    = var.aws-region-name
   backup-region-name = var.backup-region-name
@@ -61,7 +61,7 @@ module "govwifi-account" {
   }
 
   source                 = "../../govwifi-account"
-  aws-account-id         = var.aws-account-id
+  aws-account-id         = local.aws_account_id
   administrator-IPs      = var.administrator-IPs
   administrator-IPs-list = split(",", var.administrator-IPs)
 }
@@ -107,7 +107,7 @@ module "backend" {
   bastion-ssh-key-name       = "govwifi-bastion-key-20181025"
   enable-bastion-monitoring  = true
   users                      = var.users
-  aws-account-id             = var.aws-account-id
+  aws-account-id             = local.aws_account_id
   db-instance-count          = 1
   session-db-instance-type   = "db.m4.xlarge"
   session-db-storage-gb      = 1000
@@ -321,7 +321,7 @@ module "api" {
   backend-instance-count = 3
   backend-min-size       = 1
   backend-cpualarm-count = 1
-  aws-account-id         = var.aws-account-id
+  aws-account-id         = local.aws_account_id
   aws-region-name        = var.aws-region-name
   aws-region             = var.aws-region
   route53-zone-id        = var.route53-zone-id
@@ -543,7 +543,7 @@ module "govwifi-elasticsearch" {
   Env-Name       = var.Env-Name
   Env-Subdomain  = var.Env-Subdomain
   aws-region     = var.aws-region
-  aws-account-id = var.aws-account-id
+  aws-account-id = local.aws_account_id
   vpc-id         = module.backend.backend-vpc-id
   vpc-cidr-block = module.backend.vpc-cidr-block
 

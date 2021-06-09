@@ -6,7 +6,7 @@ module "tfstate" {
   source             = "../../terraform-state"
   product-name       = var.product-name
   Env-Name           = var.Env-Name
-  aws-account-id     = var.aws-account-id
+  aws-account-id     = local.aws_account_id
   aws-region         = var.aws-region
   aws-region-name    = var.aws-region-name
   backup-region-name = var.backup-region-name
@@ -93,7 +93,7 @@ module "backend" {
   bastion-ssh-key-name      = "govwifi-bastion-key-20181025"
   enable-bastion-monitoring = true
   users                     = var.users
-  aws-account-id            = var.aws-account-id
+  aws-account-id            = local.aws_account_id
 
   db-instance-count        = 0
   session-db-instance-type = "db.m4.xlarge"
@@ -111,7 +111,7 @@ module "backend" {
   critical-notifications-arn = module.critical-notifications.topic-arn
   capacity-notifications-arn = module.capacity-notifications.topic-arn
   rds-kms-key-id             = var.rds-kms-key-id
-  user-replica-source-db     = "arn:aws:rds:eu-west-2:${var.aws-account-id}:db:wifi-production-user-db"
+  user-replica-source-db     = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-production-user-db"
 
   # Seconds. Set to zero to disable monitoring
   db-monitoring-interval = 60
@@ -142,7 +142,7 @@ module "emails" {
   product-name             = var.product-name
   Env-Name                 = var.Env-Name
   Env-Subdomain            = var.Env-Subdomain
-  aws-account-id           = var.aws-account-id
+  aws-account-id           = local.aws_account_id
   route53-zone-id          = var.route53-zone-id
   aws-region               = var.aws-region
   aws-region-name          = var.aws-region-name
@@ -269,7 +269,7 @@ module "api" {
   authorisation-api-count = 3
   backend-min-size        = 1
   backend-cpualarm-count  = 1
-  aws-account-id          = var.aws-account-id
+  aws-account-id          = local.aws_account_id
   aws-region-name         = lower(var.aws-region-name)
   aws-region              = var.aws-region
   route53-zone-id         = var.route53-zone-id
