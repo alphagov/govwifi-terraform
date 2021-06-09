@@ -67,7 +67,7 @@ module "backend" {
   # AWS VPC setup -----------------------------------------
   aws-region      = var.aws-region
   aws-region-name = var.aws-region-name
-  route53-zone-id = var.route53-zone-id
+  route53-zone-id = local.route53_zone_id
   vpc-cidr-block  = "10.42.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
@@ -143,7 +143,7 @@ module "emails" {
   Env-Name                 = var.Env-Name
   Env-Subdomain            = var.Env-Subdomain
   aws-account-id           = local.aws_account_id
-  route53-zone-id          = var.route53-zone-id
+  route53-zone-id          = local.route53_zone_id
   aws-region               = var.aws-region
   aws-region-name          = var.aws-region-name
   mail-exchange-server     = "10 inbound-smtp.eu-west-1.amazonaws.com"
@@ -173,7 +173,7 @@ module "dns" {
   source             = "../../global-dns"
   Env-Name           = var.Env-Name
   Env-Subdomain      = var.Env-Subdomain
-  route53-zone-id    = var.route53-zone-id
+  route53-zone-id    = local.route53_zone_id
   status-page-domain = "bl6klm1cjshh.stspg-customer.com"
 }
 
@@ -191,7 +191,7 @@ module "frontend" {
   # AWS VPC setup -----------------------------------------
   aws-region      = var.aws-region
   aws-region-name = var.aws-region-name
-  route53-zone-id = var.route53-zone-id
+  route53-zone-id = local.route53_zone_id
   vpc-cidr-block  = "10.43.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
@@ -272,7 +272,7 @@ module "api" {
   aws-account-id          = local.aws_account_id
   aws-region-name         = lower(var.aws-region-name)
   aws-region              = var.aws-region
-  route53-zone-id         = var.route53-zone-id
+  route53-zone-id         = local.route53_zone_id
   vpc-id                  = module.backend.backend-vpc-id
 
   user-signup-enabled  = 0

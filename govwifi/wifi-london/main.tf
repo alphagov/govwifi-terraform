@@ -82,7 +82,7 @@ module "backend" {
   # AWS VPC setup -----------------------------------------
   aws-region      = var.aws-region
   aws-region-name = var.aws-region-name
-  route53-zone-id = var.route53-zone-id
+  route53-zone-id = local.route53_zone_id
   vpc-cidr-block  = "10.84.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
@@ -163,7 +163,7 @@ module "frontend" {
   aws-region = var.aws-region
 
   aws-region-name = var.aws-region-name
-  route53-zone-id = var.route53-zone-id
+  route53-zone-id = local.route53_zone_id
   vpc-cidr-block  = "10.85.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
@@ -324,7 +324,7 @@ module "api" {
   aws-account-id         = local.aws_account_id
   aws-region-name        = var.aws-region-name
   aws-region             = var.aws-region
-  route53-zone-id        = var.route53-zone-id
+  route53-zone-id        = local.route53_zone_id
   vpc-id                 = module.backend.backend-vpc-id
   iam-count              = 1
 
