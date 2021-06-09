@@ -530,7 +530,6 @@ module "govwifi-slack-alerts" {
   critical-notifications-topic-arn         = module.critical-notifications.topic-arn
   capacity-notifications-topic-arn         = module.capacity-notifications.topic-arn
   route53-critical-notifications-topic-arn = module.route53-critical-notifications.topic-arn
-  gds-slack-workplace-id                   = var.gds-slack-workplace-id
   gds-slack-channel-id                     = var.gds-slack-channel-id
 }
 
