@@ -1,5 +1,5 @@
 locals {
-  slack-workplace-id = jsondecode(data.aws_secretsmanager_secret_version.slack_credentials.secret_string)["workplace-id"]
+  slack-workplace-id = jsondecode(data.aws_secretsmanager_secret_version.slack_credentials.secret_string)["workspace-id"]
 }
 
 locals {
