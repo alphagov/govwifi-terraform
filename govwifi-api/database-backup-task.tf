@@ -219,7 +219,7 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-task-policy" {
         "kms:Encrypt", 
         "kms:Decrypt",
         "kms:ReEncrypt*",
-        "kms:DescribeKey
+        "kms:DescribeKey"
       ],
       "Resource": "*",
       "Condition": {
