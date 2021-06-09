@@ -215,8 +215,11 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-task-policy" {
       "Sid": "sid4",
       "Effect": "Allow",
       "Action": [
+        "kms:GenerateDataKey",
+        "kms:Encrypt", 
         "kms:Decrypt",
-        "kms:GenerateDataKey"
+        "kms:ReEncrypt*",
+        "kms:DescribeKey
       ],
       "Resource": "*",
       "Condition": {
