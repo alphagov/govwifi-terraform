@@ -249,7 +249,7 @@ module "api" {
   backend-instance-count = 2
   backend-min-size       = 1
   backend-cpualarm-count = 1
-  aws-account-id         = var.aws-account-id
+  aws-account-id         = local.aws_account_id
   aws-region-name        = var.aws-region-name
   aws-region             = var.aws-region
   route53-zone-id        = local.route53_zone_id

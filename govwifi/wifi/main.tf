@@ -6,7 +6,7 @@ module "tfstate" {
   source             = "../../terraform-state"
   product-name       = var.product-name
   Env-Name           = var.Env-Name
-  aws-account-id     = var.aws-account-id
+  aws-account-id     = local.aws_account_id
   aws-region         = var.aws-region
   aws-region-name    = var.aws-region-name
   backup-region-name = var.backup-region-name
@@ -67,7 +67,7 @@ module "backend" {
   # AWS VPC setup -----------------------------------------
   aws-region      = var.aws-region
   aws-region-name = var.aws-region-name
-  route53-zone-id = var.route53-zone-id
+  route53-zone-id = local.route53_zone_id
   vpc-cidr-block  = "10.42.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
@@ -93,7 +93,7 @@ module "backend" {
   bastion-ssh-key-name      = "govwifi-bastion-key-20181025"
   enable-bastion-monitoring = true
   users                     = var.users
-  aws-account-id            = var.aws-account-id
+  aws-account-id            = local.aws_account_id
 
   db-instance-count        = 0
   session-db-instance-type = "db.m4.xlarge"
@@ -111,7 +111,7 @@ module "backend" {
   critical-notifications-arn = module.critical-notifications.topic-arn
   capacity-notifications-arn = module.capacity-notifications.topic-arn
   rds-kms-key-id             = var.rds-kms-key-id
-  user-replica-source-db     = "arn:aws:rds:eu-west-2:${var.aws-account-id}:db:wifi-production-user-db"
+  user-replica-source-db     = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-production-user-db"
 
   # Seconds. Set to zero to disable monitoring
   db-monitoring-interval = 60
@@ -142,8 +142,8 @@ module "emails" {
   product-name             = var.product-name
   Env-Name                 = var.Env-Name
   Env-Subdomain            = var.Env-Subdomain
-  aws-account-id           = var.aws-account-id
-  route53-zone-id          = var.route53-zone-id
+  aws-account-id           = local.aws_account_id
+  route53-zone-id          = local.route53_zone_id
   aws-region               = var.aws-region
   aws-region-name          = var.aws-region-name
   mail-exchange-server     = "10 inbound-smtp.eu-west-1.amazonaws.com"
@@ -173,7 +173,7 @@ module "dns" {
   source             = "../../global-dns"
   Env-Name           = var.Env-Name
   Env-Subdomain      = var.Env-Subdomain
-  route53-zone-id    = var.route53-zone-id
+  route53-zone-id    = local.route53_zone_id
   status-page-domain = "bl6klm1cjshh.stspg-customer.com"
 }
 
@@ -191,7 +191,7 @@ module "frontend" {
   # AWS VPC setup -----------------------------------------
   aws-region      = var.aws-region
   aws-region-name = var.aws-region-name
-  route53-zone-id = var.route53-zone-id
+  route53-zone-id = local.route53_zone_id
   vpc-cidr-block  = "10.43.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
@@ -215,8 +215,8 @@ module "frontend" {
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
   users                 = var.users
-  frontend-docker-image = format("%s/frontend:production", var.docker-image-path)
-  raddb-docker-image    = format("%s/raddb:production", var.docker-image-path)
+  frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
+  raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
 
   shared-key = var.shared-key
 
@@ -269,10 +269,10 @@ module "api" {
   authorisation-api-count = 3
   backend-min-size        = 1
   backend-cpualarm-count  = 1
-  aws-account-id          = var.aws-account-id
+  aws-account-id          = local.aws_account_id
   aws-region-name         = lower(var.aws-region-name)
   aws-region              = var.aws-region
-  route53-zone-id         = var.route53-zone-id
+  route53-zone-id         = local.route53_zone_id
   vpc-id                  = module.backend.backend-vpc-id
 
   user-signup-enabled  = 0
@@ -285,9 +285,9 @@ module "api" {
   capacity-notifications-arn = module.capacity-notifications.topic-arn
   devops-notifications-arn   = module.devops-notifications.topic-arn
 
-  auth-docker-image             = format("%s/authorisation-api:production", var.docker-image-path)
-  logging-docker-image          = format("%s/logging-api:production", var.docker-image-path)
-  safe-restart-docker-image     = format("%s/safe-restarter:production", var.docker-image-path)
+  auth-docker-image             = format("%s/authorisation-api:production", local.docker_image_path)
+  logging-docker-image          = format("%s/logging-api:production", local.docker_image_path)
+  safe-restart-docker-image     = format("%s/safe-restarter:production", local.docker_image_path)
   backup-rds-to-s3-docker-image = ""
 
   db-user                   = var.db-user

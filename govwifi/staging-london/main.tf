@@ -6,7 +6,7 @@ module "tfstate" {
   source             = "../../terraform-state"
   product-name       = var.product-name
   Env-Name           = var.Env-Name
-  aws-account-id     = var.aws-account-id
+  aws-account-id     = local.aws_account_id
   aws-region         = var.aws-region
   aws-region-name    = var.aws-region-name
   backup-region-name = var.backup-region-name
@@ -67,7 +67,7 @@ module "backend" {
 
   # AWS VPC setup -----------------------------------------
   aws-region      = var.aws-region
-  route53-zone-id = var.route53-zone-id
+  route53-zone-id = local.route53_zone_id
   aws-region-name = var.aws-region-name
   vpc-cidr-block  = "10.103.0.0/16"
   zone-count      = var.zone-count
@@ -93,7 +93,7 @@ module "backend" {
   bastion-ssh-key-name       = "govwifi-staging-bastion-key-20181025"
   enable-bastion-monitoring  = false
   users                      = var.users
-  aws-account-id             = var.aws-account-id
+  aws-account-id             = local.aws_account_id
   db-instance-count          = 1
   session-db-instance-type   = "db.t2.small"
   session-db-storage-gb      = 20
@@ -147,7 +147,7 @@ module "frontend" {
   aws-region = var.aws-region
 
   aws-region-name = var.aws-region-name
-  route53-zone-id = var.route53-zone-id
+  route53-zone-id = local.route53_zone_id
   vpc-cidr-block  = "10.102.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
@@ -171,8 +171,8 @@ module "frontend" {
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
   users                 = var.users
-  frontend-docker-image = format("%s/frontend:staging", var.docker-image-path)
-  raddb-docker-image    = format("%s/raddb:staging", var.docker-image-path)
+  frontend-docker-image = format("%s/frontend:staging", local.docker_image_path)
+  raddb-docker-image    = format("%s/raddb:staging", local.docker_image_path)
   create-ecr            = 1
 
   # admin bucket
@@ -227,7 +227,7 @@ module "govwifi-admin" {
   instance-count  = 1
   min-size        = 1
 
-  admin-docker-image      = format("%s/admin:staging", var.docker-image-path)
+  admin-docker-image      = format("%s/admin:staging", local.docker_image_path)
   rack-env                = "staging"
   secret-key-base         = var.admin-secret-key-base
   ecr-repository-count    = 1
@@ -307,10 +307,10 @@ module "api" {
   backend-instance-count = 2
   backend-min-size       = 1
   backend-cpualarm-count = 1
-  aws-account-id         = var.aws-account-id
+  aws-account-id         = local.aws_account_id
   aws-region-name        = var.aws-region-name
   aws-region             = var.aws-region
-  route53-zone-id        = var.route53-zone-id
+  route53-zone-id        = local.route53_zone_id
   vpc-id                 = module.backend.backend-vpc-id
   iam-count              = 1
   safe-restart-enabled   = 1
@@ -319,11 +319,11 @@ module "api" {
   capacity-notifications-arn = module.notifications.topic-arn
   devops-notifications-arn   = module.notifications.topic-arn
 
-  auth-docker-image             = format("%s/authorisation-api:staging", var.docker-image-path)
-  user-signup-docker-image      = format("%s/user-signup-api:staging", var.docker-image-path)
-  logging-docker-image          = format("%s/logging-api:staging", var.docker-image-path)
-  safe-restart-docker-image     = format("%s/safe-restarter:staging", var.docker-image-path)
-  backup-rds-to-s3-docker-image = format("%s/database-backup:staging", var.docker-image-path)
+  auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
+  user-signup-docker-image      = format("%s/user-signup-api:staging", local.docker_image_path)
+  logging-docker-image          = format("%s/logging-api:staging", local.docker_image_path)
+  safe-restart-docker-image     = format("%s/safe-restarter:staging", local.docker_image_path)
+  backup-rds-to-s3-docker-image = format("%s/database-backup:staging", local.docker_image_path)
 
   notify-api-key          = var.notify-api-key
   wordlist-bucket-count   = 1
@@ -501,7 +501,7 @@ module "govwifi-elasticsearch" {
   Env-Name       = var.Env-Name
   Env-Subdomain  = var.Env-Subdomain
   aws-region     = var.aws-region
-  aws-account-id = var.aws-account-id
+  aws-account-id = local.aws_account_id
   vpc-id         = module.backend.backend-vpc-id
   vpc-cidr-block = module.backend.vpc-cidr-block
 

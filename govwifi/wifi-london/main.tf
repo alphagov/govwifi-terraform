@@ -6,7 +6,7 @@ module "tfstate" {
   source             = "../../terraform-state"
   product-name       = var.product-name
   Env-Name           = var.Env-Name
-  aws-account-id     = var.aws-account-id
+  aws-account-id     = local.aws_account_id
   aws-region         = var.aws-region
   aws-region-name    = var.aws-region-name
   backup-region-name = var.backup-region-name
@@ -61,7 +61,7 @@ module "govwifi-account" {
   }
 
   source                 = "../../govwifi-account"
-  aws-account-id         = var.aws-account-id
+  aws-account-id         = local.aws_account_id
   administrator-IPs      = var.administrator-IPs
   administrator-IPs-list = split(",", var.administrator-IPs)
 }
@@ -82,7 +82,7 @@ module "backend" {
   # AWS VPC setup -----------------------------------------
   aws-region      = var.aws-region
   aws-region-name = var.aws-region-name
-  route53-zone-id = var.route53-zone-id
+  route53-zone-id = local.route53_zone_id
   vpc-cidr-block  = "10.84.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
@@ -107,7 +107,7 @@ module "backend" {
   bastion-ssh-key-name       = "govwifi-bastion-key-20181025"
   enable-bastion-monitoring  = true
   users                      = var.users
-  aws-account-id             = var.aws-account-id
+  aws-account-id             = local.aws_account_id
   db-instance-count          = 1
   session-db-instance-type   = "db.m4.xlarge"
   session-db-storage-gb      = 1000
@@ -163,7 +163,7 @@ module "frontend" {
   aws-region = var.aws-region
 
   aws-region-name = var.aws-region-name
-  route53-zone-id = var.route53-zone-id
+  route53-zone-id = local.route53_zone_id
   vpc-cidr-block  = "10.85.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
@@ -187,8 +187,8 @@ module "frontend" {
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
   users                 = var.users
-  frontend-docker-image = format("%s/frontend:production", var.docker-image-path)
-  raddb-docker-image    = format("%s/raddb:production", var.docker-image-path)
+  frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
+  raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
   shared-key            = var.shared-key
 
   # admin bucket
@@ -241,7 +241,7 @@ module "govwifi-admin" {
   instance-count  = 2
   min-size        = 2
 
-  admin-docker-image      = format("%s/admin:production", var.docker-image-path)
+  admin-docker-image      = format("%s/admin:production", local.docker_image_path)
   rack-env                = "production"
   secret-key-base         = var.admin-secret-key-base
   ecs-instance-profile-id = module.backend.ecs-instance-profile-id
@@ -321,10 +321,10 @@ module "api" {
   backend-instance-count = 3
   backend-min-size       = 1
   backend-cpualarm-count = 1
-  aws-account-id         = var.aws-account-id
+  aws-account-id         = local.aws_account_id
   aws-region-name        = var.aws-region-name
   aws-region             = var.aws-region
-  route53-zone-id        = var.route53-zone-id
+  route53-zone-id        = local.route53_zone_id
   vpc-id                 = module.backend.backend-vpc-id
   iam-count              = 1
 
@@ -332,11 +332,11 @@ module "api" {
   capacity-notifications-arn = module.capacity-notifications.topic-arn
   devops-notifications-arn   = module.devops-notifications.topic-arn
 
-  auth-docker-image             = format("%s/authorisation-api:production", var.docker-image-path)
-  user-signup-docker-image      = format("%s/user-signup-api:production", var.docker-image-path)
-  logging-docker-image          = format("%s/logging-api:production", var.docker-image-path)
-  safe-restart-docker-image     = format("%s/safe-restarter:production", var.docker-image-path)
-  backup-rds-to-s3-docker-image = format("%s/database-backup:staging", var.docker-image-path)
+  auth-docker-image             = format("%s/authorisation-api:production", local.docker_image_path)
+  user-signup-docker-image      = format("%s/user-signup-api:production", local.docker_image_path)
+  logging-docker-image          = format("%s/logging-api:production", local.docker_image_path)
+  safe-restart-docker-image     = format("%s/safe-restarter:production", local.docker_image_path)
+  backup-rds-to-s3-docker-image = format("%s/database-backup:staging", local.docker_image_path)
 
   notify-api-key = var.notify-api-key
 
@@ -530,7 +530,6 @@ module "govwifi-slack-alerts" {
   critical-notifications-topic-arn         = module.critical-notifications.topic-arn
   capacity-notifications-topic-arn         = module.capacity-notifications.topic-arn
   route53-critical-notifications-topic-arn = module.route53-critical-notifications.topic-arn
-  gds-slack-workplace-id                   = var.gds-slack-workplace-id
   gds-slack-channel-id                     = var.gds-slack-channel-id
 }
 
@@ -544,7 +543,7 @@ module "govwifi-elasticsearch" {
   Env-Name       = var.Env-Name
   Env-Subdomain  = var.Env-Subdomain
   aws-region     = var.aws-region
-  aws-account-id = var.aws-account-id
+  aws-account-id = local.aws_account_id
   vpc-id         = module.backend.backend-vpc-id
   vpc-cidr-block = module.backend.vpc-cidr-block
 

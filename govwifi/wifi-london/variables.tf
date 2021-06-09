@@ -285,9 +285,6 @@ variable "google-client-id" {
 variable "grafana-server-root-url" {
 }
 
-variable "gds-slack-workplace-id" {
-}
-
 variable "gds-slack-channel-id" {
 }
 

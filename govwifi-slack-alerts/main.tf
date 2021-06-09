@@ -31,8 +31,8 @@ resource "aws_cloudformation_stack" "aws-slack-chatbot" {
           "ConfigurationName" : "govwifi-monitoring-chat-configuration",
           "IamRoleArn" : "${aws_iam_role.govwifi-wifi-london-aws-chatbot-role.arn}",
           "LoggingLevel" : "NONE",
-          "SlackChannelId" : "${var.gds-slack-channel-id}",
-          "SlackWorkspaceId" : "${var.gds-slack-workplace-id}",
+          "SlackChannelId" : "${local.slack-channel-id}",
+          "SlackWorkspaceId" : "${local.slack-workplace-id}",
           "SnsTopicArns" : [ "${var.critical-notifications-topic-arn}","${var.capacity-notifications-topic-arn}","${var.route53-critical-notifications-topic-arn}" ]
         }
       }
