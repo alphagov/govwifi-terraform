@@ -171,8 +171,8 @@ module "frontend" {
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
   users                 = var.users
-  frontend-docker-image = format("%s/frontend:staging", var.docker-image-path)
-  raddb-docker-image    = format("%s/raddb:staging", var.docker-image-path)
+  frontend-docker-image = format("%s/frontend:staging", local.docker_image_path)
+  raddb-docker-image    = format("%s/raddb:staging", local.docker_image_path)
   create-ecr            = 1
 
   # admin bucket
@@ -227,7 +227,7 @@ module "govwifi-admin" {
   instance-count  = 1
   min-size        = 1
 
-  admin-docker-image      = format("%s/admin:staging", var.docker-image-path)
+  admin-docker-image      = format("%s/admin:staging", local.docker_image_path)
   rack-env                = "staging"
   secret-key-base         = var.admin-secret-key-base
   ecr-repository-count    = 1
@@ -319,11 +319,11 @@ module "api" {
   capacity-notifications-arn = module.notifications.topic-arn
   devops-notifications-arn   = module.notifications.topic-arn
 
-  auth-docker-image             = format("%s/authorisation-api:staging", var.docker-image-path)
-  user-signup-docker-image      = format("%s/user-signup-api:staging", var.docker-image-path)
-  logging-docker-image          = format("%s/logging-api:staging", var.docker-image-path)
-  safe-restart-docker-image     = format("%s/safe-restarter:staging", var.docker-image-path)
-  backup-rds-to-s3-docker-image = format("%s/database-backup:staging", var.docker-image-path)
+  auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
+  user-signup-docker-image      = format("%s/user-signup-api:staging", local.docker_image_path)
+  logging-docker-image          = format("%s/logging-api:staging", local.docker_image_path)
+  safe-restart-docker-image     = format("%s/safe-restarter:staging", local.docker_image_path)
+  backup-rds-to-s3-docker-image = format("%s/database-backup:staging", local.docker_image_path)
 
   notify-api-key          = var.notify-api-key
   wordlist-bucket-count   = 1

@@ -215,8 +215,8 @@ module "frontend" {
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
   users                 = var.users
-  frontend-docker-image = format("%s/frontend:production", var.docker-image-path)
-  raddb-docker-image    = format("%s/raddb:production", var.docker-image-path)
+  frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
+  raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
 
   shared-key = var.shared-key
 
@@ -285,9 +285,9 @@ module "api" {
   capacity-notifications-arn = module.capacity-notifications.topic-arn
   devops-notifications-arn   = module.devops-notifications.topic-arn
 
-  auth-docker-image             = format("%s/authorisation-api:production", var.docker-image-path)
-  logging-docker-image          = format("%s/logging-api:production", var.docker-image-path)
-  safe-restart-docker-image     = format("%s/safe-restarter:production", var.docker-image-path)
+  auth-docker-image             = format("%s/authorisation-api:production", local.docker_image_path)
+  logging-docker-image          = format("%s/logging-api:production", local.docker_image_path)
+  safe-restart-docker-image     = format("%s/safe-restarter:production", local.docker_image_path)
   backup-rds-to-s3-docker-image = ""
 
   db-user                   = var.db-user
