@@ -47,7 +47,7 @@ resource "aws_db_instance" "users_read_replica" {
   instance_class              = var.user-rr-instance-type
   identifier                  = "wifi-${var.env}-user-rr"
   username                    = local.users_db_username
-  password                    = local.users_db_username
+  password                    = local.users_db_password
   backup_retention_period     = 0
   multi_az                    = true
   vpc_security_group_ids      = [aws_security_group.be-db-in.id]
