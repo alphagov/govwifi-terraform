@@ -55,8 +55,8 @@ resource "aws_db_instance" "admin_db" {
   instance_class              = var.db-instance-type
   identifier                  = "wifi-admin-${var.Env-Name}-db"
   name                        = "govwifi_admin_${var.rack-env}"
-  username                    = var.admin-db-user
-  password                    = var.admin-db-password
+  username                    = local.admin_db_username
+  password                    = local.admin_db_password
   backup_retention_period     = var.db-backup-retention-days
   multi_az                    = true
   storage_encrypted           = var.db-encrypt-at-rest
