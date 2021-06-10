@@ -204,10 +204,12 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-task-policy" {
       "Sid": "sid3",
       "Effect": "Allow",
       "Action": [
+        "kms:Decrypt",
         "s3:GetObject",
         "s3:PutObject"
       ],
       "Resource": [
+        "arn:aws:kms:eu-west-2:${var.aws-account-id}:key/*",
         "arn:aws:s3:::govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-mysql-backup-data",
         "arn:aws:s3:::govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-mysql-backup-data/*"
       ]
@@ -215,13 +217,13 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-task-policy" {
       "Sid": "sid4",
       "Effect": "Allow",
       "Action": [
-        "kms:GenerateDataKey",
+        "kms:GenerateDataKey*",
         "kms:Encrypt", 
         "kms:Decrypt",
         "kms:ReEncrypt*",
         "kms:DescribeKey"
       ],
-      "Resource": "*",
+      "Resource": "arn:aws:kms:eu-west-2:${var.aws-account-id}:key/*",
       "Condition": {
         "StringLike": {
           "kms:RequestAlias": "alias/${var.Env-Name}_mysql_rds_backup_s3_key"
