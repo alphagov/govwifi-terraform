@@ -85,9 +85,8 @@ module "backend" {
 
   # Instance-specific setup -------------------------------
 
-  # eu-west-2, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.23 - Level 1
-  # Updated Ubuntu AMI as the previous AMI is no longer supported by the owner.
-  bastion-ami                = "ami-0f98289a07be24dc3"
+  # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS
+  bastion-ami                = "ami-096cb92bb3580c759"
   bastion-instance-type      = "t2.micro"
   bastion-server-ip          = "${var.bastion-server-IP}"
   bastion-ssh-key-name       = "staging-temp-bastion-20200717"
@@ -224,6 +223,7 @@ module "govwifi-admin" {
 
   admin-docker-image      = "${format("%s/admin:staging", var.docker-image-path)}"
   rack-env                = "staging-temp"
+  rack-env-task           = "staging"
   secret-key-base         = "${var.admin-secret-key-base}"
   ecr-repository-count    = 1
   ecs-instance-profile-id = "${module.backend.ecs-instance-profile-id}"
@@ -334,6 +334,7 @@ module "api" {
   # There is no read replica for the staging database
   db-read-replica-hostname           = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                           = "staging-temp"
+  rack-env-task                      = "staging"
   radius-server-ips                  = "${split(",", var.frontend-radius-IPs)}"
   authentication-sentry-dsn          = "${var.auth-sentry-dsn}"
   safe-restart-sentry-dsn            = "${var.safe-restart-sentry-dsn}"
