@@ -53,6 +53,9 @@ variable "rack-env" {
   description = "E.g. staging"
 }
 
+variable "rack-env-task" {
+}
+
 variable "secret-key-base" {
   description = "Rails secret key base variable used for the admin platform"
 }
@@ -187,4 +190,3 @@ variable "bastion-ips" {
   type        = list(string)
   default     = []
 }
-

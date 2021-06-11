@@ -97,6 +97,9 @@ variable "db-read-replica-hostname" {
 variable "rack-env" {
 }
 
+variable "rack-env-task" {
+}
+
 variable "performance-url" {
   default = ""
 }
@@ -251,4 +254,3 @@ variable "metrics-bucket-name" {
   default     = ""
   description = "Name of the S3 bucket to write metrics into"
 }
-

@@ -186,7 +186,7 @@ EOF
 
 # Install awslogs
 # The install script requires the issue file to start with the string "Ubuntu"
-sudo echo "Ubuntu Linux 16.04 LTS - Authorized uses only. All activity may be monitored and reported. \d \t @ \n" > /etc/issue
+sudo echo "Ubuntu Linux 20.04 LTS - Authorized uses only. All activity may be monitored and reported. \d \t @ \n" > /etc/issue
 # Retrieve and run the install script
 curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
 # Try to circumvent pip install error with waiting for 10 seconds.

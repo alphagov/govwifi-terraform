@@ -69,7 +69,7 @@ resource "aws_ecs_task_definition" "logging-api-task" {
           "value": "${var.user-db-hostname}"
         },{
           "name": "RACK_ENV",
-          "value": "${var.rack-env}"
+          "value": "${var.rack-env-task}"
         },{
           "name": "SENTRY_DSN",
           "value": "${var.logging-sentry-dsn}"
@@ -236,4 +236,3 @@ resource "aws_iam_role_policy" "logging-api-task-policy" {
 EOF
 
 }
-
