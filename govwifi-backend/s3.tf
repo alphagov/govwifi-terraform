@@ -59,7 +59,7 @@ resource "aws_s3_bucket" "rds-mysql-backup-bucket" {
   }
 
   versioning {
-    enabled = true
+    enabled = false
   }
 }
 
