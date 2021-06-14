@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+# This script is responsible for pulling in the encrypted and unencrypted values from the private `govwifi-build` repository.
+
 # Command passed to the script from the Makefile (unencrypt-secrets or delete-secrets).
 # It will be either "unencrypt" or "delete"
 command="$1"
