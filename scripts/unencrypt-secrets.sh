@@ -1,14 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
-# This script is responsible for pulling in the encrypted and unencrypted values from the private `govwifi-build` repository.
+# This script pulls in the encrypted and unencrypted values from the private `govwifi-build` repository.
 
 # Command passed to the script from the Makefile (unencrypt-secrets or delete-secrets).
 # It will be either "unencrypt" or "delete"
 command="$1"
 
 # Find all file paths of .gpg files in the .private/passwords/secrets-to-copy directory
-files=$(find .private/passwords/secrets-to-copy -type f -name '*.gpg')
+# Exclude any filename secrets*.gpg since the values have been migrated to Secrets Manager
+files=$(find .private/passwords/secrets-to-copy -type f -name '*.gpg' ! -name '*secrets*.gpg')
 
 # Iterate over the all the .gpg files in .private/passwords/secrets-to-copy
 for FILE in $files; do
@@ -23,11 +24,9 @@ for FILE in $files; do
 
   echo $UNENCRYPTED_FILE
 
-  # If the command is "unencrypt"
   if [ "$command" == "unencrypt" ]; then
-  # Copy the contents of UNENCRYPTED_FILE into a new file with the same name but within the root project directory
-  PASSWORD_STORE_DIR=.private/passwords pass "secrets-to-copy/${UNENCRYPTED_FILE}" > $UNENCRYPTED_FILE
-  # If the command is "delete"
+    # Copy the contents of UNENCRYPTED_FILE into a new file with the same name but within the root project directory
+    PASSWORD_STORE_DIR=.private/passwords pass "secrets-to-copy/${UNENCRYPTED_FILE}" > $UNENCRYPTED_FILE
   elif [ "$command" == "delete" ]; then
     # Delete the UNENCRYPTED_FILE from the root project directory
     rm $UNENCRYPTED_FILE
