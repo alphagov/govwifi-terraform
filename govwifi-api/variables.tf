@@ -149,11 +149,6 @@ variable "safe-restart-docker-image" {
 variable "backup-rds-to-s3-docker-image" {
 }
 
-variable "notify-api-key" {
-  default     = ""
-  description = "API key used to authenticate with GOV.UK Notify"
-}
-
 variable "ecr-repository-count" {
   default     = 0
   description = "Whether or not to create ECR repository"

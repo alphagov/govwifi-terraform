@@ -117,11 +117,6 @@ variable "zendesk-api-token" {
   description = "Token for authenticating with Zendesk API"
 }
 
-variable "notify-api-key" {
-  type        = string
-  description = "API key used to authenticate with GOV.UK Notify"
-}
-
 variable "aws-account-id" {
   type        = string
   description = "The ID of the AWS tenancy."

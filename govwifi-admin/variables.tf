@@ -122,9 +122,6 @@ variable "db-sg-list" {
 variable "rds-monitoring-role" {
 }
 
-variable "notify-api-key" {
-}
-
 variable "london-radius-ip-addresses" {
   type = list(string)
 }

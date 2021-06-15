@@ -252,7 +252,6 @@ module "govwifi-admin" {
 
   rds-monitoring-role = module.backend.rds-monitoring-role
 
-  notify-api-key             = var.notify-api-key
   london-radius-ip-addresses = var.london-radius-ip-addresses
   dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
   sentry-dsn                 = var.admin-sentry-dsn
@@ -308,7 +307,6 @@ module "api" {
   safe-restart-docker-image     = format("%s/safe-restarter:staging", local.docker_image_path)
   backup-rds-to-s3-docker-image = format("%s/database-backup:staging", local.docker_image_path)
 
-  notify-api-key          = var.notify-api-key
   wordlist-bucket-count   = 1
   wordlist-file-path      = "../wordlist-short"
   ecr-repository-count    = 1
