@@ -61,11 +61,6 @@ variable "ami" {
 
 # Secrets
 
-variable "db-password" {
-  type        = string
-  description = "Database main password"
-}
-
 variable "aws-account-id" {
   type        = string
   description = "The ID of the AWS tenancy."
