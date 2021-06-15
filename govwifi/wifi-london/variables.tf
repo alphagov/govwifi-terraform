@@ -143,10 +143,6 @@ variable "london-api-base-url" {
   default     = "https://api-elb.london.wifi.service.gov.uk:8443"
 }
 
-variable "govnotify-bearer-token" {
-  type = string
-}
-
 variable "critical-notification-email" {
   type = string
 }

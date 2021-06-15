@@ -335,7 +335,6 @@ module "api" {
   user-rr-hostname                   = var.user-rr-hostname
   admin-bucket-name                  = "govwifi-production-admin"
   background-jobs-enabled            = 1
-  govnotify-bearer-token             = var.govnotify-bearer-token
   user-signup-api-is-public          = 1
 
   elb-sg-list = []

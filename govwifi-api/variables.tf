@@ -192,11 +192,6 @@ variable "firetext-token" {
   default = ""
 }
 
-variable "govnotify-bearer-token" {
-  type    = string
-  default = ""
-}
-
 variable "user-signup-api-is-public" {
   default = 0
 }
