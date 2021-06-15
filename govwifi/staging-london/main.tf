@@ -181,14 +181,6 @@ module "frontend" {
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.london-api-base-url
 
-  shared-key = var.shared-key
-
-  # A site with this radkey must exist in the database for health checks to work
-  healthcheck-radius-key = var.hc-key
-  healthcheck-ssid       = var.hc-ssid
-  healthcheck-identity   = var.hc-identity
-  healthcheck-password   = var.hc-password
-
   # This must be based on us-east-1, as that's where the alarms go
   route53-critical-notifications-arn = module.route53-notifications.topic-arn
   devops-notifications-arn           = module.notifications.topic-arn
@@ -348,7 +340,6 @@ module "api" {
   safe-restart-sentry-dsn            = var.safe-restart-sentry-dsn
   user-signup-sentry-dsn             = var.user-signup-sentry-dsn
   logging-sentry-dsn                 = var.logging-sentry-dsn
-  shared-key                         = var.shared-key
   subnet-ids                         = module.backend.backend-subnet-ids
   ecs-instance-profile-id            = module.backend.ecs-instance-profile-id
   ecs-service-role                   = module.backend.ecs-service-role

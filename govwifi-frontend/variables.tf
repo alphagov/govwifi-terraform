@@ -47,21 +47,6 @@ variable "ami" {
 variable "ssh-key-name" {
 }
 
-variable "shared-key" {
-}
-
-variable "healthcheck-radius-key" {
-}
-
-variable "healthcheck-ssid" {
-}
-
-variable "healthcheck-identity" {
-}
-
-variable "healthcheck-password" {
-}
-
 variable "dns-numbering-base" {
 }
 

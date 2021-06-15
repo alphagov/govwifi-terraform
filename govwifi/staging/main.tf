@@ -206,14 +206,6 @@ module "frontend" {
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.dublin-api-base-url
 
-  shared-key = var.shared-key
-
-  # A site with this radkey must exist in the database for health checks to work
-  healthcheck-radius-key = var.hc-key
-  healthcheck-ssid       = var.hc-ssid
-  healthcheck-identity   = var.hc-identity
-  healthcheck-password   = var.hc-password
-
   route53-critical-notifications-arn = module.route53-notifications.topic-arn
   devops-notifications-arn           = module.notifications.topic-arn
 

@@ -142,31 +142,6 @@ variable "zendesk-api-token" {
   description = "Token for authenticating with Zendesk API"
 }
 
-variable "hc-key" {
-  type        = string
-  description = "Health check process shared secret"
-}
-
-variable "hc-ssid" {
-  type        = string
-  description = "Healt check simulated SSID"
-}
-
-variable "hc-identity" {
-  type        = string
-  description = "Healt check identity"
-}
-
-variable "hc-password" {
-  type        = string
-  description = "Health check password"
-}
-
-variable "shared-key" {
-  type        = string
-  description = "A random key to be shared between the frontend and backend to retrieve initial client setup."
-}
-
 variable "notify-api-key" {
   type        = string
   description = "API key used to authenticate with GOV.UK Notify"

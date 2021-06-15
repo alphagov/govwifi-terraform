@@ -218,19 +218,11 @@ module "frontend" {
   frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
 
-  shared-key = var.shared-key
-
   # admin bucket
   admin-bucket-name = "govwifi-production-admin"
 
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.dublin-api-base-url
-
-  # A site with this radkey must exist in the database for health checks to work
-  healthcheck-radius-key = var.hc-key
-  healthcheck-ssid       = var.hc-ssid
-  healthcheck-identity   = var.hc-identity
-  healthcheck-password   = var.hc-password
 
   route53-critical-notifications-arn = module.route53-critical-notifications.topic-arn
   devops-notifications-arn           = module.devops-notifications.topic-arn
@@ -298,7 +290,6 @@ module "api" {
   radius-server-ips         = split(",", var.frontend-radius-IPs)
   authentication-sentry-dsn = var.auth-sentry-dsn
   safe-restart-sentry-dsn   = var.safe-restart-sentry-dsn
-  shared-key                = var.shared-key
   user-signup-docker-image  = ""
   logging-sentry-dsn        = ""
   user-signup-sentry-dsn    = ""

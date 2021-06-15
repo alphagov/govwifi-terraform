@@ -189,19 +189,12 @@ module "frontend" {
   users                 = var.users
   frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
-  shared-key            = var.shared-key
 
   # admin bucket
   admin-bucket-name = "govwifi-production-admin"
 
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.london-api-base-url
-
-  # A site with this radkey must exist in the database for health checks to work
-  healthcheck-radius-key = var.hc-key
-  healthcheck-ssid       = var.hc-ssid
-  healthcheck-identity   = var.hc-identity
-  healthcheck-password   = var.hc-password
 
   # This must be based on us-east-1, as that's where the alarms go
   route53-critical-notifications-arn = module.route53-critical-notifications.topic-arn
@@ -340,29 +333,28 @@ module "api" {
 
   notify-api-key = var.notify-api-key
 
-  db-user                   = var.db-user
-  db-password               = var.db-password
-  db-hostname               = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  db-read-replica-hostname  = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  rack-env                  = "production"
-  radius-server-ips         = split(",", var.frontend-radius-IPs)
-  authentication-sentry-dsn = var.auth-sentry-dsn
-  safe-restart-sentry-dsn   = var.safe-restart-sentry-dsn
-  user-signup-sentry-dsn    = var.user-signup-sentry-dsn
-  logging-sentry-dsn        = var.logging-sentry-dsn
-  shared-key                = var.shared-key
-  subnet-ids                = module.backend.backend-subnet-ids
-  ecs-instance-profile-id   = module.backend.ecs-instance-profile-id
-  ecs-service-role          = module.backend.ecs-service-role
-  user-signup-api-base-url  = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
-  user-db-username          = var.user-db-username
-  user-db-hostname          = var.user-db-hostname
-  user-db-password          = var.user-db-password
-  user-rr-hostname          = var.user-rr-hostname
-  admin-bucket-name         = "govwifi-production-admin"
-  background-jobs-enabled   = 1
-  govnotify-bearer-token    = var.govnotify-bearer-token
-  user-signup-api-is-public = 1
+  db-user                            = var.db-user
+  db-password                        = var.db-password
+  db-hostname                        = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+  db-read-replica-hostname           = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+  rack-env                           = "production"
+  radius-server-ips                  = split(",", var.frontend-radius-IPs)
+  authentication-sentry-dsn          = var.auth-sentry-dsn
+  safe-restart-sentry-dsn            = var.safe-restart-sentry-dsn
+  user-signup-sentry-dsn             = var.user-signup-sentry-dsn
+  logging-sentry-dsn                 = var.logging-sentry-dsn
+  subnet-ids                         = module.backend.backend-subnet-ids
+  ecs-instance-profile-id            = module.backend.ecs-instance-profile-id
+  ecs-service-role                   = module.backend.ecs-service-role
+  user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
+  user-db-username                   = var.user-db-username
+  user-db-hostname                   = var.user-db-hostname
+  user-db-password                   = var.user-db-password
+  user-rr-hostname                   = var.user-rr-hostname
+  admin-bucket-name                  = "govwifi-production-admin"
+  background-jobs-enabled            = 1
+  govnotify-bearer-token             = var.govnotify-bearer-token
+  user-signup-api-is-public          = 1
 
   elb-sg-list = []
 

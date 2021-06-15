@@ -110,9 +110,6 @@ variable "user-signup-sentry-dsn" {
 variable "logging-sentry-dsn" {
 }
 
-variable "shared-key" {
-}
-
 variable "elb-sg-list" {
   type = list(string)
 }

@@ -69,31 +69,6 @@ variable "db-password" {
   description = "Database main password"
 }
 
-variable "hc-key" {
-  type        = string
-  description = "Health check process shared secret"
-}
-
-variable "hc-ssid" {
-  type        = string
-  description = "Healt check simulated SSID"
-}
-
-variable "hc-identity" {
-  type        = string
-  description = "Healt check identity"
-}
-
-variable "hc-password" {
-  type        = string
-  description = "Healt check password"
-}
-
-variable "shared-key" {
-  type        = string
-  description = "A random key to be shared between the fronend and backend to retrieve initial client setup."
-}
-
 variable "aws-account-id" {
   type        = string
   description = "The ID of the AWS tenancy."
