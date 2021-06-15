@@ -151,15 +151,7 @@ variable "backend-subnet-IPs-list" {
   description = "Unused in this configuration"
 }
 
-variable "metrics-aws-secret-access-key" {
-  description = "Unused in this configuration"
-}
-
 variable "administrator-IPs-list" {
-  description = "Unused in this configuration"
-}
-
-variable "metrics-aws-access-key" {
   description = "Unused in this configuration"
 }
 
