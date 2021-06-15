@@ -94,9 +94,6 @@ variable "db-instance-count" {
 variable "admin-db-user" {
 }
 
-variable "admin-db-password" {
-}
-
 variable "db-backup-retention-days" {
 }
 

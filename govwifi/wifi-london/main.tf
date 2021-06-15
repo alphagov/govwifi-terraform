@@ -245,7 +245,6 @@ module "govwifi-admin" {
   db-sg-list = []
 
   admin-db-user     = var.admin-db-username
-  admin-db-password = var.admin-db-password
 
   db-instance-count        = 1
   db-instance-type         = "db.t2.large"

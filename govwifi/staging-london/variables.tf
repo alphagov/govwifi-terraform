@@ -107,11 +107,6 @@ variable "admin-db-username" {
   description = "Database main username for govwifi-admin"
 }
 
-variable "admin-db-password" {
-  type        = string
-  description = "Database main password for govwifi-admin"
-}
-
 variable "zendesk-api-user" {
   type        = string
   description = "Username for authenticating with Zendesk API"
