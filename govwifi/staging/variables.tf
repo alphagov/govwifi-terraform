@@ -117,10 +117,6 @@ variable "elb-public-IPs" {
   description = "Unused in this configuration"
 }
 
-variable "aws-parent-account-id" {
-  description = "Unused in this configuration"
-}
-
 variable "use_env_prefix" {
   default     = true
   type        = bool
