@@ -261,18 +261,6 @@ resource "aws_ecs_task_definition" "user-signup-api-scheduled-task" {
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
         },{
-          "name": "PERFORMANCE_URL",
-          "value": "${var.performance-url}"
-        },{
-          "name": "PERFORMANCE_DATASET",
-          "value": "${var.performance-dataset}"
-        },{
-          "name": "PERFORMANCE_BEARER_VOLUMETRICS",
-          "value": "${var.performance-bearer-volumetrics}"
-        },{
-          "name": "PERFORMANCE_BEARER_COMPLETION_RATE",
-          "value": "${var.performance-bearer-completion-rate}"
-        },{
           "name": "FIRETEXT_TOKEN",
           "value": "${var.firetext-token}"
         },{

@@ -97,34 +97,6 @@ variable "db-read-replica-hostname" {
 variable "rack-env" {
 }
 
-variable "performance-url" {
-  default = ""
-}
-
-variable "performance-dataset" {
-  default = ""
-}
-
-variable "performance-bearer-volumetrics" {
-  default = ""
-}
-
-variable "performance-bearer-completion-rate" {
-  default = ""
-}
-
-variable "performance-bearer-active-users" {
-  default = ""
-}
-
-variable "performance-bearer-roaming-users" {
-  default = ""
-}
-
-variable "performance-bearer-unique-users" {
-  default = ""
-}
-
 variable "radius-server-ips" {
   type = list(string)
 }

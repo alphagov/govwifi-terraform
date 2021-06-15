@@ -192,41 +192,6 @@ variable "route53-zone-id" {
   description = "Zone ID used by the Route53 DNS service."
 }
 
-variable "performance-url" {
-  type        = string
-  description = "URL endpoint leading to Performance platform API, with a trailing slash at the end"
-}
-
-variable "performance-dataset" {
-  type        = string
-  description = "Dataset to which Performance statistics should be saved e.g `gov-wifi`"
-}
-
-variable "performance-bearer-volumetrics" {
-  type        = string
-  description = "Bearer token for `volumetrics` Performance platform statistics"
-}
-
-variable "performance-bearer-completion-rate" {
-  type        = string
-  description = "Bearer token for `completion-rate` Performance platform statistics"
-}
-
-variable "performance-bearer-active-users" {
-  type        = string
-  description = "Bearer token for `active-users` Performance platform statistics"
-}
-
-variable "performance-bearer-unique-users" {
-  type        = string
-  description = "Bearer token for `unique-users` Performance platform statistics"
-}
-
-variable "performance-bearer-roaming-users" {
-  type        = string
-  description = "Bearer token for `roaming-users` Performance platform statistics"
-}
-
 variable "london-radius-ip-addresses" {
   type        = list(string)
   description = "Frontend RADIUS server IP addresses - London"

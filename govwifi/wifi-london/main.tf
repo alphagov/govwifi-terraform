@@ -351,13 +351,6 @@ module "api" {
   user-signup-sentry-dsn             = var.user-signup-sentry-dsn
   logging-sentry-dsn                 = var.logging-sentry-dsn
   shared-key                         = var.shared-key
-  performance-url                    = var.performance-url
-  performance-dataset                = var.performance-dataset
-  performance-bearer-volumetrics     = var.performance-bearer-volumetrics
-  performance-bearer-completion-rate = var.performance-bearer-completion-rate
-  performance-bearer-active-users    = var.performance-bearer-active-users
-  performance-bearer-unique-users    = var.performance-bearer-unique-users
-  performance-bearer-roaming-users   = var.performance-bearer-roaming-users
   subnet-ids                         = module.backend.backend-subnet-ids
   ecs-instance-profile-id            = module.backend.ecs-instance-profile-id
   ecs-service-role                   = module.backend.ecs-service-role

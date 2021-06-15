@@ -119,42 +119,6 @@ variable "user-signup-sentry-dsn" {
   default = ""
 }
 
-variable "performance-url" {
-  default     = ""
-  type        = string
-  description = "URL endpoint leading to Performance platform API, with a trailing slash at the end"
-}
-
-variable "performance-dataset" {
-  default     = ""
-  type        = string
-  description = "Dataset to which Performance statistics should be saved e.g `gov-wifi`"
-}
-
-variable "performance-bearer-volumetrics" {
-  default     = ""
-  type        = string
-  description = "Bearer token for `volumetrics` Performance platform statistics"
-}
-
-variable "performance-bearer-completion-rate" {
-  default     = ""
-  type        = string
-  description = "Bearer token for `completion-rate` Performance platform statistics"
-}
-
-variable "performance-bearer-active-users" {
-  default     = ""
-  type        = string
-  description = "Bearer token for `active-users` Performance platform statistics"
-}
-
-variable "performance-bearer-unique-users" {
-  default     = ""
-  type        = string
-  description = "Bearer token for `unique-users` Performance platform statistics"
-}
-
 variable "london-radius-ip-addresses" {
   type        = list(string)
   description = "Frontend RADIUS server IP addresses - London"

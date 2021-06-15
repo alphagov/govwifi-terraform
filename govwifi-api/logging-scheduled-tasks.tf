@@ -425,21 +425,6 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"
         },{
-          "name": "PERFORMANCE_URL",
-          "value": "${var.performance-url}"
-        },{
-          "name": "PERFORMANCE_DATASET",
-          "value": "${var.performance-dataset}"
-        },{
-          "name": "PERFORMANCE_BEARER_ACTIVE_USERS",
-          "value": "${var.performance-bearer-active-users}"
-        },{
-          "name": "PERFORMANCE_BEARER_UNIQUE_USERS",
-          "value": "${var.performance-bearer-unique-users}"
-        },{
-          "name": "PERFORMANCE_BEARER_ROAMING_USERS",
-          "value": "${var.performance-bearer-roaming-users}"
-        },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
           "value": "govwifi-${var.rack-env}-admin"
         },{
