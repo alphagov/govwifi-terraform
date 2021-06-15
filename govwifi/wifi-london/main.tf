@@ -232,7 +232,6 @@ module "govwifi-admin" {
 
   admin-docker-image      = format("%s/admin:production", local.docker_image_path)
   rack-env                = "production"
-  secret-key-base         = var.admin-secret-key-base
   ecs-instance-profile-id = module.backend.ecs-instance-profile-id
   ecs-service-role        = module.backend.ecs-service-role
 

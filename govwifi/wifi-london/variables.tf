@@ -117,11 +117,6 @@ variable "aws-account-id" {
   description = "The ID of the AWS tenancy."
 }
 
-variable "admin-secret-key-base" {
-  type        = string
-  description = "Rails secret key base for the Admin platform"
-}
-
 variable "docker-image-path" {
   type        = string
   description = "ARN used to identify the common path element used for the docker image repositories in London."

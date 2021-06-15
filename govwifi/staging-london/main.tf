@@ -217,7 +217,6 @@ module "govwifi-admin" {
 
   admin-docker-image      = format("%s/admin:staging", local.docker_image_path)
   rack-env                = "staging"
-  secret-key-base         = var.admin-secret-key-base
   ecr-repository-count    = 1
   ecs-instance-profile-id = module.backend.ecs-instance-profile-id
   ecs-service-role        = module.backend.ecs-service-role

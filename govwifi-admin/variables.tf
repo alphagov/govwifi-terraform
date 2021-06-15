@@ -53,10 +53,6 @@ variable "rack-env" {
   description = "E.g. staging"
 }
 
-variable "secret-key-base" {
-  description = "Rails secret key base variable used for the admin platform"
-}
-
 variable "ssh-key-name" {
   description = "SSH key applied to the EC2 instance"
 }

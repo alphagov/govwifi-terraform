@@ -122,11 +122,6 @@ variable "aws-secondary-account-id" {
   description = "The ID the Secondary Staging AWS Account."
 }
 
-variable "admin-secret-key-base" {
-  type        = string
-  description = "Rails secret key base for the Admin platform"
-}
-
 variable "docker-image-path" {
   type        = string
   description = "ARN used to identify the common path element used for the docker API image repositories."
