@@ -327,9 +327,8 @@ module "api" {
   db-password = var.db-password
   db-hostname = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
 
-  user-db-username = var.user-db-username
   user-db-hostname = var.user-db-hostname
-  user-db-password = var.user-db-password
+
   user-rr-hostname = var.user-db-hostname
 
   # There is no read replica for the staging database

@@ -100,16 +100,6 @@ variable "db-password" {
   description = "Database main password"
 }
 
-variable "user-db-username" {
-  type        = string
-  description = "User details database username"
-}
-
-variable "user-db-password" {
-  type        = string
-  description = "User details database password"
-}
-
 variable "user-db-hostname" {
   type        = string
   description = "User details database hostname"

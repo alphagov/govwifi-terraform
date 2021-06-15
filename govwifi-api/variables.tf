@@ -70,12 +70,6 @@ variable "safe-restart-sentry-dsn" {
   default = ""
 }
 
-variable "user-db-username" {
-}
-
-variable "user-db-password" {
-}
-
 variable "user-db-hostname" {
 }
 

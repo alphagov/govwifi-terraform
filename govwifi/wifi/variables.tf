@@ -129,16 +129,6 @@ variable "dublin-api-base-url" {
   default     = "https://api-elb.dublin.wifi.service.gov.uk:8443"
 }
 
-variable "user-db-username" {
-  type        = string
-  description = "User details database username"
-}
-
-variable "user-db-password" {
-  type        = string
-  description = "User details database password"
-}
-
 variable "user-db-hostname" {
   type        = string
   description = "User details database hostname"

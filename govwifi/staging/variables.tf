@@ -79,16 +79,6 @@ variable "user-rr-hostname" {
   default     = "users-rr.dublin.staging.wifi.service.gov.uk"
 }
 
-variable "user-db-password" {
-  type        = string
-  description = "User details database main password"
-}
-
-variable "user-db-username" {
-  type        = string
-  description = "Users database username"
-}
-
 variable "rds-kms-key-id" {
   type = string
 }

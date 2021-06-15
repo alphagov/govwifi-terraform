@@ -67,12 +67,6 @@ variable "db-user" {
 variable "db-password" {
 }
 
-variable "user-db-username" {
-}
-
-variable "user-db-password" {
-}
-
 variable "user-db-hostname" {
 }
 

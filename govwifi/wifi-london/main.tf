@@ -128,8 +128,6 @@ module "backend" {
   # Passed to application
   db-user               = var.db-user
   db-password           = var.db-password
-  user-db-username      = var.user-db-username
-  user-db-password      = var.user-db-password
   user-db-hostname      = var.user-db-hostname
   user-rr-hostname      = var.user-rr-hostname
   user-db-instance-type = "db.t2.medium"
@@ -265,8 +263,6 @@ module "govwifi-admin" {
   rr-db-host     = "rr.london.wifi.service.gov.uk"
   rr-db-name     = "govwifi_wifi"
 
-  user-db-user     = var.user-db-username
-  user-db-password = var.user-db-password
   user-db-host     = var.user-rr-hostname
   user-db-name     = "govwifi_production_users"
 
@@ -347,9 +343,7 @@ module "api" {
   ecs-instance-profile-id            = module.backend.ecs-instance-profile-id
   ecs-service-role                   = module.backend.ecs-service-role
   user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
-  user-db-username                   = var.user-db-username
   user-db-hostname                   = var.user-db-hostname
-  user-db-password                   = var.user-db-password
   user-rr-hostname                   = var.user-rr-hostname
   admin-bucket-name                  = "govwifi-production-admin"
   background-jobs-enabled            = 1

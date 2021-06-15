@@ -117,8 +117,6 @@ module "backend" {
   # Passed to application
   db-user               = ""
   db-password           = ""
-  user-db-username      = var.user-db-username
-  user-db-password      = var.user-db-password
   user-db-hostname      = ""
   user-db-instance-type = ""
   user-db-storage-gb    = 0
@@ -269,9 +267,7 @@ module "api" {
   db-password = ""
   db-hostname = ""
 
-  user-db-username = var.user-db-username
   user-db-hostname = ""
-  user-db-password = var.user-db-password
   user-rr-hostname = var.user-rr-hostname
 
   # There is no read replica for the staging database
