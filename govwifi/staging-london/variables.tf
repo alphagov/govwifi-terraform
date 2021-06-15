@@ -156,10 +156,6 @@ variable "google-client-id" {
 variable "grafana-server-root-url" {
 }
 
-variable "allowed-sites-api-elb-ssl-cert-arn" {
-  description = "Unused in this configuration"
-}
-
 variable "backend-subnet-IPs-list" {
   description = "Unused in this configuration"
 }
