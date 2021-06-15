@@ -471,11 +471,6 @@ module "govwifi-grafana" {
 
   administrator-IPs = var.administrator-IPs
 
-  google-client-id        = var.google-client-id
-  google-client-secret    = var.google-client-secret
-  grafana-admin           = var.grafana-admin
-  grafana-server-root-url = var.grafana-server-root-url
-
   prometheus-IPs = concat(
     split(",", "${var.prometheus-IP-london}/32"),
     split(",", "${var.prometheus-IP-ireland}/32")
