@@ -61,16 +61,6 @@ variable "ami" {
 
 # Secrets
 
-variable "docker-image-path" {
-  type        = string
-  description = "ARN used to identify the common path element used for the docker image repositories."
-}
-
-variable "route53-zone-id" {
-  type        = string
-  description = "Zone ID used by the Route53 DNS service."
-}
-
 variable "london-api-base-url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
