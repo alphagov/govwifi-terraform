@@ -277,7 +277,6 @@ module "govwifi-admin" {
 
   zendesk-api-endpoint = "https://govuk.zendesk.com/api/v2/"
   zendesk-api-user     = var.zendesk-api-user
-  zendesk-api-token    = var.zendesk-api-token
 
   bastion-ips = concat(
     split(",", var.bastion-server-IP),

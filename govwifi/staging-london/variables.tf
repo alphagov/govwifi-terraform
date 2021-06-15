@@ -112,11 +112,6 @@ variable "zendesk-api-user" {
   description = "Username for authenticating with Zendesk API"
 }
 
-variable "zendesk-api-token" {
-  type        = string
-  description = "Token for authenticating with Zendesk API"
-}
-
 variable "aws-account-id" {
   type        = string
   description = "The ID of the AWS tenancy."

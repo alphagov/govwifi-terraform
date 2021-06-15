@@ -154,9 +154,6 @@ variable "zendesk-api-endpoint" {
 variable "zendesk-api-user" {
 }
 
-variable "zendesk-api-token" {
-}
-
 variable "public-google-api-key" {
 }
 
