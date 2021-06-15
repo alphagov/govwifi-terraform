@@ -114,8 +114,6 @@ module "backend" {
   # Passed to application
   db-user               = var.db-user
   db-password           = var.db-password
-  user-db-username      = var.user-db-username
-  user-db-password      = var.user-db-password
   user-db-hostname      = var.user-db-hostname
   user-db-instance-type = "db.t2.small"
   user-db-storage-gb    = 20
