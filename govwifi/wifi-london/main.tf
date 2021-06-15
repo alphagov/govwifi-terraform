@@ -270,8 +270,6 @@ module "govwifi-admin" {
   sentry-dsn                 = var.admin-sentry-dsn
   public-google-api-key      = var.public-google-api-key
 
-  otp-secret-encryption-key = var.otp-secret-encryption-key
-
   logging-api-search-url = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
 
   zendesk-api-endpoint = "https://govuk.zendesk.com/api/v2/"
