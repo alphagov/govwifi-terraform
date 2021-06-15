@@ -59,15 +59,6 @@ variable "ami" {
 }
 
 # Secrets
-variable "db-user" {
-  type        = string
-  description = "Database username"
-}
-
-variable "db-password" {
-  type        = string
-  description = "Database main password"
-}
 
 variable "aws-account-id" {
   type        = string

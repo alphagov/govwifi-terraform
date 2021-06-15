@@ -112,8 +112,6 @@ module "backend" {
   db-monitoring-interval = 60
 
   # Passed to application
-  db-user               = var.db-user
-  db-password           = var.db-password
   user-db-hostname      = var.user-db-hostname
   user-db-instance-type = "db.t2.small"
   user-db-storage-gb    = 20
@@ -242,8 +240,6 @@ module "govwifi-admin" {
   db-backup-window         = "03:42-04:42"
   db-monitoring-interval   = 60
 
-  rr-db-user     = var.db-user
-  rr-db-password = var.db-password
   rr-db-host     = "db.london.staging.wifi.service.gov.uk"
   rr-db-name     = "govwifi_staging"
 
@@ -319,8 +315,6 @@ module "api" {
   ecr-repository-count    = 1
   background-jobs-enabled = 1
 
-  db-user     = var.db-user
-  db-password = var.db-password
   db-hostname = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
 
   user-db-hostname = var.user-db-hostname

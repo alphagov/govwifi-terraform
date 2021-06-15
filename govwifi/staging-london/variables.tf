@@ -90,16 +90,6 @@ variable "admin-sentry-dsn" {
   type = string
 }
 
-variable "db-password" {
-  type        = string
-  description = "Database main password"
-}
-
-variable "db-user" {
-  type        = string
-  description = "Database username"
-}
-
 variable "user-db-hostname" {
   type        = string
   description = "User details database hostname"

@@ -61,12 +61,6 @@ variable "bastion-server-ip" {
 variable "bastion-ssh-key-name" {
 }
 
-variable "db-user" {
-}
-
-variable "db-password" {
-}
-
 variable "user-db-hostname" {
 }
 

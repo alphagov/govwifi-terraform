@@ -142,12 +142,6 @@ variable "sentry-dsn" {
 variable "logging-api-search-url" {
 }
 
-variable "rr-db-user" {
-}
-
-variable "rr-db-password" {
-}
-
 variable "rr-db-host" {
 }
 

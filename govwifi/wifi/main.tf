@@ -117,8 +117,6 @@ module "backend" {
   db-monitoring-interval = 60
 
   # Passed to application
-  db-user               = var.db-user
-  db-password           = var.db-password
   user-db-instance-type = "db.t2.medium"
   user-db-hostname      = var.user-db-hostname
   user-db-storage-gb    = 20
@@ -280,8 +278,6 @@ module "api" {
   safe-restart-docker-image     = format("%s/safe-restarter:production", local.docker_image_path)
   backup-rds-to-s3-docker-image = ""
 
-  db-user                   = var.db-user
-  db-password               = var.db-password
   db-hostname               = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   db-read-replica-hostname  = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                  = "production"

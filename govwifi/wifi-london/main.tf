@@ -126,8 +126,6 @@ module "backend" {
   db-monitoring-interval = 60
 
   # Passed to application
-  db-user               = var.db-user
-  db-password           = var.db-password
   user-db-hostname      = var.user-db-hostname
   user-rr-hostname      = var.user-rr-hostname
   user-db-instance-type = "db.t2.medium"
@@ -258,8 +256,6 @@ module "govwifi-admin" {
   db-backup-window         = "03:42-04:42"
   db-monitoring-interval   = 60
 
-  rr-db-user     = var.db-user
-  rr-db-password = var.db-password
   rr-db-host     = "rr.london.wifi.service.gov.uk"
   rr-db-name     = "govwifi_wifi"
 
@@ -329,8 +325,6 @@ module "api" {
 
   notify-api-key = var.notify-api-key
 
-  db-user                            = var.db-user
-  db-password                        = var.db-password
   db-hostname                        = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   db-read-replica-hostname           = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                           = "production"
