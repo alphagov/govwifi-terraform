@@ -328,7 +328,6 @@ module "api" {
   user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
   admin-bucket-name                  = "govwifi-staging-admin"
   user-signup-api-is-public          = 1
-  volumetrics-elasticsearch-endpoint = var.volumetrics-elasticsearch-endpoint
 
   elb-sg-list = []
 

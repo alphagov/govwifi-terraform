@@ -147,11 +147,6 @@ variable "aws-parent-account-id" {
   description = "Unused in this configuration"
 }
 
-variable "volumetrics-elasticsearch-endpoint" {
-  type        = string
-  description = "URL for the ElasticSearch instance endpoint"
-}
-
 variable "use_env_prefix" {
   default     = true
   type        = bool

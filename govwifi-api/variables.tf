@@ -202,12 +202,6 @@ variable "metrics-bucket-name" {
   description = "Name of the S3 bucket to write metrics into"
 }
 
-variable "volumetrics-elasticsearch-endpoint" {
-  type        = string
-  default     = ""
-  description = "URL for the ElasticSearch instance endpoint"
-}
-
 variable "use_env_prefix" {
 
 }
