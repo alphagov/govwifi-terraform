@@ -93,7 +93,6 @@ module "backend" {
   db-maintenance-window    = "sat:00:42-sat:01:12"
   db-backup-window         = "03:42-04:42"
   db-backup-retention-days = 1
-  rds-kms-key-id           = var.rds-kms-key-id
 
   db-instance-count        = 0
   session-db-instance-type = ""

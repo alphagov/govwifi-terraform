@@ -79,10 +79,6 @@ variable "user-rr-hostname" {
   default     = "users-rr.dublin.staging.wifi.service.gov.uk"
 }
 
-variable "rds-kms-key-id" {
-  type = string
-}
-
 variable "auth-sentry-dsn" {
   type = string
 }

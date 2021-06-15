@@ -146,11 +146,6 @@ variable "pp-domain-name" {
   default = ""
 }
 
-variable "rds-kms-key-id" {
-  type    = string
-  default = ""
-}
-
 variable "user-replica-source-db" {
   type    = string
   default = ""
