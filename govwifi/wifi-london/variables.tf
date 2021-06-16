@@ -107,21 +107,6 @@ variable "zendesk-api-user" {
   description = "User for authenticating with Zendesk API"
 }
 
-variable "aws-account-id" {
-  type        = string
-  description = "The ID of the AWS tenancy."
-}
-
-variable "docker-image-path" {
-  type        = string
-  description = "ARN used to identify the common path element used for the docker image repositories in London."
-}
-
-variable "route53-zone-id" {
-  type        = string
-  description = "Zone ID used by the Route53 DNS service."
-}
-
 variable "london-radius-ip-addresses" {
   type        = list(string)
   description = "Frontend RADIUS server IP addresses - London"
