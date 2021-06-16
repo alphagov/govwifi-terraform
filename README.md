@@ -71,7 +71,7 @@ We've incorporated this functionality into our `make` commands. **Note**: this s
 To `plan`/`apply` a specific resource use the standard `make <ENV> plan | apply` followed by a space separated list of one or more modules:
 
 ```
-$ make <ENV> plan modules="backend.some.resource module.api.some.resource"
+$ make <ENV> plan modules="backend.some.resource api.some.resource"
 $ make <ENV> apply modules="frontend.some.resource"
 ```
 
