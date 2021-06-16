@@ -283,24 +283,18 @@ module "api" {
   user-rr-hostname = var.user-rr-hostname
 
   # There is no read replica for the staging database
-  db-read-replica-hostname           = ""
-  rack-env                           = "staging"
-  radius-server-ips                  = split(",", var.frontend-radius-IPs)
-  authentication-sentry-dsn          = var.auth-sentry-dsn
-  safe-restart-sentry-dsn            = ""
-  user-signup-sentry-dsn             = ""
-  logging-sentry-dsn                 = ""
-  shared-key                         = ""
-  performance-url                    = ""
-  performance-dataset                = ""
-  performance-bearer-volumetrics     = ""
-  performance-bearer-completion-rate = ""
-  performance-bearer-active-users    = ""
-  performance-bearer-unique-users    = ""
-  subnet-ids                         = module.backend.backend-subnet-ids
-  ecs-instance-profile-id            = module.backend.ecs-instance-profile-id
-  ecs-service-role                   = module.backend.ecs-service-role
-  admin-bucket-name                  = ""
+  db-read-replica-hostname  = ""
+  rack-env                  = "staging"
+  radius-server-ips         = split(",", var.frontend-radius-IPs)
+  authentication-sentry-dsn = var.auth-sentry-dsn
+  safe-restart-sentry-dsn   = ""
+  user-signup-sentry-dsn    = ""
+  logging-sentry-dsn        = ""
+  shared-key                = ""
+  subnet-ids                = module.backend.backend-subnet-ids
+  ecs-instance-profile-id   = module.backend.ecs-instance-profile-id
+  ecs-service-role          = module.backend.ecs-service-role
+  admin-bucket-name         = ""
 
   elb-sg-list = []
 
