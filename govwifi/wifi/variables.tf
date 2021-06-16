@@ -60,26 +60,6 @@ variable "ami" {
 
 # Secrets
 
-variable "aws-account-id" {
-  type        = string
-  description = "The ID of the AWS tenancy."
-}
-
-variable "aws-parent-account-id" {
-  type        = string
-  description = "The ID of the AWS parent account."
-}
-
-variable "docker-image-path" {
-  type        = string
-  description = "ARN used to identify the common path element used for the docker image repositories."
-}
-
-variable "route53-zone-id" {
-  type        = string
-  description = "Zone ID used by the Route53 DNS service."
-}
-
 variable "user-signup-sentry-dsn" {
   type    = string
   default = ""
