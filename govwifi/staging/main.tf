@@ -291,12 +291,6 @@ module "api" {
   user-signup-sentry-dsn             = ""
   logging-sentry-dsn                 = ""
   shared-key                         = ""
-  performance-url                    = ""
-  performance-dataset                = ""
-  performance-bearer-volumetrics     = ""
-  performance-bearer-completion-rate = ""
-  performance-bearer-active-users    = ""
-  performance-bearer-unique-users    = ""
   subnet-ids                         = module.backend.backend-subnet-ids
   ecs-instance-profile-id            = module.backend.ecs-instance-profile-id
   ecs-service-role                   = module.backend.ecs-service-role
