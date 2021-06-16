@@ -110,7 +110,6 @@ module "backend" {
 
   critical-notifications-arn = module.critical-notifications.topic-arn
   capacity-notifications-arn = module.capacity-notifications.topic-arn
-  rds-kms-key-id             = var.rds-kms-key-id
   user-replica-source-db     = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-production-user-db"
 
   # Seconds. Set to zero to disable monitoring
