@@ -70,22 +70,10 @@ variable "safe-restart-sentry-dsn" {
   default = ""
 }
 
-variable "user-db-username" {
-}
-
-variable "user-db-password" {
-}
-
 variable "user-db-hostname" {
 }
 
 variable "user-rr-hostname" {
-}
-
-variable "db-user" {
-}
-
-variable "db-password" {
 }
 
 variable "db-hostname" {
@@ -108,9 +96,6 @@ variable "user-signup-sentry-dsn" {
 }
 
 variable "logging-sentry-dsn" {
-}
-
-variable "shared-key" {
 }
 
 variable "elb-sg-list" {
@@ -164,11 +149,6 @@ variable "safe-restart-docker-image" {
 variable "backup-rds-to-s3-docker-image" {
 }
 
-variable "notify-api-key" {
-  default     = ""
-  description = "API key used to authenticate with GOV.UK Notify"
-}
-
 variable "ecr-repository-count" {
   default     = 0
   description = "Whether or not to create ECR repository"
@@ -212,11 +192,6 @@ variable "firetext-token" {
   default = ""
 }
 
-variable "govnotify-bearer-token" {
-  type    = string
-  default = ""
-}
-
 variable "user-signup-api-is-public" {
   default = 0
 }
@@ -225,12 +200,6 @@ variable "metrics-bucket-name" {
   type        = string
   default     = ""
   description = "Name of the S3 bucket to write metrics into"
-}
-
-variable "volumetrics-elasticsearch-endpoint" {
-  type        = string
-  default     = ""
-  description = "URL for the ElasticSearch instance endpoint"
 }
 
 variable "use_env_prefix" {

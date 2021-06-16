@@ -61,56 +61,6 @@ variable "ami" {
 
 # Secrets
 
-variable "db-password" {
-  type        = string
-  description = "Database main password"
-}
-
-variable "hc-key" {
-  type        = string
-  description = "Health check process shared secret"
-}
-
-variable "hc-ssid" {
-  type        = string
-  description = "Healt check simulated SSID"
-}
-
-variable "hc-identity" {
-  type        = string
-  description = "Healt check identity"
-}
-
-variable "hc-password" {
-  type        = string
-  description = "Healt check password"
-}
-
-variable "shared-key" {
-  type        = string
-  description = "A random key to be shared between the fronend and backend to retrieve initial client setup."
-}
-
-variable "aws-account-id" {
-  type        = string
-  description = "The ID of the AWS tenancy."
-}
-
-variable "aws-secondary-account-id" {
-  type        = string
-  description = "The ID the Secondary Staging AWS Account."
-}
-
-variable "docker-image-path" {
-  type        = string
-  description = "ARN used to identify the common path element used for the docker image repositories."
-}
-
-variable "route53-zone-id" {
-  type        = string
-  description = "Zone ID used by the Route53 DNS service."
-}
-
 variable "london-api-base-url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
@@ -127,20 +77,6 @@ variable "user-rr-hostname" {
   type        = string
   description = "User details read replica hostname"
   default     = "users-rr.dublin.staging.wifi.service.gov.uk"
-}
-
-variable "user-db-password" {
-  type        = string
-  description = "User details database main password"
-}
-
-variable "user-db-username" {
-  type        = string
-  description = "Users database username"
-}
-
-variable "rds-kms-key-id" {
-  type = string
 }
 
 variable "auth-sentry-dsn" {
@@ -178,10 +114,6 @@ variable "backend-subnet-IPs-list" {
 }
 
 variable "elb-public-IPs" {
-  description = "Unused in this configuration"
-}
-
-variable "aws-parent-account-id" {
   description = "Unused in this configuration"
 }
 

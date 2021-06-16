@@ -53,10 +53,6 @@ variable "rack-env" {
   description = "E.g. staging"
 }
 
-variable "secret-key-base" {
-  description = "Rails secret key base variable used for the admin platform"
-}
-
 variable "ssh-key-name" {
   description = "SSH key applied to the EC2 instance"
 }
@@ -94,9 +90,6 @@ variable "db-instance-count" {
 variable "admin-db-user" {
 }
 
-variable "admin-db-password" {
-}
-
 variable "db-backup-retention-days" {
 }
 
@@ -125,9 +118,6 @@ variable "db-sg-list" {
 variable "rds-monitoring-role" {
 }
 
-variable "notify-api-key" {
-}
-
 variable "london-radius-ip-addresses" {
   type = list(string)
 }
@@ -142,22 +132,10 @@ variable "sentry-dsn" {
 variable "logging-api-search-url" {
 }
 
-variable "rr-db-user" {
-}
-
-variable "rr-db-password" {
-}
-
 variable "rr-db-host" {
 }
 
 variable "rr-db-name" {
-}
-
-variable "user-db-user" {
-}
-
-variable "user-db-password" {
 }
 
 variable "user-db-host" {
@@ -172,14 +150,7 @@ variable "zendesk-api-endpoint" {
 variable "zendesk-api-user" {
 }
 
-variable "zendesk-api-token" {
-}
-
 variable "public-google-api-key" {
-}
-
-variable "otp-secret-encryption-key" {
-  description = "Encryption key used to verify OTP authentication codes"
 }
 
 variable "bastion-ips" {

@@ -93,7 +93,6 @@ module "backend" {
   db-maintenance-window    = "sat:00:42-sat:01:12"
   db-backup-window         = "03:42-04:42"
   db-backup-retention-days = 1
-  rds-kms-key-id           = var.rds-kms-key-id
 
   db-instance-count        = 0
   session-db-instance-type = ""
@@ -115,10 +114,6 @@ module "backend" {
   db-monitoring-interval = 60
 
   # Passed to application
-  db-user               = ""
-  db-password           = ""
-  user-db-username      = var.user-db-username
-  user-db-password      = var.user-db-password
   user-db-hostname      = ""
   user-db-instance-type = ""
   user-db-storage-gb    = 0
@@ -206,14 +201,6 @@ module "frontend" {
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.dublin-api-base-url
 
-  shared-key = var.shared-key
-
-  # A site with this radkey must exist in the database for health checks to work
-  healthcheck-radius-key = var.hc-key
-  healthcheck-ssid       = var.hc-ssid
-  healthcheck-identity   = var.hc-identity
-  healthcheck-password   = var.hc-password
-
   route53-critical-notifications-arn = module.route53-notifications.topic-arn
   devops-notifications-arn           = module.notifications.topic-arn
 
@@ -273,13 +260,9 @@ module "api" {
 
   background-jobs-enabled = 0
 
-  db-user     = ""
-  db-password = ""
   db-hostname = ""
 
-  user-db-username = var.user-db-username
   user-db-hostname = ""
-  user-db-password = var.user-db-password
   user-rr-hostname = var.user-rr-hostname
 
   # There is no read replica for the staging database
@@ -290,7 +273,6 @@ module "api" {
   safe-restart-sentry-dsn   = ""
   user-signup-sentry-dsn    = ""
   logging-sentry-dsn        = ""
-  shared-key                = ""
   subnet-ids                = module.backend.backend-subnet-ids
   ecs-instance-profile-id   = module.backend.ecs-instance-profile-id
   ecs-service-role          = module.backend.ecs-service-role

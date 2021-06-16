@@ -112,10 +112,6 @@ module "backend" {
   db-monitoring-interval = 60
 
   # Passed to application
-  db-user               = var.db-user
-  db-password           = var.db-password
-  user-db-username      = var.user-db-username
-  user-db-password      = var.user-db-password
   user-db-hostname      = var.user-db-hostname
   user-db-instance-type = "db.t2.small"
   user-db-storage-gb    = 20
@@ -181,14 +177,6 @@ module "frontend" {
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.london-api-base-url
 
-  shared-key = var.shared-key
-
-  # A site with this radkey must exist in the database for health checks to work
-  healthcheck-radius-key = var.hc-key
-  healthcheck-ssid       = var.hc-ssid
-  healthcheck-identity   = var.hc-identity
-  healthcheck-password   = var.hc-password
-
   # This must be based on us-east-1, as that's where the alarms go
   route53-critical-notifications-arn = module.route53-notifications.topic-arn
   devops-notifications-arn           = module.notifications.topic-arn
@@ -229,7 +217,6 @@ module "govwifi-admin" {
 
   admin-docker-image      = format("%s/admin:staging", local.docker_image_path)
   rack-env                = "staging"
-  secret-key-base         = var.admin-secret-key-base
   ecr-repository-count    = 1
   ecs-instance-profile-id = module.backend.ecs-instance-profile-id
   ecs-service-role        = module.backend.ecs-service-role
@@ -240,8 +227,7 @@ module "govwifi-admin" {
 
   ec2-sg-list = []
 
-  admin-db-user     = var.admin-db-username
-  admin-db-password = var.admin-db-password
+  admin-db-user = var.admin-db-username
 
   db-instance-count        = 1
   db-instance-type         = "db.t2.medium"
@@ -252,15 +238,11 @@ module "govwifi-admin" {
   db-backup-window         = "03:42-04:42"
   db-monitoring-interval   = 60
 
-  rr-db-user     = var.db-user
-  rr-db-password = var.db-password
-  rr-db-host     = "db.london.staging.wifi.service.gov.uk"
-  rr-db-name     = "govwifi_staging"
+  rr-db-host = "db.london.staging.wifi.service.gov.uk"
+  rr-db-name = "govwifi_staging"
 
-  user-db-user     = var.user-db-username
-  user-db-password = var.user-db-password
-  user-db-host     = var.user-db-hostname
-  user-db-name     = "govwifi_staging_users"
+  user-db-host = var.user-db-hostname
+  user-db-name = "govwifi_staging_users"
 
   db-sg-list = []
 
@@ -269,18 +251,14 @@ module "govwifi-admin" {
 
   rds-monitoring-role = module.backend.rds-monitoring-role
 
-  notify-api-key             = var.notify-api-key
   london-radius-ip-addresses = var.london-radius-ip-addresses
   dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
   sentry-dsn                 = var.admin-sentry-dsn
   logging-api-search-url     = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
   public-google-api-key      = var.public-google-api-key
 
-  otp-secret-encryption-key = var.otp-secret-encryption-key
-
   zendesk-api-endpoint = "https://govuk.zendesk.com/api/v2/"
   zendesk-api-user     = var.zendesk-api-user
-  zendesk-api-token    = var.zendesk-api-token
 
   bastion-ips = concat(
     split(",", var.bastion-server-IP),
@@ -325,38 +303,31 @@ module "api" {
   safe-restart-docker-image     = format("%s/safe-restarter:staging", local.docker_image_path)
   backup-rds-to-s3-docker-image = format("%s/database-backup:staging", local.docker_image_path)
 
-  notify-api-key          = var.notify-api-key
   wordlist-bucket-count   = 1
   wordlist-file-path      = "../wordlist-short"
   ecr-repository-count    = 1
   background-jobs-enabled = 1
 
-  db-user     = var.db-user
-  db-password = var.db-password
   db-hostname = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
 
-  user-db-username = var.user-db-username
   user-db-hostname = var.user-db-hostname
-  user-db-password = var.user-db-password
+
   user-rr-hostname = var.user-db-hostname
 
   # There is no read replica for the staging database
-  db-read-replica-hostname           = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  rack-env                           = "staging"
-  radius-server-ips                  = split(",", var.frontend-radius-IPs)
-  authentication-sentry-dsn          = var.auth-sentry-dsn
-  safe-restart-sentry-dsn            = var.safe-restart-sentry-dsn
-  user-signup-sentry-dsn             = var.user-signup-sentry-dsn
-  logging-sentry-dsn                 = var.logging-sentry-dsn
-  shared-key                         = var.shared-key
-  subnet-ids                         = module.backend.backend-subnet-ids
-  ecs-instance-profile-id            = module.backend.ecs-instance-profile-id
-  ecs-service-role                   = module.backend.ecs-service-role
-  user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
-  admin-bucket-name                  = "govwifi-staging-admin"
-  govnotify-bearer-token             = var.govnotify-bearer-token
-  user-signup-api-is-public          = 1
-  volumetrics-elasticsearch-endpoint = var.volumetrics-elasticsearch-endpoint
+  db-read-replica-hostname  = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+  rack-env                  = "staging"
+  radius-server-ips         = split(",", var.frontend-radius-IPs)
+  authentication-sentry-dsn = var.auth-sentry-dsn
+  safe-restart-sentry-dsn   = var.safe-restart-sentry-dsn
+  user-signup-sentry-dsn    = var.user-signup-sentry-dsn
+  logging-sentry-dsn        = var.logging-sentry-dsn
+  subnet-ids                = module.backend.backend-subnet-ids
+  ecs-instance-profile-id   = module.backend.ecs-instance-profile-id
+  ecs-service-role          = module.backend.ecs-service-role
+  user-signup-api-base-url  = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
+  admin-bucket-name         = "govwifi-staging-admin"
+  user-signup-api-is-public = 1
 
   elb-sg-list = []
 
@@ -471,11 +442,6 @@ module "govwifi-grafana" {
   )
 
   administrator-IPs = var.administrator-IPs
-
-  google-client-id        = var.google-client-id
-  google-client-secret    = var.google-client-secret
-  grafana-admin           = var.grafana-admin
-  grafana-server-root-url = var.grafana-server-root-url
 
   prometheus-IPs = concat(
     split(",", "${var.prometheus-IP-london}/32"),

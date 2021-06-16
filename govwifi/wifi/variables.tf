@@ -59,60 +59,6 @@ variable "ami" {
 }
 
 # Secrets
-variable "db-user" {
-  type        = string
-  description = "Database username"
-}
-
-variable "db-password" {
-  type        = string
-  description = "Database main password"
-}
-
-variable "hc-key" {
-  type        = string
-  description = "Health check process shared secret"
-}
-
-variable "hc-ssid" {
-  type        = string
-  description = "Healt check simulated SSID"
-}
-
-variable "hc-identity" {
-  type        = string
-  description = "Healt check identity"
-}
-
-variable "hc-password" {
-  type        = string
-  description = "Healt check password"
-}
-
-variable "shared-key" {
-  type        = string
-  description = "A random key to be shared between the fronend and backend to retrieve initial client setup."
-}
-
-variable "aws-account-id" {
-  type        = string
-  description = "The ID of the AWS tenancy."
-}
-
-variable "aws-parent-account-id" {
-  type        = string
-  description = "The ID of the AWS parent account."
-}
-
-variable "docker-image-path" {
-  type        = string
-  description = "ARN used to identify the common path element used for the docker image repositories."
-}
-
-variable "route53-zone-id" {
-  type        = string
-  description = "Zone ID used by the Route53 DNS service."
-}
 
 variable "user-signup-sentry-dsn" {
   type    = string
@@ -152,16 +98,6 @@ variable "dublin-api-base-url" {
   type        = string
   description = "Dublin - base URL for authentication, user signup and logging APIs"
   default     = "https://api-elb.dublin.wifi.service.gov.uk:8443"
-}
-
-variable "user-db-username" {
-  type        = string
-  description = "User details database username"
-}
-
-variable "user-db-password" {
-  type        = string
-  description = "User details database password"
 }
 
 variable "user-db-hostname" {

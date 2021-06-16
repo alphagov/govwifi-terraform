@@ -61,18 +61,6 @@ variable "bastion-server-ip" {
 variable "bastion-ssh-key-name" {
 }
 
-variable "db-user" {
-}
-
-variable "db-password" {
-}
-
-variable "user-db-username" {
-}
-
-variable "user-db-password" {
-}
-
 variable "user-db-hostname" {
 }
 
@@ -149,11 +137,6 @@ variable "save-pp-data" {
 }
 
 variable "pp-domain-name" {
-  default = ""
-}
-
-variable "rds-kms-key-id" {
-  type    = string
   default = ""
 }
 

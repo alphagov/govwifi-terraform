@@ -57,26 +57,6 @@ variable "subnet-ids" {
   type        = list(string)
 }
 
-variable "grafana-admin" {
-  description = "Credential used for Grafana Admin user"
-  type        = string
-}
-
-variable "google-client-secret" {
-  description = "Credential used for Single Sign On"
-  type        = string
-}
-
-variable "google-client-id" {
-  description = "Credential used for Single Sign On"
-  type        = string
-}
-
-variable "grafana-server-root-url" {
-  description = "Grafana Server Root URL"
-  type        = string
-}
-
 variable "administrator-IPs" {
   description = "IPs associated with the GDS/CDIO VPN to allow access"
 }
