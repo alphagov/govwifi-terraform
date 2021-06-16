@@ -114,8 +114,6 @@ module "backend" {
   db-monitoring-interval = 60
 
   # Passed to application
-  db-user               = ""
-  db-password           = ""
   user-db-hostname      = ""
   user-db-instance-type = ""
   user-db-storage-gb    = 0
@@ -262,8 +260,6 @@ module "api" {
 
   background-jobs-enabled = 0
 
-  db-user     = ""
-  db-password = ""
   db-hostname = ""
 
   user-db-hostname = ""
@@ -277,7 +273,6 @@ module "api" {
   safe-restart-sentry-dsn            = ""
   user-signup-sentry-dsn             = ""
   logging-sentry-dsn                 = ""
-  shared-key                         = ""
   subnet-ids                         = module.backend.backend-subnet-ids
   ecs-instance-profile-id            = module.backend.ecs-instance-profile-id
   ecs-service-role                   = module.backend.ecs-service-role
