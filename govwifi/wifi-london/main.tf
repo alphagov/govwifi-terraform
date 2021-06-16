@@ -243,7 +243,7 @@ module "govwifi-admin" {
 
   db-sg-list = []
 
-  admin-db-user     = var.admin-db-username
+  admin-db-user = var.admin-db-username
 
   db-instance-count        = 1
   db-instance-type         = "db.t2.large"
@@ -254,11 +254,11 @@ module "govwifi-admin" {
   db-backup-window         = "03:42-04:42"
   db-monitoring-interval   = 60
 
-  rr-db-host     = "rr.london.wifi.service.gov.uk"
-  rr-db-name     = "govwifi_wifi"
+  rr-db-host = "rr.london.wifi.service.gov.uk"
+  rr-db-name = "govwifi_wifi"
 
-  user-db-host     = var.user-rr-hostname
-  user-db-name     = "govwifi_production_users"
+  user-db-host = var.user-rr-hostname
+  user-db-name = "govwifi_production_users"
 
   critical-notifications-arn = module.critical-notifications.topic-arn
   capacity-notifications-arn = module.capacity-notifications.topic-arn
@@ -317,23 +317,23 @@ module "api" {
   safe-restart-docker-image     = format("%s/safe-restarter:production", local.docker_image_path)
   backup-rds-to-s3-docker-image = format("%s/database-backup:staging", local.docker_image_path)
 
-  db-hostname                        = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  db-read-replica-hostname           = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  rack-env                           = "production"
-  radius-server-ips                  = split(",", var.frontend-radius-IPs)
-  authentication-sentry-dsn          = var.auth-sentry-dsn
-  safe-restart-sentry-dsn            = var.safe-restart-sentry-dsn
-  user-signup-sentry-dsn             = var.user-signup-sentry-dsn
-  logging-sentry-dsn                 = var.logging-sentry-dsn
-  subnet-ids                         = module.backend.backend-subnet-ids
-  ecs-instance-profile-id            = module.backend.ecs-instance-profile-id
-  ecs-service-role                   = module.backend.ecs-service-role
-  user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
-  user-db-hostname                   = var.user-db-hostname
-  user-rr-hostname                   = var.user-rr-hostname
-  admin-bucket-name                  = "govwifi-production-admin"
-  background-jobs-enabled            = 1
-  user-signup-api-is-public          = 1
+  db-hostname               = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+  db-read-replica-hostname  = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+  rack-env                  = "production"
+  radius-server-ips         = split(",", var.frontend-radius-IPs)
+  authentication-sentry-dsn = var.auth-sentry-dsn
+  safe-restart-sentry-dsn   = var.safe-restart-sentry-dsn
+  user-signup-sentry-dsn    = var.user-signup-sentry-dsn
+  logging-sentry-dsn        = var.logging-sentry-dsn
+  subnet-ids                = module.backend.backend-subnet-ids
+  ecs-instance-profile-id   = module.backend.ecs-instance-profile-id
+  ecs-service-role          = module.backend.ecs-service-role
+  user-signup-api-base-url  = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
+  user-db-hostname          = var.user-db-hostname
+  user-rr-hostname          = var.user-rr-hostname
+  admin-bucket-name         = "govwifi-production-admin"
+  background-jobs-enabled   = 1
+  user-signup-api-is-public = 1
 
   elb-sg-list = []
 

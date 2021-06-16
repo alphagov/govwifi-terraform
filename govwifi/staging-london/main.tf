@@ -227,7 +227,7 @@ module "govwifi-admin" {
 
   ec2-sg-list = []
 
-  admin-db-user     = var.admin-db-username
+  admin-db-user = var.admin-db-username
 
   db-instance-count        = 1
   db-instance-type         = "db.t2.medium"
@@ -238,11 +238,11 @@ module "govwifi-admin" {
   db-backup-window         = "03:42-04:42"
   db-monitoring-interval   = 60
 
-  rr-db-host     = "db.london.staging.wifi.service.gov.uk"
-  rr-db-name     = "govwifi_staging"
+  rr-db-host = "db.london.staging.wifi.service.gov.uk"
+  rr-db-name = "govwifi_staging"
 
-  user-db-host     = var.user-db-hostname
-  user-db-name     = "govwifi_staging_users"
+  user-db-host = var.user-db-hostname
+  user-db-name = "govwifi_staging_users"
 
   db-sg-list = []
 
@@ -315,19 +315,19 @@ module "api" {
   user-rr-hostname = var.user-db-hostname
 
   # There is no read replica for the staging database
-  db-read-replica-hostname           = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  rack-env                           = "staging"
-  radius-server-ips                  = split(",", var.frontend-radius-IPs)
-  authentication-sentry-dsn          = var.auth-sentry-dsn
-  safe-restart-sentry-dsn            = var.safe-restart-sentry-dsn
-  user-signup-sentry-dsn             = var.user-signup-sentry-dsn
-  logging-sentry-dsn                 = var.logging-sentry-dsn
-  subnet-ids                         = module.backend.backend-subnet-ids
-  ecs-instance-profile-id            = module.backend.ecs-instance-profile-id
-  ecs-service-role                   = module.backend.ecs-service-role
-  user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
-  admin-bucket-name                  = "govwifi-staging-admin"
-  user-signup-api-is-public          = 1
+  db-read-replica-hostname  = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+  rack-env                  = "staging"
+  radius-server-ips         = split(",", var.frontend-radius-IPs)
+  authentication-sentry-dsn = var.auth-sentry-dsn
+  safe-restart-sentry-dsn   = var.safe-restart-sentry-dsn
+  user-signup-sentry-dsn    = var.user-signup-sentry-dsn
+  logging-sentry-dsn        = var.logging-sentry-dsn
+  subnet-ids                = module.backend.backend-subnet-ids
+  ecs-instance-profile-id   = module.backend.ecs-instance-profile-id
+  ecs-service-role          = module.backend.ecs-service-role
+  user-signup-api-base-url  = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
+  admin-bucket-name         = "govwifi-staging-admin"
+  user-signup-api-is-public = 1
 
   elb-sg-list = []
 
