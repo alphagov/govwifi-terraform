@@ -172,7 +172,7 @@ module "frontend" {
   create-ecr            = 1
 
   # admin bucket
-  admin-bucket-name = "govwifi-staging-admin"
+  admin-bucket-name = "govwifi-staging-temp-admin"
 
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.london-api-base-url
