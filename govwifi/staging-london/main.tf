@@ -449,6 +449,9 @@ module "govwifi-grafana" {
   )
 
   use_env_prefix = var.use_env_prefix
+
+
+  make_validation_fail = "only adding value to staging-london should fail validation"
 }
 
 module "govwifi-elasticsearch" {

@@ -14,5 +14,4 @@ jobs:
           find . -name '*.tf' | xargs tools/terraform-format.sh
       - name: terraform validate
         run: |
-          echo "Running validation"
           terraform validate
