@@ -14,8 +14,5 @@ jobs:
           find . -name '*.tf' | xargs tools/terraform-format.sh
       - name: terraform validate
         run: |
-          brew install tfenv
-          tfenv install $(cat .terraform-version)
-          tfenv use $(cat .terraform-version)
           echo "Running validation"
           terraform validate
