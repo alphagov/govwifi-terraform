@@ -12,4 +12,4 @@ jobs:
           tfenv install $(cat .terraform-version)
           tfenv use $(cat .terraform-version)
           find . -name '*.tf' | xargs tools/terraform-format.sh
-
+          terraform validate
