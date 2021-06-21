@@ -112,10 +112,6 @@ variable "user-rr-hostname" {
   default     = "users-rr.dublin.production.wifi.service.gov.uk"
 }
 
-variable "rds-kms-key-id" {
-  type = string
-}
-
 variable "critical-notification-email" {
   type = string
 }
