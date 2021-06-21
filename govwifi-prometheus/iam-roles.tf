@@ -1,10 +1,10 @@
 resource "aws_iam_instance_profile" "prometheus-instance-profile" {
-  name       = "${var.aws-region}-${var.Env-Name}-prometheus-instance-profile"
-  role       = aws_iam_role.prometheus-instance-role.name
+  name = "${var.aws-region}-${var.Env-Name}-prometheus-instance-profile"
+  role = aws_iam_role.prometheus-instance-role.name
 }
 
 resource "aws_iam_role" "prometheus-instance-role" {
-  name  = "${var.aws-region}-${var.Env-Name}-prometheus-instance-role"
+  name = "${var.aws-region}-${var.Env-Name}-prometheus-instance-role"
   path = "/"
 
   assume_role_policy = <<EOF
@@ -26,8 +26,8 @@ EOF
 }
 
 resource "aws_iam_role_policy" "prometheus-instance-policy" {
-  name       = "${var.aws-region}-${var.Env-Name}-prometheus-instance-policy"
-  role       = aws_iam_role.prometheus-instance-role.id
+  name = "${var.aws-region}-${var.Env-Name}-prometheus-instance-policy"
+  role = aws_iam_role.prometheus-instance-role.id
 
   policy = <<EOF
 {
