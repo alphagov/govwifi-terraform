@@ -55,6 +55,8 @@ make <ENV> init-backend
 make <ENV> plan
 ```
 
+Example ENVs are: wifi, wifi-london, staging and staging-london
+
 ## Running terraform
 
 ```
@@ -64,18 +66,11 @@ make <ENV> apply
 
 ### Running terraform target
 
-Terraform allows for ["resource targeting"](https://www.terraform.io/docs/cli/commands/plan.html#resource-targeting), or running `plan`/`apply` on specific resources. 
+Terraform allows for ["resource targeting"](https://www.terraform.io/docs/cli/commands/plan.html#resource-targeting), or running `plan`/`apply` on specific modules. 
 
 We've incorporated this functionality into our `make` commands. **Note**: this should only be done in exceptional circumstances.
 
-To `plan`/`apply` a specific resource use the standard `make <ENV> plan | apply` followed by a space separated list of one or more modules:
-
-```
-$ make <ENV> plan modules="backend.some.resource api.some.resource"
-$ make <ENV> apply modules="frontend.some.resource"
-```
-
-To retrieve the module name, run a `plan` and copy the module name from the Terraform output:
+To retrieve a module name, run a `terraform plan` and copy the module name (EXCLUDING "module.") from the Terraform output:
 
 ```bash
 $ make staging plan
@@ -91,11 +86,47 @@ Terraform will perform the following actions:
 ...
 ```
 
+In this case, the module name would be `api.aws_iam_role_policy.some_policy`
+
+To `plan`/`apply` a specific resource use the standard `make <ENV> plan | apply` followed by a space separated list of one or more modules:
+
+```
+$ make <ENV> plan modules="backend.some.resource api.some.resource"
+$ make <ENV> apply modules="frontend.some.resource"
+```
+
 If combining other Terraform commands (e.g., `-var` or `-replace`) with targeting a resource, use the `terraform_target` command:
 
 ```bash
 $ make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
 ```
+
+#### Deriving module names
+
+You can also derive the `module` by combining elements from the module declaration, the AWS resource type, and the resource name.
+
+Module names are made up of four main parts: `module` (default AWS naming convention), `module name` (found in `govwifi/*/main.tf` files), the AWS resource type, and the AWS resource name.
+
+Modules are declared in `main.tf`, like this example from `govwifi/staging/main.tf`:
+
+```text
+module "backend" {
+    // A bunch of variables being set
+}
+```
+
+For example, to derive the bastion instance module name:
+
+1. Find where the instance resource is declared (in this case `govwifi-backend/management.tf`).
+2. Note the resource type for that component (`aws_instance`) and the resource name (`management`) in `govwifi-backend/management.tf`. 
+3. Find where the module is declared in `govwifi/*/main.tf`; typically the module name matches the name of the directory where the resource is declared minus the `govwifi` prefix. So for `govwifi-backend`, there's a module declaration for `backend` in each of the `main.tf` files in `govwifi/*`.
+4. Build the `module` using the components: `module`, `backend`, `aws_instance`, `management`.
+
+It should look like this, `module.backend.aws_instance.management`:
+
+| AWS default | module declaration name | AWS resource type | AWS resource name | 
+| :----: | :----: | :----: | :----: |
+| module  | backend | aws_instance | management |
 
 ## Bootstrapping terraform
 
