@@ -55,6 +55,8 @@ make <ENV> init-backend
 make <ENV> plan
 ```
 
+Example ENVs are: wifi, wifi-london, staging & staging-london
+
 ## Running terraform
 
 ```
@@ -64,18 +66,11 @@ make <ENV> apply
 
 ### Running terraform target
 
-Terraform allows for ["resource targeting"](https://www.terraform.io/docs/cli/commands/plan.html#resource-targeting), or running `plan`/`apply` on specific resources. 
+Terraform allows for ["resource targeting"](https://www.terraform.io/docs/cli/commands/plan.html#resource-targeting), or running `plan`/`apply` on specific modules. 
 
 We've incorporated this functionality into our `make` commands. **Note**: this should only be done in exceptional circumstances.
 
-To `plan`/`apply` a specific resource use the standard `make <ENV> plan | apply` followed by a space separated list of one or more modules:
-
-```
-$ make <ENV> plan modules="backend.some.resource api.some.resource"
-$ make <ENV> apply modules="frontend.some.resource"
-```
-
-To retrieve the module name, run a `plan` and copy the module name from the Terraform output:
+To retrieve a module name, run a `terraform plan` and copy the module name (EXCLUDING "module.") from the Terraform output:
 
 ```bash
 $ make staging plan
@@ -89,6 +84,15 @@ Terraform will perform the following actions:
 
   # module.api.aws_iam_role_policy.some_policy  <-- module name
 ...
+```
+
+In this case, the module name would be `api.aws_iam_role_policy.some_policy`
+
+To `plan`/`apply` a specific resource use the standard `make <ENV> plan | apply` followed by a space separated list of one or more modules:
+
+```
+$ make <ENV> plan modules="backend.some.resource api.some.resource"
+$ make <ENV> apply modules="frontend.some.resource"
 ```
 
 If combining other Terraform commands (e.g., `-var` or `-replace`) with targeting a resource, use the `terraform_target` command:
