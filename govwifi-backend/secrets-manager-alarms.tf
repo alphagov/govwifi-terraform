@@ -15,5 +15,5 @@ EOF
 resource "aws_cloudwatch_event_target" "secretmanager_putsecretvalue_sns" {
   rule      = aws_cloudwatch_event_rule.secretmanager_putsecretvalue_rule[0].name
   target_id = "SendToSNS"
-  arn       = aws_sns_topic.govwifi-wifi-critical.arn
+  arn       = var.critical-notifications-arn
 }
