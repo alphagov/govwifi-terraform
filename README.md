@@ -55,7 +55,7 @@ make <ENV> init-backend
 make <ENV> plan
 ```
 
-Example ENVs are: wifi, wifi-london, staging & staging-london
+Example ENVs are: wifi, wifi-london, staging and staging-london
 
 ## Running terraform
 
@@ -100,6 +100,33 @@ If combining other Terraform commands (e.g., `-var` or `-replace`) with targetin
 ```bash
 $ make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
 ```
+
+**Note**
+
+You can also derive the `module` by combining elements from the module declaration name in `main.tf` files, the AWS resource type, and the resource name.
+
+Modules are made up of four main parts: `module` (default AWS naming convention), `module name` (found in `govwifi/*/main.tf` files), the AWS resource type, and the AWS resource name.
+
+Modules are declared in `main.tf`, like this example from `govwifi/staging/main.tf`, line 49:
+
+```text
+module "backend" {
+    // A bunch of variables being set
+}
+```
+
+For example, to derive the bastion instance module:
+
+1. Find where the instance resource is declared (in this case `govwifi-backend/management.tf`).
+2. Note the resource type for that component (`aws_instance`) and the resource name (`management`) on line 2 in `govwifi-backend/management.tf`. 
+3. Find where the module is declared in `govwifi/*/main.tf`, typically the module name matches the name of the directory where the resource is declared minus the `govwifi` prefix. So for `govwifi-backend`, there's a module declaration for `backend` in each of the `main.tf` files in `govwifi/*`.
+4. Build the `module` using the components: `module`, `backend`, `aws_instance`, `management`.
+
+It should look like `module.backend.aws_instance.management`:
+
+| `module` | module name | AWS resource type | AWS resource name | 
+| :----: | :----: | :----: | :----: |
+| module  | backend | aws_instance | management |
 
 ## Bootstrapping terraform
 
