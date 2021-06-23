@@ -124,7 +124,7 @@ For example, to derive the bastion instance module name:
 
 It should look like this, `module.backend.aws_instance.management`:
 
-| AWS default | module name | AWS resource type | AWS resource name | 
+| AWS default | module declaration name | AWS resource type | AWS resource name | 
 | :----: | :----: | :----: | :----: |
 | module  | backend | aws_instance | management |
 
