@@ -101,7 +101,7 @@ If combining other Terraform commands (e.g., `-var` or `-replace`) with targetin
 $ make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
 ```
 
-**Note**
+#### Deriving module names
 
 You can also derive the `module` by combining elements from the module declaration, the AWS resource type, and the resource name.
 
