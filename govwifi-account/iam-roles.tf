@@ -3098,13 +3098,6 @@ resource "aws_iam_role_policy" "London-staging-backend-bastion-instance-role_Lon
       "Resource": [
         "arn:aws:logs:*:*:*"
       ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject"
-      ],
-      "Resource": "arn:aws:s3:::staging-london-pp-data/*"
     }
   ]
 }
@@ -3169,13 +3162,6 @@ resource "aws_iam_role_policy" "London-wifi-backend-bastion-instance-role_London
       "Resource": [
         "arn:aws:logs:*:*:*"
       ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject"
-      ],
-      "Resource": "arn:aws:s3:::wifi-london-pp-data/*"
     }
   ]
 }

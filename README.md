@@ -10,12 +10,6 @@ This repository contains instructions on how to build GovWifi end-to-end - the s
 - [Running terraform](#running-terraform)
 - [Bootstrapping terraform](#bootstrapping-terraform)
 - [Rotating ELB Certificates](#rotating-ELB-certificates)
-- [Performance Testing](#performance-testing)
-  - [Infrastructure](#infrastructure)
-  - [Testing](#testing)
-    - [Caveat](#caveat)
-  - [Testing scripts](#testing-scripts)
-  - [Running the tests](#running-the-tests)
 
 ## Overview
 Our public-facing websites are:
