@@ -179,7 +179,7 @@ EOF
 # Steps required are install pre-reqs for python 3.5.n, install & build python 3.5 cos awslogs script only supports python < 3.5
 
 PYTHON_MAIN_VERSION=3.5
-PYTHON_VERSION=$PYTHON_MAIN_VERSION.9
+PYTHON_VERSION=$PYTHON_MAIN_VERSION.10
 
 function run-until-success() {
   until $*
