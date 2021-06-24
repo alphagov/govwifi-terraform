@@ -142,13 +142,37 @@ log_stream_name = {instance_id}
 EOF
 
 # Install awslogs
-# The install script requires the issue file to start with the string "Ubuntu"
-sudo echo "Ubuntu Linux 20.04 LTS - Authorized uses only. All activity may be monitored and reported. \d \t @ \n" > /etc/issue
-# Retrieve and run the install script
-curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
-# Try to circumvent pip install error with waiting for 10 seconds.
-sleep 10
-sudo python3 ./awslogs-agent-setup.py -n -r ${var.aws-region} -c ./initial-awslogs.conf
+# Steps required are install pre-reqs for python 3.5.n, install & build python 3.5 cos awslogs script only supports python < 3.5
+
+PYTHON_MAIN_VERSION=3.5
+PYTHON_VERSION=$PYTHON_MAIN_VERSION.10
+
+function run-until-success() {
+  until $*
+  do
+    logger "Executing $* failed. Sleeping..."
+    sleep 5
+  done
+}
+
+# Install python $PYTHON_VERSION prerequisites
+run-until-success sudo apt-get install --yes build-essential checkinstall
+run-until-success sudo apt-get install --yes libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
+
+# Install python $PYTHON_VERSION source
+cd /usr/src
+run-until-success sudo wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz
+sudo tar xzf Python-$PYTHON_VERSION.tgz
+
+# Build python
+cd Python-$PYTHON_VERSION/
+sudo ./configure --enable-optimizations
+sudo make altinstall
+
+# Retrieve and run awslogs install script
+cd /
+run-until-success sudo curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
+sudo python$PYTHON_MAIN_VERSION ./awslogs-agent-setup.py -n -r ${var.aws-region} -c ./initial-awslogs.conf
 
 --==BOUNDARY==--
 DATA
