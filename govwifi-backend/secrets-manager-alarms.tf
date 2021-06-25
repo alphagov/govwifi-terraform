@@ -2,7 +2,7 @@
 resource "aws_cloudwatch_event_rule" "secretmanager_putsecretvalue_rule" {
   count       = 1
   name        = "${var.env}-PutSecretValue-Alarm"
-  description = "This metric monitors any Secrets in SecretManager that have been written (new or update)"
+  description = "Monitor when a user creates a new version of the secret with new encrypted data."
 
   event_pattern = <<EOF
 {
