@@ -60,3 +60,37 @@ resource "aws_s3_bucket" "cloudtrail_management" {
     mfa_delete = false
   }
 }
+
+resource "aws_s3_bucket_policy" "cloudtrail_management_policy" {
+  bucket = "aws-cloudtrail-logs-${var.aws-account-id}-management-events"
+  policy = jsonencode(
+  {
+    Statement = [
+      {
+        Action    = "s3:GetBucketAcl"
+        Effect    = "Allow"
+        Principal = {
+          Service = "cloudtrail.amazonaws.com"
+        }
+        Resource  = "arn:aws:s3:::aws-cloudtrail-logs-${var.aws-account-id}-management-events"
+        Sid       = "AWSCloudTrailAclCheck20150319"
+      },
+      {
+        Action    = "s3:PutObject"
+        Condition = {
+          StringEquals = {
+            "s3:x-amz-acl" = "bucket-owner-full-control"
+          }
+        }
+        Effect    = "Allow"
+        Principal = {
+          Service = "cloudtrail.amazonaws.com"
+        }
+        Resource  = "arn:aws:s3:::aws-cloudtrail-logs-${var.aws-account-id}-management-events/AWSLogs/788375279931/*"
+        Sid       = "AWSCloudTrailWrite20150319"
+      },
+    ]
+    Version   = "2012-10-17"
+  }
+  )
+}
