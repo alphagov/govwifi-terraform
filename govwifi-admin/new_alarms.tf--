@@ -1,3 +1,6 @@
+# These alerts were created in the console and will need to be imported using Terraform.
+# A few will also need descriptions
+
 resource "aws_cloudwatch_metric_alarm" "EAP-Outer-and-inner-identities-are-the-same" {
     alarm_name          = "EAP Outer and inner identities are the same"
     comparison_operator = "GreaterThanOrEqualToThreshold"
