@@ -97,9 +97,6 @@ variable "db-read-replica-hostname" {
 variable "rack-env" {
 }
 
-variable "rack-env-task" {
-}
-
 variable "performance-url" {
   default = ""
 }
