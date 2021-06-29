@@ -114,7 +114,7 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
           "value": "${var.user-db-hostname}"
         },{
           "name": "RACK_ENV",
-          "value": "${var.rack-env-task}"
+          "value": "${var.rack-env}"
         },{
           "name": "SENTRY_DSN",
           "value": "${var.user-signup-sentry-dsn}"

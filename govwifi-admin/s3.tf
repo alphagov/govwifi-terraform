@@ -1,13 +1,13 @@
 resource "aws_s3_bucket" "admin-bucket" {
   count         = 1
-  bucket        = "govwifi-staging-temp-admin"
+  bucket        = "govwifi-${var.Env-Subdomain}-admin"
   force_destroy = true
   acl           = "private"
 
   tags = {
     Name        = "${title(var.Env-Name)} Admin data"
-    Region      = "${title(var.aws-region-name)}"
-    Environment = "Staging-temp"
+    Region      = title(var.aws-region-name)
+    Environment = title(var.rack-env)
   }
 
   versioning {
@@ -17,7 +17,7 @@ resource "aws_s3_bucket" "admin-bucket" {
 
 resource "aws_s3_bucket" "product-page-data-bucket" {
   count         = 1
-  bucket        = "govwifi-${var.rack-env}-product-page-data"
+  bucket        = "govwifi-${var.Env-Subdomain}-product-page-data"
   force_destroy = true
   acl           = "public-read"
 
@@ -34,7 +34,7 @@ resource "aws_s3_bucket" "product-page-data-bucket" {
 
 resource "aws_s3_bucket" "admin-mou-bucket" {
   count         = 1
-  bucket        = "govwifi-${var.rack-env}-admin-mou"
+  bucket        = "govwifi-${var.Env-Subdomain}-admin-mou"
   force_destroy = true
   acl           = "private"
 
@@ -62,7 +62,7 @@ resource "aws_s3_bucket_policy" "admin-bucket-policy" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::govwifi-${var.rack-env}-admin/clients.conf",
+      "Resource": "arn:aws:s3:::govwifi-${var.Env-Subdomain}-admin/clients.conf",
       "Condition": {
         "IpAddress": {
           "aws:SourceIp": [
@@ -102,7 +102,7 @@ resource "aws_s3_bucket_policy" "product-page-data-bucket-policy" {
                 "s3:GetObject",
                 "s3:GetObjectVersion"
             ],
-            "Resource": "arn:aws:s3:::govwifi-${var.rack-env}-product-page-data/*"
+            "Resource": "arn:aws:s3:::govwifi-${var.Env-Subdomain}-product-page-data/*"
         },
         {
             "Sid": "Get Product Page Data For Bucket",
@@ -113,7 +113,7 @@ resource "aws_s3_bucket_policy" "product-page-data-bucket-policy" {
                 "s3:ListBucket",
                 "s3:ListBucketVersions"
             ],
-            "Resource": "arn:aws:s3:::govwifi-${var.rack-env}-product-page-data"
+            "Resource": "arn:aws:s3:::govwifi-${var.Env-Subdomain}-product-page-data"
         }
     ]
 }

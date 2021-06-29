@@ -147,7 +147,7 @@ module "frontend" {
   vpc-cidr-block  = "10.102.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
-  rack-env        = "staging-t"
+  rack-env        = "staging"
 
   zone-subnets = {
     zone0 = "10.102.1.0/24"
@@ -172,7 +172,7 @@ module "frontend" {
   create-ecr            = 1
 
   # admin bucket
-  admin-bucket-name = "govwifi-staging-temp-admin"
+  admin-bucket-name = "govwifi-staging-temp.wifi-admin"
 
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.london-api-base-url
@@ -222,8 +222,7 @@ module "govwifi-admin" {
   min-size        = 1
 
   admin-docker-image      = "${format("%s/admin:staging", var.docker-image-path)}"
-  rack-env                = "staging-temp"
-  rack-env-task           = "staging"
+  rack-env                = "staging"
   secret-key-base         = "${var.admin-secret-key-base}"
   ecr-repository-count    = 1
   ecs-instance-profile-id = "${module.backend.ecs-instance-profile-id}"
@@ -289,7 +288,7 @@ module "api" {
   }
 
   source        = "../../govwifi-api"
-  env           = "staging-temp"
+  env           = "staging"
   Env-Name      = "${var.Stage-Name}"
   Env-Subdomain = "${var.Env-Subdomain}"
 
@@ -333,8 +332,7 @@ module "api" {
 
   # There is no read replica for the staging database
   db-read-replica-hostname           = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  rack-env                           = "staging-temp"
-  rack-env-task                      = "staging"
+  rack-env                           = "staging"
   radius-server-ips                  = "${split(",", var.frontend-radius-IPs)}"
   authentication-sentry-dsn          = "${var.auth-sentry-dsn}"
   safe-restart-sentry-dsn            = "${var.safe-restart-sentry-dsn}"
@@ -351,7 +349,7 @@ module "api" {
   ecs-instance-profile-id            = "${module.backend.ecs-instance-profile-id}"
   ecs-service-role                   = "${module.backend.ecs-service-role}"
   user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
-  admin-bucket-name                  = "govwifi-staging-temp-admin"
+  admin-bucket-name                  = "govwifi-staging-temp.wifi-admin"
   govnotify-bearer-token             = "${var.govnotify-bearer-token}"
   user-signup-api-is-public          = 1
 
@@ -393,5 +391,5 @@ module "govwifi-datasync" {
   source = "../../govwifi-datasync"
 
   aws-region = var.aws-region
-  rack-env        = "staging-temp"
+  rack-env        = "staging"
 }

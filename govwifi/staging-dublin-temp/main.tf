@@ -181,7 +181,7 @@ module "frontend" {
   vpc-cidr-block  = "10.105.0.0/16"
   zone-count      = "${var.zone-count}"
   zone-names      = "${var.zone-names}"
-  rack-env        = "staging-t"
+  rack-env        = "staging"
 
   zone-subnets = {
     zone0 = "10.105.1.0/24"
@@ -205,7 +205,7 @@ module "frontend" {
   raddb-docker-image    = "${format("%s/raddb:staging", var.docker-image-path)}"
 
   # admin bucket
-  admin-bucket-name = "govwifi-staging-temp-admin"
+  admin-bucket-name = "govwifi-staging-temp.wifi-admin"
 
   logging-api-base-url = "${var.london-api-base-url}"
   auth-api-base-url    = "${var.dublin-api-base-url}"
@@ -240,7 +240,7 @@ module "api" {
   }
 
   source        = "../../govwifi-api"
-  env           = "staging-temp"
+  env           = "staging"
   Env-Name      = "${var.Stage-Name}"
   Env-Subdomain = "${var.Env-Subdomain}"
 
@@ -285,7 +285,7 @@ module "api" {
 
   # There is no read replica for the staging database
   db-read-replica-hostname           = ""
-  rack-env                           = "staging-temp"
+  rack-env                           = "staging"
   radius-server-ips                  = "${split(",", var.frontend-radius-IPs)}"
   authentication-sentry-dsn          = "${var.auth-sentry-dsn}"
   safe-restart-sentry-dsn            = ""
