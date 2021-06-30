@@ -104,7 +104,7 @@ module "backend" {
   bastion-ami                = "ami-096cb92bb3580c759"
   bastion-instance-type      = "t2.micro"
   bastion-server-ip          = var.bastion-server-IP
-  bastion-ssh-key-name       = "govwifi-bastion-key-20181025"
+  bastion-ssh-key-name       = "govwifi-bastion-key-20210630"
   enable-bastion-monitoring  = true
   users                      = var.users
   aws-account-id             = local.aws_account_id
