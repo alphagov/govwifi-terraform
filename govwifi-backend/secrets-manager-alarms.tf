@@ -1,55 +1,38 @@
-#
-// This has been applied in staging
-resource "aws_cloudwatch_event_rule" "secretmanager_putsecretvalue_rule" {
-  count       = 1
-  name        = "${var.env}-PutSecretValue-Alarm"
-  description = "Monitor when a user creates a new version of the secret with new encrypted data."
-
-  event_pattern = <<EOF
-{
-  "EventName": [ "PutSecretValue" ]
-}
-EOF
-
-}
-
-resource "aws_cloudwatch_event_target" "secretmanager_putsecretvalue_sns" {
-  rule      = aws_cloudwatch_event_rule.secretmanager_putsecretvalue_rule[0].name
-  target_id = "SendToSNS"
-  arn       = var.critical-notifications-arn
-}
-
 // TODO: create a CloudWatch alarm for PutSecretValue, DeleteSecret, UpdateSecret, and CreateSecret
 // Click-ops example is AttemptsToAccessDeletedSecretsAlarm which is based on
 // this documentation: https://docs.aws.amazon.com/secretsmanager/latest/userguide/monitoring.html#monitoring_cloudwatch_deleted-secrets_part1
 
-resource "aws_cloudwatch_log_group" "secrets_manager_cloudtrail_log_group" {
-  name = "CloudTrail/MyCloudWatchLogGroup" // TODO: rename
+data "aws_iam_role" "cloudtrail_cloudwatch_logs_role" {
+  name = "CloudTrail_CloudWatchLogs_Role"
 }
 
-// Imported from click-ops resource
-resource "aws_cloudtrail" "secrets_management_events" {
-  cloud_watch_logs_group_arn    = aws_cloudwatch_log_group.secrets_manager_cloudtrail_log_group.arn
-  cloud_watch_logs_role_arn     = "arn:aws:iam::${var.aws-account-id}:role/CloudTrail_CloudWatchLogs_Role"
+resource "aws_cloudtrail" "management-events" {
+  cloud_watch_logs_group_arn    = aws_cloudwatch_log_group.management_events_logs.arn
+  cloud_watch_logs_role_arn     = data.aws_iam_role.cloudtrail_cloudwatch_logs_role.arn
   enable_log_file_validation    = true
   enable_logging                = true
   include_global_service_events = true
   is_multi_region_trail         = true
   is_organization_trail         = false
-  kms_key_id                    = "arn:aws:kms:${var.aws-region}:${var.aws-account-id}:alias/kms-cloudtrail-logs-manangement-events"
-  name                          = "management-events"
-  s3_bucket_name                = aws_s3_bucket.cloudtrail_management.id
+  kms_key_id                    = aws_kms_key.cloudtrail_management_kms_key.arn
+  name                          = "secrets-management-events"
+  s3_bucket_name                = aws_s3_bucket.management-events.id
+  tags                          = {
+    "Service" = "Test"
+  }
 }
 
-
-// Imported from click-ops resource
-resource "aws_s3_bucket" "cloudtrail_management" {
-  bucket = "aws-cloudtrail-logs-${var.aws-account-id}-management-events"
+resource "aws_s3_bucket" "management-events" {
+  bucket                      = "aws-cloudtrail-logs-${var.aws-account-id}-secrets-manangement-events"
+  region                      = var.aws-region
+  request_payer               = "BucketOwner"
+  acl                         = "private"
+  force_destroy               = false
 
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        kms_master_key_id = "arn:aws:kms:${var.aws-region}:${var.aws-account-id}:alias/kms_cloudtrail_logs_manangement_events"
+        kms_master_key_id = aws_kms_key.cloudtrail_management_kms_key.arn
         sse_algorithm     = "aws:kms"
       }
     }
@@ -61,8 +44,9 @@ resource "aws_s3_bucket" "cloudtrail_management" {
   }
 }
 
-resource "aws_s3_bucket_policy" "cloudtrail_management_policy" {
-  bucket = "aws-cloudtrail-logs-${var.aws-account-id}-management-events"
+resource "aws_s3_bucket_policy" "management-events" {
+  bucket = aws_s3_bucket.management-events.id
+
   policy = jsonencode(
   {
     Statement = [
@@ -72,7 +56,7 @@ resource "aws_s3_bucket_policy" "cloudtrail_management_policy" {
         Principal = {
           Service = "cloudtrail.amazonaws.com"
         }
-        Resource  = "arn:aws:s3:::aws-cloudtrail-logs-${var.aws-account-id}-management-events"
+        Resource  = aws_s3_bucket.management-events.arn
         Sid       = "AWSCloudTrailAclCheck20150319"
       },
       {
@@ -86,11 +70,27 @@ resource "aws_s3_bucket_policy" "cloudtrail_management_policy" {
         Principal = {
           Service = "cloudtrail.amazonaws.com"
         }
-        Resource  = "arn:aws:s3:::aws-cloudtrail-logs-${var.aws-account-id}-management-events/AWSLogs/788375279931/*"
+        Resource  = "${aws_s3_bucket.management-events.arn}/AWSLogs/${var.aws-account-id}/*"
         Sid       = "AWSCloudTrailWrite20150319"
       },
     ]
     Version   = "2012-10-17"
-  }
-  )
+  })
+}
+
+resource "aws_cloudwatch_log_group" "management_events_logs" {
+  name              = "aws-cloudtrail-logs-${var.aws-account-id}-secrets-manangement-events"
+  retention_in_days = 0
+}
+
+resource "aws_kms_key" "cloudtrail_management_kms_key" {
+  description         = "The key created by CloudTrail to encrypt log files relating to management events"
+  enable_key_rotation = false
+  is_enabled          = true
+  key_usage           = "ENCRYPT_DECRYPT"
+}
+
+resource "aws_kms_alias" "cloudtrail_management_alias" {
+  name          = "alias/${var.aws-region}-kms-cloudtrail-logs-secrets-manangement-events"
+  target_key_id = aws_kms_key.cloudtrail_management_kms_key.key_id
 }
