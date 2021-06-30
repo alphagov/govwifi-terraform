@@ -1,4 +1,4 @@
-resource "aws_key_pair" "govwifi-bastion-key" {
+resource "aws_key_pair" "govwifi-bastion-key-old" {
   key_name   = "govwifi-bastion-key-20181025"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDbbZuuu+9nqiZelsOQd99jiklZLxWpXgD5mN2M2E3Ej9Uk2g6PE+gZJjHo+xDsmDRW0l+/+YMHVKCFjz9PGd3WrYJ/eMC3QvCtdeHGjN5Py5NSJiShDmTN8SnddLnuKZl0s+9u4jnbGaGiwJyQroXBfuUbdSVCu1HvDDW4R1wBZ4xGxoamgy5LtN8ReJPoECt1Odf2yA2S9wq7S806riFUdN4HEOJNsNYZBhFYlfJ7q3x2s5pEJCydB4gYcvnYImg3uPpGpMjqsTk3493p6p3e2GViUvqVLgNfAE5FARAcgy/jtzwwKJspU1W3eZpURELbRJr0c0nvIKs8A1tFZQm3 bastion@govwifi"
 }
