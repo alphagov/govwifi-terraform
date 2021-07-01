@@ -1,7 +1,3 @@
-// TODO: create a CloudWatch alarm for PutSecretValue, DeleteSecret, UpdateSecret, and CreateSecret
-// Click-ops example is AttemptsToAccessDeletedSecretsAlarm which is based on
-// this documentation: https://docs.aws.amazon.com/secretsmanager/latest/userguide/monitoring.html#monitoring_cloudwatch_deleted-secrets_part1
-
 data "aws_iam_role" "cloudtrail_cloudwatch_logs_role" {
   name = "CloudTrail_CloudWatchLogs_Role"
 }
@@ -93,4 +89,34 @@ resource "aws_kms_key" "cloudtrail_management_kms_key" {
 resource "aws_kms_alias" "cloudtrail_management_alias" {
   name          = "alias/${var.aws-region}-kms-cloudtrail-logs-secrets-manangement-events"
   target_key_id = aws_kms_key.cloudtrail_management_kms_key.key_id
+}
+
+
+// TODO: create a CloudWatch metric filter and alarm for PutSecretValue, DeleteSecret, UpdateSecret, and CreateSecret
+// Test alarms in staging by creating, updating, and deleting test secrets.
+
+resource "aws_cloudwatch_log_metric_filter" "deleted_secrets_filter" {
+  name           = "AttemptToDeleteSecret"
+  pattern        = "{ $.eventName = \"DeleteSecret\" }"
+  log_group_name = aws_cloudwatch_log_group.management_events_logs.name
+
+  metric_transformation {
+    name      = "EventCount"
+    namespace = "CloudTrailLogMetrics"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "secret_deleted_alarm" {
+  alarm_name          = "secret-deleted-alarm"
+  metric_name         = aws_cloudwatch_log_metric_filter.deleted_secrets_filter.name
+  threshold           = "0"
+  statistic           = "Sum"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  datapoints_to_alarm = "1"
+  evaluation_periods  = "1"
+  period              = "60"
+  namespace           = "CloudTrailLogMetrics"
+  alarm_actions       = [var.critical-notifications-arn]
+  alarm_description   = "Testing CloudWatch Metric Filter alarm when a secret gets deleted"
 }
