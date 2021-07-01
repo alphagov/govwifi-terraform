@@ -51,6 +51,8 @@ module "govwifi-keys" {
   }
 
   source = "../../govwifi-keys"
+
+  create_production_bastion_key = 0
 }
 
 # London Backend ==================================================================
