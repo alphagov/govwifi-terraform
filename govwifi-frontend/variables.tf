@@ -64,7 +64,7 @@ variable "enable-detailed-monitoring" {
 }
 
 variable "radiusd-params" {
-  default = "-X"
+  default = "-f"
 }
 
 variable "users" {
