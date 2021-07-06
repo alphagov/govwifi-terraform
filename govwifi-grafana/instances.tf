@@ -32,6 +32,8 @@ resource "aws_instance" "grafana_instance" {
     aws_security_group.grafana-ec2-out.id,
   ]
 
+  iam_instance_profile = aws_iam_instance_profile.grafana-instance-profile.id
+
   tags = {
     Name = "${title(var.Env-Name)} Grafana-Server"
     Env  = title(var.Env-Name)
@@ -67,7 +69,7 @@ data "template_file" "grafana_user_data" {
   template = file("${path.module}/user_data.sh")
 
   vars = {
-    grafana_log_group       = "${var.Env-Name}-grafana-log-group"
+    grafana-log-group       = "${var.Env-Name}-grafana-log-group"
     grafana_admin           = local.grafana-admin
     google_client_secret    = local.google-client-secret
     google_client_id        = local.google-client-id
