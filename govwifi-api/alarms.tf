@@ -33,7 +33,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
   namespace           = "AWS/ECS"
   period              = "300"
   statistic           = "Average"
-  threshold           = "1"
+  threshold           = "0.3"
   datapoints_to_alarm = "1"
 
   dimensions = {
