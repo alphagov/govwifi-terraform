@@ -287,6 +287,8 @@ module "api" {
   ]
 
   use_env_prefix = var.use_env_prefix
+
+  low_cpu_threshold = 0.3
 }
 
 module "notifications" {

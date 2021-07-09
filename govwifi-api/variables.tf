@@ -211,3 +211,8 @@ variable "backup_mysql_rds" {
   default     = false
   type        = bool
 }
+
+variable "low_cpu_threshold" {
+  description = "Low CPU threshold for ECS task alarms. This value is higher (1%) for production but lower (0.3%) for staging and is based on average CPU."
+  type        = number
+}

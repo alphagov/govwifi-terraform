@@ -338,6 +338,8 @@ module "api" {
 
   use_env_prefix   = var.use_env_prefix
   backup_mysql_rds = var.backup_mysql_rds
+
+  low_cpu_threshold = 0.3
 }
 
 module "notifications" {
