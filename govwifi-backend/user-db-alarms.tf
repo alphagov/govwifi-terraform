@@ -38,7 +38,7 @@ resource "aws_cloudwatch_metric_alarm" "user_db_memoryalarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "user_db_storagealarm" {
+resource "aws_cloudwatch_metric_alarm" "user_db_storage_alarm" {
   count               = var.db-instance-count
   alarm_name          = "${var.env}-user-db-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
@@ -47,7 +47,7 @@ resource "aws_cloudwatch_metric_alarm" "user_db_storagealarm" {
   namespace           = "AWS/RDS"
   period              = "60"
   statistic           = "Minimum"
-  threshold           = "32212254720"
+  threshold           = var.db-storage-alarm-threshold
   datapoints_to_alarm = "1"
 
   dimensions = {

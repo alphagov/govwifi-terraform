@@ -122,6 +122,8 @@ module "backend" {
   grafana-IP            = "${var.grafana-IP}/32"
 
   use_env_prefix = var.use_env_prefix
+
+  db-storage-alarm-threshold = 19327342936
 }
 
 # Emails ======================================================================

@@ -38,16 +38,16 @@ resource "aws_cloudwatch_metric_alarm" "db_memoryalarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
+resource "aws_cloudwatch_metric_alarm" "sessions_db_storage_alarm" {
   count               = var.db-instance-count
-  alarm_name          = "${var.Env-Name}-db-storage-alarm"
+  alarm_name          = "${var.Env-Name}-sessions-db-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "FreeStorageSpace"
   namespace           = "AWS/RDS"
   period              = "60"
   statistic           = "Minimum"
-  threshold           = "32212254720"
+  threshold           = var.db-storage-alarm-threshold
 
   dimensions = {
     DBInstanceIdentifier = aws_db_instance.db[0].identifier
