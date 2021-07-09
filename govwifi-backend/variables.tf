@@ -154,3 +154,7 @@ variable "backup_mysql_rds" {
   type        = bool
 }
 
+variable "db-storage-alarm-threshold" {
+  description = "DB storage threshold used for alarms. Value varies based on environment and storage average."
+  type        = number
+}

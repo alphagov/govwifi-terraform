@@ -140,6 +140,8 @@ module "backend" {
 
   use_env_prefix   = var.use_env_prefix
   backup_mysql_rds = var.backup_mysql_rds
+
+  db-storage-alarm-threshold = 32212254720
 }
 
 # London Frontend ======DIFFERENT AWS REGION===================================
