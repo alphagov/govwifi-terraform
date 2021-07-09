@@ -26,7 +26,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-high" {
 
 resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
   count               = var.alarm-count
-  alarm_name          = "${var.Env-Name}-auth-ecs-cpu-alarm-low"
+  alarm_name          = "${var.Env-Name}-downscale-auth-ecs-cpu-low-alarm"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
@@ -41,7 +41,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
     ServiceName = aws_ecs_service.authorisation-api-service.name
   }
 
-  alarm_description = "This alarm tells ECS to scale in based on low CPU usage"
+  alarm_description = "Alarm scales down the number of ECS tasks in the cluster when CPU usage is low"
 
   alarm_actions = [
     aws_appautoscaling_policy.ecs-policy-down.arn,
