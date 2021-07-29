@@ -277,3 +277,9 @@ variable "aws-parent-account-id" {
 variable "govwifi-api-ssl-cert-arn" {
   description = "Unused in this configuration"
 }
+
+variable "gds-slack-workplace-id" {
+}
+
+variable "gds-slack-channel-id" {
+}

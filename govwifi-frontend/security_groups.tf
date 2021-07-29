@@ -173,6 +173,5 @@ resource "aws_security_group" "fe-radius-in" {
 
 data "aws_ip_ranges" "route53_healthcheck" {
   services = ["route53_healthchecks"]
-  regions  = ["eu-west-1", "us-east-1", "us-west-1"]
+  regions  = ["global"]
 }
-
