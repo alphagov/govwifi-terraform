@@ -56,6 +56,9 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{
+          "name": "SENTRY_CURRENT_ENV",
+          "value": "${var.sentry-current-env}"
+        },{
           "name": "SENTRY_DSN",
           "value": "${var.authentication-sentry-dsn}"
         },{

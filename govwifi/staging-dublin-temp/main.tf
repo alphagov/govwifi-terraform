@@ -175,13 +175,14 @@ module "frontend" {
   Env-Subdomain = "${var.Env-Subdomain}"
 
   # AWS VPC setup -----------------------------------------
-  aws-region      = "${var.aws-region}"
-  aws-region-name = "${var.aws-region-name}"
-  route53-zone-id = "${var.route53-zone-id}"
-  vpc-cidr-block  = "10.105.0.0/16"
-  zone-count      = "${var.zone-count}"
-  zone-names      = "${var.zone-names}"
-  rack-env        = "staging"
+  aws-region          = "${var.aws-region}"
+  aws-region-name     = "${var.aws-region-name}"
+  route53-zone-id     = "${var.route53-zone-id}"
+  vpc-cidr-block      = "10.105.0.0/16"
+  zone-count          = "${var.zone-count}"
+  zone-names          = "${var.zone-names}"
+  rack-env            = "staging"
+  sentry-current-env  = "secondary-staging"
 
   zone-subnets = {
     zone0 = "10.105.1.0/24"
@@ -286,6 +287,7 @@ module "api" {
   # There is no read replica for the staging database
   db-read-replica-hostname           = ""
   rack-env                           = "staging"
+  sentry-current-env                 = "secondary-staging"
   radius-server-ips                  = "${split(",", var.frontend-radius-IPs)}"
   authentication-sentry-dsn          = "${var.auth-sentry-dsn}"
   safe-restart-sentry-dsn            = ""

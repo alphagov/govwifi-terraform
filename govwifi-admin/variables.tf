@@ -53,6 +53,10 @@ variable "rack-env" {
   description = "E.g. staging"
 }
 
+variable "sentry-current-env" {
+  description = "The environment that Sentry will log errors to: e.g. staging"
+}
+
 variable "secret-key-base" {
   description = "Rails secret key base variable used for the admin platform"
 }

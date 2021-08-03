@@ -103,6 +103,9 @@ resource "aws_ecs_task_definition" "radius-task" {
       },{
         "name": "RACK_ENV",
         "value": "${var.rack-env}"
+      },{
+        "name": "SENTRY_CURRENT_ENV",
+        "value": "${var.sentry-current-env}"
       }
     ],
     "image": "${var.frontend-docker-image}",

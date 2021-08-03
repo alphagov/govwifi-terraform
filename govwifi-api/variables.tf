@@ -97,6 +97,9 @@ variable "db-read-replica-hostname" {
 variable "rack-env" {
 }
 
+variable "sentry-current-env" {
+}
+
 variable "performance-url" {
   default = ""
 }

@@ -309,6 +309,9 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{
+          "name": "SENTRY_CURRENT_ENV",
+          "value": "${var.sentry-current-env}"
+        },{
           "name": "SENTRY_DSN",
           "value": "${var.logging-sentry-dsn}"
         },{
@@ -364,4 +367,3 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
 EOF
 
 }
-
