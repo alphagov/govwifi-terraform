@@ -45,6 +45,9 @@ resource "aws_ecs_task_definition" "admin-task" {
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{
+          "name": "SENTRY_CURRENT_ENV",
+          "value": "${var.sentry-current-env}"
+        },{
           "name": "RAILS_LOG_TO_STDOUT",
           "value": "1"
         },{
@@ -215,4 +218,3 @@ resource "aws_alb_target_group" "admin-tg" {
     create_before_destroy = true
   }
 }
-

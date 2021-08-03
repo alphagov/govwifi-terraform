@@ -85,6 +85,9 @@ variable "db-read-replica-hostname" {
 variable "rack-env" {
 }
 
+variable "sentry-current-env" {
+}
+
 variable "radius-server-ips" {
   type = list(string)
 }

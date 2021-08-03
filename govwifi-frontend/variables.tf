@@ -75,6 +75,10 @@ variable "rack-env" {
   default = ""
 }
 
+variable "sentry-current-env" {
+  description = "The environment that Sentry will log errors to: e.g. staging"
+}
+
 variable "create-ecr" {
   description = "Whether or not to create ECR repository"
   default     = 0

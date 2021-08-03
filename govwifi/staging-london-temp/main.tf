@@ -142,12 +142,13 @@ module "frontend" {
   # LONDON
   aws-region = var.aws-region
 
-  aws-region-name = var.aws-region-name
-  route53-zone-id = var.route53-zone-id
-  vpc-cidr-block  = "10.102.0.0/16"
-  zone-count      = var.zone-count
-  zone-names      = var.zone-names
-  rack-env        = "staging"
+  aws-region-name     = var.aws-region-name
+  route53-zone-id     = var.route53-zone-id
+  vpc-cidr-block      = "10.102.0.0/16"
+  zone-count          = var.zone-count
+  zone-names          = var.zone-names
+  rack-env            = "staging"
+  sentry-current-env  = "secondary-staging"
 
   zone-subnets = {
     zone0 = "10.102.1.0/24"
@@ -223,6 +224,7 @@ module "govwifi-admin" {
 
   admin-docker-image      = "${format("%s/admin:staging", var.docker-image-path)}"
   rack-env                = "staging"
+  sentry-current-env      = "secondary-staging"
   secret-key-base         = "${var.admin-secret-key-base}"
   ecr-repository-count    = 1
   ecs-instance-profile-id = "${module.backend.ecs-instance-profile-id}"
@@ -333,6 +335,7 @@ module "api" {
   # There is no read replica for the staging database
   db-read-replica-hostname           = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                           = "staging"
+  sentry-current-env                 = "secondary-staging"
   radius-server-ips                  = "${split(",", var.frontend-radius-IPs)}"
   authentication-sentry-dsn          = "${var.auth-sentry-dsn}"
   safe-restart-sentry-dsn            = "${var.safe-restart-sentry-dsn}"

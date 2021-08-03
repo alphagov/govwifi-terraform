@@ -105,8 +105,11 @@ resource "aws_ecs_task_definition" "radius-task" {
         "name": "HEALTH_CHECK_RADIUS_KEY",
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:key::"
       },{
-        "name": "HEALTH_CHECK_SSID",
-        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:ssid::"
+        "name": "RACK_ENV",
+        "value": "${var.rack-env}"
+      },{
+        "name": "SENTRY_CURRENT_ENV",
+        "value": "${var.sentry-current-env}"
       }
     ],
     "image": "${var.frontend-docker-image}",
