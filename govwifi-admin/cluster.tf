@@ -79,16 +79,16 @@ resource "aws_ecs_task_definition" "admin-task" {
           "value": "${var.sentry-dsn}"
         },{
           "name": "S3_MOU_BUCKET",
-          "value": "govwifi-${var.rack-env}-admin-mou"
+          "value": "govwifi-${var.Env-Subdomain}-admin-mou"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
-          "value": "govwifi-${var.rack-env}-admin"
+          "value": "govwifi-${var.Env-Subdomain}-admin"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
         },{
           "name": "S3_SIGNUP_WHITELIST_BUCKET",
-          "value": "govwifi-${var.rack-env}-admin"
+          "value": "govwifi-${var.Env-Subdomain}-admin"
         },{
           "name": "S3_SIGNUP_WHITELIST_OBJECT_KEY",
           "value": "signup-whitelist.conf"
@@ -97,7 +97,7 @@ resource "aws_ecs_task_definition" "admin-task" {
           "value": "clients.conf"
         },{
           "name": "S3_PRODUCT_PAGE_DATA_BUCKET",
-          "value": "govwifi-${var.rack-env}-product-page-data"
+          "value": "govwifi-${var.Env-Subdomain}-product-page-data"
         },{
           "name": "S3_ORGANISATION_NAMES_OBJECT_KEY",
           "value": "organisations.yml"
