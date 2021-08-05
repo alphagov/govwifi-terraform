@@ -114,19 +114,19 @@ variable "route53-zone-id" {
 variable "london-api-base-url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
-  default     = "https://api-elb.london.staging.wifi.service.gov.uk:8443"
+  default     = "https://api-elb.london.staging-temp.wifi.service.gov.uk:8443"
 }
 
 variable "dublin-api-base-url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
-  default     = "https://api-elb.dublin.staging.wifi.service.gov.uk:8443"
+  default     = "https://api-elb.dublin.staging-temp.wifi.service.gov.uk:8443"
 }
 
 variable "user-rr-hostname" {
   type        = string
   description = "User details read replica hostname"
-  default     = "users-rr.dublin.staging.wifi.service.gov.uk"
+  default     = "users-rr.dublin.staging-temp.wifi.service.gov.uk"
 }
 
 variable "user-db-password" {
