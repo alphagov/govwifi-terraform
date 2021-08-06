@@ -132,7 +132,7 @@ module "backend" {
 # be confirmed by an api. As the app is not yet running the subscription check
 # will fail. This worked on the old account because the subscription configuration
 # was added while the apps were running. COMMENT IN AFTER APPS ARE RUNNING AGAIN
-/*
+
 module "emails" {
   providers = {
     aws = aws.AWS-main
@@ -153,7 +153,6 @@ module "emails" {
   sns-endpoint                       = "https://elb.london.${var.Env-Subdomain}.service.gov.uk/sns/"
   user-signup-notifications-endpoint = "https://user-signup-api.${var.Env-Subdomain}.service.gov.uk:8443/user-signup/email-notification"
 }
-*/
 
 module "govwifi-keys" {
   providers = {
