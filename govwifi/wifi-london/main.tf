@@ -398,6 +398,20 @@ module "route53-critical-notifications" {
   emails     = [var.critical-notification-email]
 }
 
+locals {
+  pagerduty_https_endpoint = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_config.secret_string)["integration-url"]
+}
+
+module "region_pagerduty" {
+  providers = {
+    aws = aws.AWS-main
+  }
+
+  source = "../../govwifi-pagerduty-integration"
+
+  sns_topic_subscription_https_endpoint = local.pagerduty_https_endpoint
+}
+
 module "govwifi-dashboard" {
   providers = {
     aws = aws.AWS-main

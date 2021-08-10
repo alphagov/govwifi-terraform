@@ -357,6 +357,28 @@ module "route53-critical-notifications" {
   emails     = [var.critical-notification-email]
 }
 
+module "region_pagerduty" {
+  providers = {
+    aws = aws.AWS-main
+  }
+
+  source = "../../govwifi-pagerduty-integration"
+
+  sns_topic_subscription_https_endpoint = local.pagerduty_https_endpoint
+}
+
+# This is used for the alarms connected to the Route 53 healthchecks
+# in this region
+module "us_east_1_pagerduty" {
+  providers = {
+    aws = aws.route53-alarms
+  }
+
+  source = "../../govwifi-pagerduty-integration"
+
+  sns_topic_subscription_https_endpoint = local.pagerduty_https_endpoint
+}
+
 module "govwifi-prometheus" {
   providers = {
     aws = aws.AWS-main
