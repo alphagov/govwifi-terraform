@@ -23,6 +23,19 @@ resource "aws_cloudwatch_metric_alarm" "radius-hc" {
   ]
 }
 
+# TODO: This requires a more up to date version of the AWS provider to work
+#
+# https://trello.com/c/Jsis2ZR1/1042-5-upgrade-the-terraform-aws-provider-to-a-more-recent-version
+#
+# resource "aws_cloudwatch_composite_alarm" "all_radius_servers_down" {
+#   provider = aws.route53-alarms
+#   alarm_name = "${var.Env-Name} ${var.aws-region} All Radius servers down"
+
+#   alarm_actions = [var.pagerduty_notification_arn]
+
+#   alarm_rule = join(" AND ", formatlist("ALARM(\"%s\")", aws_cloudwatch_metric_alarm.radius-hc[*].alarm_name))
+# }
+
 resource "aws_cloudwatch_metric_alarm" "radius-latency" {
   provider = aws.route53-alarms
   count    = var.radius-instance-count

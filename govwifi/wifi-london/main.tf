@@ -196,6 +196,7 @@ module "frontend" {
   # This must be based on us-east-1, as that's where the alarms go
   route53-critical-notifications-arn = module.route53-critical-notifications.topic-arn
   devops-notifications-arn           = module.devops-notifications.topic-arn
+  pagerduty_notification_arn         = module.region_pagerduty.topic_arn
 
   # Security groups ---------------------------------------
   radius-instance-sg-ids = []
