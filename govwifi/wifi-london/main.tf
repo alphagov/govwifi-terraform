@@ -264,6 +264,7 @@ module "govwifi-admin" {
 
   critical-notifications-arn = module.critical-notifications.topic-arn
   capacity-notifications-arn = module.capacity-notifications.topic-arn
+  pagerduty_notification_arn = module.region_pagerduty.topic_arn
 
   rds-monitoring-role = module.backend.rds-monitoring-role
 
@@ -312,6 +313,7 @@ module "api" {
   critical-notifications-arn = module.critical-notifications.topic-arn
   capacity-notifications-arn = module.capacity-notifications.topic-arn
   devops-notifications-arn   = module.devops-notifications.topic-arn
+  pagerduty_notification_arn = module.region_pagerduty.topic_arn
 
   auth-docker-image             = format("%s/authorisation-api:production", local.docker_image_path)
   user-signup-docker-image      = format("%s/user-signup-api:production", local.docker_image_path)

@@ -225,6 +225,7 @@ module "frontend" {
 
   route53-critical-notifications-arn = module.route53-critical-notifications.topic-arn
   devops-notifications-arn           = module.devops-notifications.topic-arn
+  pagerduty_notification_arn         = module.us_east_1_pagerduty.topic_arn
 
   # Security groups ---------------------------------------
   radius-instance-sg-ids = []
@@ -275,6 +276,7 @@ module "api" {
   critical-notifications-arn = module.critical-notifications.topic-arn
   capacity-notifications-arn = module.capacity-notifications.topic-arn
   devops-notifications-arn   = module.devops-notifications.topic-arn
+  pagerduty_notification_arn = module.region_pagerduty.topic_arn
 
   auth-docker-image             = format("%s/authorisation-api:production", local.docker_image_path)
   logging-docker-image          = format("%s/logging-api:production", local.docker_image_path)
