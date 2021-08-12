@@ -115,6 +115,10 @@ variable "capacity-notifications-arn" {
 variable "devops-notifications-arn" {
 }
 
+variable "pagerduty_notification_arn" {
+  type = string
+}
+
 variable "users" {
   type = list(string)
 }

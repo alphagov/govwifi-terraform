@@ -196,6 +196,7 @@ module "frontend" {
   # This must be based on us-east-1, as that's where the alarms go
   route53-critical-notifications-arn = module.route53-critical-notifications.topic-arn
   devops-notifications-arn           = module.devops-notifications.topic-arn
+  pagerduty_notification_arn         = module.region_pagerduty.topic_arn
 
   # Security groups ---------------------------------------
   radius-instance-sg-ids = []
@@ -263,6 +264,7 @@ module "govwifi-admin" {
 
   critical-notifications-arn = module.critical-notifications.topic-arn
   capacity-notifications-arn = module.capacity-notifications.topic-arn
+  pagerduty_notification_arn = module.region_pagerduty.topic_arn
 
   rds-monitoring-role = module.backend.rds-monitoring-role
 
@@ -311,6 +313,7 @@ module "api" {
   critical-notifications-arn = module.critical-notifications.topic-arn
   capacity-notifications-arn = module.capacity-notifications.topic-arn
   devops-notifications-arn   = module.devops-notifications.topic-arn
+  pagerduty_notification_arn = module.region_pagerduty.topic_arn
 
   auth-docker-image             = format("%s/authorisation-api:production", local.docker_image_path)
   user-signup-docker-image      = format("%s/user-signup-api:production", local.docker_image_path)
@@ -396,6 +399,20 @@ module "route53-critical-notifications" {
   env-name   = var.Env-Name
   topic-name = "govwifi-wifi-critical-london"
   emails     = [var.critical-notification-email]
+}
+
+locals {
+  pagerduty_https_endpoint = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_config.secret_string)["integration-url"]
+}
+
+module "region_pagerduty" {
+  providers = {
+    aws = aws.AWS-main
+  }
+
+  source = "../../govwifi-pagerduty-integration"
+
+  sns_topic_subscription_https_endpoint = local.pagerduty_https_endpoint
 }
 
 module "govwifi-dashboard" {

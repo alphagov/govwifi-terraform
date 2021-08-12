@@ -21,3 +21,11 @@ data "aws_secretsmanager_secret_version" "route53_zone_id" {
 data "aws_secretsmanager_secret" "route53_zone_id" {
   name = "aws/route53/zone-id"
 }
+
+data "aws_secretsmanager_secret" "pagerduty_config" {
+  name = "pagerduty/config"
+}
+
+data "aws_secretsmanager_secret_version" "pagerduty_config" {
+  secret_id = data.aws_secretsmanager_secret.pagerduty_config.id
+}

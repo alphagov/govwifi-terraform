@@ -50,3 +50,48 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
   treat_missing_data = "breaching"
 }
 
+resource "aws_cloudwatch_metric_alarm" "authentication-api-no-healthy-hosts" {
+  alarm_name          = "${var.Env-Name} authentication API no healthy hosts"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "HealthyHostCount"
+  namespace           = "AWS/ApplicationELB"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "1"
+  datapoints_to_alarm = "1"
+
+  dimensions = {
+    LoadBalancer = aws_lb.api-alb[0].arn_suffix
+  }
+
+  alarm_description = "Detect when there are no healthy API targets"
+
+  alarm_actions = compact([
+    var.pagerduty_notification_arn,
+  ])
+}
+
+resource "aws_cloudwatch_metric_alarm" "user-signup-api-no-healthy-hosts" {
+  count = var.user-signup-enabled
+
+  alarm_name          = "${var.Env-Name} user signup API no healthy hosts"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "HealthyHostCount"
+  namespace           = "AWS/ApplicationELB"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "1"
+  datapoints_to_alarm = "1"
+
+  dimensions = {
+    LoadBalancer = aws_lb.user-signup-api[0].arn_suffix
+  }
+
+  alarm_description = "Detect when there are no healthy user signup API targets"
+
+  alarm_actions = compact([
+    var.pagerduty_notification_arn,
+  ])
+}

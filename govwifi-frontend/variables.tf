@@ -94,6 +94,10 @@ variable "devops-notifications-arn" {
   type = string
 }
 
+variable "pagerduty_notification_arn" {
+  type = string
+}
+
 variable "admin-bucket-name" {
   type = string
 }

@@ -84,6 +84,10 @@ variable "critical-notifications-arn" {
 variable "capacity-notifications-arn" {
 }
 
+variable "pagerduty_notification_arn" {
+  type = string
+}
+
 variable "db-instance-count" {
 }
 

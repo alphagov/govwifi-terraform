@@ -225,6 +225,7 @@ module "frontend" {
 
   route53-critical-notifications-arn = module.route53-critical-notifications.topic-arn
   devops-notifications-arn           = module.devops-notifications.topic-arn
+  pagerduty_notification_arn         = module.us_east_1_pagerduty.topic_arn
 
   # Security groups ---------------------------------------
   radius-instance-sg-ids = []
@@ -275,6 +276,7 @@ module "api" {
   critical-notifications-arn = module.critical-notifications.topic-arn
   capacity-notifications-arn = module.capacity-notifications.topic-arn
   devops-notifications-arn   = module.devops-notifications.topic-arn
+  pagerduty_notification_arn = module.region_pagerduty.topic_arn
 
   auth-docker-image             = format("%s/authorisation-api:production", local.docker_image_path)
   logging-docker-image          = format("%s/logging-api:production", local.docker_image_path)
@@ -355,6 +357,28 @@ module "route53-critical-notifications" {
   env-name   = var.Env-Name
   topic-name = "govwifi-wifi-critical"
   emails     = [var.critical-notification-email]
+}
+
+module "region_pagerduty" {
+  providers = {
+    aws = aws.AWS-main
+  }
+
+  source = "../../govwifi-pagerduty-integration"
+
+  sns_topic_subscription_https_endpoint = local.pagerduty_https_endpoint
+}
+
+# This is used for the alarms connected to the Route 53 healthchecks
+# in this region
+module "us_east_1_pagerduty" {
+  providers = {
+    aws = aws.route53-alarms
+  }
+
+  source = "../../govwifi-pagerduty-integration"
+
+  sns_topic_subscription_https_endpoint = local.pagerduty_https_endpoint
 }
 
 module "govwifi-prometheus" {
