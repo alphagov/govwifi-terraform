@@ -225,7 +225,6 @@ module "frontend" {
 
   route53-critical-notifications-arn = module.route53-critical-notifications.topic-arn
   devops-notifications-arn           = module.devops-notifications.topic-arn
-  pagerduty_notification_arn         = module.us_east_1_pagerduty.topic_arn
 
   # Security groups ---------------------------------------
   radius-instance-sg-ids = []
