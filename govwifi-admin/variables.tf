@@ -86,7 +86,7 @@ variable "capacity-notifications-arn" {
 
 variable "notification_arn" {
   description = "Notification ARN for alerts. In production alerts are sent to PagerDuty, but in staging alerts are sent to an email group."
-  type = string
+  type        = string
 }
 
 variable "db-instance-count" {
