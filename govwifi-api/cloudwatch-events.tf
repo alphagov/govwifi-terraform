@@ -38,6 +38,14 @@ resource "aws_cloudwatch_event_rule" "daily_gdpr_set_user_last_login" {
   is_enabled          = true
 }
 
+resource "aws_cloudwatch_event_rule" "hourly_request_statistics_event" {
+  count               = var.event-rule-count
+  name                = "${var.Env-Name}-hourly_request_statistics"
+  description         = "Triggers hourly"
+  schedule_expression = "cron(0 * * * ? *)"
+  is_enabled          = true
+}
+
 # new daily, weekly and monthly metrics published to S3
 resource "aws_cloudwatch_event_rule" "daily_metrics_logging_event" {
   count               = var.event-rule-count
