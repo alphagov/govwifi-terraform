@@ -68,7 +68,7 @@ resource "aws_cloudwatch_metric_alarm" "authentication-api-no-healthy-hosts" {
   alarm_description = "Detect when there are no healthy API targets"
 
   alarm_actions = compact([
-    var.pagerduty_notification_arn,
+    var.notification_arn,
   ])
 }
 
@@ -92,6 +92,6 @@ resource "aws_cloudwatch_metric_alarm" "user-signup-api-no-healthy-hosts" {
   alarm_description = "Detect when there are no healthy user signup API targets"
 
   alarm_actions = compact([
-    var.pagerduty_notification_arn,
+    var.notification_arn,
   ])
 }
