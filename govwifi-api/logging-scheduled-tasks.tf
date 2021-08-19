@@ -134,6 +134,45 @@ EOF
 
 }
 
+resource "aws_cloudwatch_event_target" "hourly-request-statistics" {
+  count     = var.logging-enabled
+  target_id = "${var.Env-Name}-publish-hourly-request-statistics"
+  arn       = aws_ecs_cluster.api-cluster.arn
+  rule      = aws_cloudwatch_event_rule.hourly_request_statistics_event[0].name
+  role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
+
+  ecs_target {
+    task_count          = 1
+    task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
+    launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
+
+    network_configuration {
+      subnets = var.subnet-ids
+
+      security_groups = concat(
+        var.backend-sg-list,
+        [aws_security_group.api-in.id],
+        [aws_security_group.api-out.id]
+      )
+
+      assign_public_ip = true
+    }
+  }
+
+  input = <<EOF
+{
+  "containerOverrides": [
+    {
+      "name": "logging",
+      "command": ["bundle", "exec", "rake", "send_request_statistics"]
+    }
+  ]
+}
+EOF
+
+}
+
 # new metrics
 resource "aws_cloudwatch_event_target" "publish-monthly-metrics-logging" {
   count     = var.logging-enabled
