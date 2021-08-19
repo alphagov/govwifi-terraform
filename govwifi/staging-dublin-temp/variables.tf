@@ -165,3 +165,9 @@ variable "administrator-IPs-list" {
 variable "backend-subnet-IPs-list" {
   description = "Unused in this configuration"
 }
+
+variable "use_env_prefix" {
+  default     = false
+  type        = bool
+  description = "Conditional to indicate whether to retrieve a secret with a env prefix in its name. For the secondary account the value can be set to false. The 'staging' prefix is redundant since the secondary account will be used for staging"
+}
