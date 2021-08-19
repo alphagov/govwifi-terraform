@@ -24,7 +24,10 @@ resource "aws_cloudwatch_metric_alarm" "radius-hc" {
 }
 
 # TODO: This requires a more up to date version of the AWS provider to work
-#
+# We will also need to feature toggle the alarm actions so the notification ARN points to PagerDuty for production
+# and an appropriate email group for staging. See implementation of `notification_arn` in govwifi/staging-london/main.tf
+# and govwifi/wifi-london/main.tf
+
 # https://trello.com/c/Jsis2ZR1/1042-5-upgrade-the-terraform-aws-provider-to-a-more-recent-version
 #
 # resource "aws_cloudwatch_composite_alarm" "all_radius_servers_down" {

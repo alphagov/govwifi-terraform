@@ -267,6 +267,8 @@ module "govwifi-admin" {
   )
 
   use_env_prefix = true
+
+  notification_arn = module.notifications.topic-arn
 }
 
 module "api" {
@@ -297,6 +299,7 @@ module "api" {
   critical-notifications-arn = module.notifications.topic-arn
   capacity-notifications-arn = module.notifications.topic-arn
   devops-notifications-arn   = module.notifications.topic-arn
+  notification_arn           = module.notifications.topic-arn
 
   auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user-signup-docker-image      = format("%s/user-signup-api:staging", local.docker_image_path)

@@ -255,6 +255,7 @@ module "api" {
   critical-notifications-arn = module.notifications.topic-arn
   capacity-notifications-arn = module.notifications.topic-arn
   devops-notifications-arn   = module.notifications.topic-arn
+  notification_arn           = module.notifications.topic-arn
 
   auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user-signup-docker-image      = ""
