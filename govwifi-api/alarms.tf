@@ -14,7 +14,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-high" {
     ServiceName = aws_ecs_service.authorisation-api-service.name
   }
 
-  alarm_description = "This alarm tells ECS to scale up based on high CPU"
+  alarm_description = "ECS Cluster CPU is high, scaling up number of ECS tasks"
 
   alarm_actions = [
     aws_appautoscaling_policy.ecs-policy-up.arn,
@@ -41,7 +41,7 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
     ServiceName = aws_ecs_service.authorisation-api-service.name
   }
 
-  alarm_description = "Alarm scales down the number of ECS tasks in the cluster when CPU usage is low"
+  alarm_description = "ECS Cluster CPU is low, scaling down number of ECS tasks"
 
   alarm_actions = [
     aws_appautoscaling_policy.ecs-policy-down.arn,
@@ -65,7 +65,7 @@ resource "aws_cloudwatch_metric_alarm" "authentication-api-no-healthy-hosts" {
     LoadBalancer = aws_lb.api-alb[0].arn_suffix
   }
 
-  alarm_description = "Detect when there are no healthy API targets"
+  alarm_description = "Load balancer detects no healthy API targets"
 
   alarm_actions = compact([
     var.notification_arn,
@@ -89,7 +89,7 @@ resource "aws_cloudwatch_metric_alarm" "user-signup-api-no-healthy-hosts" {
     LoadBalancer = aws_lb.user-signup-api[0].arn_suffix
   }
 
-  alarm_description = "Detect when there are no healthy user signup API targets"
+  alarm_description = "Load balancer detects no healthy user signup API targets"
 
   alarm_actions = compact([
     var.notification_arn,
