@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_metric_alarm" "grafana-instance-status" {
 
   alarm_name         = "${var.Env-Name}-grafana-instance-status"
-  alarm_description  = "Alert in event of ${var.Env-Name}-granfana EC2 on instance Status Check failure"
+  alarm_description  = "Alert in event of ${var.Env-Name}-grafana EC2 on instance Status Check failure. Investigate Grafana CloudWatch logs for root cause."
   alarm_actions      = [var.critical-notifications-arn]
   treat_missing_data = "breaching"
 
@@ -22,7 +22,7 @@ resource "aws_cloudwatch_metric_alarm" "grafana-instance-status" {
 resource "aws_cloudwatch_metric_alarm" "grafana-system-status" {
 
   alarm_name         = "${var.Env-Name}-grafana-system-status"
-  alarm_description  = "Alert in event of ${var.Env-Name}-granfana EC2 on system Status Check failure"
+  alarm_description  = "Alert in event of ${var.Env-Name}-grafana EC2 on system Status Check failure. Investigate Grafana CloudWatch logs for root cause."
   alarm_actions      = [var.critical-notifications-arn]
   treat_missing_data = "breaching"
 
@@ -43,7 +43,7 @@ resource "aws_cloudwatch_metric_alarm" "grafana-system-status" {
 resource "aws_cloudwatch_metric_alarm" "grafana-service-status" {
 
   alarm_name         = "${var.Env-Name}-grafana-service-status"
-  alarm_description  = "Alert in event of ${var.Env-Name}-granfana can not load the login page. This likely indicates the Grafana service is not running"
+  alarm_description  = "Alert in event of ${var.Env-Name}-grafana can not load the login page. This likely indicates the Grafana service is not running."
   alarm_actions      = [var.critical-notifications-arn]
   treat_missing_data = "breaching"
 

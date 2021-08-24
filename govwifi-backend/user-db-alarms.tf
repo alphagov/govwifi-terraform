@@ -13,7 +13,7 @@ resource "aws_cloudwatch_metric_alarm" "user_db_cpu_alarm" {
     DBInstanceIdentifier = aws_db_instance.users_db[0].identifier
   }
 
-  alarm_description  = "This metric monitors the cpu utilization of the User DB."
+  alarm_description  = "Database CPU utilization exceeding threshold. Investigate database logs for root cause."
   alarm_actions      = [var.critical-notifications-arn]
   treat_missing_data = "breaching"
 }
@@ -33,7 +33,7 @@ resource "aws_cloudwatch_metric_alarm" "user_db_memory_alarm" {
     DBInstanceIdentifier = aws_db_instance.users_db[0].identifier
   }
 
-  alarm_description  = "This metric monitors the freeable memory available for the DB."
+  alarm_description  = "Database is running low on free memory. Investigate database logs for root cause."
   alarm_actions      = [var.critical-notifications-arn]
   treat_missing_data = "breaching"
 }
@@ -54,7 +54,7 @@ resource "aws_cloudwatch_metric_alarm" "user_db_storage_alarm" {
     DBInstanceIdentifier = aws_db_instance.users_db[0].identifier
   }
 
-  alarm_description  = "This metric monitors the storage space available for the DB."
+  alarm_description  = "Database is running low on free storage space. Investigate database logs for root cause."
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }
@@ -74,7 +74,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_burst_balance_alarm" {
     DBInstanceIdentifier = aws_db_instance.users_read_replica[0].identifier
   }
 
-  alarm_description  = "This metric monitors the IOPS burst balance available for the DB read replica."
+  alarm_description  = "Read replica database's available IOPS burst balance is running low. Investigate disk usage on the RDS instance."
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "missing"
 }
@@ -94,7 +94,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_lagging_alarm" {
     DBInstanceIdentifier = aws_db_instance.users_read_replica[0].identifier
   }
 
-  alarm_description  = "This metric monitors the Replication Lag for the DB read replica."
+  alarm_description  = "Read replica database replication lag exceeding threshold. Investigate connections to the primary database."
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }
@@ -114,7 +114,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_cpu_alarm" {
     DBInstanceIdentifier = aws_db_instance.users_read_replica[0].identifier
   }
 
-  alarm_description  = "This metric monitors the cpu utilization of the DB read replica."
+  alarm_description  = "Read replica database CPU utilization exceeding threshold. Investigate database logs for root cause."
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }
@@ -134,7 +134,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_memory_alarm" {
     DBInstanceIdentifier = aws_db_instance.users_read_replica[0].identifier
   }
 
-  alarm_description  = "This metric monitors the freeable memory available for the DB read replica."
+  alarm_description  = "Read replica database is running low on free memory. Investigate database logs for root cause."
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }
@@ -155,7 +155,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_storage_alarm" {
     DBInstanceIdentifier = aws_db_instance.users_read_replica[0].identifier
   }
 
-  alarm_description  = "This metric monitors the storage space available for the DB read replica."
+  alarm_description  = "Read replica database is running low on free storage space. Investigate database logs for root cause."
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }
