@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
+resource "aws_cloudwatch_metric_alarm" "db_cpu_alarm" {
   count               = var.db-instance-count
   alarm_name          = "${var.Env-Name}-db-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -18,7 +18,7 @@ resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "db_memoryalarm" {
+resource "aws_cloudwatch_metric_alarm" "db_memory_alarm" {
   count               = var.db-instance-count
   alarm_name          = "${var.Env-Name}-db-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
@@ -58,7 +58,7 @@ resource "aws_cloudwatch_metric_alarm" "sessions_db_storage_alarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
+resource "aws_cloudwatch_metric_alarm" "db_burst_balance_alarm" {
   count               = var.db-instance-count
   alarm_name          = "${var.Env-Name}-db-burstbalanace-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
@@ -78,7 +78,7 @@ resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
   treat_missing_data = "missing"
 }
 
-resource "aws_cloudwatch_metric_alarm" "rr_burstbalancealarm" {
+resource "aws_cloudwatch_metric_alarm" "rr_burst_balance_alarm" {
   count               = var.db-replica-count
   alarm_name          = "${var.Env-Name}-rr-burstbalanace-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
@@ -98,7 +98,7 @@ resource "aws_cloudwatch_metric_alarm" "rr_burstbalancealarm" {
   treat_missing_data = "missing"
 }
 
-resource "aws_cloudwatch_metric_alarm" "rr_laggingalarm" {
+resource "aws_cloudwatch_metric_alarm" "rr_lagging_alarm" {
   count               = var.db-replica-count
   alarm_name          = "${var.Env-Name}-rr-lagging-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -118,7 +118,7 @@ resource "aws_cloudwatch_metric_alarm" "rr_laggingalarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "rr_cpualarm" {
+resource "aws_cloudwatch_metric_alarm" "rr_cpu_alarm" {
   count               = var.db-replica-count
   alarm_name          = "${var.Env-Name}-rr-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -138,7 +138,7 @@ resource "aws_cloudwatch_metric_alarm" "rr_cpualarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "rr_memoryalarm" {
+resource "aws_cloudwatch_metric_alarm" "rr_memory_alarm" {
   count               = var.db-replica-count
   alarm_name          = "${var.Env-Name}-rr-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
@@ -158,7 +158,7 @@ resource "aws_cloudwatch_metric_alarm" "rr_memoryalarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "rr_storagealarm" {
+resource "aws_cloudwatch_metric_alarm" "rr_storage_alarm" {
   count               = var.db-replica-count
   alarm_name          = "${var.Env-Name}-rr-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
