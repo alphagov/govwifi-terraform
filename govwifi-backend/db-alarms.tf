@@ -1,6 +1,6 @@
-resource "aws_cloudwatch_metric_alarm" "db_cpu_alarm" {
+resource "aws_cloudwatch_metric_alarm" "sessions_db_cpu_alarm" {
   count               = var.db-instance-count
-  alarm_name          = "${var.Env-Name}-db-cpu-alarm"
+  alarm_name          = "${var.Env-Name}-session-db-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
@@ -18,9 +18,9 @@ resource "aws_cloudwatch_metric_alarm" "db_cpu_alarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "db_memory_alarm" {
+resource "aws_cloudwatch_metric_alarm" "sessions_db_memory_alarm" {
   count               = var.db-instance-count
-  alarm_name          = "${var.Env-Name}-db-memory-alarm"
+  alarm_name          = "${var.Env-Name}-sessions-db-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "FreeableMemory"
@@ -58,9 +58,9 @@ resource "aws_cloudwatch_metric_alarm" "sessions_db_storage_alarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "db_burst_balance_alarm" {
+resource "aws_cloudwatch_metric_alarm" "sessions_db_burst_balance_alarm" {
   count               = var.db-instance-count
-  alarm_name          = "${var.Env-Name}-db-burstbalanace-alarm"
+  alarm_name          = "${var.Env-Name}-sessions-db-burstbalanace-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "BurstBalance"
@@ -78,9 +78,9 @@ resource "aws_cloudwatch_metric_alarm" "db_burst_balance_alarm" {
   treat_missing_data = "missing"
 }
 
-resource "aws_cloudwatch_metric_alarm" "rr_burst_balance_alarm" {
+resource "aws_cloudwatch_metric_alarm" "sessions_rr_burst_balance_alarm" {
   count               = var.db-replica-count
-  alarm_name          = "${var.Env-Name}-rr-burstbalanace-alarm"
+  alarm_name          = "${var.Env-Name}-sessions-rr-burstbalanace-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "BurstBalance"
@@ -98,9 +98,9 @@ resource "aws_cloudwatch_metric_alarm" "rr_burst_balance_alarm" {
   treat_missing_data = "missing"
 }
 
-resource "aws_cloudwatch_metric_alarm" "rr_lagging_alarm" {
+resource "aws_cloudwatch_metric_alarm" "sessions_rr_lagging_alarm" {
   count               = var.db-replica-count
-  alarm_name          = "${var.Env-Name}-rr-lagging-alarm"
+  alarm_name          = "${var.Env-Name}-sessions-rr-lagging-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
   metric_name         = "ReplicaLag"
@@ -118,9 +118,9 @@ resource "aws_cloudwatch_metric_alarm" "rr_lagging_alarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "rr_cpu_alarm" {
+resource "aws_cloudwatch_metric_alarm" "sessions_rr_cpu_alarm" {
   count               = var.db-replica-count
-  alarm_name          = "${var.Env-Name}-rr-cpu-alarm"
+  alarm_name          = "${var.Env-Name}-sessions-rr-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
@@ -138,9 +138,9 @@ resource "aws_cloudwatch_metric_alarm" "rr_cpu_alarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "rr_memory_alarm" {
+resource "aws_cloudwatch_metric_alarm" "sessions_rr_memory_alarm" {
   count               = var.db-replica-count
-  alarm_name          = "${var.Env-Name}-rr-memory-alarm"
+  alarm_name          = "${var.Env-Name}-sessions-rr-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "FreeableMemory"
@@ -158,9 +158,9 @@ resource "aws_cloudwatch_metric_alarm" "rr_memory_alarm" {
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "rr_storage_alarm" {
+resource "aws_cloudwatch_metric_alarm" "sessions_rr_storage_alarm" {
   count               = var.db-replica-count
-  alarm_name          = "${var.Env-Name}-rr-storage-alarm"
+  alarm_name          = "${var.Env-Name}-sessions-rr-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "FreeStorageSpace"

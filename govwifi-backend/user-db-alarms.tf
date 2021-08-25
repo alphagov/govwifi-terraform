@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_metric_alarm" "user_db_cpu_alarm" {
   count               = var.db-instance-count
-  alarm_name          = "${var.env}-user--db-cpu-alarm"
+  alarm_name          = "${var.env}-user-db-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
