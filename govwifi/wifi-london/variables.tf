@@ -144,11 +144,6 @@ variable "prometheus-IP-ireland" {
 variable "grafana-IP" {
 }
 
-variable "administrator-IPs-list" {
-  type        = list(string)
-  description = "Administrator allowed IPs (VPN IPs)"
-}
-
 variable "gds-slack-channel-id" {
 }
 
