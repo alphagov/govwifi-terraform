@@ -1,6 +1,6 @@
-resource "aws_cloudwatch_metric_alarm" "user_db_cpualarm" {
+resource "aws_cloudwatch_metric_alarm" "user_db_cpu_alarm" {
   count               = var.db-instance-count
-  alarm_name          = "${var.env}-user--db-cpu-alarm"
+  alarm_name          = "${var.env}-user-db-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
@@ -13,12 +13,12 @@ resource "aws_cloudwatch_metric_alarm" "user_db_cpualarm" {
     DBInstanceIdentifier = aws_db_instance.users_db[0].identifier
   }
 
-  alarm_description  = "This metric monitors the cpu utilization of the User DB."
+  alarm_description  = "Database CPU utilization exceeding threshold. Investigate database logs for root cause."
   alarm_actions      = [var.critical-notifications-arn]
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "user_db_memoryalarm" {
+resource "aws_cloudwatch_metric_alarm" "user_db_memory" {
   count               = var.db-instance-count
   alarm_name          = "${var.env}-user-db-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
@@ -33,12 +33,12 @@ resource "aws_cloudwatch_metric_alarm" "user_db_memoryalarm" {
     DBInstanceIdentifier = aws_db_instance.users_db[0].identifier
   }
 
-  alarm_description  = "This metric monitors the freeable memory available for the DB."
+  alarm_description  = "Database is running low on free memory. Investigate database logs for root cause."
   alarm_actions      = [var.critical-notifications-arn]
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "user_db_storage_alarm" {
+resource "aws_cloudwatch_metric_alarm" "user_db_storage" {
   count               = var.db-instance-count
   alarm_name          = "${var.env}-user-db-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
@@ -54,12 +54,12 @@ resource "aws_cloudwatch_metric_alarm" "user_db_storage_alarm" {
     DBInstanceIdentifier = aws_db_instance.users_db[0].identifier
   }
 
-  alarm_description  = "This metric monitors the storage space available for the DB."
+  alarm_description  = "Database is running low on free storage space. Investigate database logs for root cause."
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "user_rr_burstbalancealarm" {
+resource "aws_cloudwatch_metric_alarm" "user_rr_burst_balance" {
   count               = var.user-db-replica-count
   alarm_name          = "${var.env}-user-rr-burstbalanace-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
@@ -74,12 +74,12 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_burstbalancealarm" {
     DBInstanceIdentifier = aws_db_instance.users_read_replica[0].identifier
   }
 
-  alarm_description  = "This metric monitors the IOPS burst balance available for the DB read replica."
+  alarm_description  = "Read replica database's available IOPS burst balance is running low. Investigate disk usage on the RDS instance."
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "missing"
 }
 
-resource "aws_cloudwatch_metric_alarm" "user_rr_laggingalarm" {
+resource "aws_cloudwatch_metric_alarm" "user_rr_lagging" {
   count               = var.user-db-replica-count
   alarm_name          = "${var.env}-user-rr-lagging-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -94,12 +94,12 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_laggingalarm" {
     DBInstanceIdentifier = aws_db_instance.users_read_replica[0].identifier
   }
 
-  alarm_description  = "This metric monitors the Replication Lag for the DB read replica."
+  alarm_description  = "Read replica database replication lag exceeding threshold. Investigate connections to the primary database."
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "user_rr_cpualarm" {
+resource "aws_cloudwatch_metric_alarm" "user_rr_cpu" {
   count               = var.user-db-replica-count
   alarm_name          = "${var.env}-user-rr-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -114,12 +114,12 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_cpualarm" {
     DBInstanceIdentifier = aws_db_instance.users_read_replica[0].identifier
   }
 
-  alarm_description  = "This metric monitors the cpu utilization of the DB read replica."
+  alarm_description  = "Read replica database CPU utilization exceeding threshold. Investigate database logs for root cause."
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "user_rr_memoryalarm" {
+resource "aws_cloudwatch_metric_alarm" "user_rr_memory" {
   count               = var.user-db-replica-count
   alarm_name          = "${var.env}-user-rr-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
@@ -134,12 +134,12 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_memoryalarm" {
     DBInstanceIdentifier = aws_db_instance.users_read_replica[0].identifier
   }
 
-  alarm_description  = "This metric monitors the freeable memory available for the DB read replica."
+  alarm_description  = "Read replica database is running low on free memory. Investigate database logs for root cause."
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "user_rr_storagealarm" {
+resource "aws_cloudwatch_metric_alarm" "user_rr_storage" {
   count               = var.user-db-replica-count
   alarm_name          = "${var.env}-user-rr-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
@@ -155,7 +155,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_storagealarm" {
     DBInstanceIdentifier = aws_db_instance.users_read_replica[0].identifier
   }
 
-  alarm_description  = "This metric monitors the storage space available for the DB read replica."
+  alarm_description  = "Read replica database is running low on free storage space. Investigate database logs for root cause."
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }

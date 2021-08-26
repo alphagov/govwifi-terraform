@@ -13,7 +13,7 @@ resource "aws_cloudwatch_metric_alarm" "admin-no-healthy-hosts" {
     LoadBalancer = aws_lb.admin-alb.arn_suffix
   }
 
-  alarm_description = "Detect when there are no healthy admin targets"
+  alarm_description = "Load balancer detects no healthy admin targets. Investigate admin-api ECS cluster and CloudWatch logs for root cause."
 
   alarm_actions = compact([
     var.notification_arn,

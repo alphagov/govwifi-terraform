@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_metric_alarm" "radius-hc" {
+resource "aws_cloudwatch_metric_alarm" "radius-healthcheck" {
   provider = aws.route53-alarms
   count    = var.radius-instance-count
   alarm_name = "${element(
@@ -21,6 +21,8 @@ resource "aws_cloudwatch_metric_alarm" "radius-hc" {
   alarm_actions = [
     var.route53-critical-notifications-arn,
   ]
+
+  alarm_description = "Route53 healthcheck request failed to authenticate via FreeRADIUS and Authentication API. Investigate CloudWatch logs for root cause."
 }
 
 # TODO: This requires a more up to date version of the AWS provider to work
@@ -61,6 +63,8 @@ resource "aws_cloudwatch_metric_alarm" "radius-latency" {
   alarm_actions = [
     var.route53-critical-notifications-arn,
   ]
+
+  alarm_description = "FreeRADIUS response rate is slow (greater than 1s). Investigate CloudWatch logs for root cause."
 }
 
 resource "aws_cloudwatch_metric_alarm" "radius-cannot-connect-to-api" {
@@ -77,5 +81,7 @@ resource "aws_cloudwatch_metric_alarm" "radius-cannot-connect-to-api" {
   alarm_actions = [
     var.devops-notifications-arn,
   ]
+
+  alarm_description = "FreeRADIUS cannot connect to the Logging and/or Authentication API. Investigate CloudWatch logs for root cause."
 }
 
