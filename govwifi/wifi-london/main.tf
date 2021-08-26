@@ -62,10 +62,9 @@ module "govwifi-account" {
     aws = aws.AWS-main
   }
 
-  source                 = "../../govwifi-account"
-  aws-account-id         = local.aws_account_id
-  administrator-IPs      = var.administrator-IPs
-  administrator-IPs-list = split(",", var.administrator-IPs)
+  source            = "../../govwifi-account"
+  aws-account-id    = local.aws_account_id
+  administrator-IPs = var.administrator-IPs
 }
 
 # ====================================================================
