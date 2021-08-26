@@ -51,11 +51,13 @@ delete-secrets: .private
 lint: lint-terraform
 format: format-terraform
 
+.PHONY: lint-terraform
 lint-terraform:
-	terraform fmt -check=true -diff=true
+	terraform fmt -recursive -diff -check .
 
+.PHONY: format-terraform
 format-terraform:
-	terraform fmt
+	terraform fmt -recursive -diff .
 
 .private:
 	git clone git@github.com:alphagov/govwifi-build.git .private
