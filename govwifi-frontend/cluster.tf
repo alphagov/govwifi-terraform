@@ -89,6 +89,9 @@ resource "aws_ecs_task_definition" "radius-task" {
       },{
         "name": "SERVICE_DOMAIN",
         "value": "${var.Env-Subdomain}"
+      },{
+        "name": "SENTRY_CURRENT_ENV",
+        "value": "${var.sentry-current-env}"
       }
     ],
     "secrets": [
@@ -104,12 +107,6 @@ resource "aws_ecs_task_definition" "radius-task" {
       },{
         "name": "HEALTH_CHECK_RADIUS_KEY",
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:key::"
-      },{
-        "name": "RACK_ENV",
-        "value": "${var.rack-env}"
-      },{
-        "name": "SENTRY_CURRENT_ENV",
-        "value": "${var.sentry-current-env}"
       }
     ],
     "image": "${var.frontend-docker-image}",

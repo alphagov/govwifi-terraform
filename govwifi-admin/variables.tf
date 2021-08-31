@@ -170,3 +170,6 @@ variable "bastion-ips" {
 
 variable "use_env_prefix" {
 }
+
+variable "is_production" {
+}

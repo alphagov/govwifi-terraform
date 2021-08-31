@@ -79,7 +79,7 @@ module "backend" {
   # eu-west-1, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
   enable-bastion = 0
   #bastion-ami = "ami-51d3e928"
-  # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS 
+  # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS
   bastion-ami = "ami-08bac620dc84221eb"
 
   bastion-instance-type     = "t2.micro"
@@ -156,6 +156,11 @@ module "govwifi-keys" {
   source = "../../govwifi-keys"
 
   create_production_bastion_key = 0
+  govwifi-bastion-key-name  = "govwifi-staging-bastion-key-20181025"
+  govwifi-bastion-key-pub   = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8WewWSMURrvhOpkS6pqwuQwwGtdSSjfIrAR62LRhuEjhOfPymK4eUCdK1lRQJqc/dIy09oRqaPLxT0UM9/lkwcLpBsu6/pSijNKUkGPEl0fGrzmf2RVqjFM7CSW6zSDTRW19Tn1yHsQE3shGYdVz5VyqAI2ggx/9m0d3kK+1OpJluMdjGTZNBGcs393Liinbtgl+P6BUe5yNZ8E1MTOeB0pMlbOZ5UI20f6iXRcYAkoqm6qPhzhr1Ua1MDgnn9Sd/N8cqAXApkWvYZ34oObEysRD33Qwm4OOb1geklZ8dp4JDmlG7BPkwJ5udkGh75FNmtAnLxILSa8aM+1mbvPNz staging-bastion@govwifi"
+
+  govwifi-key-name               = var.ssh-key-name
+  govwifi-key-name-pub           = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5jsytL0L7huY13GeWQiQJ3ak0y5D3fhZDWaIlkF5nrrplxuURqFutmV4d1qN7ZxxwKedx5lKZOMC6OsqFDZVifzGCv9lkfvGusNsiRfDqQZGcMfZgwUbTO7jwFDcat5rjgKjKGcx7q5YZb74diHITbIarY74WAK6xvvLgRE9UbcmHv216ifnyu0gEJ0SKzIcgXHJsfDX4lImRwpL2Pz992TbaSvKDN8Ueev3LFCZzYrLbqgrP9YtUDmucEVPGf6g0MUdaJYpZ0UlfEzLohVlumwADrA5dJ0uz7FejiZFZPJDHQcaHJMmwwf5GIJO+jhgfPQMNN467QdRzAp7EC+kd staging@govwifi"
 }
 
 # Frontend ====================================================================

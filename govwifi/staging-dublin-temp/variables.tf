@@ -64,53 +64,6 @@ variable "ami" {
   description = "AMI id to launch, must be in the region specified by the region variable"
 }
 
-# Secrets
-
-variable "db-password" {
-  type        = string
-  description = "Database main password"
-}
-
-variable "hc-key" {
-  type        = string
-  description = "Health check process shared secret"
-}
-
-variable "hc-ssid" {
-  type        = string
-  description = "Healt check simulated SSID"
-}
-
-variable "hc-identity" {
-  type        = string
-  description = "Healt check identity"
-}
-
-variable "hc-password" {
-  type        = string
-  description = "Healt check password"
-}
-
-variable "shared-key" {
-  type        = string
-  description = "A random key to be shared between the fronend and backend to retrieve initial client setup."
-}
-
-variable "aws-account-id" {
-  type        = string
-  description = "The ID of the AWS tenancy."
-}
-
-variable "docker-image-path" {
-  type        = string
-  description = "ARN used to identify the common path element used for the docker image repositories."
-}
-
-variable "route53-zone-id" {
-  type        = string
-  description = "Zone ID used by the Route53 DNS service."
-}
-
 variable "london-api-base-url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
@@ -129,24 +82,11 @@ variable "user-rr-hostname" {
   default     = "users-rr.dublin.staging-temp.wifi.service.gov.uk"
 }
 
-variable "user-db-password" {
-  type        = string
-  description = "User details database main password"
-}
-
-variable "user-db-username" {
-  type        = string
-  description = "Users database username"
-}
-
 variable "auth-sentry-dsn" {
   type    = string
 }
 
 variable "notification-email" {
-}
-
-variable "rds-kms-key-id" {
 }
 
 variable "prometheus-IP-london" {
@@ -170,4 +110,16 @@ variable "use_env_prefix" {
   default     = false
   type        = bool
   description = "Conditional to indicate whether to retrieve a secret with a env prefix in its name. For the secondary account the value can be set to false. The 'staging' prefix is redundant since the secondary account will be used for staging"
+}
+
+variable "backup_mysql_rds" {
+  description = "Conditional to indicate whether to make artifacts for and run RDS MySQL backups."
+  default     = false
+  type        = bool
+}
+
+variable "is_production" {
+  description = "Conditional to indicate if the enviroment is production or not."
+  default     = false
+  type        = bool
 }

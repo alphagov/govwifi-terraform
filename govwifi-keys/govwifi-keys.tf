@@ -1,10 +1,9 @@
 resource "aws_key_pair" "govwifi-key" {
-  key_name   = "govwifi-key-20180530"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJmLa/tF941z6Dh/jiZCH6Mw/JoTXGkILim/bgDc3PSBKXFmBwkAFUVgnoOUWJDXvZWpuBJv+vUu+ZlmlszFM00BRXpb4ykRuJxWIjJiNzGlgXW69Satl2e9d37ZtLwlAdABgJyvj10QEiBtB1VS0DBRXK9J+CfwNPnwVnfppFGP86GoqE2Il86t+BB/VC//gKMTttIstyl2nqUwkK3Epq66+1ol3AelmUmBjPiyrmkwp+png9F4B86RqSNa/drfXmUGf1czE4+H+CXqOdje2bmnrwxLQ8GY3MYpz0zTVrB3T1IyXXF6dcdcF6ZId9B/10jMiTigvOeUvraFEf9fK7 govwifi@govwifi"
+  key_name   = var.govwifi-key-name
+  public_key = var.govwifi-key-name-pub
 }
 
-resource "aws_key_pair" "govwifi-staging-key" {
-  key_name   = "govwifi-staging-key-20180530"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5jsytL0L7huY13GeWQiQJ3ak0y5D3fhZDWaIlkF5nrrplxuURqFutmV4d1qN7ZxxwKedx5lKZOMC6OsqFDZVifzGCv9lkfvGusNsiRfDqQZGcMfZgwUbTO7jwFDcat5rjgKjKGcx7q5YZb74diHITbIarY74WAK6xvvLgRE9UbcmHv216ifnyu0gEJ0SKzIcgXHJsfDX4lImRwpL2Pz992TbaSvKDN8Ueev3LFCZzYrLbqgrP9YtUDmucEVPGf6g0MUdaJYpZ0UlfEzLohVlumwADrA5dJ0uz7FejiZFZPJDHQcaHJMmwwf5GIJO+jhgfPQMNN467QdRzAp7EC+kd staging@govwifi"
-}
-
+# resource "aws_key_pair" "govwifi-staging-key" {
+#   key_name   = "govwifi-staging-key-20180530"
+#   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5jsytL0L7huY13GeWQiQJ3ak0y5D3fhZDWaIlkF5nrrplxuURqFutmV4d1qN7ZxxwKedx5lKZOMC6OsqFDZVifzGCv9lkfvGusNsiRfDqQZGcMfZgwUbTO7jwFDcat5rjgKjKGcx7q5YZb74diHITbIarY74WAK6xvvLgRE9UbcmHv216ifnyu0gEJ0SKzIcgXHJsfDX4lImRwpL2Pz992TbaSvKDN8Ueev3LFCZzYrLbqgrP9YtUDmucEVPGf6g0MUdaJYpZ0UlfEzLohVlumwADrA5dJ0uz7FejiZFZPJDHQcaHJMmwwf5GIJO+jhgfPQMNN467QdRzAp7EC+kd staging@govwifi"
+# }

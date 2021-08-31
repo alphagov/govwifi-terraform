@@ -6,7 +6,7 @@ module "tfstate" {
   source             = "../../terraform-state"
   product-name       = var.product-name
   Env-Name           = var.Env-Name
-  aws-account-id     = var.aws-account-id
+  aws-account-id     = local.aws_account_id
   aws-region         = var.aws-region
   aws-region-name    = var.aws-region-name
   backup-region-name = var.backup-region-name
@@ -51,6 +51,14 @@ module "govwifi-keys" {
   }
 
   source = "../../govwifi-keys"
+
+  govwifi-bastion-key-name = "staging-temp-bastion-20200717"
+  govwifi-bastion-key-pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDL5wGVJ8aXL0QUhIvfLV2BMLC9Tk74jnChC40R9ipzK0AuatcaXdj0PEm8sh8sHlXEmdmVDq/4s8XaEkF7MDl38qbjxxHRTpCgcTrYzJGad3xgr1+zhpD8Kfnepex/2pR7z7kOCv7EDx4vRTc8vu1ttcmJiniBmgjc1xVk1A5aB72GxffZrow7B0iopP16vEPvllUjsDoOaeLJukDzsbZaP2RRYBqIA4qXunfJpuuu/o+T+YR4LkTB+9UBOOGrX50T80oTtJMKD9ndQ9CC9sqlrOzE9GiZz9db7D9iOzIZoTT6dBbgEOfCGmkj7WS2NjF+D/pEN/edkIuNGvE+J/HqQ179Xm/VCx5Kr6ARG+xk9cssCQbEFwR46yitaPA7B4mEiyD9XvUW2tUeVKdX5ybUFqV++2c5rxTczuH4gGlEGixIqPeltRvkVrN6qxnrbDAXE2bXymcnEN6BshwGKR+3OUKTS8c53eWmwiol6xwCp8VUI8/66tC/bCTmeur07z2LfQsIo745GzPuinWfUm8yPkZOD3LptkukO1aIfgvuNmlUKTwKSLIIwwsqTZ2FcK39A8g3Iq3HRV+4JwOowLJcylRa3QcSH9wdjd69SqPrZb0RhW0BN1mTX2tEBl1ryUUpKsqpMbvjl28tn6MGsU/sRhBLqliduOukGubD29LlAQ== "
+  create_production_bastion_key = 0
+
+  govwifi-key-name               = var.ssh-key-name
+  govwifi-key-name-pub           = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDOxYtGJARr+ZUB9wMWMX/H+myTidFKx+qcBsXuri5zavQ6K4c0WhSkypXfET9BBtC1ZU77B98mftegxKdKcKmFbCVlv39pIX+xj2vjuCzHlzezI1vB4mdAXNhc8b4ArvFJ8lG2GLa1ZD8H/8akpv6EcplwyUv6ZgQMPl6wfMF6d0Qe/eOJ/bV570icX9NYLGkdLRbudkRc12krt6h451qp1vO7f2FQOnPR2cnyLGd/FxhrmAOqJsDk9CRNSwHJe1lsSCz6TkQk1bfCTxZ7g2hWSNRBdWPj0RJbbezy3X3/pz4cFL8mCC1esJ+nptUZ7CXeyirtCObIepniXIItwtdIVqixaMSjfagUGd0L1zFEVuH0bct3mh3u3TyVbNHP4o4pFHvG0sm5R1iDB8/xe2NJdxmAsn3JqeXdsQ6uI/oz31OueFRPyZI0VeDw7B4bhBMZ0w/ncrYJ9jFjfPvzhAVZgQX5Pxtp5MUCeU9+xIdAN2bESmIvaoSEwno7WJ4z61d83pLMFUuS9vNRW4ykgd1BzatLYSkLp/fn/wYNn6DBk7Da6Vs1Y/jgkiDJPGeFlEhW3rqOjTKrpKJBw6LBsMyI0BtkKoPoUTDlKSEX5JlNWBX2z5eSEhe+WEQjc4ZnbLUOKRB5+xNOGahVyk7/VF8ZaZ3/GXWY7MEfZ8TIBBcAjw== GovWifi-DevOps@digital.cabinet-office.gov.uk"
+
 }
 
 # London Backend ==================================================================
@@ -92,7 +100,7 @@ module "backend" {
   bastion-ssh-key-name       = "staging-temp-bastion-20200717"
   enable-bastion-monitoring  = false
   users                      = "${var.users}"
-  aws-account-id             = "${var.aws-account-id}"
+  aws-account-id             = local.aws_account_id
   db-instance-count          = 1
   session-db-instance-type   = "db.t2.small"
   session-db-storage-gb      = 20
@@ -108,22 +116,20 @@ module "backend" {
   capacity-notifications-arn = "${module.notifications.topic-arn}"
   # Seconds. Set to zero to disable monitoring
   db-monitoring-interval = 60
+
   # Passed to application
-  db-user               = "${var.db-user}"
-  db-password           = "${var.db-password}"
-  user-db-username      = "${var.user-db-username}"
-  user-db-password      = "${var.user-db-password}"
   user-db-hostname      = "${var.user-db-hostname}"
   user-db-instance-type = "db.t2.small"
   user-db-storage-gb    = 20
-  # Whether or not to save Performance Platform backup data
-  save-pp-data   = 1
-  pp-domain-name = "www.performance.service.gov.uk"
+
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
-
   grafana-IP            = "${var.grafana-IP}/32"
 
+  use_env_prefix   = var.use_env_prefix
+  backup_mysql_rds = false
+
+  db-storage-alarm-threshold = 19327342936
 }
 
 # London Frontend ==================================================================
@@ -178,14 +184,6 @@ module "frontend" {
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.london-api-base-url
 
-  shared-key = var.shared-key
-
-  # A site with this radkey must exist in the database for health checks to work
-  healthcheck-radius-key = var.hc-key
-  healthcheck-ssid       = var.hc-ssid
-  healthcheck-identity   = var.hc-identity
-  healthcheck-password   = var.hc-password
-
   # This must be based on us-east-1, as that's where the alarms go
   route53-critical-notifications-arn = module.route53-notifications.topic-arn
   devops-notifications-arn           = module.notifications.topic-arn
@@ -202,6 +200,8 @@ module "frontend" {
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 
   radius-CIDR-blocks = split(",", var.frontend-radius-IPs)
+
+  use_env_prefix = var.use_env_prefix
 }
 
 module "govwifi-admin" {
@@ -212,6 +212,7 @@ module "govwifi-admin" {
   source        = "../../govwifi-admin"
   Env-Name      = "${var.Env-Name}"
   Env-Subdomain = "${var.Env-Subdomain}"
+  is_production = var.is_production
 
   ami             = "${var.ami}"
   ssh-key-name    = "${var.ssh-key-name}"
@@ -225,7 +226,6 @@ module "govwifi-admin" {
   admin-docker-image      = "${format("%s/admin:staging", var.docker-image-path)}"
   rack-env                = "staging"
   sentry-current-env      = "secondary-staging"
-  secret-key-base         = "${var.admin-secret-key-base}"
   ecr-repository-count    = 1
   ecs-instance-profile-id = "${module.backend.ecs-instance-profile-id}"
   ecs-service-role        = "${module.backend.ecs-service-role}"
@@ -237,7 +237,6 @@ module "govwifi-admin" {
   ec2-sg-list = []
 
   admin-db-user     = "${var.admin-db-username}"
-  admin-db-password = "${var.admin-db-password}"
 
   db-instance-count        = 1
   db-instance-type         = "db.t2.medium"
@@ -248,13 +247,9 @@ module "govwifi-admin" {
   db-backup-window         = "03:42-04:42"
   db-monitoring-interval   = 60
 
-  rr-db-user     = "${var.db-user}"
-  rr-db-password = "${var.db-password}"
   rr-db-host     = "db.london.staging-temp.wifi.service.gov.uk"
   rr-db-name     = "govwifi_staging"
 
-  user-db-user     = "${var.user-db-username}"
-  user-db-password = "${var.user-db-password}"
   user-db-host     = "${var.user-db-hostname}"
   user-db-name     = "govwifi_staging_users"
 
@@ -265,23 +260,23 @@ module "govwifi-admin" {
 
   rds-monitoring-role = "${module.backend.rds-monitoring-role}"
 
-  notify-api-key             = "${var.notify-api-key}"
   london-radius-ip-addresses = "${var.london-radius-ip-addresses}"
   dublin-radius-ip-addresses = "${var.dublin-radius-ip-addresses}"
   sentry-dsn                 = "${var.admin-sentry-dsn}"
   logging-api-search-url     = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
   public-google-api-key      = "${var.public-google-api-key}"
 
-  otp-secret-encryption-key = "${var.otp-secret-encryption-key}"
-
   zendesk-api-endpoint = "https://govuk.zendesk.com/api/v2/"
   zendesk-api-user     = "${var.zendesk-api-user}"
-  zendesk-api-token    = "${var.zendesk-api-token}"
 
   bastion-ips = concat(
     split(",", var.bastion-server-IP),
     split(",", var.backend-subnet-IPs),
   )
+
+  use_env_prefix = var.use_env_prefix
+
+  notification_arn = module.notifications.topic-arn
 }
 
 module "api" {
@@ -291,7 +286,7 @@ module "api" {
 
   source        = "../../govwifi-api"
   env           = "staging"
-  Env-Name      = "${var.Stage-Name}"
+  Env-Name      = "staging"
   Env-Subdomain = "${var.Env-Subdomain}"
 
   ami                    = "${var.ami}"
@@ -301,7 +296,7 @@ module "api" {
   backend-instance-count = 2
   backend-min-size       = 1
   backend-cpualarm-count = 1
-  aws-account-id         = "${var.aws-account-id}"
+  aws-account-id         = local.aws_account_id
   aws-region-name        = "${var.aws-region-name}"
   aws-region             = "${var.aws-region}"
   route53-zone-id        = "${var.route53-zone-id}"
@@ -312,24 +307,22 @@ module "api" {
   critical-notifications-arn = "${module.notifications.topic-arn}"
   capacity-notifications-arn = "${module.notifications.topic-arn}"
   devops-notifications-arn   = "${module.notifications.topic-arn}"
+  notification_arn           = module.notifications.topic-arn
 
   auth-docker-image         = "${format("%s/authorisation-api:staging", var.docker-image-path)}"
   user-signup-docker-image  = "${format("%s/user-signup-api:staging", var.docker-image-path)}"
   logging-docker-image      = "${format("%s/logging-api:staging", var.docker-image-path)}"
   safe-restart-docker-image = "${format("%s/safe-restarter:staging", var.docker-image-path)}"
-  notify-api-key            = "${var.notify-api-key}"
+  backup-rds-to-s3-docker-image = format("%s/database-backup:staging", local.docker_image_path)
+
   wordlist-bucket-count     = 1
   wordlist-file-path        = "../wordlist-short"
   ecr-repository-count      = 1
   background-jobs-enabled   = 1
 
-  db-user     = "${var.db-user}"
-  db-password = "${var.db-password}"
   db-hostname = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
 
-  user-db-username = "${var.user-db-username}"
   user-db-hostname = "${var.user-db-hostname}"
-  user-db-password = "${var.user-db-password}"
   user-rr-hostname = "${var.user-db-hostname}"
 
   # There is no read replica for the staging database
@@ -341,19 +334,11 @@ module "api" {
   safe-restart-sentry-dsn            = "${var.safe-restart-sentry-dsn}"
   user-signup-sentry-dsn             = "${var.user-signup-sentry-dsn}"
   logging-sentry-dsn                 = "${var.logging-sentry-dsn}"
-  shared-key                         = "${var.shared-key}"
-  performance-url                    = "${var.performance-url}"
-  performance-dataset                = "${var.performance-dataset}"
-  performance-bearer-volumetrics     = "${var.performance-bearer-volumetrics}"
-  performance-bearer-completion-rate = "${var.performance-bearer-completion-rate}"
-  performance-bearer-active-users    = "${var.performance-bearer-active-users}"
-  performance-bearer-unique-users    = "${var.performance-bearer-unique-users}"
   subnet-ids                         = "${module.backend.backend-subnet-ids}"
   ecs-instance-profile-id            = "${module.backend.ecs-instance-profile-id}"
   ecs-service-role                   = "${module.backend.ecs-service-role}"
   user-signup-api-base-url           = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
   admin-bucket-name                  = "govwifi-staging-temp.wifi-admin"
-  govnotify-bearer-token             = "${var.govnotify-bearer-token}"
   user-signup-api-is-public          = 1
 
   elb-sg-list = []
@@ -361,6 +346,13 @@ module "api" {
   backend-sg-list = [
     "${module.backend.be-admin-in}",
   ]
+
+  metrics-bucket-name = module.govwifi-dashboard.metrics-bucket-name
+
+  use_env_prefix   = var.use_env_prefix
+  backup_mysql_rds = var.backup_mysql_rds
+
+  low_cpu_threshold = 0.3
 }
 
 module "notifications" {
@@ -387,6 +379,15 @@ module "route53-notifications" {
   emails     = ["${var.notification-email}"]
 }
 
+module "govwifi-dashboard" {
+  providers = {
+    aws = aws.AWS-main
+  }
+
+  source   = "../../govwifi-dashboard"
+  Env-Name = var.Env-Name
+}
+
 module "govwifi-datasync" {
   providers = {
     aws = aws.route53-alarms
@@ -395,10 +396,4 @@ module "govwifi-datasync" {
 
   aws-region = var.aws-region
   rack-env        = "staging"
-}
-
-variable "use_env_prefix" {
-  default     = false
-  type        = bool
-  description = "Conditional to indicate whether to retrieve a secret with a env prefix in its name. For the secondary account the value can be set to false. The 'staging' prefix is redundant since the secondary account will be used for staging"
 }

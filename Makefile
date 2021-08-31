@@ -11,8 +11,6 @@ staging:
 	$(eval export DEPLOY_ENV=staging)
 	$(eval export REPO=staging)
 	$(eval export AWS_REGION=eu-west-1)
-<<<<<<< HEAD
-=======
 staging-london-temp:
 	$(eval export DEPLOY_ENV=staging-london-temp)
 	$(eval export REPO=staging)
@@ -21,15 +19,6 @@ staging-dublin-temp:
 	$(eval export DEPLOY_ENV=staging-dublin-temp)
 	$(eval export REPO=staging)
 	$(eval export AWS_REGION=eu-west-1)
-performance-london:
-	$(eval export DEPLOY_ENV=performance-london)
-	$(eval export REPO=latest)
-	$(eval export AWS_REGION=eu-west-2)
-performance:
-	$(eval export DEPLOY_ENV=performance)
-	$(eval export REPO=latest)
-	$(eval export AWS_REGION=eu-west-1)
->>>>>>> Adding staging-*-temp
 wifi-london:
 	$(eval export DEPLOY_ENV=wifi-london)
 	$(eval export REPO=latest)
