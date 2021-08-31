@@ -53,3 +53,12 @@ data "aws_secretsmanager_secret_version" "admin_db" {
 data "aws_secretsmanager_secret" "admin_db" {
   name = var.use_env_prefix ? "staging/rds/admin-db/credentials" : "rds/admin-db/credentials"
 }
+
+data "aws_secretsmanager_secret_version" "google_service_account_backup_credentials" {
+  secret_id = data.aws_secretsmanager_secret.google_service_account_backup_credentials.id
+}
+
+data "aws_secretsmanager_secret" "google_service_account_backup_credentials" {
+  name = "admin/google-service-account-backup-credentials"
+}
+

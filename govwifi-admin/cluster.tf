@@ -123,6 +123,9 @@ resource "aws_ecs_task_definition" "admin-task" {
           "name": "DEVISE_SECRET_KEY",
           "valueFrom": "${data.aws_secretsmanager_secret_version.key_base.arn}:secret-key-base::"
         },{
+          "name": "GOOGLE_SERVICE_ACCOUNT_BACKUP_CREDENTIALS",
+          "valueFrom": "${data.aws_secretsmanager_secret_version.google_service_account_backup_credentials.arn}:credentials::"
+        },{
           "name": "NOTIFY_API_KEY",
           "valueFrom": "${data.aws_secretsmanager_secret_version.notify_api_key.arn}:notify-api-key::"
         },{
