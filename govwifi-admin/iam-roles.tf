@@ -137,7 +137,8 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
       data.aws_secretsmanager_secret_version.otp_encryption_key.arn,
       data.aws_secretsmanager_secret_version.session_db.arn,
       data.aws_secretsmanager_secret_version.users_db.arn,
-      data.aws_secretsmanager_secret_version.admin_db.arn
+      data.aws_secretsmanager_secret_version.admin_db.arn,
+      data.aws_secretsmanager_secret_version.google_service_account_backup_credentials.arn,
     ]
   }
 }
