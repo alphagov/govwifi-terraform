@@ -78,26 +78,20 @@ log_group_name = ${var.Env-Name}/var/log/messages
 log_stream_name = ${aws_ecs_cluster.frontend-cluster.name}/{instance_id}
 datetime_format = %b %d %H:%M:%S
 
-[/var/log/docker]
-file = /var/log/docker
-log_group_name = ${var.Env-Name}/var/log/docker
-log_stream_name = ${aws_ecs_cluster.frontend-cluster.name}/{instance_id}
-datetime_format = %Y-%m-%dT%H:%M:%S.%f
-
 [/var/log/ecs/ecs-init.log]
-file = /var/log/ecs/ecs-init.log.*
+file = /var/log/ecs/ecs-init.log
 log_group_name = ${var.Env-Name}/var/log/ecs/ecs-init.log
 log_stream_name = ${aws_ecs_cluster.frontend-cluster.name}/{instance_id}
 datetime_format = %Y-%m-%dT%H:%M:%SZ
 
 [/var/log/ecs/ecs-agent.log]
-file = /var/log/ecs/ecs-agent.log.*
+file = /var/log/ecs/ecs-agent.log
 log_group_name = ${var.Env-Name}/var/log/ecs/ecs-agent.log
 log_stream_name = ${aws_ecs_cluster.frontend-cluster.name}/{instance_id}
 datetime_format = %Y-%m-%dT%H:%M:%SZ
 
 [/var/log/ecs/audit.log]
-file = /var/log/ecs/audit.log.*
+file = /var/log/ecs/audit.log
 log_group_name = ${var.Env-Name}/var/log/ecs/audit.log
 log_stream_name = ${aws_ecs_cluster.frontend-cluster.name}/{instance_id}
 datetime_format = %Y-%m-%dT%H:%M:%SZ
