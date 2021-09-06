@@ -171,5 +171,5 @@ variable "bastion-ips" {
 variable "use_env_prefix" {
 }
 
-variable "is_production" {
+variable "is_production_aws_account" {
 }

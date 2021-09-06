@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "admin-bucket" {
   count         = 1
-  bucket        = var.is_production ? "govwifi-${var.rack-env}-admin" : "govwifi-${var.Env-Subdomain}-admin"
+  bucket        = var.is_production_aws_account ? "govwifi-${var.rack-env}-admin" : "govwifi-${var.Env-Subdomain}-admin"
   force_destroy = true
   acl           = "private"
 
@@ -17,7 +17,7 @@ resource "aws_s3_bucket" "admin-bucket" {
 
 resource "aws_s3_bucket" "product-page-data-bucket" {
   count         = 1
-  bucket        = var.is_production ? "govwifi-${var.rack-env}-product-page-data" : "govwifi-${var.Env-Subdomain}-product-page-data"
+  bucket        = var.is_production_aws_account ? "govwifi-${var.rack-env}-product-page-data" : "govwifi-${var.Env-Subdomain}-product-page-data"
   force_destroy = true
   acl           = "public-read"
 
@@ -34,7 +34,7 @@ resource "aws_s3_bucket" "product-page-data-bucket" {
 
 resource "aws_s3_bucket" "admin-mou-bucket" {
   count         = 1
-  bucket        = var.is_production ? "govwifi-${var.rack-env}-admin-mou" : "govwifi-${var.Env-Subdomain}-admin-mou"
+  bucket        = var.is_production_aws_account ? "govwifi-${var.rack-env}-admin-mou" : "govwifi-${var.Env-Subdomain}-admin-mou"
   force_destroy = true
   acl           = "private"
 
