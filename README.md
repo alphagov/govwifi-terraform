@@ -199,11 +199,10 @@ the console
 
 ## How to contribute
 
-1. Fork the project
-2. Create a feature or fix branch
-3. Make your changes (with tests if applicable)
-4. Run `terraform fmt` to ensure code is formatted correctly
-5. Raise a pull request
+1. Create a feature or fix branch
+2. Make your changes
+3. Run `make format` to format Terraform code
+4. Raise a pull request
 
 ## License
 
