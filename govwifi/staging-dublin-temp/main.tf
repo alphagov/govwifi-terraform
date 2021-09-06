@@ -147,8 +147,6 @@ module "emails" {
   mail-exchange-server     = "10 inbound-smtp.eu-west-1.amazonaws.com"
   devops-notifications-arn = "${module.notifications.topic-arn}"
 
-  #sns-endpoint             = "https://elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk/sns/"
-  sns-endpoint                       = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk/sns/"
   user-signup-notifications-endpoint = "https://user-signup-api.${var.Env-Subdomain}.service.gov.uk:8443/user-signup/email-notification"
 }
 

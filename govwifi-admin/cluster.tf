@@ -64,16 +64,16 @@ resource "aws_ecs_task_definition" "admin-task" {
           "value": "${var.sentry-dsn}"
         },{
           "name": "S3_MOU_BUCKET",
-          "value": "${aws_s3_bucket.admin-mou-bucket.id}"
+          "value": "${aws_s3_bucket.admin-mou-bucket[0].id}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
-          "value": "${aws_s3_bucket.admin-bucket.id}"
+          "value": "${aws_s3_bucket.admin-bucket[0].id}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
         },{
           "name": "S3_SIGNUP_WHITELIST_BUCKET",
-          "value": "${aws_s3_bucket.admin-bucket.id}"
+          "value": "${aws_s3_bucket.admin-bucket[0].id}"
         },{
           "name": "S3_SIGNUP_WHITELIST_OBJECT_KEY",
           "value": "signup-whitelist.conf"
@@ -82,7 +82,7 @@ resource "aws_ecs_task_definition" "admin-task" {
           "value": "clients.conf"
         },{
           "name": "S3_PRODUCT_PAGE_DATA_BUCKET",
-          "value": "${aws_s3_bucket.product-page-data-bucket}"
+          "value": "${aws_s3_bucket.product-page-data-bucket[0].id}"
         },{
           "name": "S3_ORGANISATION_NAMES_OBJECT_KEY",
           "value": "organisations.yml"

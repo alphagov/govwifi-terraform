@@ -31,8 +31,9 @@ get_dump $database_name
 #To be added after key is shared
 
 # Remove problematic SQL lines
-sed 's/^SET @@SESSION.SQL_LOG_BIN/-- SET @@SESSION.SQL_LOG_BIN/' $database_name
-sed 's/^SET @@GLOBAL.GTID_PURGED=/*!80000/-- SET @@GLOBAL.GTID_PURGED=/*!80000/' $database_name
+sed 's/^SET @@SESSION.SQL_LOG_BIN/-- SET @@SESSION.SQL_LOG_BIN/' $database_name.sql
+sed 's/^SET @@GLOBAL.GTID_PURGED=/*!80000/-- SET @@GLOBAL.GTID_PURGED=/*!80000/' $database_name.sql
+sed 's/^SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN/' $database_name.sql
 
 # Drop current database
 mysql -h $db_host -u $db_username -p $db_password -e "drop database $database_name"
@@ -41,7 +42,7 @@ mysql -h $db_host -u $db_username -p $db_password -e "drop database $database_na
 mysql -h $db_host -u $db_username -p $db_password -e "create database $database_name"
 
 # Import data
-mysql -h $db_host -u $db_username -p $db_password < $database_name.sql
+mysql -h $db_host -u $db_username -p $db_password $database_name < $database_name.sql
 
 
 # -------------#
@@ -56,6 +57,7 @@ db_password=$(get_secret "govwifi/users-db/credentials/password" | jq '.SecretSt
 # Remove problematic SQL lines
 sed 's/^SET @@SESSION.SQL_LOG_BIN/-- SET @@SESSION.SQL_LOG_BIN/' $database_name
 sed 's/^SET @@GLOBAL.GTID_PURGED=/*!80000/-- SET @@GLOBAL.GTID_PURGED=/*!80000/' $database_name
+sed 's/^SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN/' $database_name.sql
 
 # Drop current database
 mysql -h $db_host -u $db_username -p $db_password -e "drop database $database_name"
@@ -64,7 +66,7 @@ mysql -h $db_host -u $db_username -p $db_password -e "drop database $database_na
 mysql -h $db_host -u $db_username -p $db_password -e "create database $database_name"
 
 # Import data
-mysql -h $db_host -u $db_username -p $db_password < $database_name.sql
+mysql -h $db_host -u $db_username -p $db_password $database_name < $database_name.sql
 
 # -------------#
 # Session Database
@@ -77,6 +79,7 @@ db_password=$(get_secret "govwifi/sessions-db/credentials/password" | jq '.Secre
 
 sed 's/^SET @@SESSION.SQL_LOG_BIN/-- SET @@SESSION.SQL_LOG_BIN/' $database_name
 sed 's/^SET @@GLOBAL.GTID_PURGED=/*!80000/-- SET @@GLOBAL.GTID_PURGED=/*!80000/' $database_name
+sed 's/^SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN/' $database_name.sql
 
 # Drop current database
 mysql -h $db_host -u $db_username -p $db_password -e "drop database $database_name"
@@ -85,7 +88,7 @@ mysql -h $db_host -u $db_username -p $db_password -e "drop database $database_na
 mysql -h $db_host -u $db_username -p $db_password -e "create database $database_name"
 
 # Import data
-mysql -h $db_host -u $db_username -p $db_password < $database_name.sql
+mysql -h $db_host -u $db_username -p $db_password $database_name < $database_name.sql
 
 # Delete old database file
 rm $database_name.sql
