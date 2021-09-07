@@ -53,8 +53,8 @@ variable "zone-names" {
 }
 
 variable "ami" {
-  # eu-west-2, Amazon Linux AMI 2017.09.l x86_64 ECS HVM GP2
-  default     = "ami-2218f945"
+  # eu-west-2, Amazon Linux AMI 2.0.20210819 x86_64 ECS HVM GP2
+  default     = "ami-0820c1f2c6fc9dff1"
   description = "AMI id to launch, must be in the region specified by the region variable"
 }
 
