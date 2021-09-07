@@ -69,7 +69,8 @@ resource "aws_ecs_task_definition" "logging-api-task" {
           "value": "${var.Env-Name}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
-          "value": "govwifi-${var.env}-admin"
+          // "value": "govwifi-${var.env}-admin"
+          "value": module.govwifi-admin.aws-s3-admin-bucket-name
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
