@@ -157,11 +157,14 @@ module "govwifi-keys" {
   source = "../../govwifi-keys"
 
   create_production_bastion_key = 0
-  govwifi-bastion-key-name  = "govwifi-staging-bastion-key-20181025"
-  govwifi-bastion-key-pub   = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8WewWSMURrvhOpkS6pqwuQwwGtdSSjfIrAR62LRhuEjhOfPymK4eUCdK1lRQJqc/dIy09oRqaPLxT0UM9/lkwcLpBsu6/pSijNKUkGPEl0fGrzmf2RVqjFM7CSW6zSDTRW19Tn1yHsQE3shGYdVz5VyqAI2ggx/9m0d3kK+1OpJluMdjGTZNBGcs393Liinbtgl+P6BUe5yNZ8E1MTOeB0pMlbOZ5UI20f6iXRcYAkoqm6qPhzhr1Ua1MDgnn9Sd/N8cqAXApkWvYZ34oObEysRD33Qwm4OOb1geklZ8dp4JDmlG7BPkwJ5udkGh75FNmtAnLxILSa8aM+1mbvPNz staging-bastion@govwifi"
+  is_production_aws_account     = var.is_production_aws_account
+
+  govwifi-bastion-key-name  = "govwifi-bastion-key-20210630"
+  govwifi-bastion-key-pub   = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDY/Q676Tp5CTpKWVksMPztERDdjWOrYFgVckF9IHGI2wC38ckWFiqawsEZBILUyNZgL/lnOtheN1UZtuGmUUkPxgtPw+YD6gMDcebhSX4wh9GM3JjXAIy9+V/WagQ84Pz10yIp+PlyzcQMu+RVRVzWyTYZUdgMsDt0tFdcgMgUc7FkC252CgtSZHpLXhnukG5KG69CoTO+kuak/k3vX5jwWjIgfMGZwIAq+F9XSIMAwylCmmdE5MetKl0Wx4EI/fm8WqSZXj+yeFRv9mQTus906AnNieOgOrgt4D24/JuRU1JTlZ35iNbOKcwlOTDSlTQrm4FA1sCllphhD/RQVYpMp6EV3xape626xwkucCC2gYnakxTZFHUIeWfC5aHGrqMOMtXRfW0xs+D+vzo3MCWepdIebWR5KVhqkbNUKHBG9e8oJbTYUkoyBZjC7LtI4fgB3+blXyFVuQoAzjf+poPzdPBfCC9eiUJrEHoOljO9yMcdkBfyW3c/o8Sd9PgNufc= bastion@govwifi"
 
   govwifi-key-name               = var.ssh-key-name
-  govwifi-key-name-pub           = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5jsytL0L7huY13GeWQiQJ3ak0y5D3fhZDWaIlkF5nrrplxuURqFutmV4d1qN7ZxxwKedx5lKZOMC6OsqFDZVifzGCv9lkfvGusNsiRfDqQZGcMfZgwUbTO7jwFDcat5rjgKjKGcx7q5YZb74diHITbIarY74WAK6xvvLgRE9UbcmHv216ifnyu0gEJ0SKzIcgXHJsfDX4lImRwpL2Pz992TbaSvKDN8Ueev3LFCZzYrLbqgrP9YtUDmucEVPGf6g0MUdaJYpZ0UlfEzLohVlumwADrA5dJ0uz7FejiZFZPJDHQcaHJMmwwf5GIJO+jhgfPQMNN467QdRzAp7EC+kd staging@govwifi"
+  govwifi-key-name-pub           = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJmLa/tF941z6Dh/jiZCH6Mw/JoTXGkILim/bgDc3PSBKXFmBwkAFUVgnoOUWJDXvZWpuBJv+vUu+ZlmlszFM00BRXpb4ykRuJxWIjJiNzGlgXW69Satl2e9d37ZtLwlAdABgJyvj10QEiBtB1VS0DBRXK9J+CfwNPnwVnfppFGP86GoqE2Il86t+BB/VC//gKMTttIstyl2nqUwkK3Epq66+1ol3AelmUmBjPiyrmkwp+png9F4B86RqSNa/drfXmUGf1czE4+H+CXqOdje2bmnrwxLQ8GY3MYpz0zTVrB3T1IyXXF6dcdcF6ZId9B/10jMiTigvOeUvraFEf9fK7 govwifi@govwifi"
+
 }
 
 # Frontend ====================================================================
