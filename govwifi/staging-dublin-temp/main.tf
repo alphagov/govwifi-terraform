@@ -103,7 +103,7 @@ module "backend" {
   rr-storage-gb    = 0
 
   user-db-replica-count  = 1
-  user-replica-source-db = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-staging-temp-user-db"
+  user-replica-source-db = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-staging-user-db"
   user-rr-instance-type  = "db.t2.small"
 
   user-rr-hostname           = "${var.user-rr-hostname}"
