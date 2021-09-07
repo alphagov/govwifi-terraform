@@ -19,7 +19,6 @@ resource "aws_route53_record" "www" {
 }
 
 data "aws_route53_zone" "zone" {
-  name         = "staging-temp.wifi.service.gov.uk."
+  name         = "${var.Env-Subdomain}.service.gov.uk."
   private_zone = false
 }
-

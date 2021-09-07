@@ -52,10 +52,12 @@ module "backend" {
     aws = aws.AWS-main
   }
 
-  source        = "../../govwifi-backend"
-  env           = "staging-temp"
-  Env-Name      = var.Env-Name
-  Env-Subdomain = var.Env-Subdomain
+  source                    = "../../govwifi-backend"
+  env                       = "staging"
+  Env-Name                  = var.Env-Name
+  Env-Subdomain             = var.Env-Subdomain
+  is_production_aws_account = var.is_production_aws_account
+
 
   # AWS VPC setup -----------------------------------------
   aws-region      = var.aws-region

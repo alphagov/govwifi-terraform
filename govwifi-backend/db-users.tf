@@ -9,7 +9,7 @@ resource "aws_db_instance" "users_db" {
   apply_immediately           = true
   instance_class              = var.user-db-instance-type
   identifier                  = "wifi-${var.env}-user-db"
-  name                        = "users"
+  name                        = "govwifi_${var.env}_users"
   username                    = local.users_db_username
   password                    = local.users_db_password
   backup_retention_period     = var.db-backup-retention-days
@@ -65,5 +65,5 @@ resource "aws_db_instance" "users_read_replica" {
   tags = {
     Name = "${title(var.Env-Name)} DB Read Replica"
   }
-
 }
+
