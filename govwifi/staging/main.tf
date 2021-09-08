@@ -133,6 +133,7 @@ module "emails" {
     aws = aws.AWS-main
   }
 
+  is_production_aws_account = var.is_production_aws_account
   source                   = "../../govwifi-emails"
   product-name             = var.product-name
   Env-Name                 = var.Env-Name
@@ -174,18 +175,20 @@ module "frontend" {
     aws.route53-alarms = aws.route53-alarms
   }
 
-  source        = "../../govwifi-frontend"
-  Env-Name      = var.Env-Name
-  Env-Subdomain = var.Env-Subdomain
+  source                    = "../../govwifi-frontend"
+  Env-Name                  = var.Env-Name
+  Env-Subdomain             = var.Env-Subdomain
+  is_production_aws_account = var.is_production_aws_account
 
   # AWS VPC setup -----------------------------------------
-  aws-region      = var.aws-region
-  aws-region-name = var.aws-region-name
-  route53-zone-id = local.route53_zone_id
-  vpc-cidr-block  = "10.101.0.0/16"
-  zone-count      = var.zone-count
-  zone-names      = var.zone-names
-  rack-env        = "staging"
+  aws-region          = var.aws-region
+  aws-region-name     = var.aws-region-name
+  route53-zone-id     = local.route53_zone_id
+  vpc-cidr-block      = "10.101.0.0/16"
+  zone-count          = var.zone-count
+  zone-names          = var.zone-names
+  rack-env            = "staging"
+  sentry-current-env  = "staging"
 
   zone-subnets = {
     zone0 = "10.101.1.0/24"
@@ -241,6 +244,7 @@ module "api" {
   env           = "staging"
   Env-Name      = var.Env-Name
   Env-Subdomain = var.Env-Subdomain
+  is_production_aws_account     = var.is_production_aws_account
 
   ami                    = ""
   ssh-key-name           = ""
@@ -282,6 +286,7 @@ module "api" {
   # There is no read replica for the staging database
   db-read-replica-hostname  = ""
   rack-env                  = "staging"
+  sentry-current-env        = "staging"
   radius-server-ips         = split(",", var.frontend-radius-IPs)
   authentication-sentry-dsn = var.auth-sentry-dsn
   safe-restart-sentry-dsn   = ""

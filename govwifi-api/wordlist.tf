@@ -1,10 +1,10 @@
 resource "aws_s3_bucket" "wordlist" {
-  bucket = "govwifi-staging-temp-wordlist"
+  bucket = var.is_production_aws_account ? "govwifi-wordlist" : "govwifi-${var.Env-Name}-wordlist"
   count  = var.wordlist-bucket-count
   acl    = "private"
 
   tags = {
-    Name = "wordlist-staging-temp-bucket"
+    Name = var.is_production_aws_account ? "wordlist-bucket" : "wordlist-${var.Env-Name}-bucket"
   }
 
   versioning {

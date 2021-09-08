@@ -19,6 +19,6 @@ resource "aws_route53_record" "www" {
 }
 
 data "aws_route53_zone" "zone" {
-  name         = "${var.Env-Subdomain}.service.gov.uk."
+  name         = var.is_production_aws_account ? "wifi.service.gov.uk." :"${var.Env-Subdomain}.service.gov.uk."
   private_zone = false
 }

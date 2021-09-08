@@ -143,20 +143,22 @@ module "frontend" {
     aws.route53-alarms = aws.route53-alarms
   }
 
-  source        = "../../govwifi-frontend"
-  Env-Name      = var.Env-Name
-  Env-Subdomain = var.Env-Subdomain
+  source                    = "../../govwifi-frontend"
+  Env-Name                  = var.Env-Name
+  Env-Subdomain             = var.Env-Subdomain
+  is_production_aws_account = var.is_production_aws_account
 
   # AWS VPC setup -----------------------------------------
   # LONDON
   aws-region = var.aws-region
 
-  aws-region-name = var.aws-region-name
-  route53-zone-id = local.route53_zone_id
-  vpc-cidr-block  = "10.102.0.0/16"
-  zone-count      = var.zone-count
-  zone-names      = var.zone-names
-  rack-env        = "staging"
+  aws-region-name     = var.aws-region-name
+  route53-zone-id     = local.route53_zone_id
+  vpc-cidr-block      = "10.102.0.0/16"
+  zone-count          = var.zone-count
+  zone-names          = var.zone-names
+  rack-env            = "staging"
+  sentry-current-env  = "staging"
 
   zone-subnets = {
     zone0 = "10.102.1.0/24"
@@ -227,6 +229,7 @@ module "govwifi-admin" {
 
   admin-docker-image      = format("%s/admin:staging", local.docker_image_path)
   rack-env                = "staging"
+  sentry-current-env      = "secondary-staging"
   ecr-repository-count    = 1
   ecs-instance-profile-id = module.backend.ecs-instance-profile-id
   ecs-service-role        = module.backend.ecs-service-role
@@ -285,10 +288,11 @@ module "api" {
     aws = aws.AWS-main
   }
 
-  source        = "../../govwifi-api"
-  env           = "staging"
-  Env-Name      = var.Env-Name
-  Env-Subdomain = var.Env-Subdomain
+  source                        = "../../govwifi-api"
+  env                           = "staging"
+  Env-Name                      = var.Env-Name
+  Env-Subdomain                 = var.Env-Subdomain
+  is_production_aws_account     = var.is_production_aws_account
 
   ami                    = var.ami
   ssh-key-name           = var.ssh-key-name
@@ -330,6 +334,7 @@ module "api" {
   # There is no read replica for the staging database
   db-read-replica-hostname  = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                  = "staging"
+  sentry-current-env        = "staging"
   radius-server-ips         = split(",", var.frontend-radius-IPs)
   authentication-sentry-dsn = var.auth-sentry-dsn
   safe-restart-sentry-dsn   = var.safe-restart-sentry-dsn

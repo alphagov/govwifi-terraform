@@ -136,6 +136,8 @@ module "emails" {
   }
 
   source                   = "../../govwifi-emails"
+
+  is_production_aws_account = var.is_production_aws_account
   product-name             = var.product-name
   Env-Name                 = var.Env-Name
   Env-Subdomain            = var.Env-Subdomain

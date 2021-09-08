@@ -148,6 +148,8 @@ module "emails" {
   }
 
   source                   = "../../govwifi-emails"
+
+  is_production_aws_account = var.is_production_aws_account
   product-name             = var.product-name
   Env-Name                 = var.Env-Name
   Env-Subdomain            = var.Env-Subdomain
@@ -193,18 +195,22 @@ module "frontend" {
     aws.route53-alarms = aws.route53-alarms
   }
 
-  source        = "../../govwifi-frontend"
-  Env-Name      = var.Env-Name
-  Env-Subdomain = var.Env-Subdomain
+  source                    = "../../govwifi-frontend"
+  Env-Name                  = var.Env-Name
+  Env-Subdomain             = var.Env-Subdomain
+  is_production_aws_account = var.is_production_aws_account
+
 
   # AWS VPC setup -----------------------------------------
-  aws-region      = var.aws-region
-  aws-region-name = var.aws-region-name
-  route53-zone-id = local.route53_zone_id
-  vpc-cidr-block  = "10.43.0.0/16"
-  zone-count      = var.zone-count
-  zone-names      = var.zone-names
-  rack-env        = "production"
+  aws-region         = var.aws-region
+  aws-region-name    = var.aws-region-name
+  route53-zone-id    = local.route53_zone_id
+  vpc-cidr-block     = "10.43.0.0/16"
+  zone-count         = var.zone-count
+  zone-names         = var.zone-names
+  rack-env           = "production"
+  sentry-current-env = "production"
+
 
   zone-subnets = {
     zone0 = "10.43.1.0/24"
@@ -261,6 +267,7 @@ module "api" {
   source        = "../../govwifi-api"
   Env-Name      = var.Env-Name
   Env-Subdomain = var.Env-Subdomain
+  is_production_aws_account = var.is_production_aws_account
 
   ami                     = var.ami
   ssh-key-name            = var.ssh-key-name
@@ -295,6 +302,7 @@ module "api" {
   db-hostname               = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   db-read-replica-hostname  = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                  = "production"
+  sentry-current-env        = "production"
   radius-server-ips         = split(",", var.frontend-radius-IPs)
   authentication-sentry-dsn = var.auth-sentry-dsn
   safe-restart-sentry-dsn   = var.safe-restart-sentry-dsn

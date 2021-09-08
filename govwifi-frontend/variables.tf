@@ -115,3 +115,6 @@ variable "prometheus-IP-ireland" {
 
 variable "use_env_prefix" {
 }
+
+variable "is_production_aws_account" {
+}
