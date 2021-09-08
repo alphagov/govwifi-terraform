@@ -57,49 +57,108 @@ MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 
-yum install --assumeyes amazon-cloudwatch-agent awslogs
-
-# Send CloudWatch Logs data to the region where the instance is located
-sed -i -e "s/region = us-east-1/region = ${var.aws-region}/g" /etc/awslogs/awscli.conf
+yum install --assumeyes amazon-cloudwatch-agent
 
 # Inject the CloudWatch Logs configuration file contents
-cat > /etc/awslogs/awslogs.conf <<- EOF
-[general]
-state_file = /var/lib/awslogs/agent-state
-
-[/var/log/dmesg]
-file = /var/log/dmesg
-log_group_name = ${var.Env-Name}/var/log/dmesg
-log_stream_name = ${aws_ecs_cluster.frontend-cluster.name}/{instance_id}
-
-[/var/log/messages]
-file = /var/log/messages
-log_group_name = ${var.Env-Name}/var/log/messages
-log_stream_name = ${aws_ecs_cluster.frontend-cluster.name}/{instance_id}
-datetime_format = %b %d %H:%M:%S
-
-[/var/log/ecs/ecs-init.log]
-file = /var/log/ecs/ecs-init.log
-log_group_name = ${var.Env-Name}/var/log/ecs/ecs-init.log
-log_stream_name = ${aws_ecs_cluster.frontend-cluster.name}/{instance_id}
-datetime_format = %Y-%m-%dT%H:%M:%SZ
-
-[/var/log/ecs/ecs-agent.log]
-file = /var/log/ecs/ecs-agent.log
-log_group_name = ${var.Env-Name}/var/log/ecs/ecs-agent.log
-log_stream_name = ${aws_ecs_cluster.frontend-cluster.name}/{instance_id}
-datetime_format = %Y-%m-%dT%H:%M:%SZ
-
-[/var/log/ecs/audit.log]
-file = /var/log/ecs/audit.log
-log_group_name = ${var.Env-Name}/var/log/ecs/audit.log
-log_stream_name = ${aws_ecs_cluster.frontend-cluster.name}/{instance_id}
-datetime_format = %Y-%m-%dT%H:%M:%SZ
-
+cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json << EOF
+{
+  "agent": {
+    "metrics_collection_interval": 60,
+    "run_as_user": "cwagent"
+  },
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/var/log/dmesg",
+            "log_group_name": "staging/var/log/dmesg",
+            "log_stream_name": "staging-frontend-cluster/{instance_id}"
+          },
+          {
+            "file_path": "/var/log/ecs/audit.log",
+            "log_group_name": "staging/var/log/ecs/audit.log",
+            "log_stream_name": "staging-frontend-cluster/{instance_id}",
+            "timestamp_format": "%Y-%m-%dT%H:%M:%SZ"
+          },
+          {
+            "file_path": "/var/log/ecs/ecs-agent.log",
+            "log_group_name": "staging/var/log/ecs/ecs-agent.log",
+            "log_stream_name": "staging-frontend-cluster/{instance_id}",
+            "timestamp_format": "%Y-%m-%dT%H:%M:%SZ"
+          },
+          {
+            "file_path": "/var/log/ecs/ecs-init.log",
+            "log_group_name": "staging/var/log/ecs/ecs-init.log",
+            "log_stream_name": "staging-frontend-cluster/{instance_id}",
+            "timestamp_format": "%Y-%m-%dT%H:%M:%SZ"
+          },
+          {
+            "file_path": "/var/log/messages",
+            "log_group_name": "staging/var/log/messages",
+            "log_stream_name": "staging-frontend-cluster/{instance_id}",
+            "timestamp_format": "%b %d %H:%M:%S"
+          }
+        ]
+      }
+    }
+  },
+  "metrics": {
+    "append_dimensions": {
+      "AutoScalingGroupName": "\$${aws:AutoScalingGroupName}",
+      "ImageId": "\$${aws:ImageId}",
+      "InstanceId": "\$${aws:InstanceId}",
+      "InstanceType": "\$${aws:InstanceType}"
+    },
+    "metrics_collected": {
+      "cpu": {
+        "measurement": [
+          "cpu_usage_idle",
+          "cpu_usage_iowait",
+          "cpu_usage_user",
+          "cpu_usage_system"
+        ],
+        "metrics_collection_interval": 60,
+        "totalcpu": false
+      },
+      "disk": {
+        "measurement": [
+          "used_percent",
+          "inodes_free"
+        ],
+        "metrics_collection_interval": 60,
+        "resources": [
+          "*"
+        ]
+      },
+      "diskio": {
+        "measurement": [
+          "io_time"
+        ],
+        "metrics_collection_interval": 60,
+        "resources": [
+          "*"
+        ]
+      },
+      "mem": {
+        "measurement": [
+          "mem_used_percent"
+        ],
+        "metrics_collection_interval": 60
+      },
+      "swap": {
+        "measurement": [
+          "swap_used_percent"
+        ],
+        "metrics_collection_interval": 60
+      }
+    }
+  }
+}
 EOF
 
-systemctl enable awslogsd.service
-systemctl start awslogsd.service
+systemctl enable amazon-cloudwatch-agent.service
+systemctl start amazon-cloudwatch-agent.service
 
 --==BOUNDARY==
 
