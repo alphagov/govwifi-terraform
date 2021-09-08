@@ -317,7 +317,7 @@ module "api" {
   user-signup-docker-image      = format("%s/user-signup-api:production", local.docker_image_path)
   logging-docker-image          = format("%s/logging-api:production", local.docker_image_path)
   safe-restart-docker-image     = format("%s/safe-restarter:production", local.docker_image_path)
-  backup-rds-to-s3-docker-image = format("%s/database-backup:staging", local.docker_image_path)
+  backup-rds-to-s3-docker-image = format("%s/database-backup:production", local.docker_image_path)
 
   db-hostname               = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   db-read-replica-hostname  = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
