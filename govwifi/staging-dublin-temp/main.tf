@@ -180,9 +180,10 @@ module "frontend" {
     aws.route53-alarms = aws.route53-alarms
   }
 
-  source        = "../../govwifi-frontend"
-  Env-Name      = var.Env-Name
-  Env-Subdomain = var.Env-Subdomain
+  source                    = "../../govwifi-frontend"
+  Env-Name                  = var.Env-Name
+  Env-Subdomain             = var.Env-Subdomain
+  is_production_aws_account = var.is_production_aws_account
 
   # AWS VPC setup -----------------------------------------
   aws-region         = var.aws-region
@@ -246,10 +247,11 @@ module "api" {
     aws = aws.AWS-main
   }
 
-  source        = "../../govwifi-api"
-  env           = "staging"
-  Env-Name      = "staging"
-  Env-Subdomain = var.Env-Subdomain
+  source                    = "../../govwifi-api"
+  env                       = "staging"
+  Env-Name                  = "staging"
+  Env-Subdomain             = var.Env-Subdomain
+  is_production_aws_account = var.is_production_aws_account
 
   ami                    = ""
   ssh-key-name           = ""
