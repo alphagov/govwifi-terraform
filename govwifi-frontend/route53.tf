@@ -21,7 +21,7 @@ resource "aws_route53_health_check" "radius" {
   reference_name = var.is_production_aws_account ? format(
     "${var.rack-env}-${var.aws-region-name}-frontend-%d",
     count.index + 1
-  ) : format(
+    ) : format(
     "${var.Env-Name}-${var.aws-region-name}-frontend-%d",
     count.index + 1
   )

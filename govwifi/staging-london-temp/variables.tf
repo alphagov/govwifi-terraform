@@ -14,13 +14,13 @@ variable "product-name" {
 }
 
 variable "Env-Subdomain" {
-  type        =  string
+  type        = string
   default     = "staging-temp.wifi"
   description = "Environment-specific subdomain to use under the service domain."
 }
 
 variable "ssh-key-name" {
-  type    =  string
+  type    = string
   default = "staging-temp-ec2-instances-20200717"
 }
 
@@ -48,7 +48,7 @@ variable "zone-count" {
 
 # Zone names and subnets MUST be static, can not be constructed from vars.
 variable "zone-names" {
-  type = map
+  type = map(any)
 
   default = {
     zone0 = "eu-west-2a"
@@ -66,11 +66,11 @@ variable "ami" {
 # Secrets
 
 variable "auth-sentry-dsn" {
-  type    = string
+  type = string
 }
 
 variable "safe-restart-sentry-dsn" {
-  type    = string
+  type = string
 }
 
 variable "public-google-api-key" {
@@ -84,15 +84,15 @@ variable "otp-secret-encryption-key" {
 }
 
 variable "user-signup-sentry-dsn" {
-  type    = string
+  type = string
 }
 
 variable "logging-sentry-dsn" {
-  type    = string
+  type = string
 }
 
 variable "admin-sentry-dsn" {
-  type    = string
+  type = string
 }
 
 variable "db-password" {
@@ -199,52 +199,52 @@ variable "route53-zone-id" {
 variable "performance-url" {
   type        = string
   description = "URL endpoint leading to Performance platform API, with a trailing slash at the end"
-  default = "unused-on-staging"
+  default     = "unused-on-staging"
 }
 
 variable "performance-dataset" {
   type        = string
   description = "Dataset to which Performance statistics should be saved e.g `gov-wifi`"
-  default = "unused-on-staging"
+  default     = "unused-on-staging"
 }
 
 variable "performance-bearer-volumetrics" {
   type        = string
   description = "Bearer token for `volumetrics` Performance platform statistics"
-  default = "unused-on-staging"
+  default     = "unused-on-staging"
 }
 
 variable "performance-bearer-completion-rate" {
   type        = string
   description = "Bearer token for `completion-rate` Performance platform statistics"
-  default = "unused-on-staging"
+  default     = "unused-on-staging"
 }
 
 variable "performance-bearer-active-users" {
   type        = string
   description = "Bearer token for `active-users` Performance platform statistics"
-  default = "unused-on-staging"
+  default     = "unused-on-staging"
 }
 
 variable "performance-bearer-unique-users" {
   type        = string
   description = "Bearer token for `unique-users` Performance platform statistics"
-  default = "unused-on-staging"
+  default     = "unused-on-staging"
 }
 
 variable "performance-bearer-roaming-users" {
   type        = string
   description = "Bearer token for `roaming-users` Performance platform statistics"
-  default = "unused-on-staging"
+  default     = "unused-on-staging"
 }
 
 variable "london-radius-ip-addresses" {
-  type        = list
+  type        = list(any)
   description = "Frontend RADIUS server IP addresses - London"
 }
 
 variable "dublin-radius-ip-addresses" {
-  type        = list
+  type        = list(any)
   description = "Frontend RADIUS server IP addresses - Dublin"
 }
 
