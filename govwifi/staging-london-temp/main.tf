@@ -58,8 +58,8 @@ module "govwifi-keys" {
   create_production_bastion_key = 0
   is_production_aws_account     = var.is_production_aws_account
 
-  govwifi-key-name               = var.ssh-key-name
-  govwifi-key-name-pub           = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDOxYtGJARr+ZUB9wMWMX/H+myTidFKx+qcBsXuri5zavQ6K4c0WhSkypXfET9BBtC1ZU77B98mftegxKdKcKmFbCVlv39pIX+xj2vjuCzHlzezI1vB4mdAXNhc8b4ArvFJ8lG2GLa1ZD8H/8akpv6EcplwyUv6ZgQMPl6wfMF6d0Qe/eOJ/bV570icX9NYLGkdLRbudkRc12krt6h451qp1vO7f2FQOnPR2cnyLGd/FxhrmAOqJsDk9CRNSwHJe1lsSCz6TkQk1bfCTxZ7g2hWSNRBdWPj0RJbbezy3X3/pz4cFL8mCC1esJ+nptUZ7CXeyirtCObIepniXIItwtdIVqixaMSjfagUGd0L1zFEVuH0bct3mh3u3TyVbNHP4o4pFHvG0sm5R1iDB8/xe2NJdxmAsn3JqeXdsQ6uI/oz31OueFRPyZI0VeDw7B4bhBMZ0w/ncrYJ9jFjfPvzhAVZgQX5Pxtp5MUCeU9+xIdAN2bESmIvaoSEwno7WJ4z61d83pLMFUuS9vNRW4ykgd1BzatLYSkLp/fn/wYNn6DBk7Da6Vs1Y/jgkiDJPGeFlEhW3rqOjTKrpKJBw6LBsMyI0BtkKoPoUTDlKSEX5JlNWBX2z5eSEhe+WEQjc4ZnbLUOKRB5+xNOGahVyk7/VF8ZaZ3/GXWY7MEfZ8TIBBcAjw== GovWifi-DevOps@digital.cabinet-office.gov.uk"
+  govwifi-key-name     = var.ssh-key-name
+  govwifi-key-name-pub = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDOxYtGJARr+ZUB9wMWMX/H+myTidFKx+qcBsXuri5zavQ6K4c0WhSkypXfET9BBtC1ZU77B98mftegxKdKcKmFbCVlv39pIX+xj2vjuCzHlzezI1vB4mdAXNhc8b4ArvFJ8lG2GLa1ZD8H/8akpv6EcplwyUv6ZgQMPl6wfMF6d0Qe/eOJ/bV570icX9NYLGkdLRbudkRc12krt6h451qp1vO7f2FQOnPR2cnyLGd/FxhrmAOqJsDk9CRNSwHJe1lsSCz6TkQk1bfCTxZ7g2hWSNRBdWPj0RJbbezy3X3/pz4cFL8mCC1esJ+nptUZ7CXeyirtCObIepniXIItwtdIVqixaMSjfagUGd0L1zFEVuH0bct3mh3u3TyVbNHP4o4pFHvG0sm5R1iDB8/xe2NJdxmAsn3JqeXdsQ6uI/oz31OueFRPyZI0VeDw7B4bhBMZ0w/ncrYJ9jFjfPvzhAVZgQX5Pxtp5MUCeU9+xIdAN2bESmIvaoSEwno7WJ4z61d83pLMFUuS9vNRW4ykgd1BzatLYSkLp/fn/wYNn6DBk7Da6Vs1Y/jgkiDJPGeFlEhW3rqOjTKrpKJBw6LBsMyI0BtkKoPoUTDlKSEX5JlNWBX2z5eSEhe+WEQjc4ZnbLUOKRB5+xNOGahVyk7/VF8ZaZ3/GXWY7MEfZ8TIBBcAjw== GovWifi-DevOps@digital.cabinet-office.gov.uk"
 
 }
 
@@ -153,13 +153,13 @@ module "frontend" {
   # LONDON
   aws-region = var.aws-region
 
-  aws-region-name = var.aws-region-name
-  route53-zone-id = local.route53_zone_id
-  vpc-cidr-block      = "10.102.0.0/16"
-  zone-count      = var.zone-count
-  zone-names      = var.zone-names
-  rack-env            = "staging"
-  sentry-current-env  = "secondary-staging"
+  aws-region-name    = var.aws-region-name
+  route53-zone-id    = local.route53_zone_id
+  vpc-cidr-block     = "10.102.0.0/16"
+  zone-count         = var.zone-count
+  zone-names         = var.zone-names
+  rack-env           = "staging"
+  sentry-current-env = "secondary-staging"
 
   zone-subnets = {
     zone0 = "10.102.1.0/24"
@@ -252,8 +252,8 @@ module "govwifi-admin" {
   db-backup-window         = "03:42-04:42"
   db-monitoring-interval   = 60
 
-  rr-db-host     = "db.london.staging-temp.wifi.service.gov.uk"
-  rr-db-name     = "govwifi_staging"
+  rr-db-host = "db.london.staging-temp.wifi.service.gov.uk"
+  rr-db-name = "govwifi_staging"
 
   user-db-host = var.user-db-hostname
   user-db-name = "govwifi_staging_users"
@@ -334,7 +334,7 @@ module "api" {
   # There is no read replica for the staging database
   db-read-replica-hostname  = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                  = "staging"
-  sentry-current-env  = "secondary-staging"
+  sentry-current-env        = "secondary-staging"
   radius-server-ips         = split(",", var.frontend-radius-IPs)
   authentication-sentry-dsn = var.auth-sentry-dsn
   safe-restart-sentry-dsn   = var.safe-restart-sentry-dsn
@@ -495,5 +495,5 @@ module "govwifi-datasync" {
   source = "../../govwifi-datasync"
 
   aws-region = var.aws-region
-  rack-env        = "staging"
+  rack-env   = "staging"
 }

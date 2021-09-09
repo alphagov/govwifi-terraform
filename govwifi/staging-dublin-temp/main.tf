@@ -24,9 +24,9 @@ terraform {
     #region = "${var.aws-region}"
     bucket = "govwifi-staging-temp-dublin-tfstate"
 
-    key    = "dublin-tfstate"
+    key     = "dublin-tfstate"
     encrypt = true
-    region = "eu-west-1"
+    region  = "eu-west-1"
   }
   required_providers {
     aws = {
@@ -135,18 +135,18 @@ module "emails" {
     aws = aws.AWS-main
   }
 
-  source                   = "../../govwifi-emails"
+  source = "../../govwifi-emails"
 
   is_production_aws_account = var.is_production_aws_account
-  product-name             = var.product-name
-  Env-Name                 = var.Env-Name
-  Env-Subdomain            = var.Env-Subdomain
-  aws-account-id           = local.aws_account_id
-  route53-zone-id          = local.route53_zone_id
-  aws-region               = var.aws-region
-  aws-region-name          = var.aws-region-name
-  mail-exchange-server     = "10 inbound-smtp.eu-west-1.amazonaws.com"
-  devops-notifications-arn = module.notifications.topic-arn
+  product-name              = var.product-name
+  Env-Name                  = var.Env-Name
+  Env-Subdomain             = var.Env-Subdomain
+  aws-account-id            = local.aws_account_id
+  route53-zone-id           = local.route53_zone_id
+  aws-region                = var.aws-region
+  aws-region-name           = var.aws-region-name
+  mail-exchange-server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
+  devops-notifications-arn  = module.notifications.topic-arn
 
   user-signup-notifications-endpoint = "https://user-signup-api.${var.Env-Subdomain}.service.gov.uk:8443/user-signup/email-notification"
 }
@@ -164,8 +164,8 @@ module "govwifi-keys" {
   create_production_bastion_key = 0
   is_production_aws_account     = false
 
-  govwifi-key-name               = var.ssh-key-name
-  govwifi-key-name-pub           = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDOxYtGJARr+ZUB9wMWMX/H+myTidFKx+qcBsXuri5zavQ6K4c0WhSkypXfET9BBtC1ZU77B98mftegxKdKcKmFbCVlv39pIX+xj2vjuCzHlzezI1vB4mdAXNhc8b4ArvFJ8lG2GLa1ZD8H/8akpv6EcplwyUv6ZgQMPl6wfMF6d0Qe/eOJ/bV570icX9NYLGkdLRbudkRc12krt6h451qp1vO7f2FQOnPR2cnyLGd/FxhrmAOqJsDk9CRNSwHJe1lsSCz6TkQk1bfCTxZ7g2hWSNRBdWPj0RJbbezy3X3/pz4cFL8mCC1esJ+nptUZ7CXeyirtCObIepniXIItwtdIVqixaMSjfagUGd0L1zFEVuH0bct3mh3u3TyVbNHP4o4pFHvG0sm5R1iDB8/xe2NJdxmAsn3JqeXdsQ6uI/oz31OueFRPyZI0VeDw7B4bhBMZ0w/ncrYJ9jFjfPvzhAVZgQX5Pxtp5MUCeU9+xIdAN2bESmIvaoSEwno7WJ4z61d83pLMFUuS9vNRW4ykgd1BzatLYSkLp/fn/wYNn6DBk7Da6Vs1Y/jgkiDJPGeFlEhW3rqOjTKrpKJBw6LBsMyI0BtkKoPoUTDlKSEX5JlNWBX2z5eSEhe+WEQjc4ZnbLUOKRB5+xNOGahVyk7/VF8ZaZ3/GXWY7MEfZ8TIBBcAjw== "
+  govwifi-key-name     = var.ssh-key-name
+  govwifi-key-name-pub = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDOxYtGJARr+ZUB9wMWMX/H+myTidFKx+qcBsXuri5zavQ6K4c0WhSkypXfET9BBtC1ZU77B98mftegxKdKcKmFbCVlv39pIX+xj2vjuCzHlzezI1vB4mdAXNhc8b4ArvFJ8lG2GLa1ZD8H/8akpv6EcplwyUv6ZgQMPl6wfMF6d0Qe/eOJ/bV570icX9NYLGkdLRbudkRc12krt6h451qp1vO7f2FQOnPR2cnyLGd/FxhrmAOqJsDk9CRNSwHJe1lsSCz6TkQk1bfCTxZ7g2hWSNRBdWPj0RJbbezy3X3/pz4cFL8mCC1esJ+nptUZ7CXeyirtCObIepniXIItwtdIVqixaMSjfagUGd0L1zFEVuH0bct3mh3u3TyVbNHP4o4pFHvG0sm5R1iDB8/xe2NJdxmAsn3JqeXdsQ6uI/oz31OueFRPyZI0VeDw7B4bhBMZ0w/ncrYJ9jFjfPvzhAVZgQX5Pxtp5MUCeU9+xIdAN2bESmIvaoSEwno7WJ4z61d83pLMFUuS9vNRW4ykgd1BzatLYSkLp/fn/wYNn6DBk7Da6Vs1Y/jgkiDJPGeFlEhW3rqOjTKrpKJBw6LBsMyI0BtkKoPoUTDlKSEX5JlNWBX2z5eSEhe+WEQjc4ZnbLUOKRB5+xNOGahVyk7/VF8ZaZ3/GXWY7MEfZ8TIBBcAjw== "
 
 }
 
@@ -181,14 +181,14 @@ module "frontend" {
   Env-Subdomain = var.Env-Subdomain
 
   # AWS VPC setup -----------------------------------------
-  aws-region          = var.aws-region
-  aws-region-name     = var.aws-region-name
-  route53-zone-id     = local.route53_zone_id
-  vpc-cidr-block      = "10.105.0.0/16"
-  zone-count          = var.zone-count
-  zone-names          = var.zone-names
-  rack-env            = "staging"
-  sentry-current-env  = "secondary-staging"
+  aws-region         = var.aws-region
+  aws-region-name    = var.aws-region-name
+  route53-zone-id    = local.route53_zone_id
+  vpc-cidr-block     = "10.105.0.0/16"
+  zone-count         = var.zone-count
+  zone-names         = var.zone-names
+  rack-env           = "staging"
+  sentry-current-env = "secondary-staging"
 
   zone-subnets = {
     zone0 = "10.105.1.0/24"

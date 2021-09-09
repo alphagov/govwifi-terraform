@@ -49,7 +49,7 @@ variable "zone-count" {
 
 # Zone names and subnets MUST be static, can not be constructed from vars.
 variable "zone-names" {
-  type = map
+  type = map(any)
 
   default = {
     zone0 = "eu-west-1a"
@@ -83,7 +83,7 @@ variable "user-rr-hostname" {
 }
 
 variable "auth-sentry-dsn" {
-  type    = string
+  type = string
 }
 
 variable "notification-email" {

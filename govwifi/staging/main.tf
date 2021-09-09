@@ -134,16 +134,16 @@ module "emails" {
   }
 
   is_production_aws_account = var.is_production_aws_account
-  source                   = "../../govwifi-emails"
-  product-name             = var.product-name
-  Env-Name                 = var.Env-Name
-  Env-Subdomain            = var.Env-Subdomain
-  aws-account-id           = local.aws_account_id
-  route53-zone-id          = local.route53_zone_id
-  aws-region               = var.aws-region
-  aws-region-name          = var.aws-region-name
-  mail-exchange-server     = "10 inbound-smtp.eu-west-1.amazonaws.com"
-  devops-notifications-arn = module.notifications.topic-arn
+  source                    = "../../govwifi-emails"
+  product-name              = var.product-name
+  Env-Name                  = var.Env-Name
+  Env-Subdomain             = var.Env-Subdomain
+  aws-account-id            = local.aws_account_id
+  route53-zone-id           = local.route53_zone_id
+  aws-region                = var.aws-region
+  aws-region-name           = var.aws-region-name
+  mail-exchange-server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
+  devops-notifications-arn  = module.notifications.topic-arn
 
   #sns-endpoint             = "https://elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk/sns/"
   sns-endpoint                       = "https://elb.london.${var.Env-Subdomain}.service.gov.uk/sns/"
@@ -160,11 +160,11 @@ module "govwifi-keys" {
   create_production_bastion_key = 0
   is_production_aws_account     = var.is_production_aws_account
 
-  govwifi-bastion-key-name  = "govwifi-bastion-key-20210630"
-  govwifi-bastion-key-pub   = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDY/Q676Tp5CTpKWVksMPztERDdjWOrYFgVckF9IHGI2wC38ckWFiqawsEZBILUyNZgL/lnOtheN1UZtuGmUUkPxgtPw+YD6gMDcebhSX4wh9GM3JjXAIy9+V/WagQ84Pz10yIp+PlyzcQMu+RVRVzWyTYZUdgMsDt0tFdcgMgUc7FkC252CgtSZHpLXhnukG5KG69CoTO+kuak/k3vX5jwWjIgfMGZwIAq+F9XSIMAwylCmmdE5MetKl0Wx4EI/fm8WqSZXj+yeFRv9mQTus906AnNieOgOrgt4D24/JuRU1JTlZ35iNbOKcwlOTDSlTQrm4FA1sCllphhD/RQVYpMp6EV3xape626xwkucCC2gYnakxTZFHUIeWfC5aHGrqMOMtXRfW0xs+D+vzo3MCWepdIebWR5KVhqkbNUKHBG9e8oJbTYUkoyBZjC7LtI4fgB3+blXyFVuQoAzjf+poPzdPBfCC9eiUJrEHoOljO9yMcdkBfyW3c/o8Sd9PgNufc= bastion@govwifi"
+  govwifi-bastion-key-name = "govwifi-bastion-key-20210630"
+  govwifi-bastion-key-pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDY/Q676Tp5CTpKWVksMPztERDdjWOrYFgVckF9IHGI2wC38ckWFiqawsEZBILUyNZgL/lnOtheN1UZtuGmUUkPxgtPw+YD6gMDcebhSX4wh9GM3JjXAIy9+V/WagQ84Pz10yIp+PlyzcQMu+RVRVzWyTYZUdgMsDt0tFdcgMgUc7FkC252CgtSZHpLXhnukG5KG69CoTO+kuak/k3vX5jwWjIgfMGZwIAq+F9XSIMAwylCmmdE5MetKl0Wx4EI/fm8WqSZXj+yeFRv9mQTus906AnNieOgOrgt4D24/JuRU1JTlZ35iNbOKcwlOTDSlTQrm4FA1sCllphhD/RQVYpMp6EV3xape626xwkucCC2gYnakxTZFHUIeWfC5aHGrqMOMtXRfW0xs+D+vzo3MCWepdIebWR5KVhqkbNUKHBG9e8oJbTYUkoyBZjC7LtI4fgB3+blXyFVuQoAzjf+poPzdPBfCC9eiUJrEHoOljO9yMcdkBfyW3c/o8Sd9PgNufc= bastion@govwifi"
 
-  govwifi-key-name               = var.ssh-key-name
-  govwifi-key-name-pub           = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJmLa/tF941z6Dh/jiZCH6Mw/JoTXGkILim/bgDc3PSBKXFmBwkAFUVgnoOUWJDXvZWpuBJv+vUu+ZlmlszFM00BRXpb4ykRuJxWIjJiNzGlgXW69Satl2e9d37ZtLwlAdABgJyvj10QEiBtB1VS0DBRXK9J+CfwNPnwVnfppFGP86GoqE2Il86t+BB/VC//gKMTttIstyl2nqUwkK3Epq66+1ol3AelmUmBjPiyrmkwp+png9F4B86RqSNa/drfXmUGf1czE4+H+CXqOdje2bmnrwxLQ8GY3MYpz0zTVrB3T1IyXXF6dcdcF6ZId9B/10jMiTigvOeUvraFEf9fK7 govwifi@govwifi"
+  govwifi-key-name     = var.ssh-key-name
+  govwifi-key-name-pub = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJmLa/tF941z6Dh/jiZCH6Mw/JoTXGkILim/bgDc3PSBKXFmBwkAFUVgnoOUWJDXvZWpuBJv+vUu+ZlmlszFM00BRXpb4ykRuJxWIjJiNzGlgXW69Satl2e9d37ZtLwlAdABgJyvj10QEiBtB1VS0DBRXK9J+CfwNPnwVnfppFGP86GoqE2Il86t+BB/VC//gKMTttIstyl2nqUwkK3Epq66+1ol3AelmUmBjPiyrmkwp+png9F4B86RqSNa/drfXmUGf1czE4+H+CXqOdje2bmnrwxLQ8GY3MYpz0zTVrB3T1IyXXF6dcdcF6ZId9B/10jMiTigvOeUvraFEf9fK7 govwifi@govwifi"
 
 }
 
@@ -181,14 +181,14 @@ module "frontend" {
   is_production_aws_account = var.is_production_aws_account
 
   # AWS VPC setup -----------------------------------------
-  aws-region          = var.aws-region
-  aws-region-name     = var.aws-region-name
-  route53-zone-id     = local.route53_zone_id
-  vpc-cidr-block      = "10.101.0.0/16"
-  zone-count          = var.zone-count
-  zone-names          = var.zone-names
-  rack-env            = "staging"
-  sentry-current-env  = "staging"
+  aws-region         = var.aws-region
+  aws-region-name    = var.aws-region-name
+  route53-zone-id    = local.route53_zone_id
+  vpc-cidr-block     = "10.101.0.0/16"
+  zone-count         = var.zone-count
+  zone-names         = var.zone-names
+  rack-env           = "staging"
+  sentry-current-env = "staging"
 
   zone-subnets = {
     zone0 = "10.101.1.0/24"
@@ -240,11 +240,11 @@ module "api" {
     aws = aws.AWS-main
   }
 
-  source        = "../../govwifi-api"
-  env           = "staging"
-  Env-Name      = var.Env-Name
-  Env-Subdomain = var.Env-Subdomain
-  is_production_aws_account     = var.is_production_aws_account
+  source                    = "../../govwifi-api"
+  env                       = "staging"
+  Env-Name                  = var.Env-Name
+  Env-Subdomain             = var.Env-Subdomain
+  is_production_aws_account = var.is_production_aws_account
 
   ami                    = ""
   ssh-key-name           = ""
