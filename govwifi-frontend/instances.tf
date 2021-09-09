@@ -63,8 +63,7 @@ yum install --assumeyes amazon-cloudwatch-agent
 cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json << EOF
 {
   "agent": {
-    "metrics_collection_interval": 60,
-    "run_as_user": "cwagent"
+    "metrics_collection_interval": 60
   },
   "logs": {
     "logs_collected": {
