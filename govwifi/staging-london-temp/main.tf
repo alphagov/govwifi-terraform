@@ -438,44 +438,38 @@ when we create a separate staging environment.
 #   grafana-IP    = "${var.grafana-IP}/32"
 # }
 
-# module "govwifi-grafana" {
-#   providers = {
-#     aws = aws.AWS-main
-#   }
-#
-#   source                     = "../../govwifi-grafana"
-#   Env-Name                   = var.Env-Name
-#   Env-Subdomain              = var.Env-Subdomain
-#   aws-region                 = var.aws-region
-#   critical-notifications-arn = module.notifications.topic-arn
-#
-#   ssh-key-name = var.ssh-key-name
-#
-#   subnet-ids = module.backend.backend-subnet-ids
-#
-#   backend-subnet-ids = module.backend.backend-subnet-ids
-#
-#   be-admin-in = module.backend.be-admin-in
-#
-#   # Feature toggle so we only create the Grafana instance in Staging London
-#   create_grafana_server = "1"
-#
-#   vpc-id = module.backend.backend-vpc-id
-#
-#   bastion-ips = concat(
-#     split(",", var.bastion-server-IP),
-#     split(",", var.backend-subnet-IPs)
-#   )
-#
-#   administrator-IPs = var.administrator-IPs
-#
-#   prometheus-IPs = concat(
-#     split(",", "${var.prometheus-IP-london}/32"),
-#     split(",", "${var.prometheus-IP-ireland}/32")
-#   )
-#
-#   use_env_prefix = var.use_env_prefix
-# }
+module "govwifi-grafana" {
+  providers = {
+    aws = aws.AWS-main
+  }
+
+  source                     = "../../govwifi-grafana"
+  Env-Name                   = var.Env-Name
+  Env-Subdomain              = var.Env-Subdomain
+  aws-region                 = var.aws-region
+  critical-notifications-arn = module.notifications.topic-arn
+
+  ssh-key-name = var.ssh-key-name
+
+  subnet-ids = module.backend.backend-subnet-ids
+  backend-subnet-ids = module.backend.backend-subnet-ids
+  be-admin-in = module.backend.be-admin-in
+
+  # Feature toggle so we only create the Grafana instance in Staging London
+  create_grafana_server = "1"
+  vpc-id = module.backend.backend-vpc-id
+  bastion-ips = concat(
+    split(",", var.bastion-server-IP),
+    split(",", var.backend-subnet-IPs)
+  )
+  administrator-IPs = var.administrator-IPs
+  prometheus-IPs = concat(
+    split(",", "${var.prometheus-IP-london}/32"),
+    split(",", "${var.prometheus-IP-ireland}/32")
+  )
+
+  use_env_prefix = var.use_env_prefix
+}
 
 module "govwifi-elasticsearch" {
   providers = {
