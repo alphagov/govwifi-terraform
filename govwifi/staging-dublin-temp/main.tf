@@ -149,6 +149,10 @@ module "emails" {
   devops-notifications-arn  = module.notifications.topic-arn
 
   user-signup-notifications-endpoint = "https://user-signup-api.${var.Env-Subdomain}.service.gov.uk:8443/user-signup/email-notification"
+
+  // The SNS endpoint is disabled in the secondary AWS account
+  // We will conduct an SNS inventory (see this card: https://trello.com/c/EMeet3tl/315-investigate-and-inventory-sns-topics)
+  sns-endpoint = ""
 }
 
 module "govwifi-keys" {
@@ -233,6 +237,8 @@ module "frontend" {
   radius-CIDR-blocks = split(",", var.frontend-radius-IPs)
 
   use_env_prefix = var.use_env_prefix
+
+  is_production_aws_account = var.is_production_aws_account
 }
 
 module "api" {
@@ -305,6 +311,8 @@ module "api" {
   use_env_prefix = var.use_env_prefix
 
   low_cpu_threshold = 0.3
+
+  is_production_aws_account = var.is_production_aws_account
 }
 
 module "notifications" {
