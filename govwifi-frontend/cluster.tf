@@ -108,9 +108,9 @@ resource "aws_ecs_task_definition" "radius-task" {
         "name": "HEALTH_CHECK_RADIUS_KEY",
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:key::"
       },{
-         "name": "HEALTH_CHECK_SSID",
-         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:ssid::"
-      }      
+        "name": "HEALTH_CHECK_SSID",
+        "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:ssid::"
+      }
     ],
     "image": "${var.frontend-docker-image}",
     "logConfiguration": {
