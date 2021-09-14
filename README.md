@@ -199,11 +199,31 @@ the console
 
 ## How to contribute
 
-1. Fork the project
-2. Create a feature or fix branch
-3. Make your changes (with tests if applicable)
-4. Run `terraform fmt` to ensure code is formatted correctly
-5. Raise a pull request
+1. Create a feature or fix branch
+2. Make your changes
+3. Run `make format` to format Terraform code
+4. Raise a pull request
+
+### Styleguide
+
+Terraform's formatting tool takes care of much of the style, but there
+are some additional points.
+
+#### Naming resources
+
+When naming resources, only use underscores to seperate words. For
+example:
+
+```terraform
+resource "aws_iam_user_policy" "backup_s3_read_buckets" {
+  ...
+```
+
+#### Trailing newlines
+
+All lines in a file should end in a terminating newline character,
+including the last line. This helps to avoid unnecessary diff noise
+where this newline is added after a file has been created.
 
 ## License
 
