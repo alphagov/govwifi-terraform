@@ -244,7 +244,7 @@ module "govwifi-admin" {
 
   admin-docker-image      = format("%s/admin:production", local.docker_image_path)
   rack-env                = "production"
-  sentry-current-env      = "secondary-staging"
+  sentry-current-env      = "production"
   ecs-instance-profile-id = module.backend.ecs-instance-profile-id
   ecs-service-role        = module.backend.ecs-service-role
 
