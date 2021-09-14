@@ -229,7 +229,7 @@ module "govwifi-admin" {
 
   admin-docker-image      = format("%s/admin:staging", local.docker_image_path)
   rack-env                = "staging"
-  sentry-current-env      = "secondary-staging"
+  sentry-current-env      = "staging"
   ecr-repository-count    = 1
   ecs-instance-profile-id = module.backend.ecs-instance-profile-id
   ecs-service-role        = module.backend.ecs-service-role
