@@ -84,4 +84,3 @@ resource "aws_cloudwatch_metric_alarm" "radius-cannot-connect-to-api" {
 
   alarm_description = "FreeRADIUS cannot connect to the Logging and/or Authentication API. Investigate CloudWatch logs for root cause."
 }
-

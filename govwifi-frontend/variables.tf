@@ -75,6 +75,10 @@ variable "rack-env" {
   default = ""
 }
 
+variable "sentry-current-env" {
+  description = "The environment that Sentry will log errors to: e.g. staging"
+}
+
 variable "create-ecr" {
   description = "Whether or not to create ECR repository"
   default     = 0
@@ -110,4 +114,7 @@ variable "prometheus-IP-ireland" {
 }
 
 variable "use_env_prefix" {
+}
+
+variable "is_production_aws_account" {
 }

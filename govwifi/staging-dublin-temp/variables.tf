@@ -1,6 +1,11 @@
 variable "Env-Name" {
   type    = string
-  default = "wifi"
+  default = "staging-temp"
+}
+
+variable "Stage-Name" {
+  type    = string
+  default = "staging"
 }
 
 variable "product-name" {
@@ -10,17 +15,18 @@ variable "product-name" {
 
 variable "Env-Subdomain" {
   type        = string
-  default     = "wifi"
+  default     = "staging-temp.wifi"
   description = "Environment-specific subdomain to use under the service domain."
 }
 
 variable "ssh-key-name" {
   type    = string
-  default = "govwifi-key-20180530"
+  default = "staging-temp-ec2-instances-20200717"
 }
 
 # Entries below should probably stay as is for different environments
 #####################################################################
+
 variable "aws-region" {
   type    = string
   default = "eu-west-1"
@@ -43,7 +49,7 @@ variable "zone-count" {
 
 # Zone names and subnets MUST be static, can not be constructed from vars.
 variable "zone-names" {
-  type = map(string)
+  type = map(any)
 
   default = {
     zone0 = "eu-west-1a"
@@ -53,75 +59,34 @@ variable "zone-names" {
 }
 
 variable "ami" {
-  # eu-west-1, Amazon Linux AMI 2.0.20210819 x86_64 ECS HVM GP2
-  default     = "ami-0edfed61b9e44e914"
+  # eu-west-1, Amazon Linux AMI 2017.09.l x86_64 ECS HVM GP2
+  default     = "ami-2d386654"
   description = "AMI id to launch, must be in the region specified by the region variable"
 }
 
-# Secrets
-
-variable "user-signup-sentry-dsn" {
-  type    = string
-  default = ""
+variable "london-api-base-url" {
+  type        = string
+  description = "Base URL for authentication, user signup and logging APIs"
+  default     = "https://api-elb.london.staging-temp.wifi.service.gov.uk:8443"
 }
 
-variable "london-radius-ip-addresses" {
-  type        = list(string)
-  description = "Frontend RADIUS server IP addresses - London"
+variable "dublin-api-base-url" {
+  type        = string
+  description = "Base URL for authentication, user signup and logging APIs"
+  default     = "https://api-elb.dublin.staging-temp.wifi.service.gov.uk:8443"
 }
 
-variable "dublin-radius-ip-addresses" {
-  type        = list(string)
-  description = "Frontend RADIUS server IP addresses - Dublin"
+variable "user-rr-hostname" {
+  type        = string
+  description = "User details read replica hostname"
+  default     = "users-rr.dublin.staging-temp.wifi.service.gov.uk"
 }
 
 variable "auth-sentry-dsn" {
   type = string
 }
 
-variable "safe-restart-sentry-dsn" {
-  type = string
-}
-
-variable "logging-sentry-dsn" {
-  type    = string
-  default = ""
-}
-
-variable "london-api-base-url" {
-  type        = string
-  description = "Base URL for authentication, user signup and logging APIs"
-  default     = "https://api-elb.london.wifi.service.gov.uk:8443"
-}
-
-variable "dublin-api-base-url" {
-  type        = string
-  description = "Dublin - base URL for authentication, user signup and logging APIs"
-  default     = "https://api-elb.dublin.wifi.service.gov.uk:8443"
-}
-
-variable "user-db-hostname" {
-  type        = string
-  description = "User details database hostname"
-  default     = "users-db.london.production.wifi.service.gov.uk"
-}
-
-variable "user-rr-hostname" {
-  type        = string
-  description = "User details read replica hostname"
-  default     = "users-rr.dublin.production.wifi.service.gov.uk"
-}
-
-variable "critical-notification-email" {
-  type = string
-}
-
-variable "capacity-notification-email" {
-  type = string
-}
-
-variable "devops-notification-email" {
-  type = string
+variable "notification-email" {
 }
 
 variable "prometheus-IP-london" {
@@ -133,6 +98,10 @@ variable "prometheus-IP-ireland" {
 variable "grafana-IP" {
 }
 
+variable "administrator-IPs-list" {
+  description = "Unused in this configuration"
+}
+
 variable "backend-subnet-IPs-list" {
   description = "Unused in this configuration"
 }
@@ -140,11 +109,17 @@ variable "backend-subnet-IPs-list" {
 variable "use_env_prefix" {
   default     = false
   type        = bool
-  description = "Conditional to indicate whether to retrieve a secret with a env prefix in its name."
+  description = "Conditional to indicate whether to retrieve a secret with a env prefix in its name. For the secondary account the value can be set to false. The 'staging' prefix is redundant since the secondary account will be used for staging"
+}
+
+variable "backup_mysql_rds" {
+  description = "Conditional to indicate whether to make artifacts for and run RDS MySQL backups."
+  default     = false
+  type        = bool
 }
 
 variable "is_production_aws_account" {
   description = "Conditional to indicate if the enviroment is production or not."
-  default     = true
+  default     = false
   type        = bool
 }

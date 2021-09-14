@@ -15,6 +15,11 @@ resource "aws_ecr_repository" "govwifi-frontend-ecr" {
   name  = "govwifi/frontend"
 }
 
+resource "aws_ecr_repository" "govwifi-frontend-base-ecr" {
+  count = var.create-ecr
+  name  = "govwifi/frontend-base"
+}
+
 resource "aws_ecr_repository" "govwifi-raddb-ecr" {
   count = var.create-ecr
   name  = "govwifi/raddb"
@@ -84,6 +89,9 @@ resource "aws_ecs_task_definition" "radius-task" {
       },{
         "name": "SERVICE_DOMAIN",
         "value": "${var.Env-Subdomain}"
+      },{
+        "name": "SENTRY_CURRENT_ENV",
+        "value": "${var.sentry-current-env}"
       }
     ],
     "secrets": [
@@ -169,4 +177,3 @@ resource "aws_ecs_service" "frontend-service" {
     field = "instanceId"
   }
 }
-

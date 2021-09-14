@@ -59,6 +59,9 @@ resource "aws_ecs_task_definition" "logging-api-task" {
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{
+          "name": "SENTRY_CURRENT_ENV",
+          "value": "${var.sentry-current-env}"
+        },{
           "name": "SENTRY_DSN",
           "value": "${var.logging-sentry-dsn}"
         },{
@@ -66,7 +69,7 @@ resource "aws_ecs_task_definition" "logging-api-task" {
           "value": "${var.Env-Name}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
-          "value": "govwifi-${var.rack-env}-admin"
+          "value": "${var.admin-bucket-name}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
@@ -217,14 +220,14 @@ resource "aws_iam_role_policy" "logging-api-task-policy" {
       "Action": [
         "s3:GetObject"
       ],
-      "Resource": "arn:aws:s3:::govwifi-${var.rack-env}-admin/*"
+      "Resource": "arn:aws:s3:::${var.admin-bucket-name}/*"
     },
     {
       "Effect": "Allow",
       "Action":[
         "s3:GetObject",
         "s3:ListBucket",
-        "s3:PutObject"  
+        "s3:PutObject"
       ],
       "Resource": [
         "arn:aws:s3:::${var.metrics-bucket-name}",

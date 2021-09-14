@@ -9,7 +9,7 @@ resource "aws_db_instance" "db" {
   apply_immediately           = true
   instance_class              = var.session-db-instance-type
   identifier                  = "wifi-${var.Env-Name}-db"
-  name                        = "govwifi_${var.Env-Name}"
+  name                        = var.is_production_aws_account ? "govwifi_${var.Env-Name}" : "govwifi_${var.env}"
   username                    = local.session_db_username
   password                    = local.session_db_password
   backup_retention_period     = var.db-backup-retention-days
@@ -66,4 +66,3 @@ resource "aws_db_instance" "read_replica" {
     Name = "${title(var.Env-Name)} DB Read Replica"
   }
 }
-

@@ -22,10 +22,11 @@ terraform {
     #bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
     #key    = "${lower(var.aws-region-name)}-tfstate"
     #region = "${var.aws-region}"
-    bucket = "govwifi-staging-dublin-tfstate"
+    bucket = "govwifi-staging-temp-dublin-tfstate"
 
-    key    = "dublin-tfstate"
-    region = "eu-west-1"
+    key     = "dublin-tfstate"
+    encrypt = true
+    region  = "eu-west-1"
   }
   required_providers {
     aws = {
@@ -57,18 +58,19 @@ module "backend" {
   Env-Subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
+
   # AWS VPC setup -----------------------------------------
   aws-region      = var.aws-region
   route53-zone-id = local.route53_zone_id
   aws-region-name = var.aws-region-name
-  vpc-cidr-block  = "10.100.0.0/16"
+  vpc-cidr-block  = "10.104.0.0/16"
   zone-count      = var.zone-count
   zone-names      = var.zone-names
 
   zone-subnets = {
-    zone0 = "10.100.1.0/24"
-    zone1 = "10.100.2.0/24"
-    zone2 = "10.100.3.0/24"
+    zone0 = "10.104.1.0/24"
+    zone1 = "10.104.2.0/24"
+    zone2 = "10.104.3.0/24"
   }
 
   backend-subnet-IPs  = var.backend-subnet-IPs
@@ -85,7 +87,7 @@ module "backend" {
 
   bastion-instance-type     = "t2.micro"
   bastion-server-ip         = var.bastion-server-IP
-  bastion-ssh-key-name      = "govwifi-staging-bastion-key-20181025"
+  bastion-ssh-key-name      = "staging-temp-bastion-20200717"
   enable-bastion-monitoring = false
   users                     = var.users
   aws-account-id            = local.aws_account_id
@@ -133,8 +135,9 @@ module "emails" {
     aws = aws.AWS-main
   }
 
+  source = "../../govwifi-emails"
+
   is_production_aws_account = var.is_production_aws_account
-  source                    = "../../govwifi-emails"
   product-name              = var.product-name
   Env-Name                  = var.Env-Name
   Env-Subdomain             = var.Env-Subdomain
@@ -145,9 +148,11 @@ module "emails" {
   mail-exchange-server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
   devops-notifications-arn  = module.notifications.topic-arn
 
-  #sns-endpoint             = "https://elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk/sns/"
-  sns-endpoint                       = "https://elb.london.${var.Env-Subdomain}.service.gov.uk/sns/"
   user-signup-notifications-endpoint = "https://user-signup-api.${var.Env-Subdomain}.service.gov.uk:8443/user-signup/email-notification"
+
+  // The SNS endpoint is disabled in the secondary AWS account
+  // We will conduct an SNS inventory (see this card: https://trello.com/c/EMeet3tl/315-investigate-and-inventory-sns-topics)
+  sns-endpoint = ""
 }
 
 module "govwifi-keys" {
@@ -157,14 +162,14 @@ module "govwifi-keys" {
 
   source = "../../govwifi-keys"
 
-  create_production_bastion_key = 0
-  is_production_aws_account     = var.is_production_aws_account
+  govwifi-bastion-key-name = "staging-temp-bastion-20200717"
+  govwifi-bastion-key-pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDL5wGVJ8aXL0QUhIvfLV2BMLC9Tk74jnChC40R9ipzK0AuatcaXdj0PEm8sh8sHlXEmdmVDq/4s8XaEkF7MDl38qbjxxHRTpCgcTrYzJGad3xgr1+zhpD8Kfnepex/2pR7z7kOCv7EDx4vRTc8vu1ttcmJiniBmgjc1xVk1A5aB72GxffZrow7B0iopP16vEPvllUjsDoOaeLJukDzsbZaP2RRYBqIA4qXunfJpuuu/o+T+YR4LkTB+9UBOOGrX50T80oTtJMKD9ndQ9CC9sqlrOzE9GiZz9db7D9iOzIZoTT6dBbgEOfCGmkj7WS2NjF+D/pEN/edkIuNGvE+J/HqQ179Xm/VCx5Kr6ARG+xk9cssCQbEFwR46yitaPA7B4mEiyD9XvUW2tUeVKdX5ybUFqV++2c5rxTczuH4gGlEGixIqPeltRvkVrN6qxnrbDAXE2bXymcnEN6BshwGKR+3OUKTS8c53eWmwiol6xwCp8VUI8/66tC/bCTmeur07z2LfQsIo745GzPuinWfUm8yPkZOD3LptkukO1aIfgvuNmlUKTwKSLIIwwsqTZ2FcK39A8g3Iq3HRV+4JwOowLJcylRa3QcSH9wdjd69SqPrZb0RhW0BN1mTX2tEBl1ryUUpKsqpMbvjl28tn6MGsU/sRhBLqliduOukGubD29LlAQ== "
 
-  govwifi-bastion-key-name = "govwifi-bastion-key-20210630"
-  govwifi-bastion-key-pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDY/Q676Tp5CTpKWVksMPztERDdjWOrYFgVckF9IHGI2wC38ckWFiqawsEZBILUyNZgL/lnOtheN1UZtuGmUUkPxgtPw+YD6gMDcebhSX4wh9GM3JjXAIy9+V/WagQ84Pz10yIp+PlyzcQMu+RVRVzWyTYZUdgMsDt0tFdcgMgUc7FkC252CgtSZHpLXhnukG5KG69CoTO+kuak/k3vX5jwWjIgfMGZwIAq+F9XSIMAwylCmmdE5MetKl0Wx4EI/fm8WqSZXj+yeFRv9mQTus906AnNieOgOrgt4D24/JuRU1JTlZ35iNbOKcwlOTDSlTQrm4FA1sCllphhD/RQVYpMp6EV3xape626xwkucCC2gYnakxTZFHUIeWfC5aHGrqMOMtXRfW0xs+D+vzo3MCWepdIebWR5KVhqkbNUKHBG9e8oJbTYUkoyBZjC7LtI4fgB3+blXyFVuQoAzjf+poPzdPBfCC9eiUJrEHoOljO9yMcdkBfyW3c/o8Sd9PgNufc= bastion@govwifi"
+  create_production_bastion_key = 0
+  is_production_aws_account     = false
 
   govwifi-key-name     = var.ssh-key-name
-  govwifi-key-name-pub = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJmLa/tF941z6Dh/jiZCH6Mw/JoTXGkILim/bgDc3PSBKXFmBwkAFUVgnoOUWJDXvZWpuBJv+vUu+ZlmlszFM00BRXpb4ykRuJxWIjJiNzGlgXW69Satl2e9d37ZtLwlAdABgJyvj10QEiBtB1VS0DBRXK9J+CfwNPnwVnfppFGP86GoqE2Il86t+BB/VC//gKMTttIstyl2nqUwkK3Epq66+1ol3AelmUmBjPiyrmkwp+png9F4B86RqSNa/drfXmUGf1czE4+H+CXqOdje2bmnrwxLQ8GY3MYpz0zTVrB3T1IyXXF6dcdcF6ZId9B/10jMiTigvOeUvraFEf9fK7 govwifi@govwifi"
+  govwifi-key-name-pub = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDOxYtGJARr+ZUB9wMWMX/H+myTidFKx+qcBsXuri5zavQ6K4c0WhSkypXfET9BBtC1ZU77B98mftegxKdKcKmFbCVlv39pIX+xj2vjuCzHlzezI1vB4mdAXNhc8b4ArvFJ8lG2GLa1ZD8H/8akpv6EcplwyUv6ZgQMPl6wfMF6d0Qe/eOJ/bV570icX9NYLGkdLRbudkRc12krt6h451qp1vO7f2FQOnPR2cnyLGd/FxhrmAOqJsDk9CRNSwHJe1lsSCz6TkQk1bfCTxZ7g2hWSNRBdWPj0RJbbezy3X3/pz4cFL8mCC1esJ+nptUZ7CXeyirtCObIepniXIItwtdIVqixaMSjfagUGd0L1zFEVuH0bct3mh3u3TyVbNHP4o4pFHvG0sm5R1iDB8/xe2NJdxmAsn3JqeXdsQ6uI/oz31OueFRPyZI0VeDw7B4bhBMZ0w/ncrYJ9jFjfPvzhAVZgQX5Pxtp5MUCeU9+xIdAN2bESmIvaoSEwno7WJ4z61d83pLMFUuS9vNRW4ykgd1BzatLYSkLp/fn/wYNn6DBk7Da6Vs1Y/jgkiDJPGeFlEhW3rqOjTKrpKJBw6LBsMyI0BtkKoPoUTDlKSEX5JlNWBX2z5eSEhe+WEQjc4ZnbLUOKRB5+xNOGahVyk7/VF8ZaZ3/GXWY7MEfZ8TIBBcAjw== "
 
 }
 
@@ -175,25 +180,24 @@ module "frontend" {
     aws.route53-alarms = aws.route53-alarms
   }
 
-  source                    = "../../govwifi-frontend"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
-  is_production_aws_account = var.is_production_aws_account
+  source        = "../../govwifi-frontend"
+  Env-Name      = var.Env-Name
+  Env-Subdomain = var.Env-Subdomain
 
   # AWS VPC setup -----------------------------------------
   aws-region         = var.aws-region
   aws-region-name    = var.aws-region-name
   route53-zone-id    = local.route53_zone_id
-  vpc-cidr-block     = "10.101.0.0/16"
+  vpc-cidr-block     = "10.105.0.0/16"
   zone-count         = var.zone-count
   zone-names         = var.zone-names
   rack-env           = "staging"
-  sentry-current-env = "staging"
+  sentry-current-env = "secondary-staging"
 
   zone-subnets = {
-    zone0 = "10.101.1.0/24"
-    zone1 = "10.101.2.0/24"
-    zone2 = "10.101.3.0/24"
+    zone0 = "10.105.1.0/24"
+    zone1 = "10.105.2.0/24"
+    zone2 = "10.105.3.0/24"
   }
 
   # Instance-specific setup -------------------------------
@@ -212,7 +216,7 @@ module "frontend" {
   raddb-docker-image    = format("%s/raddb:staging", local.docker_image_path)
 
   # admin bucket
-  admin-bucket-name = "govwifi-staging-admin"
+  admin-bucket-name = "govwifi-staging-temp.wifi-admin"
 
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.dublin-api-base-url
@@ -233,6 +237,8 @@ module "frontend" {
   radius-CIDR-blocks = split(",", var.frontend-radius-IPs)
 
   use_env_prefix = var.use_env_prefix
+
+  is_production_aws_account = var.is_production_aws_account
 }
 
 module "api" {
@@ -240,11 +246,10 @@ module "api" {
     aws = aws.AWS-main
   }
 
-  source                    = "../../govwifi-api"
-  env                       = "staging"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
-  is_production_aws_account = var.is_production_aws_account
+  source        = "../../govwifi-api"
+  env           = "staging"
+  Env-Name      = "staging"
+  Env-Subdomain = var.Env-Subdomain
 
   ami                    = ""
   ssh-key-name           = ""
@@ -286,7 +291,7 @@ module "api" {
   # There is no read replica for the staging database
   db-read-replica-hostname  = ""
   rack-env                  = "staging"
-  sentry-current-env        = "staging"
+  sentry-current-env        = "secondary-staging"
   radius-server-ips         = split(",", var.frontend-radius-IPs)
   authentication-sentry-dsn = var.auth-sentry-dsn
   safe-restart-sentry-dsn   = ""
@@ -306,6 +311,8 @@ module "api" {
   use_env_prefix = var.use_env_prefix
 
   low_cpu_threshold = 0.3
+
+  is_production_aws_account = var.is_production_aws_account
 }
 
 module "notifications" {
@@ -316,7 +323,7 @@ module "notifications" {
   source = "../../sns-notification"
 
   env-name   = var.Env-Name
-  topic-name = "govwifi-staging"
+  topic-name = "govwifi-staging-temp"
   emails     = [var.notification-email]
 }
 
@@ -328,36 +335,36 @@ module "route53-notifications" {
   source = "../../sns-notification"
 
   env-name   = var.Env-Name
-  topic-name = "govwifi-staging"
+  topic-name = "govwifi-staging-dublin-temp"
   emails     = [var.notification-email]
 }
 
-module "govwifi-prometheus" {
-  providers = {
-    aws = aws.AWS-main
-  }
-
-  source     = "../../govwifi-prometheus"
-  Env-Name   = var.Env-Name
-  aws-region = var.aws-region
-
-  ssh-key-name = var.ssh-key-name
-
-  frontend-vpc-id = module.frontend.frontend-vpc-id
-
-  fe-admin-in   = module.frontend.fe-admin-in
-  fe-ecs-out    = module.frontend.fe-ecs-out
-  fe-radius-in  = module.frontend.fe-radius-in
-  fe-radius-out = module.frontend.fe-radius-out
-
-  wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
-  london-radius-ip-addresses = var.london-radius-ip-addresses
-  dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
-
-  # Feature toggle creating Prometheus server.
-  # Value defaults to 0 and should only be enabled (i.e., value = 1)
-  create_prometheus_server = 0
-
-  prometheus-IP = var.prometheus-IP-ireland
-  grafana-IP    = "${var.grafana-IP}/32"
-}
+# module "govwifi-prometheus" {
+#   providers = {
+#     aws = aws.AWS-main
+#   }
+#
+#   source     = "../../govwifi-prometheus"
+#   Env-Name   = var.Env-Name
+#   aws-region = var.aws-region
+#
+#   ssh-key-name = var.ssh-key-name
+#
+#   frontend-vpc-id = module.frontend.frontend-vpc-id
+#
+#   fe-admin-in   = module.frontend.fe-admin-in
+#   fe-ecs-out    = module.frontend.fe-ecs-out
+#   fe-radius-in  = module.frontend.fe-radius-in
+#   fe-radius-out = module.frontend.fe-radius-out
+#
+#   wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
+#   london-radius-ip-addresses = var.london-radius-ip-addresses
+#   dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
+#
+#   # Feature toggle creating Prometheus server.
+#   # Value defaults to 0 and should only be enabled (i.e., value = 1)
+#   create_prometheus_server = 0
+#
+#   prometheus-IP = var.prometheus-IP-ireland
+#   grafana-IP    = "${var.grafana-IP}/32"
+# }

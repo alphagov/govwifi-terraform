@@ -116,6 +116,9 @@ resource "aws_ecs_task_definition" "user-signup-api-task" {
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{
+          "name": "SENTRY_CURRENT_ENV",
+          "value": "${var.sentry-current-env}"
+        },{
           "name": "SENTRY_DSN",
           "value": "${var.user-signup-sentry-dsn}"
         },{
@@ -219,4 +222,3 @@ resource "aws_alb_target_group" "user-signup-api-tg" {
     path                = "/healthcheck"
   }
 }
-

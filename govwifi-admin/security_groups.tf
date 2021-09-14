@@ -94,4 +94,3 @@ data "aws_subnet" "backend_subnet" {
   count = length(var.subnet-ids)
   id    = var.subnet-ids[count.index]
 }
-

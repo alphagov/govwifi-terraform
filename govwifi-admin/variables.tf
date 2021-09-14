@@ -53,6 +53,10 @@ variable "rack-env" {
   description = "E.g. staging"
 }
 
+variable "sentry-current-env" {
+  description = "The environment that Sentry will log errors to: e.g. staging"
+}
+
 variable "ssh-key-name" {
   description = "SSH key applied to the EC2 instance"
 }
@@ -165,4 +169,7 @@ variable "bastion-ips" {
 }
 
 variable "use_env_prefix" {
+}
+
+variable "is_production_aws_account" {
 }

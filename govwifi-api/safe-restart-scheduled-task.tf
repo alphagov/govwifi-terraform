@@ -56,6 +56,9 @@ resource "aws_ecs_task_definition" "safe-restart-task-definition" {
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
         },{
+          "name": "SENTRY_CURRENT_ENV",
+          "value": "${var.sentry-current-env}"
+        },{
           "name": "SENTRY_DSN",
           "value": "${var.safe-restart-sentry-dsn}"
         }
@@ -229,4 +232,3 @@ resource "aws_cloudwatch_event_target" "daily-safe-restart" {
 EOF
 
 }
-

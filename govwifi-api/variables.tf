@@ -85,6 +85,9 @@ variable "db-read-replica-hostname" {
 variable "rack-env" {
 }
 
+variable "sentry-current-env" {
+}
+
 variable "radius-server-ips" {
   type = list(string)
 }
@@ -220,4 +223,7 @@ variable "backup_mysql_rds" {
 variable "low_cpu_threshold" {
   description = "Low CPU threshold for ECS task alarms. This value is higher (1%) for production but lower (0.3%) for staging and is based on average CPU."
   type        = number
+}
+
+variable "is_production_aws_account" {
 }

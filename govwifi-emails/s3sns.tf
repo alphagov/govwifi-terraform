@@ -193,6 +193,7 @@ EOF
 
 # Subscription
 resource "aws_sns_topic_subscription" "email-notifications-target" {
+  count                           = var.is_production_aws_account ? 1 : 0
   topic_arn                       = aws_sns_topic.govwifi-email-notifications.arn
   protocol                        = "https"
   endpoint                        = var.sns-endpoint
@@ -214,4 +215,3 @@ resource "aws_sns_topic_subscription" "user-signup-notifications-target" {
   endpoint_auto_confirms = true
   depends_on             = [aws_sns_topic.user-signup-notifications]
 }
-

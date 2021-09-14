@@ -4,6 +4,11 @@ resource "aws_cloudwatch_log_group" "authorisation-api-log-group" {
   retention_in_days = 90
 }
 
+resource "aws_ecr_repository" "authorisation-api-ecr" {
+  count = var.ecr-repository-count
+  name  = "govwifi/authorisation-api"
+}
+
 resource "aws_ecs_task_definition" "authorisation-api-task" {
   family                   = "authorisation-api-task-${var.Env-Name}"
   requires_compatibilities = ["FARGATE"]
@@ -44,6 +49,9 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
         },{
           "name": "RACK_ENV",
           "value": "${var.rack-env}"
+        },{
+          "name": "SENTRY_CURRENT_ENV",
+          "value": "${var.sentry-current-env}"
         },{
           "name": "SENTRY_DSN",
           "value": "${var.authentication-sentry-dsn}"
@@ -146,4 +154,3 @@ resource "aws_alb_target_group" "alb_target_group" {
     path                = "/authorize/user/HEALTH"
   }
 }
-
