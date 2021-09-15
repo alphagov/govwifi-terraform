@@ -408,35 +408,35 @@ There are some problems with the Staging Bastion instance that is preventing
 us from mirroring the setup in Production in Staging. This will be rectified
 when we create a separate staging environment.
 */
-# module "govwifi-prometheus" {
-#   providers = {
-#     aws = aws.AWS-main
-#   }
-#
-#   source     = "../../govwifi-prometheus"
-#   Env-Name   = var.Env-Name
-#   aws-region = var.aws-region
-#
-#   ssh-key-name = var.ssh-key-name
-#
-#   frontend-vpc-id = module.frontend.frontend-vpc-id
-#
-#   fe-admin-in   = module.frontend.fe-admin-in
-#   fe-ecs-out    = module.frontend.fe-ecs-out
-#   fe-radius-in  = module.frontend.fe-radius-in
-#   fe-radius-out = module.frontend.fe-radius-out
-#
-#   wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
-#   london-radius-ip-addresses = var.london-radius-ip-addresses
-#   dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
-#
-#   # Feature toggle creating Prometheus server.
-#   # Value defaults to 0 and is only enabled (i.e., value = 1) in staging-london
-#   create_prometheus_server = 1
-#
-#   prometheus-IP = var.prometheus-IP-london
-#   grafana-IP    = "${var.grafana-IP}/32"
-# }
+module "govwifi-prometheus" {
+  providers = {
+    aws = aws.AWS-main
+  }
+
+  source     = "../../govwifi-prometheus"
+  Env-Name   = var.Env-Name
+  aws-region = var.aws-region
+
+  ssh-key-name = var.ssh-key-name
+
+  frontend-vpc-id = module.frontend.frontend-vpc-id
+
+  fe-admin-in   = module.frontend.fe-admin-in
+  fe-ecs-out    = module.frontend.fe-ecs-out
+  fe-radius-in  = module.frontend.fe-radius-in
+  fe-radius-out = module.frontend.fe-radius-out
+
+  wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
+  london-radius-ip-addresses = var.london-radius-ip-addresses
+  dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
+
+  // Feature toggle creating Prometheus server.
+  // Value defaults to 0 and is only enabled (i.e., value = 1) in staging-london
+  create_prometheus_server = 1
+
+  prometheus-IP = var.prometheus-IP-london
+  grafana-IP    = "${var.grafana-IP}/32"
+}
 
 module "govwifi-grafana" {
   providers = {
