@@ -1,4 +1,4 @@
-resource "aws_eip" "radius-eips" {
+resource "aws_eip" "radius_eips" {
   count = var.radius-instance-count
   vpc   = true
 

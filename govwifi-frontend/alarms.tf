@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_metric_alarm" "radius-healthcheck" {
+resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
   provider = aws.route53-alarms
   count    = var.radius-instance-count
   alarm_name = "${element(
@@ -41,7 +41,7 @@ resource "aws_cloudwatch_metric_alarm" "radius-healthcheck" {
 #   alarm_rule = join(" AND ", formatlist("ALARM(\"%s\")", aws_cloudwatch_metric_alarm.radius-hc[*].alarm_name))
 # }
 
-resource "aws_cloudwatch_metric_alarm" "radius-latency" {
+resource "aws_cloudwatch_metric_alarm" "radius_latency" {
   provider = aws.route53-alarms
   count    = var.radius-instance-count
   alarm_name = "${element(
@@ -67,7 +67,7 @@ resource "aws_cloudwatch_metric_alarm" "radius-latency" {
   alarm_description = "FreeRADIUS response rate is slow (greater than 1s). Investigate CloudWatch logs for root cause."
 }
 
-resource "aws_cloudwatch_metric_alarm" "radius-cannot-connect-to-api" {
+resource "aws_cloudwatch_metric_alarm" "radius_cannot_connect_to_api" {
   alarm_name          = "${var.Env-Name}-radius-cannot-connect-to-api"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 0
@@ -75,8 +75,8 @@ resource "aws_cloudwatch_metric_alarm" "radius-cannot-connect-to-api" {
   period              = "60"
   statistic           = "Sum"
   treat_missing_data  = "breaching"
-  metric_name         = aws_cloudwatch_log_metric_filter.radius-cannot-connect-to-api.metric_transformation[0].name
-  namespace           = aws_cloudwatch_log_metric_filter.radius-cannot-connect-to-api.metric_transformation[0].namespace
+  metric_name         = aws_cloudwatch_log_metric_filter.radius_cannot_connect_to_api.metric_transformation[0].name
+  namespace           = aws_cloudwatch_log_metric_filter.radius_cannot_connect_to_api.metric_transformation[0].namespace
 
   alarm_actions = [
     var.devops-notifications-arn,

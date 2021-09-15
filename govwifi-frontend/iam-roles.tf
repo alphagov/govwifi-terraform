@@ -2,9 +2,9 @@ locals {
   admin-bucket-arn = "arn:aws:s3:::${var.admin-bucket-name}"
 }
 
-resource "aws_iam_role_policy" "ecs-instance-policy" {
+resource "aws_iam_role_policy" "ecs_instance_policy" {
   name = "${var.aws-region-name}-frontend-ecs-instance-policy-${var.Env-Name}"
-  role = aws_iam_role.ecs-instance-role.id
+  role = aws_iam_role.ecs_instance_role.id
 
   policy = <<EOF
 {
@@ -55,7 +55,7 @@ EOF
 
 }
 
-resource "aws_iam_role" "ecs-instance-role" {
+resource "aws_iam_role" "ecs_instance_role" {
   name = "${var.aws-region-name}-frontend-ecs-instance-role-${var.Env-Name}"
 
   assume_role_policy = <<EOF
@@ -76,15 +76,15 @@ EOF
 
 }
 
-resource "aws_iam_instance_profile" "ecs-instance-profile" {
+resource "aws_iam_instance_profile" "ecs_instance_profile" {
   name = "${var.aws-region-name}-frontend-ecs-instance-profile-${var.Env-Name}"
-  role = aws_iam_role.ecs-instance-role.name
+  role = aws_iam_role.ecs_instance_role.name
 }
 
 # Unused until a loadbalancer is set up
-resource "aws_iam_role_policy" "ecs-service-policy" {
+resource "aws_iam_role_policy" "ecs_service_policy" {
   name = "${var.aws-region-name}-frontend-ecs-service-policy-${var.Env-Name}"
-  role = aws_iam_role.ecs-task-role.id
+  role = aws_iam_role.ecs_task_role.id
 
   policy = <<EOF
 {
@@ -104,7 +104,7 @@ EOF
 
 }
 
-resource "aws_iam_role" "ecs-task-role" {
+resource "aws_iam_role" "ecs_task_role" {
   name = "${var.aws-region-name}-frontend-ecs-task-role-${var.Env-Name}"
 
   assume_role_policy = <<EOF
@@ -127,7 +127,7 @@ EOF
 
 resource "aws_iam_role_policy" "cert_bucket_policy" {
   name   = "${var.aws-region-name}-frontend-cert-bucket-${var.Env-Name}"
-  role   = aws_iam_role.ecs-task-role.id
+  role   = aws_iam_role.ecs_task_role.id
   policy = data.aws_iam_policy_document.cert_bucket_policy.json
 }
 
@@ -139,15 +139,15 @@ data "aws_iam_policy_document" "cert_bucket_policy" {
     ]
 
     resources = [
-      aws_s3_bucket.frontend-cert-bucket[0].arn,
-      "${aws_s3_bucket.frontend-cert-bucket[0].arn}/*",
+      aws_s3_bucket.frontend_cert_bucket[0].arn,
+      "${aws_s3_bucket.frontend_cert_bucket[0].arn}/*",
     ]
   }
 }
 
 resource "aws_iam_role_policy" "admin_bucket_policy" {
   name   = "${var.aws-region-name}-frontend-admin-bucket-${var.Env-Name}"
-  role   = aws_iam_role.ecs-task-role.id
+  role   = aws_iam_role.ecs_task_role.id
   policy = data.aws_iam_policy_document.admin_bucket_policy.json
 }
 

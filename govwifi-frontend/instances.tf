@@ -5,17 +5,17 @@ resource "aws_instance" "radius" {
   ami           = var.ami
   instance_type = "t2.medium"
   key_name      = var.ssh-key-name
-  subnet_id     = element(aws_subnet.wifi-frontend-subnet.*.id, count.index)
+  subnet_id     = element(aws_subnet.wifi_frontend_subnet.*.id, count.index)
 
   vpc_security_group_ids = [
-    aws_security_group.fe-ecs-out.id,
-    aws_security_group.fe-admin-in.id,
-    aws_security_group.fe-radius-out.id,
-    aws_security_group.fe-radius-in.id,
-    aws_security_group.fe-prometheus-in.id
+    aws_security_group.fe_ecs_out.id,
+    aws_security_group.fe_admin_in.id,
+    aws_security_group.fe_radius_out.id,
+    aws_security_group.fe_radius_in.id,
+    aws_security_group.fe_prometheus_in.id
   ]
 
-  iam_instance_profile = aws_iam_instance_profile.ecs-instance-profile.id
+  iam_instance_profile = aws_iam_instance_profile.ecs_instance_profile.id
   monitoring           = var.enable-detailed-monitoring
 
   user_data = <<DATA
@@ -50,7 +50,7 @@ MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 # Set cluster name
-echo ECS_CLUSTER=${aws_ecs_cluster.frontend-cluster.name} >> /etc/ecs/ecs.config
+echo ECS_CLUSTER=${aws_ecs_cluster.frontend_cluster.name} >> /etc/ecs/ecs.config
 
 --==BOUNDARY==
 MIME-Version: 1.0

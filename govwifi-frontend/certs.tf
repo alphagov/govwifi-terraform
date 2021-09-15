@@ -1,4 +1,4 @@
-resource "aws_s3_bucket" "frontend-cert-bucket" {
+resource "aws_s3_bucket" "frontend_cert_bucket" {
   count  = 1
   bucket = var.is_production_aws_account ? "govwifi-${var.rack-env}-${lower(var.aws-region-name)}-frontend-cert" : "govwifi-${var.Env-Subdomain}-${lower(var.aws-region-name)}-frontend-cert"
   acl    = "private"

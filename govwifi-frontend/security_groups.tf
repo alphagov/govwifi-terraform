@@ -1,9 +1,9 @@
 # ECS Endpoint addresses
 
-resource "aws_security_group" "fe-ecs-out" {
+resource "aws_security_group" "fe_ecs_out" {
   name        = "fe-ecs-out"
   description = "Allow the ECS agent to talk to the ECS endpoints"
-  vpc_id      = aws_vpc.wifi-frontend.id
+  vpc_id      = aws_vpc.wifi_frontend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Frontend ECS out"
@@ -34,10 +34,10 @@ resource "aws_security_group" "fe-ecs-out" {
 
 # Traffic from administrators
 
-resource "aws_security_group" "fe-admin-in" {
+resource "aws_security_group" "fe_admin_in" {
   name        = "fe-admin-in"
   description = "Allow inbound traffic from administrators"
-  vpc_id      = aws_vpc.wifi-frontend.id
+  vpc_id      = aws_vpc.wifi_frontend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Frontend Admin in"
@@ -53,10 +53,10 @@ resource "aws_security_group" "fe-admin-in" {
 
 # Traffic from Prometheus server in London
 
-resource "aws_security_group" "fe-prometheus-in" {
+resource "aws_security_group" "fe_prometheus_in" {
   name        = "fe-prometheus-in"
   description = "Allow inbound traffic from Prometheus server in London"
-  vpc_id      = aws_vpc.wifi-frontend.id
+  vpc_id      = aws_vpc.wifi_frontend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Frontend Prometheus in"
@@ -76,10 +76,10 @@ resource "aws_security_group" "fe-prometheus-in" {
 
 # API access from the RADIUS servers
 
-resource "aws_security_group" "fe-radius-out" {
+resource "aws_security_group" "fe_radius_out" {
   name        = "fe-radius-out"
   description = "Allow outbound API calls from the RADIUS servers"
-  vpc_id      = aws_vpc.wifi-frontend.id
+  vpc_id      = aws_vpc.wifi_frontend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Frontend RADIUS out"
@@ -120,10 +120,10 @@ resource "aws_security_group" "fe-radius-out" {
 
 # RADIUS traffic to the RADIUS servers
 
-resource "aws_security_group" "fe-radius-in" {
+resource "aws_security_group" "fe_radius_in" {
   name        = "fe-radius-in"
   description = "Allow inbound API calls to the RADIUS servers"
-  vpc_id      = aws_vpc.wifi-frontend.id
+  vpc_id      = aws_vpc.wifi_frontend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Frontend RADIUS in"
