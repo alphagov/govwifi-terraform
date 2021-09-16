@@ -1,33 +1,33 @@
 # Create ECS Cluster
 
-resource "aws_ecs_cluster" "frontend-cluster" {
+resource "aws_ecs_cluster" "frontend_cluster" {
   name = "${var.Env-Name}-frontend-cluster"
 }
 
-resource "aws_cloudwatch_log_group" "frontend-log-group" {
+resource "aws_cloudwatch_log_group" "frontend_log_group" {
   name = "${var.Env-Name}-frontend-docker-log-group"
 
   retention_in_days = 90
 }
 
-resource "aws_ecr_repository" "govwifi-frontend-ecr" {
+resource "aws_ecr_repository" "govwifi_frontend_ecr" {
   count = var.create-ecr
   name  = "govwifi/frontend"
 }
 
-resource "aws_ecr_repository" "govwifi-frontend-base-ecr" {
+resource "aws_ecr_repository" "govwifi_frontend_base_ecr" {
   count = var.create-ecr
   name  = "govwifi/frontend-base"
 }
 
-resource "aws_ecr_repository" "govwifi-raddb-ecr" {
+resource "aws_ecr_repository" "govwifi_raddb_ecr" {
   count = var.create-ecr
   name  = "govwifi/raddb"
 }
 
-resource "aws_ecs_task_definition" "radius-task" {
+resource "aws_ecs_task_definition" "radius_task" {
   family             = "radius-task-${var.Env-Name}"
-  task_role_arn      = aws_iam_role.ecs-task-role.arn
+  task_role_arn      = aws_iam_role.ecs_task_role.arn
   execution_role_arn = aws_iam_role.ecsTaskExecutionRole.arn
 
   volume {
@@ -116,7 +116,7 @@ resource "aws_ecs_task_definition" "radius-task" {
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${aws_cloudwatch_log_group.frontend-log-group.name}",
+        "awslogs-group": "${aws_cloudwatch_log_group.frontend_log_group.name}",
         "awslogs-region": "${var.aws-region}",
         "awslogs-stream-prefix": "${var.Env-Name}-docker-logs"
       }
@@ -145,14 +145,14 @@ resource "aws_ecs_task_definition" "radius-task" {
         "value": "s3://${var.admin-bucket-name}"
       },{
         "name": "CERT_STORE_BUCKET",
-        "value": "s3://${aws_s3_bucket.frontend-cert-bucket[0].bucket}"
+        "value": "s3://${aws_s3_bucket.frontend_cert_bucket[0].bucket}"
       }
     ],
     "image": "${var.raddb-docker-image}",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${aws_cloudwatch_log_group.frontend-log-group.name}",
+        "awslogs-group": "${aws_cloudwatch_log_group.frontend_log_group.name}",
         "awslogs-region": "${var.aws-region}",
         "awslogs-stream-prefix": "${var.Env-Name}-docker-logs"
       }
@@ -166,10 +166,10 @@ EOF
 
 }
 
-resource "aws_ecs_service" "frontend-service" {
+resource "aws_ecs_service" "frontend_service" {
   name            = "frontend-service-${var.Env-Name}"
-  cluster         = aws_ecs_cluster.frontend-cluster.id
-  task_definition = aws_ecs_task_definition.radius-task.arn
+  cluster         = aws_ecs_cluster.frontend_cluster.id
+  task_definition = aws_ecs_task_definition.radius_task.arn
   desired_count   = var.radius-instance-count
 
   ordered_placement_strategy {

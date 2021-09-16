@@ -1,7 +1,7 @@
 # AWS Configuration
 # CREATE VPC
 
-resource "aws_vpc" "wifi-frontend" {
+resource "aws_vpc" "wifi_frontend" {
   cidr_block           = var.vpc-cidr-block
   enable_dns_hostnames = true
 
@@ -12,8 +12,8 @@ resource "aws_vpc" "wifi-frontend" {
 
 # CREATE GATEWAY AND DEFAULT ROUTE
 
-resource "aws_internet_gateway" "wifi-frontend" {
-  vpc_id = aws_vpc.wifi-frontend.id
+resource "aws_internet_gateway" "wifi_frontend" {
+  vpc_id = aws_vpc.wifi_frontend.id
 
   tags = {
     Name = "Frontend Internet GW - ${var.Env-Name}"
@@ -21,16 +21,16 @@ resource "aws_internet_gateway" "wifi-frontend" {
 }
 
 resource "aws_route" "internet_access" {
-  route_table_id         = aws_vpc.wifi-frontend.main_route_table_id
+  route_table_id         = aws_vpc.wifi_frontend.main_route_table_id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.wifi-frontend.id
+  gateway_id             = aws_internet_gateway.wifi_frontend.id
 }
 
 # CREATE SUBNET IN EACH AZ
 
-resource "aws_subnet" "wifi-frontend-subnet" {
+resource "aws_subnet" "wifi_frontend_subnet" {
   count                   = var.zone-count
-  vpc_id                  = aws_vpc.wifi-frontend.id
+  vpc_id                  = aws_vpc.wifi_frontend.id
   availability_zone       = var.zone-names[format("zone%d", count.index)]
   cidr_block              = var.zone-subnets[format("zone%d", count.index)]
   map_public_ip_on_launch = true
