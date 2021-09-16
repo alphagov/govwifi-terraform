@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_event_rule" "backup-rds-to-s3" {
+resource "aws_cloudwatch_event_rule" "backup_rds_to_s3" {
   count               = var.backup_mysql_rds ? 1 : 0
   name                = "${var.Env-Name}-backup-rds-to-s3"
   description         = "Triggers at 00:30 UTC Daily"
@@ -6,22 +6,22 @@ resource "aws_cloudwatch_event_rule" "backup-rds-to-s3" {
   is_enabled          = true
 }
 
-resource "aws_cloudwatch_log_group" "backup-rds-to-s3-log-group" {
+resource "aws_cloudwatch_log_group" "backup_rds_to_s3_log_group" {
   count = var.backup_mysql_rds ? 1 : 0
   name  = "${var.Env-Name}-backup-rds-to-s3-docker-log-group"
 
   retention_in_days = 90
 }
 
-resource "aws_ecr_repository" "database-backup-ecr" {
+resource "aws_ecr_repository" "database_backup_ecr" {
   count = var.ecr-repository-count
   name  = "govwifi/database-backup"
 }
 
-resource "aws_ecs_task_definition" "backup-rds-to-s3-task-definition" {
+resource "aws_ecs_task_definition" "backup_rds_to_s3_task_definition" {
   count                    = var.backup_mysql_rds ? 1 : 0
   family                   = "backup-rds-to-s3-task-${var.Env-Name}"
-  task_role_arn            = aws_iam_role.backup-rds-to-s3-task-role[0].arn
+  task_role_arn            = aws_iam_role.backup_rds_to_s3_task_role[0].arn
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   requires_compatibilities = ["FARGATE"]
   cpu                      = 2048
@@ -112,7 +112,7 @@ resource "aws_ecs_task_definition" "backup-rds-to-s3-task-definition" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.backup-rds-to-s3-log-group[0].name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.backup_rds_to_s3_log_group[0].name}",
           "awslogs-region": "${var.aws-region}",
           "awslogs-stream-prefix": "${var.Env-Name}-backup-rds-to-s3-docker-logs"
         }
@@ -126,7 +126,7 @@ EOF
 
 }
 
-resource "aws_iam_role" "backup-rds-to-s3-task-role" {
+resource "aws_iam_role" "backup_rds_to_s3_task_role" {
   count = var.backup_mysql_rds ? 1 : 0
   name  = "${var.Env-Name}-backup-rds-to-s3-task-role"
 
@@ -148,7 +148,7 @@ EOF
 
 }
 
-resource "aws_iam_role" "backup-rds-to-s3-scheduled-task-role" {
+resource "aws_iam_role" "backup_rds_to_s3_scheduled_task_role" {
   count = var.backup_mysql_rds ? 1 : 0
   name  = "${var.Env-Name}-backup-rds-to-s3-scheduled-task-role"
 
@@ -170,11 +170,11 @@ DOC
 
 }
 
-resource "aws_iam_role_policy" "backup-rds-to-s3-task-policy" {
+resource "aws_iam_role_policy" "backup_rds_to_s3_task_policy" {
   count      = var.backup_mysql_rds ? 1 : 0
   name       = "${var.Env-Name}-backup-rds-to-s3-task-policy"
-  role       = aws_iam_role.backup-rds-to-s3-task-role[0].id
-  depends_on = [aws_iam_role.backup-rds-to-s3-task-role]
+  role       = aws_iam_role.backup_rds_to_s3_task_role[0].id
+  depends_on = [aws_iam_role.backup_rds_to_s3_task_role]
 
   policy = <<EOF
 {
@@ -236,10 +236,10 @@ EOF
 
 }
 
-resource "aws_iam_role_policy" "backup-rds-to-s3-scheduled-task-policy" {
+resource "aws_iam_role_policy" "backup_rds_to_s3_scheduled_task_policy" {
   count = var.backup_mysql_rds ? 1 : 0
   name  = "${var.Env-Name}-backup-rds-to-s3-scheduled-task-policy"
-  role  = aws_iam_role.backup-rds-to-s3-scheduled-task-role[0].id
+  role  = aws_iam_role.backup_rds_to_s3_scheduled_task_role[0].id
 
   policy = <<DOC
 {
@@ -249,7 +249,7 @@ resource "aws_iam_role_policy" "backup-rds-to-s3-scheduled-task-policy" {
       "Sid": "sid0",
           "Effect": "Allow",
           "Action": "ecs:RunTask",
-          "Resource": "${replace(aws_ecs_task_definition.backup-rds-to-s3-task-definition[0].arn, "/:\\d+$/", ":*", )}"
+          "Resource": "${replace(aws_ecs_task_definition.backup_rds_to_s3_task_definition[0].arn, "/:\\d+$/", ":*", )}"
     },{
       "Sid": "sid1",
       "Effect": "Allow",
@@ -269,16 +269,16 @@ DOC
 
 }
 
-resource "aws_cloudwatch_event_target" "backup-rds-to-s3" {
+resource "aws_cloudwatch_event_target" "backup_rds_to_s3" {
   count     = var.backup_mysql_rds ? 1 : 0
   target_id = "${var.Env-Name}-backup-rds-to-s3"
-  arn       = aws_ecs_cluster.api-cluster.arn
-  rule      = aws_cloudwatch_event_rule.backup-rds-to-s3[0].name
-  role_arn  = aws_iam_role.backup-rds-to-s3-scheduled-task-role[0].arn
+  arn       = aws_ecs_cluster.api_cluster.arn
+  rule      = aws_cloudwatch_event_rule.backup_rds_to_s3[0].name
+  role_arn  = aws_iam_role.backup_rds_to_s3_scheduled_task_role[0].arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.backup-rds-to-s3-task-definition[0].arn
+    task_definition_arn = aws_ecs_task_definition.backup_rds_to_s3_task_definition[0].arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -287,8 +287,8 @@ resource "aws_cloudwatch_event_target" "backup-rds-to-s3" {
 
       security_groups = concat(
         var.backend-sg-list,
-        [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id],
+        [aws_security_group.api_in.id],
+        [aws_security_group.api_out.id],
       )
 
       assign_public_ip = true

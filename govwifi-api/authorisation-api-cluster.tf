@@ -1,15 +1,15 @@
-resource "aws_cloudwatch_log_group" "authorisation-api-log-group" {
+resource "aws_cloudwatch_log_group" "authorisation_api_log_group" {
   name = "${var.Env-Name}-authorisation-api-docker-log-group"
 
   retention_in_days = 90
 }
 
-resource "aws_ecr_repository" "authorisation-api-ecr" {
+resource "aws_ecr_repository" "authorisation_api_ecr" {
   count = var.ecr-repository-count
   name  = "govwifi/authorisation-api"
 }
 
-resource "aws_ecs_task_definition" "authorisation-api-task" {
+resource "aws_ecs_task_definition" "authorisation_api_task" {
   family                   = "authorisation-api-task-${var.Env-Name}"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
@@ -78,7 +78,7 @@ resource "aws_ecs_task_definition" "authorisation-api-task" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.authorisation-api-log-group.name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.authorisation_api_log_group.name}",
           "awslogs-region": "${var.aws-region}",
           "awslogs-stream-prefix": "${var.Env-Name}-authorisation-api-docker-logs"
         }
@@ -92,10 +92,10 @@ EOF
 
 }
 
-resource "aws_ecs_service" "authorisation-api-service" {
+resource "aws_ecs_service" "authorisation_api_service" {
   name             = "authorisation-api-service-${var.Env-Name}"
-  cluster          = aws_ecs_cluster.api-cluster.id
-  task_definition  = aws_ecs_task_definition.authorisation-api-task.arn
+  cluster          = aws_ecs_cluster.api_cluster.id
+  task_definition  = aws_ecs_task_definition.authorisation_api_task.arn
   desired_count    = var.authorisation-api-count
   launch_type      = "FARGATE"
   platform_version = "1.3.0"
@@ -103,8 +103,8 @@ resource "aws_ecs_service" "authorisation-api-service" {
   network_configuration {
     security_groups = concat(
       var.backend-sg-list,
-      [aws_security_group.api-in.id],
-      [aws_security_group.api-out.id],
+      [aws_security_group.api_in.id],
+      [aws_security_group.api_out.id],
     )
 
     subnets          = var.subnet-ids
@@ -135,7 +135,7 @@ resource "aws_alb_listener_rule" "static" {
 }
 
 resource "aws_alb_target_group" "alb_target_group" {
-  depends_on  = [aws_lb.api-alb]
+  depends_on  = [aws_lb.api_alb]
   name        = "api-lb-tg-${var.Env-Name}"
   port        = "8080"
   protocol    = "HTTP"

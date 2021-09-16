@@ -1,12 +1,12 @@
-resource "aws_lb" "api-alb" {
+resource "aws_lb" "api_alb" {
   name     = "api-alb-${var.Env-Name}"
   internal = false
   count    = var.backend-elb-count
   subnets  = var.subnet-ids
 
   security_groups = [
-    aws_security_group.api-alb-in.id,
-    aws_security_group.api-alb-out.id,
+    aws_security_group.api_alb_in.id,
+    aws_security_group.api_alb_out.id,
   ]
 
   load_balancer_type = "application"
@@ -17,10 +17,10 @@ resource "aws_lb" "api-alb" {
 }
 
 resource "aws_alb_listener" "alb_listener" {
-  load_balancer_arn = aws_lb.api-alb[0].arn
+  load_balancer_arn = aws_lb.api_alb[0].arn
   port              = "8443"
   protocol          = "HTTPS"
-  certificate_arn   = aws_acm_certificate.api-elb-regional[0].arn
+  certificate_arn   = aws_acm_certificate.api_elb_regional[0].arn
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
 
   default_action {
@@ -29,15 +29,15 @@ resource "aws_alb_listener" "alb_listener" {
   }
 }
 
-resource "aws_lb_listener_certificate" "api-elb-global" {
+resource "aws_lb_listener_certificate" "api_elb_global" {
   count           = var.backend-elb-count
   listener_arn    = aws_alb_listener.alb_listener.arn
-  certificate_arn = aws_acm_certificate.api-elb-global[0].arn
+  certificate_arn = aws_acm_certificate.api_elb_global[0].arn
 
-  depends_on = [aws_acm_certificate_validation.api-elb-global]
+  depends_on = [aws_acm_certificate_validation.api_elb_global]
 }
 
-resource "aws_security_group" "api-alb-in" {
+resource "aws_security_group" "api_alb_in" {
   name        = "loadbalancer-in"
   description = "Allow Inbound Traffic To The ALB"
   vpc_id      = var.vpc-id
@@ -54,7 +54,7 @@ resource "aws_security_group" "api-alb-in" {
   }
 }
 
-resource "aws_security_group" "api-alb-out" {
+resource "aws_security_group" "api_alb_out" {
   name        = "loadbalancer-out"
   description = "Allow Outbound Traffic To The ALB"
   vpc_id      = var.vpc-id

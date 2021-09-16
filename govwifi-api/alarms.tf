@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-high" {
+resource "aws_cloudwatch_metric_alarm" "auth_ecs_cpu_alarm_high" {
   count               = var.alarm-count
   alarm_name          = "${var.Env-Name}-auth-ecs-cpu-alarm-high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -10,21 +10,21 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-high" {
   threshold           = "50"
 
   dimensions = {
-    ClusterName = aws_ecs_cluster.api-cluster.name
-    ServiceName = aws_ecs_service.authorisation-api-service.name
+    ClusterName = aws_ecs_cluster.api_cluster.name
+    ServiceName = aws_ecs_service.authorisation_api_service.name
   }
 
   alarm_description = "ECS cluster CPU is high, scaling up number of tasks. Investigate api cluster and CloudWatch logs for root cause."
 
   alarm_actions = [
-    aws_appautoscaling_policy.ecs-policy-up.arn,
+    aws_appautoscaling_policy.ecs_policy_up.arn,
     var.devops-notifications-arn,
   ]
 
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
+resource "aws_cloudwatch_metric_alarm" "auth_ecs_cpu_alarm_low" {
   count               = var.alarm-count
   alarm_name          = "${var.Env-Name}-downscale-auth-ecs-cpu-low-alarm"
   comparison_operator = "LessThanThreshold"
@@ -37,20 +37,20 @@ resource "aws_cloudwatch_metric_alarm" "auth-ecs-cpu-alarm-low" {
   datapoints_to_alarm = "1"
 
   dimensions = {
-    ClusterName = aws_ecs_cluster.api-cluster.name
-    ServiceName = aws_ecs_service.authorisation-api-service.name
+    ClusterName = aws_ecs_cluster.api_cluster.name
+    ServiceName = aws_ecs_service.authorisation_api_service.name
   }
 
   alarm_description = "ECS cluster CPU is low, scaling down number of ECS tasks to save on cost."
 
   alarm_actions = [
-    aws_appautoscaling_policy.ecs-policy-down.arn,
+    aws_appautoscaling_policy.ecs_policy_down.arn,
   ]
 
   treat_missing_data = "breaching"
 }
 
-resource "aws_cloudwatch_metric_alarm" "authentication-api-no-healthy-hosts" {
+resource "aws_cloudwatch_metric_alarm" "authentication_api_no_healthy_hosts" {
   alarm_name          = "${var.Env-Name} authentication API no healthy hosts"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
@@ -62,7 +62,7 @@ resource "aws_cloudwatch_metric_alarm" "authentication-api-no-healthy-hosts" {
   datapoints_to_alarm = "1"
 
   dimensions = {
-    LoadBalancer = aws_lb.api-alb[0].arn_suffix
+    LoadBalancer = aws_lb.api_alb[0].arn_suffix
   }
 
   alarm_description = "Load balancer detects no healthy authentication API targets. Investigate api cluster and CloudWatch logs for root cause."
@@ -72,7 +72,7 @@ resource "aws_cloudwatch_metric_alarm" "authentication-api-no-healthy-hosts" {
   ])
 }
 
-resource "aws_cloudwatch_metric_alarm" "user-signup-api-no-healthy-hosts" {
+resource "aws_cloudwatch_metric_alarm" "user_signup_api_no_healthy_hosts" {
   count = var.user-signup-enabled
 
   alarm_name          = "${var.Env-Name} user signup API no healthy hosts"
@@ -86,7 +86,7 @@ resource "aws_cloudwatch_metric_alarm" "user-signup-api-no-healthy-hosts" {
   datapoints_to_alarm = "1"
 
   dimensions = {
-    LoadBalancer = aws_lb.user-signup-api[0].arn_suffix
+    LoadBalancer = aws_lb.user_signup_api[0].arn_suffix
   }
 
   alarm_description = "Load balancer detects no healthy user signup API targets. Investigate api ECS cluster and CloudWatch logs for root cause."

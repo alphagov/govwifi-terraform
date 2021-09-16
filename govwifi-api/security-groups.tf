@@ -1,4 +1,4 @@
-resource "aws_security_group" "api-in" {
+resource "aws_security_group" "api_in" {
   name        = "api-in"
   description = "Allow Inbound Traffic To API"
   vpc_id      = var.vpc-id
@@ -11,11 +11,11 @@ resource "aws_security_group" "api-in" {
     from_port       = 0
     to_port         = 65535
     protocol        = "tcp"
-    security_groups = [aws_security_group.api-alb-out.id]
+    security_groups = [aws_security_group.api_alb_out.id]
   }
 }
 
-resource "aws_security_group" "api-out" {
+resource "aws_security_group" "api_out" {
   name        = "api-out"
   description = "Allow Outbound Traffic From the API"
   vpc_id      = var.vpc-id

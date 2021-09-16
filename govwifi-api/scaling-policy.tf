@@ -1,16 +1,16 @@
-resource "aws_appautoscaling_target" "auth-ecs-target" {
+resource "aws_appautoscaling_target" "auth_ecs_target" {
   service_namespace  = "ecs"
-  resource_id        = "service/${aws_ecs_cluster.api-cluster.name}/${aws_ecs_service.authorisation-api-service.name}"
+  resource_id        = "service/${aws_ecs_cluster.api_cluster.name}/${aws_ecs_service.authorisation_api_service.name}"
   max_capacity       = 20
   min_capacity       = 3
   scalable_dimension = "ecs:service:DesiredCount"
 }
 
-resource "aws_appautoscaling_policy" "ecs-policy-up" {
+resource "aws_appautoscaling_policy" "ecs_policy_up" {
   name               = "ECS Scale Up"
   service_namespace  = "ecs"
   policy_type        = "StepScaling"
-  resource_id        = "service/${aws_ecs_cluster.api-cluster.name}/${aws_ecs_service.authorisation-api-service.name}"
+  resource_id        = "service/${aws_ecs_cluster.api_cluster.name}/${aws_ecs_service.authorisation_api_service.name}"
   scalable_dimension = "ecs:service:DesiredCount"
 
   step_scaling_policy_configuration {
@@ -23,13 +23,13 @@ resource "aws_appautoscaling_policy" "ecs-policy-up" {
     }
   }
 
-  depends_on = [aws_appautoscaling_target.auth-ecs-target]
+  depends_on = [aws_appautoscaling_target.auth_ecs_target]
 }
 
-resource "aws_appautoscaling_policy" "ecs-policy-down" {
+resource "aws_appautoscaling_policy" "ecs_policy_down" {
   name               = "ECS Scale Down"
   service_namespace  = "ecs"
-  resource_id        = "service/${aws_ecs_cluster.api-cluster.name}/${aws_ecs_service.authorisation-api-service.name}"
+  resource_id        = "service/${aws_ecs_cluster.api_cluster.name}/${aws_ecs_service.authorisation_api_service.name}"
   policy_type        = "StepScaling"
   scalable_dimension = "ecs:service:DesiredCount"
 
@@ -43,6 +43,6 @@ resource "aws_appautoscaling_policy" "ecs-policy-down" {
     }
   }
 
-  depends_on = [aws_appautoscaling_target.auth-ecs-target]
+  depends_on = [aws_appautoscaling_target.auth_ecs_target]
 }
 
