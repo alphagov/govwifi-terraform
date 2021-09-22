@@ -446,16 +446,18 @@ module "govwifi-grafana" {
   Env-Subdomain              = var.Env-Subdomain
   aws-region                 = var.aws-region
   critical-notifications-arn = module.notifications.topic-arn
+  is_production_aws_account  = var.is_production_aws_account
+
 
   ssh-key-name = var.ssh-key-name
 
-  subnet-ids = module.backend.backend-subnet-ids
+  subnet-ids         = module.backend.backend-subnet-ids
   backend-subnet-ids = module.backend.backend-subnet-ids
-  be-admin-in = module.backend.be-admin-in
+  be-admin-in        = module.backend.be-admin-in
 
   # Feature toggle so we only create the Grafana instance in Staging London
   create_grafana_server = "1"
-  vpc-id = module.backend.backend-vpc-id
+  vpc-id                = module.backend.backend-vpc-id
   bastion-ips = concat(
     split(",", var.bastion-server-IP),
     split(",", var.backend-subnet-IPs)

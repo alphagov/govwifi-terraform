@@ -442,6 +442,7 @@ module "govwifi-grafana" {
   Env-Subdomain              = var.Env-Subdomain
   aws-region                 = var.aws-region
   critical-notifications-arn = module.notifications.topic-arn
+  is_production_aws_account  = var.is_production_aws_account
 
   ssh-key-name = var.ssh-key-name
 

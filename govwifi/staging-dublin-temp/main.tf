@@ -239,7 +239,6 @@ module "frontend" {
 
   use_env_prefix = var.use_env_prefix
 
-  is_production_aws_account = var.is_production_aws_account
 }
 
 module "api" {
@@ -313,8 +312,6 @@ module "api" {
   use_env_prefix = var.use_env_prefix
 
   low_cpu_threshold = 0.3
-
-  is_production_aws_account = var.is_production_aws_account
 }
 
 module "notifications" {
