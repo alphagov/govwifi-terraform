@@ -34,7 +34,7 @@ Other repositories:
 
 ## Secrets
 
-Sensitive credentials are stored in AWS Secrets Manager in the format of `staging/<service>/<item>` or `<service>/<item>` (`<item>` should be hyphenated not underscored).
+Sensitive credentials are stored in AWS Secrets Manager in the format of `<service>/<item>` (`<item>` must be hyphenated not underscored).
 
 `service` will be the GovWifi service (admin, radius, user-signup, logging) related to that secret. If the secret is not specific to a GovWifi service, use the AWS service or product it relates to (e.g., rds, s3, grafana).
 
