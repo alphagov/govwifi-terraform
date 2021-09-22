@@ -145,9 +145,10 @@ module "frontend" {
     aws.route53-alarms = aws.route53-alarms
   }
 
-  source        = "../../govwifi-frontend"
-  Env-Name      = var.Env-Name
-  Env-Subdomain = var.Env-Subdomain
+  source                    = "../../govwifi-frontend"
+  Env-Name                  = var.Env-Name
+  Env-Subdomain             = var.Env-Subdomain
+  is_production_aws_account = var.is_production_aws_account
 
   # AWS VPC setup -----------------------------------------
   # LONDON
@@ -208,7 +209,6 @@ module "frontend" {
 
   use_env_prefix = var.use_env_prefix
 
-  is_production_aws_account = var.is_production_aws_account
 }
 
 module "govwifi-admin" {
@@ -291,10 +291,11 @@ module "api" {
     aws = aws.AWS-main
   }
 
-  source        = "../../govwifi-api"
-  env           = "staging"
-  Env-Name      = "staging"
-  Env-Subdomain = var.Env-Subdomain
+  source                    = "../../govwifi-api"
+  env                       = "staging"
+  Env-Name                  = "staging"
+  Env-Subdomain             = var.Env-Subdomain
+  is_production_aws_account = var.is_production_aws_account
 
   ami                    = var.ami
   ssh-key-name           = var.ssh-key-name
@@ -362,7 +363,6 @@ module "api" {
 
   low_cpu_threshold = 0.3
 
-  is_production_aws_account = var.is_production_aws_account
 }
 
 module "notifications" {
@@ -406,74 +406,70 @@ There are some problems with the Staging Bastion instance that is preventing
 us from mirroring the setup in Production in Staging. This will be rectified
 when we create a separate staging environment.
 */
-# module "govwifi-prometheus" {
-#   providers = {
-#     aws = aws.AWS-main
-#   }
-#
-#   source     = "../../govwifi-prometheus"
-#   Env-Name   = var.Env-Name
-#   aws-region = var.aws-region
-#
-#   ssh-key-name = var.ssh-key-name
-#
-#   frontend-vpc-id = module.frontend.frontend-vpc-id
-#
-#   fe-admin-in   = module.frontend.fe-admin-in
-#   fe-ecs-out    = module.frontend.fe-ecs-out
-#   fe-radius-in  = module.frontend.fe-radius-in
-#   fe-radius-out = module.frontend.fe-radius-out
-#
-#   wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
-#   london-radius-ip-addresses = var.london-radius-ip-addresses
-#   dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
-#
-#   # Feature toggle creating Prometheus server.
-#   # Value defaults to 0 and is only enabled (i.e., value = 1) in staging-london
-#   create_prometheus_server = 1
-#
-#   prometheus-IP = var.prometheus-IP-london
-#   grafana-IP    = "${var.grafana-IP}/32"
-# }
+module "govwifi-prometheus" {
+  providers = {
+    aws = aws.AWS-main
+  }
 
-# module "govwifi-grafana" {
-#   providers = {
-#     aws = aws.AWS-main
-#   }
-#
-#   source                     = "../../govwifi-grafana"
-#   Env-Name                   = var.Env-Name
-#   Env-Subdomain              = var.Env-Subdomain
-#   aws-region                 = var.aws-region
-#   critical-notifications-arn = module.notifications.topic-arn
-#
-#   ssh-key-name = var.ssh-key-name
-#
-#   subnet-ids = module.backend.backend-subnet-ids
-#
-#   backend-subnet-ids = module.backend.backend-subnet-ids
-#
-#   be-admin-in = module.backend.be-admin-in
-#
-#   # Feature toggle so we only create the Grafana instance in Staging London
-#   create_grafana_server = "1"
-#
-#   vpc-id = module.backend.backend-vpc-id
-#
-#   bastion-ips = concat(
-#     split(",", var.bastion-server-IP),
-#     split(",", var.backend-subnet-IPs)
-#   )
-#
-#   administrator-IPs = var.administrator-IPs
-#
-#   prometheus-IPs = concat(
-#     split(",", "${var.prometheus-IP-london}/32"),
-#     split(",", "${var.prometheus-IP-ireland}/32")
-#   )
-#
-#   use_env_prefix = var.use_env_prefix
-# }
+  source     = "../../govwifi-prometheus"
+  Env-Name   = var.Env-Name
+  aws-region = var.aws-region
+
+  ssh-key-name = var.ssh-key-name
+
+  frontend-vpc-id = module.frontend.frontend-vpc-id
+
+  fe-admin-in   = module.frontend.fe-admin-in
+  fe-ecs-out    = module.frontend.fe-ecs-out
+  fe-radius-in  = module.frontend.fe-radius-in
+  fe-radius-out = module.frontend.fe-radius-out
+
+  wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
+  london-radius-ip-addresses = var.london-radius-ip-addresses
+  dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
+
+  // Feature toggle creating Prometheus server.
+  // Value defaults to 0 and is only enabled (i.e., value = 1) in staging-london
+  create_prometheus_server = 1
+
+  prometheus-IP = var.prometheus-IP-london
+  grafana-IP    = "${var.grafana-IP}/32"
+}
+
+module "govwifi-grafana" {
+  providers = {
+    aws = aws.AWS-main
+  }
+
+  source                     = "../../govwifi-grafana"
+  Env-Name                   = var.Env-Name
+  Env-Subdomain              = var.Env-Subdomain
+  aws-region                 = var.aws-region
+  critical-notifications-arn = module.notifications.topic-arn
+  is_production_aws_account  = var.is_production_aws_account
+
+
+  ssh-key-name = var.ssh-key-name
+
+  subnet-ids         = module.backend.backend-subnet-ids
+  backend-subnet-ids = module.backend.backend-subnet-ids
+  be-admin-in        = module.backend.be-admin-in
+
+  # Feature toggle so we only create the Grafana instance in Staging London
+  create_grafana_server = "1"
+  vpc-id                = module.backend.backend-vpc-id
+  bastion-ips = concat(
+    split(",", var.bastion-server-IP),
+    split(",", var.backend-subnet-IPs)
+  )
+  administrator-IPs = var.administrator-IPs
+  prometheus-IPs = concat(
+    split(",", "${var.prometheus-IP-london}/32"),
+    split(",", "${var.prometheus-IP-ireland}/32")
+  )
+
+  use_env_prefix = var.use_env_prefix
+}
 
 module "govwifi-elasticsearch" {
   providers = {

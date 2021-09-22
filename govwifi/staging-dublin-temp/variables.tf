@@ -95,6 +95,16 @@ variable "prometheus-IP-london" {
 variable "prometheus-IP-ireland" {
 }
 
+variable "london-radius-ip-addresses" {
+  type        = list(any)
+  description = "Frontend RADIUS server IP addresses - London"
+}
+
+variable "dublin-radius-ip-addresses" {
+  type        = list(string)
+  description = "Frontend RADIUS server IP addresses - Dublin"
+}
+
 variable "grafana-IP" {
 }
 

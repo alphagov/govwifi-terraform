@@ -78,11 +78,6 @@ variable "public-google-api-key" {
   default = "xxxxxxxxxxxxxxxxxxxxx"
 }
 
-variable "otp-secret-encryption-key" {
-  type        = string
-  description = "Encryption key used to verify OTP authentication codes"
-}
-
 variable "user-signup-sentry-dsn" {
   type = string
 }
@@ -93,26 +88,6 @@ variable "logging-sentry-dsn" {
 
 variable "admin-sentry-dsn" {
   type = string
-}
-
-variable "db-password" {
-  type        = string
-  description = "Database main password"
-}
-
-variable "db-user" {
-  type        = string
-  description = "Database username"
-}
-
-variable "user-db-password" {
-  type        = string
-  description = "User details database main password"
-}
-
-variable "user-db-username" {
-  type        = string
-  description = "Users database username"
 }
 
 variable "user-db-hostname" {
@@ -131,111 +106,10 @@ variable "admin-db-username" {
   type        = string
   description = "Database main username for govwifi-admin"
 }
-variable "admin-db-password" {
-  type        = string
-  description = "Database main password for govwifi-admin"
-}
 
 variable "zendesk-api-user" {
   type        = string
   description = "Username for authenticating with Zendesk API"
-}
-
-variable "zendesk-api-token" {
-  type        = string
-  description = "Token for authenticating with Zendesk API"
-}
-
-variable "hc-key" {
-  type        = string
-  description = "Health check process shared secret"
-}
-
-variable "hc-ssid" {
-  type        = string
-  description = "Health check simulated SSID"
-}
-
-variable "hc-identity" {
-  type        = string
-  description = "Health check identity"
-}
-
-variable "hc-password" {
-  type        = string
-  description = "Health check password"
-}
-
-variable "shared-key" {
-  type        = string
-  description = "A random key to be shared between the fronend and backend to retrieve initial client setup."
-}
-
-variable "notify-api-key" {
-  type        = string
-  description = "API key used to authenticate with GOV.UK Notify"
-}
-
-variable "aws-account-id" {
-  type        = string
-  description = "The ID of the AWS tenancy."
-}
-
-variable "admin-secret-key-base" {
-  type        = string
-  description = "Rails secret key base for the Admin platform"
-}
-
-variable "docker-image-path" {
-  type        = string
-  description = "ARN used to identify the common path element used for the docker API image repositories."
-}
-
-variable "route53-zone-id" {
-  type        = string
-  description = "Zone ID used by the Route53 DNS service."
-}
-
-variable "performance-url" {
-  type        = string
-  description = "URL endpoint leading to Performance platform API, with a trailing slash at the end"
-  default     = "unused-on-staging"
-}
-
-variable "performance-dataset" {
-  type        = string
-  description = "Dataset to which Performance statistics should be saved e.g `gov-wifi`"
-  default     = "unused-on-staging"
-}
-
-variable "performance-bearer-volumetrics" {
-  type        = string
-  description = "Bearer token for `volumetrics` Performance platform statistics"
-  default     = "unused-on-staging"
-}
-
-variable "performance-bearer-completion-rate" {
-  type        = string
-  description = "Bearer token for `completion-rate` Performance platform statistics"
-  default     = "unused-on-staging"
-}
-
-variable "performance-bearer-active-users" {
-  type        = string
-  description = "Bearer token for `active-users` Performance platform statistics"
-  default     = "unused-on-staging"
-}
-
-variable "performance-bearer-unique-users" {
-  type        = string
-  description = "Bearer token for `unique-users` Performance platform statistics"
-  default     = "unused-on-staging"
-}
-
-variable "performance-bearer-roaming-users" {
-  type        = string
-  description = "Bearer token for `roaming-users` Performance platform statistics"
-  default     = "unused-on-staging"
 }
 
 variable "london-radius-ip-addresses" {
@@ -254,10 +128,6 @@ variable "london-api-base-url" {
   default     = "https://api-elb.london.staging-temp.wifi.service.gov.uk:8443"
 }
 
-variable "govnotify-bearer-token" {
-  type = string
-}
-
 variable "notification-email" {
 }
 
@@ -268,17 +138,6 @@ variable "prometheus-IP-ireland" {
 }
 
 variable "grafana-IP" {
-}
-
-variable "aws-parent-account-id" {
-  description = "Unused in this configuration"
-}
-
-variable "govwifi-api-ssl-cert-arn" {
-  description = "Unused in this configuration"
-}
-
-variable "gds-slack-workplace-id" {
 }
 
 variable "gds-slack-channel-id" {

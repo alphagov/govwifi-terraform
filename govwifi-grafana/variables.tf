@@ -80,3 +80,6 @@ variable "critical-notifications-arn" {
 
 variable "use_env_prefix" {
 }
+
+variable "is_production_aws_account" {
+}

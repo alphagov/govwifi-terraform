@@ -180,9 +180,10 @@ module "frontend" {
     aws.route53-alarms = aws.route53-alarms
   }
 
-  source        = "../../govwifi-frontend"
-  Env-Name      = var.Env-Name
-  Env-Subdomain = var.Env-Subdomain
+  source                    = "../../govwifi-frontend"
+  Env-Name                  = var.Env-Name
+  Env-Subdomain             = var.Env-Subdomain
+  is_production_aws_account = var.is_production_aws_account
 
   # AWS VPC setup -----------------------------------------
   aws-region         = var.aws-region
@@ -238,7 +239,6 @@ module "frontend" {
 
   use_env_prefix = var.use_env_prefix
 
-  is_production_aws_account = var.is_production_aws_account
 }
 
 module "api" {
@@ -246,10 +246,11 @@ module "api" {
     aws = aws.AWS-main
   }
 
-  source        = "../../govwifi-api"
-  env           = "staging"
-  Env-Name      = "staging"
-  Env-Subdomain = var.Env-Subdomain
+  source                    = "../../govwifi-api"
+  env                       = "staging"
+  Env-Name                  = "staging"
+  Env-Subdomain             = var.Env-Subdomain
+  is_production_aws_account = var.is_production_aws_account
 
   ami                    = ""
   ssh-key-name           = ""
@@ -311,8 +312,6 @@ module "api" {
   use_env_prefix = var.use_env_prefix
 
   low_cpu_threshold = 0.3
-
-  is_production_aws_account = var.is_production_aws_account
 }
 
 module "notifications" {
@@ -339,32 +338,32 @@ module "route53-notifications" {
   emails     = [var.notification-email]
 }
 
-# module "govwifi-prometheus" {
-#   providers = {
-#     aws = aws.AWS-main
-#   }
-#
-#   source     = "../../govwifi-prometheus"
-#   Env-Name   = var.Env-Name
-#   aws-region = var.aws-region
-#
-#   ssh-key-name = var.ssh-key-name
-#
-#   frontend-vpc-id = module.frontend.frontend-vpc-id
-#
-#   fe-admin-in   = module.frontend.fe-admin-in
-#   fe-ecs-out    = module.frontend.fe-ecs-out
-#   fe-radius-in  = module.frontend.fe-radius-in
-#   fe-radius-out = module.frontend.fe-radius-out
-#
-#   wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
-#   london-radius-ip-addresses = var.london-radius-ip-addresses
-#   dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
-#
-#   # Feature toggle creating Prometheus server.
-#   # Value defaults to 0 and should only be enabled (i.e., value = 1)
-#   create_prometheus_server = 0
-#
-#   prometheus-IP = var.prometheus-IP-ireland
-#   grafana-IP    = "${var.grafana-IP}/32"
-# }
+module "govwifi-prometheus" {
+  providers = {
+    aws = aws.AWS-main
+  }
+
+  source     = "../../govwifi-prometheus"
+  Env-Name   = var.Env-Name
+  aws-region = var.aws-region
+
+  ssh-key-name = var.ssh-key-name
+
+  frontend-vpc-id = module.frontend.frontend-vpc-id
+
+  fe-admin-in   = module.frontend.fe-admin-in
+  fe-ecs-out    = module.frontend.fe-ecs-out
+  fe-radius-in  = module.frontend.fe-radius-in
+  fe-radius-out = module.frontend.fe-radius-out
+
+  wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
+  london-radius-ip-addresses = var.london-radius-ip-addresses
+  dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
+
+  # Feature toggle creating Prometheus server.
+  # Value defaults to 0 and should only be enabled (i.e., value = 1)
+  create_prometheus_server = 0
+
+  prometheus-IP = var.prometheus-IP-ireland
+  grafana-IP    = "${var.grafana-IP}/32"
+}
