@@ -25,13 +25,19 @@ resource "aws_security_group" "grafana-alb-out" {
     Name = "${title(var.Env-Name)} Grafana ALB Traffic Out"
   }
 
-  egress {
-    description = ""
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = distinct(var.bastion-ips)
-  }
+  # Has an egress rule, defined as a separate resource below to avoid
+  # creating a cycle between this group and the grafana-ec2-in
+  # security group.
+}
+
+resource "aws_security_group_rule" "grafana_alb_out_egress" {
+  type                     = "egress"
+  from_port                = 3000
+  to_port                  = 3000
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.grafana-ec2-in.id
+
+  security_group_id = aws_security_group.grafana-alb-out.id
 }
 
 resource "aws_security_group" "grafana-ec2-in" {
