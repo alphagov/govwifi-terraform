@@ -62,7 +62,7 @@ resource "aws_security_group" "grafana-ec2-in" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = distinct(var.bastion-ips)
+    cidr_blocks = ["${var.bastion_ip}/32"]
   }
 }
 
@@ -80,7 +80,7 @@ resource "aws_security_group" "grafana-ec2-out" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = distinct(var.bastion-ips)
+    cidr_blocks = ["${var.bastion_ip}/32"]
   }
 
   egress {
