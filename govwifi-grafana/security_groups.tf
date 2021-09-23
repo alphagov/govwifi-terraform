@@ -51,8 +51,8 @@ resource "aws_security_group" "grafana-ec2-in" {
 
   ingress {
     description     = ""
-    from_port       = 0
-    to_port         = 65535
+    from_port       = 3000
+    to_port         = 3000
     protocol        = "tcp"
     security_groups = [aws_security_group.grafana-alb-out.id]
   }
