@@ -1,4 +1,4 @@
-resource "aws_iam_role" "logging-scheduled-task-role" {
+resource "aws_iam_role" "logging_scheduled_task_role" {
   count = var.logging-enabled
   name  = "${var.Env-Name}-logging-scheduled-task-role"
 
@@ -20,10 +20,10 @@ DOC
 
 }
 
-resource "aws_iam_role_policy" "logging-scheduled-task-policy" {
+resource "aws_iam_role_policy" "logging_scheduled_task_policy" {
   count = var.logging-enabled
   name  = "${var.Env-Name}-logging-scheduled-task-policy"
-  role  = aws_iam_role.logging-scheduled-task-role[0].id
+  role  = aws_iam_role.logging_scheduled_task_role[0].id
 
   policy = <<DOC
 {
@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "logging-scheduled-task-policy" {
             "Effect": "Allow",
             "Action": "ecs:RunTask",
             "Resource": "${replace(
-  aws_ecs_task_definition.logging-api-scheduled-task[0].arn,
+  aws_ecs_task_definition.logging_api_scheduled_task[0].arn,
   "/:\\d+$/",
   ":*",
 )}"
@@ -56,16 +56,16 @@ DOC
 
 }
 
-resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
+resource "aws_cloudwatch_event_target" "logging_daily_session_deletion" {
   count     = var.logging-enabled
   target_id = "${var.Env-Name}-logging-daily-session-deletion"
-  arn       = aws_ecs_cluster.api-cluster.arn
+  arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_session_deletion_event[0].name
-  role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
+  role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
+    task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -74,8 +74,8 @@ resource "aws_cloudwatch_event_target" "logging-daily-session-deletion" {
 
       security_groups = concat(
         var.backend-sg-list,
-        [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id]
+        [aws_security_group.api_in.id],
+        [aws_security_group.api_out.id]
       )
 
       assign_public_ip = true
@@ -95,16 +95,16 @@ EOF
 
 }
 
-resource "aws_cloudwatch_event_target" "gdpr-set-user-last-login" {
+resource "aws_cloudwatch_event_target" "gdpr_set_user_last_login" {
   count     = var.logging-enabled
   target_id = "${var.Env-Name}-gdpr-user-set-last-login"
-  arn       = aws_ecs_cluster.api-cluster.arn
+  arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_gdpr_set_user_last_login[0].name
-  role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
+  role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
+    task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -113,8 +113,8 @@ resource "aws_cloudwatch_event_target" "gdpr-set-user-last-login" {
 
       security_groups = concat(
         var.backend-sg-list,
-        [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id]
+        [aws_security_group.api_in.id],
+        [aws_security_group.api_out.id]
       )
 
       assign_public_ip = true
@@ -134,16 +134,16 @@ EOF
 
 }
 
-resource "aws_cloudwatch_event_target" "hourly-request-statistics" {
+resource "aws_cloudwatch_event_target" "hourly_request_statistics" {
   count     = var.logging-enabled
   target_id = "${var.Env-Name}-publish-hourly-request-statistics"
-  arn       = aws_ecs_cluster.api-cluster.arn
+  arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.hourly_request_statistics_event[0].name
-  role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
+  role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
+    task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -152,8 +152,8 @@ resource "aws_cloudwatch_event_target" "hourly-request-statistics" {
 
       security_groups = concat(
         var.backend-sg-list,
-        [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id]
+        [aws_security_group.api_in.id],
+        [aws_security_group.api_out.id]
       )
 
       assign_public_ip = true
@@ -174,16 +174,16 @@ EOF
 }
 
 # new metrics
-resource "aws_cloudwatch_event_target" "publish-monthly-metrics-logging" {
+resource "aws_cloudwatch_event_target" "publish_monthly_metrics_logging" {
   count     = var.logging-enabled
   target_id = "${var.Env-Name}-logging-monthly-metrics"
-  arn       = aws_ecs_cluster.api-cluster.arn
+  arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.monthly_metrics_logging_event[0].name
-  role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
+  role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
+    task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -192,8 +192,8 @@ resource "aws_cloudwatch_event_target" "publish-monthly-metrics-logging" {
 
       security_groups = concat(
         var.backend-sg-list,
-        [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id]
+        [aws_security_group.api_in.id],
+        [aws_security_group.api_out.id]
       )
 
       assign_public_ip = true
@@ -213,16 +213,16 @@ EOF
 
 }
 
-resource "aws_cloudwatch_event_target" "publish-weekly-metrics-logging" {
+resource "aws_cloudwatch_event_target" "publish_weekly_metrics_logging" {
   count     = var.logging-enabled
   target_id = "${var.Env-Name}-logging-weekly-metrics"
-  arn       = aws_ecs_cluster.api-cluster.arn
+  arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.weekly_metrics_logging_event[0].name
-  role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
+  role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
+    task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -231,8 +231,8 @@ resource "aws_cloudwatch_event_target" "publish-weekly-metrics-logging" {
 
       security_groups = concat(
         var.backend-sg-list,
-        [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id]
+        [aws_security_group.api_in.id],
+        [aws_security_group.api_out.id]
       )
 
       assign_public_ip = true
@@ -252,16 +252,16 @@ EOF
 
 }
 
-resource "aws_cloudwatch_event_target" "publish-daily-metrics-logging" {
+resource "aws_cloudwatch_event_target" "publish_daily_metrics_logging" {
   count     = var.logging-enabled
   target_id = "${var.Env-Name}-logging-daily-metrics"
-  arn       = aws_ecs_cluster.api-cluster.arn
+  arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_metrics_logging_event[0].name
-  role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
+  role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
+    task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -270,8 +270,8 @@ resource "aws_cloudwatch_event_target" "publish-daily-metrics-logging" {
 
       security_groups = concat(
         var.backend-sg-list,
-        [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id]
+        [aws_security_group.api_in.id],
+        [aws_security_group.api_out.id]
       )
 
       assign_public_ip = true
@@ -291,16 +291,16 @@ EOF
 
 }
 
-resource "aws_cloudwatch_event_target" "publish-monthly-metrics-to-elasticsearch" {
+resource "aws_cloudwatch_event_target" "publish_monthly_metrics_to_elasticsearch" {
   count     = var.logging-enabled
   target_id = "${var.Env-Name}-logging-monthly-metrics-to-elasticsearch"
-  arn       = aws_ecs_cluster.api-cluster.arn
+  arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.monthly_metrics_logging_event[0].name
-  role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
+  role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
+    task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -309,8 +309,8 @@ resource "aws_cloudwatch_event_target" "publish-monthly-metrics-to-elasticsearch
 
       security_groups = concat(
         var.backend-sg-list,
-        [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id]
+        [aws_security_group.api_in.id],
+        [aws_security_group.api_out.id]
       )
 
       assign_public_ip = true
@@ -330,16 +330,16 @@ EOF
 
 }
 
-resource "aws_cloudwatch_event_target" "publish-weekly-metrics-to-elasticsearch" {
+resource "aws_cloudwatch_event_target" "publish_weekly_metrics_to_elasticsearch" {
   count     = var.logging-enabled
   target_id = "${var.Env-Name}-logging-weekly-metrics-to-elasticsearch"
-  arn       = aws_ecs_cluster.api-cluster.arn
+  arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.weekly_metrics_logging_event[0].name
-  role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
+  role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
+    task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -348,8 +348,8 @@ resource "aws_cloudwatch_event_target" "publish-weekly-metrics-to-elasticsearch"
 
       security_groups = concat(
         var.backend-sg-list,
-        [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id]
+        [aws_security_group.api_in.id],
+        [aws_security_group.api_out.id]
       )
 
       assign_public_ip = true
@@ -369,16 +369,16 @@ EOF
 
 }
 
-resource "aws_cloudwatch_event_target" "publish-daily-metrics-to-elasticsearch" {
+resource "aws_cloudwatch_event_target" "publish_daily_metrics_to_elasticsearch" {
   count     = var.logging-enabled
   target_id = "${var.Env-Name}-logging-daily-metrics-to-elasticsearch"
-  arn       = aws_ecs_cluster.api-cluster.arn
+  arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_metrics_logging_event[0].name
-  role_arn  = aws_iam_role.logging-scheduled-task-role[0].arn
+  role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
+    task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -387,8 +387,8 @@ resource "aws_cloudwatch_event_target" "publish-daily-metrics-to-elasticsearch" 
 
       security_groups = concat(
         var.backend-sg-list,
-        [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id]
+        [aws_security_group.api_in.id],
+        [aws_security_group.api_out.id]
       )
 
       assign_public_ip = true
@@ -408,10 +408,10 @@ EOF
 
 }
 
-resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
+resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
   count                    = var.logging-enabled
   family                   = "logging-api-scheduled-task-${var.Env-Name}"
-  task_role_arn            = aws_iam_role.logging-api-task-role[0].arn
+  task_role_arn            = aws_iam_role.logging_api_task_role[0].arn
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   requires_compatibilities = ["FARGATE"]
   cpu                      = 512
@@ -505,7 +505,7 @@ resource "aws_ecs_task_definition" "logging-api-scheduled-task" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.logging-api-log-group[0].name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.logging_api_log_group[0].name}",
           "awslogs-region": "${var.aws-region}",
           "awslogs-stream-prefix": "${var.Env-Name}-logging-api-docker-logs"
         }
@@ -519,16 +519,16 @@ EOF
 
 }
 
-resource "aws_cloudwatch_event_target" "sync-s3-to-elasticsearch" {
+resource "aws_cloudwatch_event_target" "sync_s3_to_elasticsearch" {
   count     = var.logging-enabled
   target_id = "${var.Env-Name}-sync-s3-to-elasticsearch"
-  arn       = aws_ecs_cluster.api-cluster.arn
+  arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.sync_s3_to_elasticsearch_event[0].name
-  role_arn  = aws_iam_role.logging-api-task-role[0].arn
+  role_arn  = aws_iam_role.logging_api_task_role[0].arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.logging-api-scheduled-task[0].arn
+    task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -537,8 +537,8 @@ resource "aws_cloudwatch_event_target" "sync-s3-to-elasticsearch" {
 
       security_groups = concat(
         var.backend-sg-list,
-        [aws_security_group.api-in.id],
-        [aws_security_group.api-out.id]
+        [aws_security_group.api_in.id],
+        [aws_security_group.api_out.id]
       )
 
       assign_public_ip = true

@@ -5,8 +5,8 @@ resource "aws_route53_record" "elb" {
   type    = "A"
 
   alias {
-    name                   = aws_lb.api-alb[0].dns_name
-    zone_id                = aws_lb.api-alb[0].zone_id
+    name                   = aws_lb.api_alb[0].dns_name
+    zone_id                = aws_lb.api_alb[0].zone_id
     evaluate_target_health = true
   }
 }
@@ -31,19 +31,19 @@ resource "aws_route53_record" "elb_global" {
 
 resource "aws_route53_record" "elb_global_cert_validation" {
   count   = var.backend-elb-count
-  name    = aws_acm_certificate.api-elb-global[0].domain_validation_options[0].resource_record_name
-  type    = aws_acm_certificate.api-elb-global[0].domain_validation_options[0].resource_record_type
+  name    = aws_acm_certificate.api_elb_global[0].domain_validation_options[0].resource_record_name
+  type    = aws_acm_certificate.api_elb_global[0].domain_validation_options[0].resource_record_type
   zone_id = var.route53-zone-id
-  records = [aws_acm_certificate.api-elb-global[0].domain_validation_options[0].resource_record_value]
+  records = [aws_acm_certificate.api_elb_global[0].domain_validation_options[0].resource_record_value]
   ttl     = 60
 }
 
 resource "aws_route53_record" "elb_regional_cert_validation" {
   count   = var.backend-elb-count
-  name    = aws_acm_certificate.api-elb-regional[0].domain_validation_options[0].resource_record_name
-  type    = aws_acm_certificate.api-elb-regional[0].domain_validation_options[0].resource_record_type
+  name    = aws_acm_certificate.api_elb_regional[0].domain_validation_options[0].resource_record_name
+  type    = aws_acm_certificate.api_elb_regional[0].domain_validation_options[0].resource_record_type
   zone_id = var.route53-zone-id
-  records = [aws_acm_certificate.api-elb-regional[0].domain_validation_options[0].resource_record_value]
+  records = [aws_acm_certificate.api_elb_regional[0].domain_validation_options[0].resource_record_value]
   ttl     = 60
 }
 
