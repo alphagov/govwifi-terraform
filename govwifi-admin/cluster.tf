@@ -1,22 +1,22 @@
-resource "aws_ecs_cluster" "admin-cluster" {
+resource "aws_ecs_cluster" "admin_cluster" {
   name = "${var.Env-Name}-admin-cluster"
 }
 
-resource "aws_cloudwatch_log_group" "admin-log-group" {
+resource "aws_cloudwatch_log_group" "admin_log_group" {
   name = "${var.Env-Name}-admin-log-group"
 
   retention_in_days = 90
 }
 
-resource "aws_ecr_repository" "govwifi-admin-ecr" {
+resource "aws_ecr_repository" "govwifi_admin_ecr" {
   count = var.ecr-repository-count
   name  = "govwifi/admin"
 }
 
-resource "aws_ecs_task_definition" "admin-task" {
+resource "aws_ecs_task_definition" "admin_task" {
   family                   = "admin-task-${var.Env-Name}"
   requires_compatibilities = ["FARGATE"]
-  task_role_arn            = aws_iam_role.ecs-admin-instance-role.arn
+  task_role_arn            = aws_iam_role.ecs_admin_instance_role.arn
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   cpu                      = "512"
   memory                   = "1024"
@@ -64,16 +64,16 @@ resource "aws_ecs_task_definition" "admin-task" {
           "value": "${var.sentry-dsn}"
         },{
           "name": "S3_MOU_BUCKET",
-          "value": "${aws_s3_bucket.admin-mou-bucket[0].id}"
+          "value": "${aws_s3_bucket.admin_mou_bucket[0].id}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
-          "value": "${aws_s3_bucket.admin-bucket[0].id}"
+          "value": "${aws_s3_bucket.admin_bucket[0].id}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
         },{
           "name": "S3_SIGNUP_WHITELIST_BUCKET",
-          "value": "${aws_s3_bucket.admin-bucket[0].id}"
+          "value": "${aws_s3_bucket.admin_bucket[0].id}"
         },{
           "name": "S3_SIGNUP_WHITELIST_OBJECT_KEY",
           "value": "signup-whitelist.conf"
@@ -82,7 +82,7 @@ resource "aws_ecs_task_definition" "admin-task" {
           "value": "clients.conf"
         },{
           "name": "S3_PRODUCT_PAGE_DATA_BUCKET",
-          "value": "${aws_s3_bucket.product-page-data-bucket[0].id}"
+          "value": "${aws_s3_bucket.product_page_data_bucket[0].id}"
         },{
           "name": "S3_ORGANISATION_NAMES_OBJECT_KEY",
           "value": "organisations.yml"
@@ -158,7 +158,7 @@ resource "aws_ecs_task_definition" "admin-task" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.admin-log-group.name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.admin_log_group.name}",
           "awslogs-region": "${var.aws-region}",
           "awslogs-stream-prefix": "${var.Env-Name}-admin-docker-logs"
         }
@@ -170,17 +170,17 @@ EOF
 
 }
 
-resource "aws_ecs_service" "admin-service" {
+resource "aws_ecs_service" "admin_service" {
   depends_on       = [aws_alb_listener.alb_listener]
   name             = "admin-${var.Env-Name}"
-  cluster          = aws_ecs_cluster.admin-cluster.id
-  task_definition  = aws_ecs_task_definition.admin-task.arn
+  cluster          = aws_ecs_cluster.admin_cluster.id
+  task_definition  = aws_ecs_task_definition.admin_task.arn
   desired_count    = var.instance-count
   launch_type      = "FARGATE"
   platform_version = "1.3.0"
 
   load_balancer {
-    target_group_arn = aws_alb_target_group.admin-tg.arn
+    target_group_arn = aws_alb_target_group.admin_tg.arn
     container_name   = "admin"
     container_port   = "3000"
   }
@@ -189,16 +189,16 @@ resource "aws_ecs_service" "admin-service" {
     subnets = var.subnet-ids
 
     security_groups = [
-      aws_security_group.admin-ec2-in.id,
-      aws_security_group.admin-ec2-out.id,
+      aws_security_group.admin_ec2_in.id,
+      aws_security_group.admin_ec2_out.id,
     ]
 
     assign_public_ip = true
   }
 }
 
-resource "aws_alb_target_group" "admin-tg" {
-  depends_on           = [aws_lb.admin-alb]
+resource "aws_alb_target_group" "admin_tg" {
+  depends_on           = [aws_lb.admin_alb]
   name                 = "admin-${var.Env-Name}-fg-tg"
   port                 = "3000"
   protocol             = "HTTP"
