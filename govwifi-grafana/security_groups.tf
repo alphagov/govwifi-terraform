@@ -77,8 +77,8 @@ resource "aws_security_group" "grafana-ec2-out" {
 
   egress {
     description = ""
-    from_port   = 0
-    to_port     = 65535
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = distinct(var.bastion-ips)
   }
