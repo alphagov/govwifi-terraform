@@ -513,7 +513,7 @@ module "govwifi_grafana" {
   use_env_prefix = var.use_env_prefix
 }
 
-module "govwifi-slack-alerts" {
+module "govwifi_slack_alerts" {
   providers = {
     aws = aws.AWS-main
   }
