@@ -1,4 +1,4 @@
-resource "aws_security_group" "elasticsearch-inbound" {
+resource "aws_security_group" "elasticsearch_inbound" {
   name        = "elasticsearch-inbound"
   description = "Allow Outbound Traffic From the API"
   vpc_id      = var.vpc-id
@@ -15,7 +15,7 @@ resource "aws_security_group" "elasticsearch-inbound" {
   }
 }
 
-resource "aws_elasticsearch_domain" "govwifi-elasticsearch" {
+resource "aws_elasticsearch_domain" "govwifi_elasticsearch" {
   domain_name           = var.domain-name
   elasticsearch_version = "7.9"
 
@@ -32,7 +32,7 @@ resource "aws_elasticsearch_domain" "govwifi-elasticsearch" {
     ]
 
     security_group_ids = [
-      aws_security_group.elasticsearch-inbound.id,
+      aws_security_group.elasticsearch_inbound.id,
     ]
   }
 

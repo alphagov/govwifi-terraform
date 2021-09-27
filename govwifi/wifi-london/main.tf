@@ -526,7 +526,7 @@ module "govwifi-slack-alerts" {
   gds-slack-channel-id                     = var.gds-slack-channel-id
 }
 
-module "govwifi-elasticsearch" {
+module "govwifi_elasticsearch" {
   providers = {
     aws = aws.AWS-main
   }
