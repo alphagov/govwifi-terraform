@@ -211,7 +211,7 @@ module "frontend" {
 
 }
 
-module "govwifi-admin" {
+module "govwifi_admin" {
   providers = {
     aws = aws.AWS-main
   }
