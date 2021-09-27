@@ -1,23 +1,23 @@
-resource "aws_acm_certificate" "grafana-cert" {
-  domain_name       = aws_route53_record.grafana-route53-record.name
+resource "aws_acm_certificate" "grafana_cert" {
+  domain_name       = aws_route53_record.grafana_route53_record.name
   validation_method = "DNS"
 
-  depends_on = [aws_route53_record.grafana-route53-record]
+  depends_on = [aws_route53_record.grafana_route53_record]
 }
 
-resource "aws_route53_record" "grafana-cert-validation" {
-  name    = aws_acm_certificate.grafana-cert.domain_validation_options[0].resource_record_name
-  type    = aws_acm_certificate.grafana-cert.domain_validation_options[0].resource_record_type
+resource "aws_route53_record" "grafana_cert_validation" {
+  name    = aws_acm_certificate.grafana_cert.domain_validation_options[0].resource_record_name
+  type    = aws_acm_certificate.grafana_cert.domain_validation_options[0].resource_record_type
   zone_id = data.aws_route53_zone.zone.id
 
-  records = [aws_acm_certificate.grafana-cert.domain_validation_options[0].resource_record_value]
+  records = [aws_acm_certificate.grafana_cert.domain_validation_options[0].resource_record_value]
   ttl     = 60
 
-  depends_on = [aws_acm_certificate.grafana-cert]
+  depends_on = [aws_acm_certificate.grafana_cert]
 }
 
 resource "aws_acm_certificate_validation" "certificate" {
-  certificate_arn         = aws_acm_certificate.grafana-cert.arn
-  validation_record_fqdns = [aws_route53_record.grafana-cert-validation.fqdn]
+  certificate_arn         = aws_acm_certificate.grafana_cert.arn
+  validation_record_fqdns = [aws_route53_record.grafana_cert_validation.fqdn]
 }
 

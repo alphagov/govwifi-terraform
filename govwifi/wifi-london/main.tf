@@ -473,7 +473,7 @@ module "govwifi-prometheus" {
   grafana-IP    = "${var.grafana-IP}/32"
 }
 
-module "govwifi-grafana" {
+module "govwifi_grafana" {
   providers = {
     aws = aws.AWS-main
   }
