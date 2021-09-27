@@ -31,7 +31,7 @@ resource "aws_iam_role_policy" "scheduled_task" {
             "Effect": "Allow",
             "Action": "ecs:RunTask",
             "Resource": "${replace(
-  aws_ecs_task_definition.admin-task.arn,
+  aws_ecs_task_definition.admin_task.arn,
   "/:\\d+$/",
   ":*",
 )}"
@@ -65,13 +65,13 @@ resource "aws_cloudwatch_event_rule" "daily_cleanup_orphan_users" {
 
 resource "aws_cloudwatch_event_target" "cleanup_orphan_admin_users" {
   target_id = "${var.Env-Name}-cleanup-orphan-admin-users"
-  arn       = aws_ecs_cluster.admin-cluster.arn
+  arn       = aws_ecs_cluster.admin_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_cleanup_orphan_users.name
   role_arn  = aws_iam_role.scheduled_task.arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.admin-task.arn
+    task_definition_arn = aws_ecs_task_definition.admin_task.arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -79,8 +79,8 @@ resource "aws_cloudwatch_event_target" "cleanup_orphan_admin_users" {
       subnets = var.subnet-ids
 
       security_groups = concat(
-        [aws_security_group.admin-ec2-in.id],
-        [aws_security_group.admin-ec2-out.id]
+        [aws_security_group.admin_ec2_in.id],
+        [aws_security_group.admin_ec2_out.id]
       )
 
       assign_public_ip = true
@@ -111,13 +111,13 @@ resource "aws_cloudwatch_event_rule" "daily_backup_service_emails" {
 
 resource "aws_cloudwatch_event_target" "admin_backup_service_emails" {
   target_id = "${var.Env-Name}-admin-backup-service-emails"
-  arn       = aws_ecs_cluster.admin-cluster.arn
+  arn       = aws_ecs_cluster.admin_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_backup_service_emails.name
   role_arn  = aws_iam_role.scheduled_task.arn
 
   ecs_target {
     task_count          = 1
-    task_definition_arn = aws_ecs_task_definition.admin-task.arn
+    task_definition_arn = aws_ecs_task_definition.admin_task.arn
     launch_type         = "FARGATE"
     platform_version    = "1.3.0"
 
@@ -125,8 +125,8 @@ resource "aws_cloudwatch_event_target" "admin_backup_service_emails" {
       subnets = var.subnet-ids
 
       security_groups = concat(
-        [aws_security_group.admin-ec2-in.id],
-        [aws_security_group.admin-ec2-out.id]
+        [aws_security_group.admin_ec2_in.id],
+        [aws_security_group.admin_ec2_out.id]
       )
 
       assign_public_ip = true

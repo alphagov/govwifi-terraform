@@ -1,4 +1,4 @@
-resource "aws_security_group" "admin-alb-in" {
+resource "aws_security_group" "admin_alb_in" {
   name        = "admin-alb-in"
   description = "Allow Inbound Traffic to the admin platform ALB"
   vpc_id      = var.vpc-id
@@ -15,7 +15,7 @@ resource "aws_security_group" "admin-alb-in" {
   }
 }
 
-resource "aws_security_group" "admin-alb-out" {
+resource "aws_security_group" "admin_alb_out" {
   name        = "admin-alb-out"
   description = "Allow Outbound Traffic from the admin platform ALB"
   vpc_id      = var.vpc-id
@@ -32,7 +32,7 @@ resource "aws_security_group" "admin-alb-out" {
   }
 }
 
-resource "aws_security_group" "admin-ec2-in" {
+resource "aws_security_group" "admin_ec2_in" {
   name        = "admin-ec2-in"
   description = "Allow Inbound Traffic To Admin from the ALB"
   vpc_id      = var.vpc-id
@@ -45,7 +45,7 @@ resource "aws_security_group" "admin-ec2-in" {
     from_port       = 3000
     to_port         = 3000
     protocol        = "tcp"
-    security_groups = [aws_security_group.admin-alb-out.id]
+    security_groups = [aws_security_group.admin_alb_out.id]
   }
 
   ingress {
@@ -56,7 +56,7 @@ resource "aws_security_group" "admin-ec2-in" {
   }
 }
 
-resource "aws_security_group" "admin-ec2-out" {
+resource "aws_security_group" "admin_ec2_out" {
   name        = "api-ec2-out"
   description = "Allow Outbound Traffic From the Admin EC2 container"
   vpc_id      = var.vpc-id
@@ -73,7 +73,7 @@ resource "aws_security_group" "admin-ec2-out" {
   }
 }
 
-resource "aws_security_group" "admin-db-in" {
+resource "aws_security_group" "admin_db_in" {
   name        = "admin-db-in"
   description = "Allow connections to the DB"
   vpc_id      = var.vpc-id

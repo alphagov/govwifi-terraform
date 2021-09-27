@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_metric_alarm" "admin-no-healthy-hosts" {
+resource "aws_cloudwatch_metric_alarm" "admin_no_healthy_hosts" {
   alarm_name          = "${var.Env-Name} admin no healthy hosts"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
@@ -10,7 +10,7 @@ resource "aws_cloudwatch_metric_alarm" "admin-no-healthy-hosts" {
   datapoints_to_alarm = "1"
 
   dimensions = {
-    LoadBalancer = aws_lb.admin-alb.arn_suffix
+    LoadBalancer = aws_lb.admin_alb.arn_suffix
   }
 
   alarm_description = "Load balancer detects no healthy admin targets. Investigate admin-api ECS cluster and CloudWatch logs for root cause."

@@ -1,4 +1,4 @@
-resource "aws_db_parameter_group" "db-parameters" {
+resource "aws_db_parameter_group" "db_parameters" {
   name        = "${var.Env-Name}-admin-db-parameter-group"
   family      = "mysql5.7"
   description = "DB parameter configuration for govwifi-admin"
@@ -28,7 +28,7 @@ resource "aws_db_parameter_group" "db-parameters" {
   }
 }
 
-resource "aws_db_option_group" "mariadb-audit" {
+resource "aws_db_option_group" "mariadb_audit" {
   name = "${var.Env-Name}-admin-db-audit"
 
   option_group_description = "Mariadb audit configuration for govwifi-admin"
@@ -61,7 +61,7 @@ resource "aws_db_instance" "admin_db" {
   multi_az                    = true
   storage_encrypted           = var.db-encrypt-at-rest
   db_subnet_group_name        = "wifi-${var.Env-Name}-subnets"
-  vpc_security_group_ids      = [aws_security_group.admin-db-in.id]
+  vpc_security_group_ids      = [aws_security_group.admin_db_in.id]
   monitoring_role_arn         = var.rds-monitoring-role
   monitoring_interval         = var.db-monitoring-interval
   maintenance_window          = var.db-maintenance-window
@@ -70,8 +70,8 @@ resource "aws_db_instance" "admin_db" {
   deletion_protection         = true
 
   enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
-  option_group_name               = aws_db_option_group.mariadb-audit.name
-  parameter_group_name            = aws_db_parameter_group.db-parameters.name
+  option_group_name               = aws_db_option_group.mariadb_audit.name
+  parameter_group_name            = aws_db_parameter_group.db_parameters.name
 
   tags = {
     Name = "${title(var.Env-Name)} DB for govwifi-admin"

@@ -1,4 +1,4 @@
-resource "aws_s3_bucket" "admin-bucket" {
+resource "aws_s3_bucket" "admin_bucket" {
   count         = 1
   bucket        = var.is_production_aws_account ? "govwifi-${var.rack-env}-admin" : "govwifi-${var.Env-Subdomain}-admin"
   force_destroy = true
@@ -15,7 +15,7 @@ resource "aws_s3_bucket" "admin-bucket" {
   }
 }
 
-resource "aws_s3_bucket" "product-page-data-bucket" {
+resource "aws_s3_bucket" "product_page_data_bucket" {
   count         = 1
   bucket        = var.is_production_aws_account ? "govwifi-${var.rack-env}-product-page-data" : "govwifi-${var.Env-Subdomain}-product-page-data"
   force_destroy = true
@@ -32,7 +32,7 @@ resource "aws_s3_bucket" "product-page-data-bucket" {
   }
 }
 
-resource "aws_s3_bucket" "admin-mou-bucket" {
+resource "aws_s3_bucket" "admin_mou_bucket" {
   count         = 1
   bucket        = var.is_production_aws_account ? "govwifi-${var.rack-env}-admin-mou" : "govwifi-${var.Env-Subdomain}-admin-mou"
   force_destroy = true
@@ -49,8 +49,8 @@ resource "aws_s3_bucket" "admin-mou-bucket" {
   }
 }
 
-resource "aws_s3_bucket_policy" "admin-bucket-policy" {
-  bucket = aws_s3_bucket.admin-bucket[0].id
+resource "aws_s3_bucket_policy" "admin_bucket_policy" {
+  bucket = aws_s3_bucket.admin_bucket[0].id
 
   policy = <<POLICY
 {
@@ -62,7 +62,7 @@ resource "aws_s3_bucket_policy" "admin-bucket-policy" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::${aws_s3_bucket.admin-bucket[0].id}/clients.conf",
+      "Resource": "arn:aws:s3:::${aws_s3_bucket.admin_bucket[0].id}/clients.conf",
       "Condition": {
         "IpAddress": {
           "aws:SourceIp": [
@@ -86,8 +86,8 @@ POLICY
 
 }
 
-resource "aws_s3_bucket_policy" "product-page-data-bucket-policy" {
-  bucket = aws_s3_bucket.product-page-data-bucket[0].id
+resource "aws_s3_bucket_policy" "product_page_data_bucket_policy" {
+  bucket = aws_s3_bucket.product_page_data_bucket[0].id
 
   policy = <<POLICY
 {
@@ -102,7 +102,7 @@ resource "aws_s3_bucket_policy" "product-page-data-bucket-policy" {
                 "s3:GetObject",
                 "s3:GetObjectVersion"
             ],
-            "Resource": "arn:aws:s3:::${aws_s3_bucket.product-page-data-bucket[0].id}/*"
+            "Resource": "arn:aws:s3:::${aws_s3_bucket.product_page_data_bucket[0].id}/*"
         },
         {
             "Sid": "Get Product Page Data For Bucket",
@@ -113,7 +113,7 @@ resource "aws_s3_bucket_policy" "product-page-data-bucket-policy" {
                 "s3:ListBucket",
                 "s3:ListBucketVersions"
             ],
-            "Resource": "arn:aws:s3:::${aws_s3_bucket.product-page-data-bucket[0].id}"
+            "Resource": "arn:aws:s3:::${aws_s3_bucket.product_page_data_bucket[0].id}"
         }
     ]
 }
