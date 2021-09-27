@@ -64,7 +64,7 @@ module "govwifi-keys" {
 
 # Global ====================================================================
 
-module "govwifi-account" {
+module "govwifi_account" {
   providers = {
     aws = aws.AWS-main
   }

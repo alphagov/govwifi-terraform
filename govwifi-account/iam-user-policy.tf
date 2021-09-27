@@ -1,4 +1,4 @@
-resource "aws_iam_user_policy" "monitoring-stats-user_monitoring-stats-user-policy" {
+resource "aws_iam_user_policy" "monitoring_stats_user_monitoring_stats_user_policy" {
   name = "monitoring-stats-user-policy"
   user = "monitoring-stats-user"
 
@@ -50,7 +50,7 @@ POLICY
 
 }
 
-resource "aws_iam_user_policy" "backup-s3-read-buckets-user-policy" {
+resource "aws_iam_user_policy" "backup_s3_read_buckets_user_policy" {
   name = "backup-s3-read-buckets"
   user = "it-govwifi-backup-reader"
 

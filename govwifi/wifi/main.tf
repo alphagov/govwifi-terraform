@@ -167,7 +167,7 @@ module "emails" {
 
 # Global ====================================================================
 #moved for wifi-london
-#module "govwifi-account" {
+#module "govwifi_account" {
 #  providers = {
 #    "aws" = "aws.AWS-main"
 #  }
