@@ -150,7 +150,7 @@ module "emails" {
   user-signup-notifications-endpoint = "https://user-signup-api.${var.Env-Subdomain}.service.gov.uk:8443/user-signup/email-notification"
 }
 
-module "govwifi-keys" {
+module "govwifi_keys" {
   providers = {
     aws = aws.AWS-main
   }
