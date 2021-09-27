@@ -223,7 +223,7 @@ module "frontend" {
   use_env_prefix = var.use_env_prefix
 }
 
-module "govwifi-admin" {
+module "govwifi_admin" {
   providers = {
     aws = aws.AWS-main
   }
