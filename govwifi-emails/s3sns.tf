@@ -73,7 +73,7 @@ EOF
 
 # S3 bucket to store administration emails - mostly set up so we can receive
 # emails regards to the AWS-provided certificate(used for the elb) approval process.
-resource "aws_s3_bucket" "admin-emailbucket" {
+resource "aws_s3_bucket" "admin_emailbucket" {
   bucket        = "${var.Env-Name}-admin-emailbucket"
   force_destroy = true
 
@@ -134,7 +134,7 @@ EOF
 }
 
 # SNS topic to notify the old backend when an email arrives
-resource "aws_sns_topic" "govwifi-email-notifications" {
+resource "aws_sns_topic" "govwifi_email_notifications" {
   name         = "${var.Env-Name}-email-notifications"
   display_name = "${title(var.Env-Name)} GovWifi email notifications"
 
@@ -192,26 +192,26 @@ EOF
 }
 
 # Subscription
-resource "aws_sns_topic_subscription" "email-notifications-target" {
+resource "aws_sns_topic_subscription" "email_notifications_target" {
   count                           = var.is_production_aws_account ? 1 : 0
-  topic_arn                       = aws_sns_topic.govwifi-email-notifications.arn
+  topic_arn                       = aws_sns_topic.govwifi_email_notifications.arn
   protocol                        = "https"
   endpoint                        = var.sns-endpoint
   endpoint_auto_confirms          = true
   confirmation_timeout_in_minutes = 2
-  depends_on                      = [aws_sns_topic.govwifi-email-notifications]
+  depends_on                      = [aws_sns_topic.govwifi_email_notifications]
 }
 
 # SNS topic to notify the new user-signup API when an email arrives
-resource "aws_sns_topic" "user-signup-notifications" {
+resource "aws_sns_topic" "user_signup_notifications" {
   name         = "${var.Env-Name}-user-signup-notifications"
   display_name = "${title(var.Env-Name)} user signup email notifications"
 }
 
-resource "aws_sns_topic_subscription" "user-signup-notifications-target" {
-  topic_arn              = aws_sns_topic.user-signup-notifications.arn
+resource "aws_sns_topic_subscription" "user_signup_notifications_target" {
+  topic_arn              = aws_sns_topic.user_signup_notifications.arn
   protocol               = "https"
   endpoint               = var.user-signup-notifications-endpoint
   endpoint_auto_confirms = true
-  depends_on             = [aws_sns_topic.user-signup-notifications]
+  depends_on             = [aws_sns_topic.user_signup_notifications]
 }
