@@ -34,7 +34,7 @@ Other repositories:
 
 ## Secrets
 
-Sensitive credentials are stored in AWS Secrets Manager in the format of `staging/<service>/<item>` or `<service>/<item>` (`<item>` should be hyphenated not underscored).
+Sensitive credentials are stored in AWS Secrets Manager in the format of `<service>/<item>` (`<item>` must be hyphenated not underscored).
 
 `service` will be the GovWifi service (admin, radius, user-signup, logging) related to that secret. If the secret is not specific to a GovWifi service, use the AWS service or product it relates to (e.g., rds, s3, grafana).
 
@@ -49,7 +49,7 @@ make <ENV> init-backend
 make <ENV> plan
 ```
 
-Example ENVs are: wifi, wifi-london, staging and staging-london
+Example ENVs are: `wifi`, `wifi-london`, `staging-london-temp`, and `staging-dublin-temp`
 
 ## Running terraform
 
@@ -204,15 +204,13 @@ the console
 3. Run `make format` to format Terraform code
 4. Raise a pull request
 
-### Styleguide
+### Style guide
 
-Terraform's formatting tool takes care of much of the style, but there
-are some additional points.
+Terraform's formatting tool takes care of much of the style, but there are some additional points.
 
 #### Naming resources
 
-When naming resources, only use underscores to seperate words. For
-example:
+When naming resources, only use underscores to separate words. For example:
 
 ```terraform
 resource "aws_iam_user_policy" "backup_s3_read_buckets" {
@@ -221,9 +219,7 @@ resource "aws_iam_user_policy" "backup_s3_read_buckets" {
 
 #### Trailing newlines
 
-All lines in a file should end in a terminating newline character,
-including the last line. This helps to avoid unnecessary diff noise
-where this newline is added after a file has been created.
+All lines in a file should end in a terminating newline character, including the last line. This helps to avoid unnecessary diff noise where this newline is added after a file has been created.
 
 ## License
 
