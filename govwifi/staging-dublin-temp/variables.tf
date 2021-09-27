@@ -108,14 +108,6 @@ variable "dublin-radius-ip-addresses" {
 variable "grafana-IP" {
 }
 
-variable "administrator-IPs-list" {
-  description = "Unused in this configuration"
-}
-
-variable "backend-subnet-IPs-list" {
-  description = "Unused in this configuration"
-}
-
 variable "use_env_prefix" {
   default     = false
   type        = bool
