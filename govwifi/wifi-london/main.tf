@@ -443,7 +443,7 @@ The server will scrape metrics from the agents configured in both regions.
 The module `govwifi-prometheus` only needs to exist in
 govwifi/staging-london/main.tf and govwifi/wifi-london/main.tf.
 */
-module "govwifi-prometheus" {
+module "govwifi_prometheus" {
   providers = {
     aws = aws.AWS-main
   }

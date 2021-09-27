@@ -1,4 +1,4 @@
-resource "aws_security_group" "grafana-data-in" {
+resource "aws_security_group" "grafana_data_in" {
   name        = "grafana-data-in-${var.Env-Name}"
   description = "Allow Inbound Traffic from the Grafana instance to collect data"
   vpc_id      = var.frontend-vpc-id

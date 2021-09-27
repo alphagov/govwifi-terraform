@@ -398,7 +398,7 @@ module "us_east_1_pagerduty" {
   sns_topic_subscription_https_endpoint = local.pagerduty_https_endpoint
 }
 
-module "govwifi-prometheus" {
+module "govwifi_prometheus" {
   providers = {
     aws = aws.AWS-main
   }

@@ -60,10 +60,10 @@ resource "aws_instance" "prometheus_instance" {
     var.fe-admin-in,
     var.fe-radius-out,
     var.fe-radius-in,
-    aws_security_group.grafana-data-in.id,
+    aws_security_group.grafana_data_in.id,
   ]
 
-  iam_instance_profile = aws_iam_instance_profile.prometheus-instance-profile.id
+  iam_instance_profile = aws_iam_instance_profile.prometheus_instance_profile.id
 
   tags = {
     Name = "${title(var.Env-Name)} Prometheus-Server"
