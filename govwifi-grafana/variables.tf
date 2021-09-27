@@ -40,10 +40,9 @@ variable "vpc-id" {
   type        = string
 }
 
-variable "bastion-ips" {
-  description = "The list of allowed hosts to connect to the EC2 instances."
-  type        = list(string)
-  default     = []
+variable "bastion_ip" {
+  description = "The IP address of the bastion machine."
+  type        = string
 }
 
 variable "prometheus-IPs" {

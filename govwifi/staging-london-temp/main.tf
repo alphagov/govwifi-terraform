@@ -458,10 +458,12 @@ module "govwifi-grafana" {
   # Feature toggle so we only create the Grafana instance in Staging London
   create_grafana_server = "1"
   vpc-id                = module.backend.backend-vpc-id
-  bastion-ips = concat(
-    split(",", var.bastion-server-IP),
-    split(",", var.backend-subnet-IPs)
-  )
+
+  # The value of bastion-server-IP isn't actually an IP address, but a
+  # /32 CIDR block, extract the IP address from CIDR block here before
+  # passing it on.
+  bastion_ip = split("/", var.bastion-server-IP)[0]
+
   administrator-IPs = var.administrator-IPs
   prometheus-IPs = concat(
     split(",", "${var.prometheus-IP-london}/32"),
