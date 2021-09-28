@@ -472,7 +472,7 @@ module "govwifi_grafana" {
   use_env_prefix = var.use_env_prefix
 }
 
-module "govwifi-elasticsearch" {
+module "govwifi_elasticsearch" {
   providers = {
     aws = aws.AWS-main
   }
