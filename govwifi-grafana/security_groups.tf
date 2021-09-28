@@ -1,4 +1,4 @@
-resource "aws_security_group" "grafana-alb-in" {
+resource "aws_security_group" "grafana_alb_in" {
   name        = "grafana-alb-in-${var.Env-Name}"
   description = "Allow Inbound Traffic to the Grafana ALB"
   vpc_id      = var.vpc-id
@@ -16,7 +16,7 @@ resource "aws_security_group" "grafana-alb-in" {
   }
 }
 
-resource "aws_security_group" "grafana-alb-out" {
+resource "aws_security_group" "grafana_alb_out" {
   name        = "grafana-alb-out-${var.Env-Name}"
   description = "Allow Outbound Traffic from the Grafana ALB"
   vpc_id      = var.vpc-id
@@ -35,12 +35,12 @@ resource "aws_security_group_rule" "grafana_alb_out_egress" {
   from_port                = 3000
   to_port                  = 3000
   protocol                 = "tcp"
-  source_security_group_id = aws_security_group.grafana-ec2-in.id
+  source_security_group_id = aws_security_group.grafana_ec2_in.id
 
-  security_group_id = aws_security_group.grafana-alb-out.id
+  security_group_id = aws_security_group.grafana_alb_out.id
 }
 
-resource "aws_security_group" "grafana-ec2-in" {
+resource "aws_security_group" "grafana_ec2_in" {
   name        = "grafana-ec2-in-${var.Env-Name}"
   description = "Allow Inbound Traffic To Grafana from the ALB"
   vpc_id      = var.vpc-id
@@ -54,7 +54,7 @@ resource "aws_security_group" "grafana-ec2-in" {
     from_port       = 3000
     to_port         = 3000
     protocol        = "tcp"
-    security_groups = [aws_security_group.grafana-alb-out.id]
+    security_groups = [aws_security_group.grafana_alb_out.id]
   }
 
   ingress {
@@ -66,7 +66,7 @@ resource "aws_security_group" "grafana-ec2-in" {
   }
 }
 
-resource "aws_security_group" "grafana-ec2-out" {
+resource "aws_security_group" "grafana_ec2_out" {
   name        = "grafana-ec2-out-${var.Env-Name}"
   description = "Allow Outbound Traffic From the Grafana EC2 container"
   vpc_id      = var.vpc-id

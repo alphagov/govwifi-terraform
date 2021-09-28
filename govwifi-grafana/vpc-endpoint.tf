@@ -1,14 +1,14 @@
-resource "aws_vpc_endpoint" "vpc-endpoint" {
+resource "aws_vpc_endpoint" "vpc_endpoint" {
 
   policy = data.aws_iam_policy_document.secrets_manager_policy.json
 
   private_dns_enabled = true
 
   security_group_ids = [
-    aws_security_group.grafana-alb-in.id,
-    aws_security_group.grafana-alb-out.id,
-    aws_security_group.grafana-ec2-in.id,
-    aws_security_group.grafana-ec2-out.id
+    aws_security_group.grafana_alb_in.id,
+    aws_security_group.grafana_alb_out.id,
+    aws_security_group.grafana_ec2_in.id,
+    aws_security_group.grafana_ec2_out.id
   ]
 
   service_name = "com.amazonaws.eu-west-2.secretsmanager"

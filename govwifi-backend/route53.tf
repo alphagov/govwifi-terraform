@@ -21,7 +21,7 @@ resource "aws_route53_record" "rr" {
   records = [aws_db_instance.read_replica[0].address]
 }
 
-resource "aws_route53_record" "users-db" {
+resource "aws_route53_record" "users_db" {
   count   = var.db-instance-count
   zone_id = var.route53-zone-id
   name    = var.user-db-hostname
@@ -30,7 +30,7 @@ resource "aws_route53_record" "users-db" {
   records = [aws_db_instance.users_db[0].address]
 }
 
-resource "aws_route53_record" "users-rr" {
+resource "aws_route53_record" "users_rr" {
   count   = var.user-db-replica-count
   zone_id = var.route53-zone-id
   name    = var.user-rr-hostname

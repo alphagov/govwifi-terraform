@@ -1,7 +1,7 @@
-resource "aws_security_group" "be-ecs-out" {
+resource "aws_security_group" "be_ecs_out" {
   name        = "be-ecs-out"
   description = "Allow the ECS agent to talk to the ECS endpoints"
-  vpc_id      = aws_vpc.wifi-backend.id
+  vpc_id      = aws_vpc.wifi_backend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend ECS out"
@@ -43,10 +43,10 @@ resource "aws_security_group" "be-ecs-out" {
   }
 }
 
-resource "aws_security_group" "be-db-in" {
+resource "aws_security_group" "be_db_in" {
   name        = "be-db-in"
   description = "Allow connections to the DB"
-  vpc_id      = aws_vpc.wifi-backend.id
+  vpc_id      = aws_vpc.wifi_backend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend DB in"
@@ -60,10 +60,10 @@ resource "aws_security_group" "be-db-in" {
   }
 }
 
-resource "aws_security_group" "be-admin-in" {
+resource "aws_security_group" "be_admin_in" {
   name        = "be-admin-in"
   description = "Allow inbound SSH from administrators"
-  vpc_id      = aws_vpc.wifi-backend.id
+  vpc_id      = aws_vpc.wifi_backend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend Admin in"
@@ -77,10 +77,10 @@ resource "aws_security_group" "be-admin-in" {
   }
 }
 
-resource "aws_security_group" "be-vpn-in" {
+resource "aws_security_group" "be_vpn_in" {
   name        = "be-vpn-in"
   description = "Allow inbound SSH from VPN IPs to the bastion only"
-  vpc_id      = aws_vpc.wifi-backend.id
+  vpc_id      = aws_vpc.wifi_backend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend VPN in"
@@ -96,10 +96,10 @@ resource "aws_security_group" "be-vpn-in" {
   }
 }
 
-resource "aws_security_group" "be-vpn-out" {
+resource "aws_security_group" "be_vpn_out" {
   name        = "be-vpn-out"
   description = "Allow outbound SSH from bastion"
-  vpc_id      = aws_vpc.wifi-backend.id
+  vpc_id      = aws_vpc.wifi_backend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend VPN out"
@@ -120,10 +120,10 @@ resource "aws_security_group" "be-vpn-out" {
   }
 }
 
-resource "aws_security_group" "be-radius-api-in" {
+resource "aws_security_group" "be_radius_api_in" {
   name        = "be-radius-api-in"
   description = "Allow inbound API calls from the RADIUS servers"
-  vpc_id      = aws_vpc.wifi-backend.id
+  vpc_id      = aws_vpc.wifi_backend.id
 
   tags = {
     Name = "${title(var.Env-Name)} Backend RADIUS API in"

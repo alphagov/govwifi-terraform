@@ -1,4 +1,4 @@
-resource "aws_s3_bucket" "metrics-bucket" {
+resource "aws_s3_bucket" "metrics_bucket" {
   bucket = "govwifi-${var.Env-Name}-metrics-bucket"
   acl    = "private"
 

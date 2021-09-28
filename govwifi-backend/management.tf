@@ -4,18 +4,18 @@ resource "aws_instance" "management" {
   ami           = var.bastion-ami
   instance_type = var.bastion-instance-type
   key_name      = var.bastion-ssh-key-name
-  subnet_id     = aws_subnet.wifi-backend-subnet[0].id
+  subnet_id     = aws_subnet.wifi_backend_subnet[0].id
 
   vpc_security_group_ids = [
-    aws_security_group.be-vpn-in.id,
-    aws_security_group.be-vpn-out.id,
-    aws_security_group.be-ecs-out.id,
+    aws_security_group.be_vpn_in.id,
+    aws_security_group.be_vpn_out.id,
+    aws_security_group.be_ecs_out.id,
   ]
 
-  iam_instance_profile = aws_iam_instance_profile.bastion-instance-profile[0].id
+  iam_instance_profile = aws_iam_instance_profile.bastion_instance_profile[0].id
   monitoring           = var.enable-bastion-monitoring
 
-  depends_on = [aws_iam_instance_profile.bastion-instance-profile]
+  depends_on = [aws_iam_instance_profile.bastion_instance_profile]
 
   user_data = <<DATA
 Content-Type: multipart/mixed; boundary="==BOUNDARY=="
@@ -179,12 +179,12 @@ DATA
 
 
   tags = {
-    Name = "${title(var.Env-Name)} Bastion - backend (${aws_vpc.wifi-backend.id})"
+    Name = "${title(var.Env-Name)} Bastion - backend (${aws_vpc.wifi_backend.id})"
     Env  = title(var.Env-Name)
   }
 }
 
-resource "aws_iam_role" "bastion-instance-role" {
+resource "aws_iam_role" "bastion_instance_role" {
   count = var.enable-bastion
   name  = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-role"
 
@@ -206,11 +206,11 @@ EOF
 
 }
 
-resource "aws_iam_role_policy" "bastion-instance-policy" {
+resource "aws_iam_role_policy" "bastion_instance_policy" {
   count      = var.enable-bastion
   name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-policy"
-  role       = aws_iam_role.bastion-instance-role[0].id
-  depends_on = [aws_iam_role.bastion-instance-role]
+  role       = aws_iam_role.bastion_instance_role[0].id
+  depends_on = [aws_iam_role.bastion_instance_role]
 
   policy = <<EOF
 {
@@ -234,12 +234,12 @@ EOF
 
 }
 
-resource "aws_iam_role_policy" "bastion-instance-policy-pp" {
+resource "aws_iam_role_policy" "bastion_instance_policy_pp" {
   count = var.enable-bastion
   name  = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-policy"
-  role  = aws_iam_role.bastion-instance-role[0].id
+  role  = aws_iam_role.bastion_instance_role[0].id
   depends_on = [
-    aws_iam_role.bastion-instance-role
+    aws_iam_role.bastion_instance_role
   ]
 
   policy = <<EOF
@@ -264,11 +264,11 @@ EOF
 
 }
 
-resource "aws_iam_instance_profile" "bastion-instance-profile" {
+resource "aws_iam_instance_profile" "bastion_instance_profile" {
   count      = var.enable-bastion
   name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-profile"
-  role       = aws_iam_role.bastion-instance-role[0].name
-  depends_on = [aws_iam_role.bastion-instance-role]
+  role       = aws_iam_role.bastion_instance_role[0].name
+  depends_on = [aws_iam_role.bastion_instance_role]
 }
 
 resource "aws_eip_association" "eip_assoc" {

@@ -1,11 +1,11 @@
-resource "aws_ses_receipt_rule" "user-signup-rule" {
+resource "aws_ses_receipt_rule" "user_signup_rule" {
   name          = "${var.Env-Name}-user-signup-rule"
   rule_set_name = "GovWifiRuleSet"
   enabled       = true
   scan_enabled  = true
 
   depends_on = [
-    aws_sns_topic.user-signup-notifications,
+    aws_sns_topic.user_signup_notifications,
     aws_s3_bucket.emailbucket
   ]
 
@@ -18,7 +18,7 @@ resource "aws_ses_receipt_rule" "user-signup-rule" {
 
   s3_action {
     bucket_name = "${var.Env-Name}-emailbucket"
-    topic_arn   = aws_sns_topic.user-signup-notifications.arn
+    topic_arn   = aws_sns_topic.user_signup_notifications.arn
     position    = 1
   }
 
@@ -28,7 +28,7 @@ resource "aws_ses_receipt_rule" "user-signup-rule" {
   }
 }
 
-resource "aws_ses_receipt_rule" "all-mail-rule" {
+resource "aws_ses_receipt_rule" "all_mail_rule" {
   name          = "${var.Env-Name}-all-mail-rule"
   rule_set_name = "GovWifiRuleSet"
   enabled       = true
@@ -36,9 +36,9 @@ resource "aws_ses_receipt_rule" "all-mail-rule" {
   after         = "${var.Env-Name}-user-signup-rule"
 
   depends_on = [
-    aws_sns_topic.govwifi-email-notifications,
+    aws_sns_topic.govwifi_email_notifications,
     aws_s3_bucket.emailbucket,
-    aws_ses_receipt_rule.user-signup-rule,
+    aws_ses_receipt_rule.user_signup_rule,
   ]
 
   recipients = [
@@ -47,12 +47,12 @@ resource "aws_ses_receipt_rule" "all-mail-rule" {
 
   s3_action {
     bucket_name = "${var.Env-Name}-emailbucket"
-    topic_arn   = aws_sns_topic.govwifi-email-notifications.arn
+    topic_arn   = aws_sns_topic.govwifi_email_notifications.arn
     position    = 1
   }
 }
 
-resource "aws_ses_receipt_rule" "newsite-mail-rule" {
+resource "aws_ses_receipt_rule" "newsite_mail_rule" {
   name          = "${var.Env-Name}-newsite-mail-rule"
   rule_set_name = "GovWifiRuleSet"
   enabled       = true
@@ -60,9 +60,9 @@ resource "aws_ses_receipt_rule" "newsite-mail-rule" {
   after         = "${var.Env-Name}-all-mail-rule"
 
   depends_on = [
-    aws_sns_topic.govwifi-email-notifications,
+    aws_sns_topic.govwifi_email_notifications,
     aws_s3_bucket.emailbucket,
-    aws_ses_receipt_rule.user-signup-rule,
+    aws_ses_receipt_rule.user_signup_rule,
   ]
 
   recipients = [
@@ -75,7 +75,7 @@ resource "aws_ses_receipt_rule" "newsite-mail-rule" {
   }
 }
 
-resource "aws_ses_receipt_rule" "admin-email-rule" {
+resource "aws_ses_receipt_rule" "admin_email_rule" {
   name          = "${var.Env-Name}-admin-email-rule"
   rule_set_name = "GovWifiRuleSet"
   enabled       = true
@@ -83,8 +83,8 @@ resource "aws_ses_receipt_rule" "admin-email-rule" {
   after         = "${var.Env-Name}-newsite-mail-rule"
 
   depends_on = [
-    aws_s3_bucket.admin-emailbucket,
-    aws_ses_receipt_rule.all-mail-rule,
+    aws_s3_bucket.admin_emailbucket,
+    aws_ses_receipt_rule.all_mail_rule,
   ]
 
   recipients = [
@@ -97,7 +97,7 @@ resource "aws_ses_receipt_rule" "admin-email-rule" {
   }
 }
 
-resource "aws_ses_receipt_rule" "log-request-rule" {
+resource "aws_ses_receipt_rule" "log_request_rule" {
   name          = "${var.Env-Name}-log-request-rule"
   rule_set_name = "GovWifiRuleSet"
   enabled       = true

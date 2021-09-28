@@ -28,11 +28,11 @@ resource "aws_instance" "grafana_instance" {
 
   vpc_security_group_ids = [
     var.be-admin-in,
-    aws_security_group.grafana-ec2-in.id,
-    aws_security_group.grafana-ec2-out.id,
+    aws_security_group.grafana_ec2_in.id,
+    aws_security_group.grafana_ec2_out.id,
   ]
 
-  iam_instance_profile = aws_iam_instance_profile.grafana-instance-profile.id
+  iam_instance_profile = aws_iam_instance_profile.grafana_instance_profile.id
 
   tags = {
     Name = "${title(var.Env-Name)} Grafana-Server"

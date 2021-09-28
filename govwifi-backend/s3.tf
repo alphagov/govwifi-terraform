@@ -1,5 +1,5 @@
 # Bucket to store MySQL RDS backups
-resource "aws_s3_bucket" "rds-mysql-backup-bucket" {
+resource "aws_s3_bucket" "rds_mysql_backup_bucket" {
   count         = var.backup_mysql_rds ? 1 : 0
   bucket        = "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-mysql-backup-data"
   force_destroy = true
@@ -44,9 +44,9 @@ resource "aws_s3_bucket" "rds-mysql-backup-bucket" {
   }
 }
 
-resource "aws_s3_bucket_public_access_block" "rds-mysql-backup-bucket" {
+resource "aws_s3_bucket_public_access_block" "rds_mysql_backup_bucket" {
   count  = var.backup_mysql_rds ? 1 : 0
-  bucket = aws_s3_bucket.rds-mysql-backup-bucket[0].id
+  bucket = aws_s3_bucket.rds_mysql_backup_bucket[0].id
 
   block_public_acls       = true
   block_public_policy     = true

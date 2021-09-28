@@ -1,4 +1,4 @@
-resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-e112f67b-c533-4923-98f7-38c38c5e51dc" {
+resource "aws_iam_policy" "AWSLambdaBasicExecutionRole_e112f67b_c533_4923_98f7_38c38c5e51dc" {
   name        = "AWSLambdaBasicExecutionRole-e112f67b-c533-4923-98f7-38c38c5e51dc"
   path        = "/service-role/"
   description = ""
@@ -28,7 +28,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-9d382291-dcd5-4d68-8a4d-aef9bab6e0b5" {
+resource "aws_iam_policy" "AWSLambdaBasicExecutionRole_9d382291_dcd5_4d68_8a4d_aef9bab6e0b5" {
   name        = "AWSLambdaBasicExecutionRole-9d382291-dcd5-4d68-8a4d-aef9bab6e0b5"
   path        = "/service-role/"
   description = ""
@@ -58,7 +58,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "ITHC-Staging-Cyberis-Policy" {
+resource "aws_iam_policy" "ITHC_Staging_Cyberis_Policy" {
   name        = "ITHC-Staging-Cyberis-Policy"
   path        = "/"
   description = ""
@@ -96,7 +96,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "CloudTrailPolicyForCloudWatchLogs_dab06026-75de-4ad1-a922-e4fc41e01568" {
+resource "aws_iam_policy" "CloudTrailPolicyForCloudWatchLogs_dab06026_75de_4ad1_a922_e4fc41e01568" {
   name        = "CloudTrailPolicyForCloudWatchLogs_dab06026-75de-4ad1-a922-e4fc41e01568"
   path        = "/service-role/"
   description = "CloudTrail policy to send logs to CloudWatch Logs"
@@ -131,7 +131,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "AWSLambdaBasicExecutionRole-164db990-7033-4bb4-aaed-380d56e59518" {
+resource "aws_iam_policy" "AWSLambdaBasicExecutionRole_164db990_7033_4bb4_aaed_380d56e59518" {
   name        = "AWSLambdaBasicExecutionRole-164db990-7033-4bb4-aaed-380d56e59518"
   path        = "/service-role/"
   description = ""
@@ -161,7 +161,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "ITHC-Access-Key-Policy" {
+resource "aws_iam_policy" "ITHC_Access_Key_Policy" {
   name        = "ITHC-Access-Key-Policy"
   path        = "/"
   description = "Grant ITHC pentester permission to create an Access Key. Delete once ITHC is complete. This is a one-time-only access policy."
@@ -227,7 +227,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "s3crr_kms_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate" {
+resource "aws_iam_policy" "s3crr_kms_for_govwifi_staging_london_tfstate_to_govwifi_staging_dublin_tfstate" {
   name        = "s3crr_kms_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate"
   path        = "/service-role/"
   description = ""
@@ -310,7 +310,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "GovWifi-Admin" {
+resource "aws_iam_policy" "GovWifi_Admin" {
   name        = "GovWifi-Admin"
   path        = "/"
   description = "Full access to all GovWifi resources in Live and Staging"
@@ -335,7 +335,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "s3crr_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate" {
+resource "aws_iam_policy" "s3crr_for_govwifi_staging_dublin_tfstate_to_govwifi_staging_london_tfstate" {
   name        = "s3crr_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate"
   path        = "/service-role/"
   description = ""
@@ -371,7 +371,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "govwifi-staging-london-accesslogs-replication-policy" {
+resource "aws_iam_policy" "govwifi_staging_london_accesslogs_replication_policy" {
   name        = "govwifi-staging-london-accesslogs-replication-policy"
   path        = "/"
   description = ""
@@ -414,7 +414,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "govwifi-staging-dublin-accesslogs-replication-policy" {
+resource "aws_iam_policy" "govwifi_staging_dublin_accesslogs_replication_policy" {
   name        = "govwifi-staging-dublin-accesslogs-replication-policy"
   path        = "/"
   description = ""
@@ -457,7 +457,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "s3crr_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replica" {
+resource "aws_iam_policy" "s3crr_for_test_wifi_mfadelete_to_test_wifi_mfadelete_replica" {
   name        = "s3crr_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replica"
   path        = "/service-role/"
   description = ""
@@ -493,7 +493,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "GovWifi-Developers" {
+resource "aws_iam_policy" "GovWifi_Developers" {
   name        = "GovWifi-Developers"
   path        = "/"
   description = "Allows access to all GovWifi Staging Resources"
@@ -528,7 +528,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "govwifi-wifi-dublin-tfstate-replication-policy" {
+resource "aws_iam_policy" "govwifi_wifi_dublin_tfstate_replication_policy" {
   name        = "govwifi-wifi-dublin-tfstate-replication-policy"
   path        = "/"
   description = ""
@@ -571,7 +571,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "s3crr_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate" {
+resource "aws_iam_policy" "s3crr_for_govwifi_staging_london_tfstate_to_govwifi_staging_dublin_tfstate" {
   name        = "s3crr_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate"
   path        = "/service-role/"
   description = ""
@@ -607,7 +607,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "GovWifi-Audit" {
+resource "aws_iam_policy" "GovWifi_Audit" {
   name        = "GovWifi-Audit"
   path        = "/"
   description = "Can view selected resources in entire tennancy - for ITHC SyOps audit"
@@ -741,7 +741,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate" {
+resource "aws_iam_policy" "s3crr_kms_for_govwifi_staging_dublin_tfstate_to_govwifi_staging_london_tfstate" {
   name        = "s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate"
   path        = "/service-role/"
   description = ""
@@ -824,7 +824,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "govwifi-wifi-london-tfstate-replication-policy" {
+resource "aws_iam_policy" "govwifi_wifi_london_tfstate_replication_policy" {
   name        = "govwifi-wifi-london-tfstate-replication-policy"
   path        = "/"
   description = ""
@@ -867,7 +867,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "govwifi-wifi-dublin-accesslogs-replication-policy" {
+resource "aws_iam_policy" "govwifi_wifi_dublin_accesslogs_replication_policy" {
   name        = "govwifi-wifi-dublin-accesslogs-replication-policy"
   path        = "/"
   description = ""
@@ -910,7 +910,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "s3crr_for_govwifi-staging-london-accesslogs_to_govwifi-staging-ireland-accesslogs" {
+resource "aws_iam_policy" "s3crr_for_govwifi_staging_london_accesslogs_to_govwifi_staging_ireland_accesslogs" {
   name        = "s3crr_for_govwifi-staging-london-accesslogs_to_govwifi-staging-ireland-accesslogs"
   path        = "/service-role/"
   description = ""
@@ -967,7 +967,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "govwifi-staging-london-tfstate-replication-policy" {
+resource "aws_iam_policy" "govwifi_staging_london_tfstate_replication_policy" {
   name        = "govwifi-staging-london-tfstate-replication-policy"
   path        = "/"
   description = ""
@@ -1010,7 +1010,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "govwifi-wifi-london-accesslogs-replication-policy" {
+resource "aws_iam_policy" "govwifi_wifi_london_accesslogs_replication_policy" {
   name        = "govwifi-wifi-london-accesslogs-replication-policy"
   path        = "/"
   description = ""
@@ -1053,7 +1053,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "govwifi-staging-dublin-tfstate-replication-policy" {
+resource "aws_iam_policy" "govwifi_staging_dublin_tfstate_replication_policy" {
   name        = "govwifi-staging-dublin-tfstate-replication-policy"
   path        = "/"
   description = ""
@@ -1096,7 +1096,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "GovWifi-Admin-S3-Policy" {
+resource "aws_iam_policy" "GovWifi_Admin_S3_Policy" {
   name        = "GovWifi-Admin-S3-Policy"
   path        = "/"
   description = "Allows access to specific S3 buckets with explicit deny on following actions DeleteBucket, DeleteObject, DeleteBucketPolicy"
@@ -1211,7 +1211,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "s3crr_for_govwifi-staging-ireland-accesslogs_to_govwifi-staging-london-accesslogs" {
+resource "aws_iam_policy" "s3crr_for_govwifi_staging_ireland_accesslogs_to_govwifi_staging_london_accesslogs" {
   name        = "s3crr_for_govwifi-staging-ireland-accesslogs_to_govwifi-staging-london-accesslogs"
   path        = "/service-role/"
   description = ""
@@ -1247,7 +1247,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "GovWifi-Support" {
+resource "aws_iam_policy" "GovWifi_Support" {
   name        = "GovWifi-Support"
   path        = "/"
   description = "Can view selected resources in Live environment and create AWS Support requests"
@@ -1475,7 +1475,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "govwifi-staging-tfstate-nodelete" {
+resource "aws_iam_policy" "govwifi_staging_tfstate_nodelete" {
   name        = "govwifi-staging-tfstate-nodelete"
   path        = "/"
   description = "Prevents accidental deletion of objects in all tfstate buckets"
@@ -1502,7 +1502,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "can-restart-ecs-services" {
+resource "aws_iam_policy" "can_restart_ecs_services" {
   name        = "can-restart-ecs-services"
   path        = "/"
   description = "Allows deploy pipeline group to restart elasticsearch services"
@@ -1523,7 +1523,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "read-wordlist-policy" {
+resource "aws_iam_policy" "read_wordlist_policy" {
   name        = "read-wordlist-policy"
   path        = "/"
   description = "Allows deploy pipeline group to read wordlist"

@@ -45,7 +45,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module "govwifi-keys" {
+module "govwifi_keys" {
   providers = {
     aws = aws.AWS-main
   }
@@ -64,7 +64,7 @@ module "govwifi-keys" {
 
 # Global ====================================================================
 
-module "govwifi-account" {
+module "govwifi_account" {
   providers = {
     aws = aws.AWS-main
   }
@@ -443,7 +443,7 @@ The server will scrape metrics from the agents configured in both regions.
 The module `govwifi-prometheus` only needs to exist in
 govwifi/staging-london/main.tf and govwifi/wifi-london/main.tf.
 */
-module "govwifi-prometheus" {
+module "govwifi_prometheus" {
   providers = {
     aws = aws.AWS-main
   }
@@ -473,7 +473,7 @@ module "govwifi-prometheus" {
   grafana-IP    = "${var.grafana-IP}/32"
 }
 
-module "govwifi-grafana" {
+module "govwifi_grafana" {
   providers = {
     aws = aws.AWS-main
   }
@@ -513,7 +513,7 @@ module "govwifi-grafana" {
   use_env_prefix = var.use_env_prefix
 }
 
-module "govwifi-slack-alerts" {
+module "govwifi_slack_alerts" {
   providers = {
     aws = aws.AWS-main
   }
@@ -526,7 +526,7 @@ module "govwifi-slack-alerts" {
   gds-slack-channel-id                     = var.gds-slack-channel-id
 }
 
-module "govwifi-elasticsearch" {
+module "govwifi_elasticsearch" {
   providers = {
     aws = aws.AWS-main
   }

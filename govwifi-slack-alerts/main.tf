@@ -1,4 +1,4 @@
-resource "aws_iam_role" "govwifi-wifi-london-aws-chatbot-role" {
+resource "aws_iam_role" "govwifi_wifi_london_aws_chatbot_role" {
   name        = "govwifi-aws-chatbot-role"
   path        = "/"
   description = "Role to enable Amazon Chatbot to function."
@@ -19,7 +19,7 @@ resource "aws_iam_role" "govwifi-wifi-london-aws-chatbot-role" {
 POLICY
 }
 
-resource "aws_cloudformation_stack" "aws-slack-chatbot" {
+resource "aws_cloudformation_stack" "aws_slack_chatbot" {
   name = "govwifi-monitoring-chat-configuration"
 
   template_body = <<-STACK
@@ -29,7 +29,7 @@ resource "aws_cloudformation_stack" "aws-slack-chatbot" {
       "Type" : "AWS::Chatbot::SlackChannelConfiguration",
       "Properties" : {
           "ConfigurationName" : "govwifi-monitoring-chat-configuration",
-          "IamRoleArn" : "${aws_iam_role.govwifi-wifi-london-aws-chatbot-role.arn}",
+          "IamRoleArn" : "${aws_iam_role.govwifi_wifi_london_aws_chatbot_role.arn}",
           "LoggingLevel" : "NONE",
           "SlackChannelId" : "${local.slack-channel-id}",
           "SlackWorkspaceId" : "${local.slack-workplace-id}",

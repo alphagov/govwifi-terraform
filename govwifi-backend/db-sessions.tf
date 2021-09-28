@@ -16,9 +16,9 @@ resource "aws_db_instance" "db" {
   multi_az                    = true
   storage_encrypted           = var.db-encrypt-at-rest
   db_subnet_group_name        = "wifi-${var.Env-Name}-subnets"
-  vpc_security_group_ids      = [aws_security_group.be-db-in.id]
-  depends_on                  = [aws_iam_role.rds-monitoring-role]
-  monitoring_role_arn         = aws_iam_role.rds-monitoring-role.arn
+  vpc_security_group_ids      = [aws_security_group.be_db_in.id]
+  depends_on                  = [aws_iam_role.rds_monitoring_role]
+  monitoring_role_arn         = aws_iam_role.rds_monitoring_role.arn
   monitoring_interval         = var.db-monitoring-interval
   maintenance_window          = var.db-maintenance-window
   backup_window               = var.db-backup-window
@@ -26,8 +26,8 @@ resource "aws_db_instance" "db" {
   deletion_protection         = true
 
   enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
-  option_group_name               = aws_db_option_group.mariadb-audit.name
-  parameter_group_name            = aws_db_parameter_group.db-parameters[0].name
+  option_group_name               = aws_db_option_group.mariadb_audit.name
+  parameter_group_name            = aws_db_parameter_group.db_parameters[0].name
 
   tags = {
     Name = "${title(var.Env-Name)} DB"
@@ -51,15 +51,15 @@ resource "aws_db_instance" "read_replica" {
   backup_retention_period     = 0
   multi_az                    = false
   storage_encrypted           = var.db-encrypt-at-rest
-  vpc_security_group_ids      = [aws_security_group.be-db-in.id]
-  depends_on                  = [aws_iam_role.rds-monitoring-role]
-  monitoring_role_arn         = aws_iam_role.rds-monitoring-role.arn
+  vpc_security_group_ids      = [aws_security_group.be_db_in.id]
+  depends_on                  = [aws_iam_role.rds_monitoring_role]
+  monitoring_role_arn         = aws_iam_role.rds_monitoring_role.arn
   monitoring_interval         = var.db-monitoring-interval
   maintenance_window          = var.db-maintenance-window
   backup_window               = var.db-backup-window
   skip_final_snapshot         = true
-  option_group_name           = aws_db_option_group.mariadb-audit.name
-  parameter_group_name        = aws_db_parameter_group.rr-parameters.name
+  option_group_name           = aws_db_option_group.mariadb_audit.name
+  parameter_group_name        = aws_db_parameter_group.rr_parameters.name
   deletion_protection         = true
 
   tags = {

@@ -1,6 +1,6 @@
-resource "aws_iam_role_policy" "ecs-instance-policy" {
+resource "aws_iam_role_policy" "ecs_instance_policy" {
   name = "${var.aws-region-name}-ecs-instance-policy-${var.Env-Name}"
-  role = aws_iam_role.ecs-instance-role.id
+  role = aws_iam_role.ecs_instance_role.id
 
   policy = <<EOF
 {
@@ -51,7 +51,7 @@ EOF
 
 }
 
-resource "aws_iam_role" "ecs-instance-role" {
+resource "aws_iam_role" "ecs_instance_role" {
   name = "${var.aws-region-name}-ecs-instance-role-${var.Env-Name}"
 
   assume_role_policy = <<EOF
@@ -72,14 +72,14 @@ EOF
 
 }
 
-resource "aws_iam_instance_profile" "ecs-instance-profile" {
+resource "aws_iam_instance_profile" "ecs_instance_profile" {
   name = "${var.aws-region-name}-ecs-instance-profile-${var.Env-Name}"
-  role = aws_iam_role.ecs-instance-role.name
+  role = aws_iam_role.ecs_instance_role.name
 }
 
-resource "aws_iam_role_policy" "ecs-service-policy" {
+resource "aws_iam_role_policy" "ecs_service_policy" {
   name = "${var.aws-region-name}-ecs-service-policy-${var.Env-Name}"
-  role = aws_iam_role.ecs-service-role.id
+  role = aws_iam_role.ecs_service_role.id
 
   policy = <<EOF
 {
@@ -113,7 +113,7 @@ EOF
 
 }
 
-resource "aws_iam_role" "ecs-service-role" {
+resource "aws_iam_role" "ecs_service_role" {
   name = "${var.aws-region-name}-ecs-service-role-${var.Env-Name}"
 
   assume_role_policy = <<EOF
@@ -134,7 +134,7 @@ EOF
 
 }
 
-resource "aws_iam_role" "rds-monitoring-role" {
+resource "aws_iam_role" "rds_monitoring_role" {
   name = "${var.aws-region-name}-${var.Env-Name}-rds-monitoring-role"
 
   assume_role_policy = <<EOF
@@ -155,10 +155,10 @@ EOF
 
 }
 
-resource "aws_iam_role_policy" "rds-monitoring-policy" {
-  depends_on = [aws_iam_role.rds-monitoring-role]
+resource "aws_iam_role_policy" "rds_monitoring_policy" {
+  depends_on = [aws_iam_role.rds_monitoring_role]
   name       = "${var.aws-region-name}-${var.Env-Name}-rds-monitoring-policy"
-  role       = aws_iam_role.rds-monitoring-role.name
+  role       = aws_iam_role.rds_monitoring_role.name
 
   policy = <<EOF
 {

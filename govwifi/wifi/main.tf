@@ -45,7 +45,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module "govwifi-keys" {
+module "govwifi_keys" {
   providers = {
     aws = aws.AWS-main
   }
@@ -167,7 +167,7 @@ module "emails" {
 
 # Global ====================================================================
 #moved for wifi-london
-#module "govwifi-account" {
+#module "govwifi_account" {
 #  providers = {
 #    "aws" = "aws.AWS-main"
 #  }
@@ -398,7 +398,7 @@ module "us_east_1_pagerduty" {
   sns_topic_subscription_https_endpoint = local.pagerduty_https_endpoint
 }
 
-module "govwifi-prometheus" {
+module "govwifi_prometheus" {
   providers = {
     aws = aws.AWS-main
   }

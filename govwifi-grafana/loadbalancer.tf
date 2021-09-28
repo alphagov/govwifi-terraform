@@ -1,11 +1,11 @@
-resource "aws_lb" "grafana-alb" {
+resource "aws_lb" "grafana_alb" {
   name     = "grafana-alb-${var.Env-Name}"
   internal = false
   subnets  = var.subnet-ids
 
   security_groups = [
-    aws_security_group.grafana-alb-in.id,
-    aws_security_group.grafana-alb-out.id
+    aws_security_group.grafana_alb_in.id,
+    aws_security_group.grafana_alb_out.id
   ]
 
   load_balancer_type = "application"
@@ -15,21 +15,21 @@ resource "aws_lb" "grafana-alb" {
   }
 }
 
-resource "aws_alb_listener" "alb-listener" {
-  load_balancer_arn = aws_lb.grafana-alb.arn
+resource "aws_alb_listener" "alb_listener" {
+  load_balancer_arn = aws_lb.grafana_alb.arn
   port              = "443"
   protocol          = "HTTPS"
   certificate_arn   = aws_acm_certificate_validation.certificate.certificate_arn
   ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
 
   default_action {
-    target_group_arn = aws_alb_target_group.grafana-tg.arn
+    target_group_arn = aws_alb_target_group.grafana_tg.arn
     type             = "forward"
   }
 }
 
-resource "aws_alb_target_group" "grafana-tg" {
-  depends_on           = [aws_lb.grafana-alb]
+resource "aws_alb_target_group" "grafana_tg" {
+  depends_on           = [aws_lb.grafana_alb]
   name                 = "grafana-${var.Env-Name}-fg-tg"
   port                 = "3000"
   protocol             = "HTTP"
@@ -51,7 +51,7 @@ resource "aws_alb_target_group" "grafana-tg" {
 }
 
 resource "aws_alb_target_group_attachment" "grafana" {
-  target_group_arn = aws_alb_target_group.grafana-tg.arn
+  target_group_arn = aws_alb_target_group.grafana_tg.arn
   target_id        = aws_instance.grafana_instance[0].private_ip
   port             = 3000
 }
