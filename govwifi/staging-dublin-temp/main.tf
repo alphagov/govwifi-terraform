@@ -155,7 +155,7 @@ module "emails" {
   sns-endpoint = ""
 }
 
-module "govwifi-keys" {
+module "govwifi_keys" {
   providers = {
     aws = aws.AWS-main
   }
@@ -338,7 +338,7 @@ module "route53-notifications" {
   emails     = [var.notification-email]
 }
 
-module "govwifi-prometheus" {
+module "govwifi_prometheus" {
   providers = {
     aws = aws.AWS-main
   }
