@@ -358,7 +358,7 @@ module "api" {
     module.backend.be-admin-in,
   ]
 
-  metrics-bucket-name = module.govwifi-dashboard.metrics-bucket-name
+  metrics-bucket-name = module.govwifi_dashboard.metrics-bucket-name
 
   use_env_prefix   = var.use_env_prefix
   backup_mysql_rds = var.backup_mysql_rds
@@ -428,7 +428,7 @@ module "region_pagerduty" {
   sns_topic_subscription_https_endpoint = local.pagerduty_https_endpoint
 }
 
-module "govwifi-dashboard" {
+module "govwifi_dashboard" {
   providers = {
     aws = aws.AWS-main
   }

@@ -45,7 +45,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
-module "govwifi-keys" {
+module "govwifi_keys" {
   providers = {
     aws = aws.AWS-main
   }
@@ -353,7 +353,7 @@ module "api" {
     module.backend.be-admin-in,
   ]
 
-  metrics-bucket-name = module.govwifi-dashboard.metrics-bucket-name
+  metrics-bucket-name = module.govwifi_dashboard.metrics-bucket-name
 
   use_env_prefix   = var.use_env_prefix
   backup_mysql_rds = var.backup_mysql_rds
@@ -385,7 +385,7 @@ module "route53-notifications" {
   emails     = [var.notification-email]
 }
 
-module "govwifi-dashboard" {
+module "govwifi_dashboard" {
   providers = {
     aws = aws.AWS-main
   }
@@ -402,7 +402,7 @@ There are some problems with the Staging Bastion instance that is preventing
 us from mirroring the setup in Production in Staging. This will be rectified
 when we create a separate staging environment.
 */
-module "govwifi-prometheus" {
+module "govwifi_prometheus" {
   providers = {
     aws = aws.AWS-main
   }
@@ -432,7 +432,7 @@ module "govwifi-prometheus" {
   grafana-IP    = "${var.grafana-IP}/32"
 }
 
-module "govwifi-grafana" {
+module "govwifi_grafana" {
   providers = {
     aws = aws.AWS-main
   }
