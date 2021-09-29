@@ -69,8 +69,10 @@ module "govwifi_account" {
     aws = aws.AWS-main
   }
 
-  source         = "../../govwifi-account"
-  aws-account-id = local.aws_account_id
+  source                    = "../../govwifi-account"
+  aws-account-id            = local.aws_account_id
+  is_production_aws_account = var.is_production_aws_account
+
 }
 
 # ====================================================================
