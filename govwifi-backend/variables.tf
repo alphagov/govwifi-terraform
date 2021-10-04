@@ -28,9 +28,6 @@ variable "backend-subnet-IPs" {
 variable "administrator-IPs" {
 }
 
-variable "bastion-server-IP" {
-}
-
 variable "frontend-radius-IPs" {
 }
 
@@ -55,7 +52,7 @@ variable "bastion-ami" {
 variable "bastion-instance-type" {
 }
 
-variable "bastion-server-ip" {
+variable "bastion_server_ip" {
 }
 
 variable "bastion-ssh-key-name" {
