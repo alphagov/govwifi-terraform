@@ -22,7 +22,7 @@ variable "aws-region" {
 variable "aws-region-name" {
 }
 
-variable "backend-subnet-IPs" {
+variable "backend_subnet_cidr_blocks" {
 }
 
 variable "administrator-IPs" {
