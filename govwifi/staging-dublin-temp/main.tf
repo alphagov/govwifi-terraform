@@ -73,10 +73,9 @@ module "backend" {
     zone2 = "10.104.3.0/24"
   }
 
-  backend-subnet-IPs  = var.backend-subnet-IPs
-  administrator-IPs   = var.administrator-IPs
-  bastion-server-IP   = var.bastion-server-IP
-  frontend-radius-IPs = var.frontend-radius-IPs
+  backend_subnet_cidr_blocks = split(",", var.backend-subnet-IPs)
+  administrator-IPs          = var.administrator-IPs
+  frontend-radius-IPs        = var.frontend-radius-IPs
 
   # Instance-specific setup -------------------------------
   # eu-west-1, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
@@ -86,7 +85,7 @@ module "backend" {
   bastion-ami = "ami-08bac620dc84221eb"
 
   bastion-instance-type     = "t2.micro"
-  bastion-server-ip         = var.bastion-server-IP
+  bastion_server_ip         = split("/", var.bastion-server-IP)[0]
   bastion-ssh-key-name      = "staging-temp-bastion-20200717"
   enable-bastion-monitoring = false
   users                     = var.users
