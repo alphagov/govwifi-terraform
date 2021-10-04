@@ -91,8 +91,8 @@ module "backend" {
   }
 
   backend_subnet_cidr_blocks = split(",", var.backend-subnet-IPs)
-  administrator-IPs   = var.administrator-IPs
-  frontend-radius-IPs = var.frontend-radius-IPs
+  administrator-IPs          = var.administrator-IPs
+  frontend-radius-IPs        = var.frontend-radius-IPs
 
   # Instance-specific setup -------------------------------
   # eu-west-1, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
