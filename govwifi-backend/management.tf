@@ -274,7 +274,7 @@ resource "aws_iam_instance_profile" "bastion_instance_profile" {
 resource "aws_eip_association" "eip_assoc" {
   count       = var.enable-bastion
   instance_id = aws_instance.management[0].id
-  public_ip   = replace(var.bastion-server-ip, "/32", "")
+  public_ip   = replace(var.bastion_server_ip, "/32", "")
 }
 
 resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
@@ -297,4 +297,3 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
   alarm_actions      = [var.capacity-notifications-arn]
   treat_missing_data = "breaching"
 }
-

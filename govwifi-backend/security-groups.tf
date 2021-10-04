@@ -73,7 +73,7 @@ resource "aws_security_group" "be_admin_in" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = distinct(concat(split(",", var.bastion-server-IP), split(",", var.backend-subnet-IPs)))
+    cidr_blocks = distinct(concat(split(",", var.bastion_server_ip), split(",", var.backend-subnet-IPs)))
   }
 }
 
@@ -143,4 +143,3 @@ resource "aws_security_group" "be_radius_api_in" {
     cidr_blocks = distinct(split(",", var.frontend-radius-IPs))
   }
 }
-
