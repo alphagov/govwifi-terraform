@@ -39,7 +39,7 @@ resource "aws_security_group" "be_ecs_out" {
     from_port   = 11211
     to_port     = 11211
     protocol    = "tcp"
-    cidr_blocks = var.backend_subnet_cidr_blocks   
+    cidr_blocks = var.backend_subnet_cidr_blocks
   }
 }
 
@@ -56,7 +56,7 @@ resource "aws_security_group" "be_db_in" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-     cidr_blocks = var.backend_subnet_cidr_blocks
+    cidr_blocks = var.backend_subnet_cidr_blocks
   }
 }
 
