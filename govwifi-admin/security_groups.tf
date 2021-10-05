@@ -52,7 +52,7 @@ resource "aws_security_group" "admin_ec2_in" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = distinct(var.bastion-ips)
+    cidr_blocks = ["${var.bastion_server_ip}/32"]
   }
 }
 

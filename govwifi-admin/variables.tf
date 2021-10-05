@@ -162,10 +162,7 @@ variable "zendesk-api-user" {
 variable "public-google-api-key" {
 }
 
-variable "bastion-ips" {
-  description = "The list of allowed hosts to connect to the ec2 instances"
-  type        = list(string)
-  default     = []
+variable "bastion_server_ip" {
 }
 
 variable "use_env_prefix" {
