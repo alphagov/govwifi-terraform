@@ -103,7 +103,6 @@ module "backend" {
     zone2 = "10.84.3.0/24"
   }
 
-  backend-subnet-IPs  = var.backend-subnet-IPs
   administrator-IPs   = var.administrator-IPs
   frontend-radius-IPs = local.frontend_radius_ips
 
