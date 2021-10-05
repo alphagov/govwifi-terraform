@@ -73,7 +73,7 @@ resource "aws_security_group" "be_admin_in" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = distinct(concat(split(",", var.bastion-server-ip), split(",", var.backend-subnet-IPs)))
+    cidr_blocks = distinct(concat(["${var.bastion-server-ip}/32"], split(",", var.backend-subnet-IPs)))
   }
 }
 

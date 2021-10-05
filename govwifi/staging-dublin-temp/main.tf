@@ -85,7 +85,7 @@ module "backend" {
   bastion-ami = "ami-08bac620dc84221eb"
 
   bastion-instance-type     = "t2.micro"
-  bastion-server-ip         = var.bastion-server-IP
+  bastion-server-ip         = split("/", var.bastion-server-IP)[0]
   bastion-ssh-key-name      = "staging-temp-bastion-20200717"
   enable-bastion-monitoring = false
   users                     = var.users
