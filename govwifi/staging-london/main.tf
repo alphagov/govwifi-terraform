@@ -91,7 +91,6 @@ module "backend" {
 
   backend-subnet-IPs  = var.backend-subnet-IPs
   administrator-IPs   = var.administrator-IPs
-  bastion-server-IP   = var.bastion-server-IP
   frontend-radius-IPs = var.frontend-radius-IPs
 
   # eu-west-2, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
@@ -99,7 +98,7 @@ module "backend" {
   # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS
   bastion-ami                = "ami-096cb92bb3580c759"
   bastion-instance-type      = "t2.micro"
-  bastion-server-ip          = var.bastion-server-IP
+  bastion-server-ip          = split("/", var.bastion-server-IP)[0]
   bastion-ssh-key-name       = "govwifi-staging-bastion-key-20181025"
   enable-bastion-monitoring  = false
   users                      = var.users
