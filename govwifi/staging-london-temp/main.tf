@@ -175,7 +175,7 @@ module "frontend" {
   # where N = this base + 1 + server#
   dns-numbering-base = 3
 
-  elastic-ip-list       = split(",", var.frontend-region-IPs)
+  elastic-ip-list       = local.frontend_region_ips
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
   users                 = var.users
