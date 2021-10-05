@@ -228,9 +228,7 @@ module "frontend" {
   # Security groups ---------------------------------------
   radius-instance-sg-ids = []
 
-  bastion-ips = [
-    var.bastion-server-IP,
-  ]
+  bastion_server_ip = split("/", var.bastion-server-IP)[0]
 
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"

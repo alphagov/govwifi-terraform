@@ -84,10 +84,7 @@ variable "create-ecr" {
   default     = 0
 }
 
-variable "bastion-ips" {
-  description = "The list of allowed hosts to connect to the ec2 instances"
-  type        = list(string)
-  default     = []
+variable "bastion_server_ip" {
 }
 
 variable "route53-critical-notifications-arn" {
