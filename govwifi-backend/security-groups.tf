@@ -32,14 +32,14 @@ resource "aws_security_group" "be_ecs_out" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = distinct(split(",", var.backend-subnet-IPs))
+    cidr_blocks = values(var.zone-subnets)
   }
 
   egress {
     from_port   = 11211
     to_port     = 11211
     protocol    = "tcp"
-    cidr_blocks = distinct(split(",", var.backend-subnet-IPs))
+    cidr_blocks = values(var.zone-subnets)
   }
 }
 
@@ -56,7 +56,7 @@ resource "aws_security_group" "be_db_in" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = distinct(split(",", var.backend-subnet-IPs))
+    cidr_blocks = values(var.zone-subnets)
   }
 }
 
@@ -73,7 +73,7 @@ resource "aws_security_group" "be_admin_in" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = distinct(concat(["${var.bastion-server-ip}/32"], split(",", var.backend-subnet-IPs)))
+    cidr_blocks = distinct(concat(["${var.bastion-server-ip}/32"], values(var.zone-subnets)))
   }
 }
 
@@ -111,7 +111,7 @@ resource "aws_security_group" "be_vpn_out" {
     protocol  = "tcp"
 
     cidr_blocks = distinct(concat(
-      split(",", var.backend-subnet-IPs),
+      values(var.zone-subnets),
       [for ip in var.frontend-radius-IPs : "${ip}/32"],
       [var.prometheus-IP-ireland],
       [var.prometheus-IP-london],
