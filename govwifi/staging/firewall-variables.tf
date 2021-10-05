@@ -10,7 +10,3 @@ variable "bastion-server-IP" {
 
 variable "backend-subnet-IPs" {
 }
-
-variable "frontend-radius-IPs" {
-}
-
