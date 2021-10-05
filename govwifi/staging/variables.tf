@@ -105,10 +105,6 @@ variable "prometheus-IP-ireland" {
 variable "grafana-IP" {
 }
 
-variable "backend-subnet-IPs-list" {
-  description = "Unused in this configuration"
-}
-
 variable "elb-public-IPs" {
   description = "Unused in this configuration"
 }
