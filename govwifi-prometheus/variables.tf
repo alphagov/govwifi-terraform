@@ -8,12 +8,12 @@ variable "prometheus_volume_size" {
   default = "40"
 }
 
-variable "prometheus-IP" {
+variable "prometheus_ip" {
   description = "The EIP of the EC2 instance"
   type        = string
 }
 
-variable "grafana-IP" {
+variable "grafana_ip" {
   description = "The grafana IP allowed into prometheus servers to connect to the EC2 instances on 9090."
   type        = string
 }
@@ -47,12 +47,12 @@ variable "create_prometheus_server" {
   default = 0
 }
 
-variable "london-radius-ip-addresses" {
+variable "london_radius_ip_addresses" {
   type    = list(string)
   default = []
 }
 
-variable "dublin-radius-ip-addresses" {
+variable "dublin_radius_ip_addresses" {
   type    = list(string)
   default = []
 }

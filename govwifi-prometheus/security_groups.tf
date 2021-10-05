@@ -11,6 +11,6 @@ resource "aws_security_group" "grafana_data_in" {
     from_port   = 9090
     to_port     = 9090
     protocol    = "tcp"
-    cidr_blocks = distinct(split(",", var.grafana-IP))
+    cidr_blocks = ["${var.grafana_ip}/32"]
   }
 }

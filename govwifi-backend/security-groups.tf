@@ -92,7 +92,7 @@ resource "aws_security_group" "be_vpn_in" {
     protocol  = "tcp"
 
     # Temporarily add ITHC IPs. Remove when ITHC complete.
-    cidr_blocks = var.administrator-IPs
+    cidr_blocks = [for ip in var.administrator_ips : "${ip}/32"]
   }
 }
 
@@ -113,9 +113,9 @@ resource "aws_security_group" "be_vpn_out" {
     cidr_blocks = distinct(concat(
       values(var.zone-subnets),
       [for ip in var.frontend-radius-IPs : "${ip}/32"],
-      [var.prometheus-IP-ireland],
-      [var.prometheus-IP-london],
-      [var.grafana-IP],
+      ["${var.prometheus_ip_ireland}/32"],
+      ["${var.prometheus_ip_london}/32"],
+      ["${var.grafana_ip}/32"],
     ))
   }
 }

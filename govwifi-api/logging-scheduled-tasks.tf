@@ -462,7 +462,7 @@ resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
           "value": "${var.sentry-current-env}"
         },{
           "name": "SENTRY_DSN",
-          "value": "${var.logging-sentry-dsn}"
+          "value": "${var.logging_sentry_dsn}"
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"

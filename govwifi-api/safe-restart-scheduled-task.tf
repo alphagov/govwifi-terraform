@@ -60,7 +60,7 @@ resource "aws_ecs_task_definition" "safe_restart_task_definition" {
           "value": "${var.sentry-current-env}"
         },{
           "name": "SENTRY_DSN",
-          "value": "${var.safe-restart-sentry-dsn}"
+          "value": "${var.safe_restart_sentry_dsn}"
         }
       ],
       "links": null,

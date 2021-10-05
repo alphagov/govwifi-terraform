@@ -68,8 +68,8 @@ resource "aws_security_group" "fe_prometheus_in" {
     protocol  = "tcp"
 
     cidr_blocks = distinct([
-      var.prometheus-IP-ireland,
-      var.prometheus-IP-london,
+      "${var.prometheus_ip_ireland}/32",
+      "${var.prometheus_ip_london}/32"
     ])
   }
 }

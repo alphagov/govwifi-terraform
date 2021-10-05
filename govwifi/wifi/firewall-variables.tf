@@ -1,5 +1,5 @@
-variable "administrator-IPs" {
+variable "administrator_ips" {
 }
 
-variable "bastion-server-IP" {
+variable "bastion_server_ip" {
 }

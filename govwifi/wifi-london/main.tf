@@ -102,7 +102,7 @@ module "backend" {
     zone2 = "10.84.3.0/24"
   }
 
-  administrator-IPs   = var.administrator-IPs
+  administrator_ips   = var.administrator_ips
   frontend-radius-IPs = local.frontend_radius_ips
 
   # eu-west-2, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
@@ -110,7 +110,7 @@ module "backend" {
   # eu-west-2, CIS Ubuntu Linux 20.04 LTS
   bastion-ami                = "ami-096cb92bb3580c759"
   bastion-instance-type      = "t2.micro"
-  bastion-server-ip          = split("/", var.bastion-server-IP)[0]
+  bastion-server-ip          = var.bastion_server_ip
   bastion-ssh-key-name       = "govwifi-bastion-key-20210630"
   enable-bastion-monitoring  = true
   users                      = var.users
@@ -139,9 +139,9 @@ module "backend" {
   user-db-storage-gb    = 1000
   user-db-replica-count = 1
 
-  prometheus-IP-london  = "${var.prometheus-IP-london}/32"
-  prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
-  grafana-IP            = "${var.grafana-IP}/32"
+  prometheus_ip_london  = var.prometheus_ip_london
+  prometheus_ip_ireland = var.prometheus_ip_ireland
+  grafana_ip            = var.grafana_ip
 
   use_env_prefix   = var.use_env_prefix
   backup_mysql_rds = var.backup_mysql_rds
@@ -203,10 +203,10 @@ module "frontend" {
   route53-critical-notifications-arn = module.route53-critical-notifications.topic-arn
   devops-notifications-arn           = module.devops-notifications.topic-arn
 
-  bastion_server_ip = split("/", var.bastion-server-IP)[0]
+  bastion_server_ip = var.bastion_server_ip
 
-  prometheus-IP-london  = "${var.prometheus-IP-london}/32"
-  prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
+  prometheus_ip_london  = var.prometheus_ip_london
+  prometheus_ip_ireland = var.prometheus_ip_ireland
 
   radius-CIDR-blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 
@@ -254,17 +254,17 @@ module "govwifi_admin" {
 
   rds-monitoring-role = module.backend.rds-monitoring-role
 
-  london-radius-ip-addresses = var.london-radius-ip-addresses
-  dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
-  sentry-dsn                 = var.admin-sentry-dsn
+  london_radius_ip_addresses = var.london_radius_ip_addresses
+  dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
+  sentry-dsn                 = var.admin_sentry_dsn
   public-google-api-key      = var.public-google-api-key
 
   logging-api-search-url = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
 
   zendesk-api-endpoint = "https://govuk.zendesk.com/api/v2/"
-  zendesk-api-user     = var.zendesk-api-user
+  zendesk_api_user     = var.zendesk_api_user
 
-  bastion_server_ip = split("/", var.bastion-server-IP)[0]
+  bastion_server_ip = var.bastion_server_ip
 
   use_env_prefix = false
 }
@@ -301,10 +301,10 @@ module "api" {
   rack-env                  = "production"
   sentry-current-env        = "production"
   radius-server-ips         = local.frontend_radius_ips
-  authentication-sentry-dsn = var.auth-sentry-dsn
-  safe-restart-sentry-dsn   = var.safe-restart-sentry-dsn
-  user-signup-sentry-dsn    = var.user-signup-sentry-dsn
-  logging-sentry-dsn        = var.logging-sentry-dsn
+  authentication_sentry_dsn = var.auth_sentry_dsn
+  safe_restart_sentry_dsn   = var.safe_restart_sentry_dsn
+  user_signup_sentry_dsn    = var.user_signup_sentry_dsn
+  logging_sentry_dsn        = var.logging_sentry_dsn
   subnet-ids                = module.backend.backend-subnet-ids
   user-db-hostname          = var.user-db-hostname
   user-rr-hostname          = var.user-rr-hostname
@@ -331,7 +331,7 @@ module "critical-notifications" {
   source = "../../sns-notification"
 
   topic-name = "govwifi-wifi-critical"
-  emails     = [var.critical-notification-email]
+  emails     = [var.critical_notification_email]
 }
 
 module "capacity-notifications" {
@@ -342,7 +342,7 @@ module "capacity-notifications" {
   source = "../../sns-notification"
 
   topic-name = "govwifi-wifi-capacity"
-  emails     = [var.capacity-notification-email]
+  emails     = [var.capacity_notification_email]
 }
 
 module "devops-notifications" {
@@ -353,7 +353,7 @@ module "devops-notifications" {
   source = "../../sns-notification"
 
   topic-name = "govwifi-wifi-devops"
-  emails     = [var.devops-notification-email]
+  emails     = [var.devops_notification_email]
 }
 
 module "route53-critical-notifications" {
@@ -364,7 +364,7 @@ module "route53-critical-notifications" {
   source = "../../sns-notification"
 
   topic-name = "govwifi-wifi-critical-london"
-  emails     = [var.critical-notification-email]
+  emails     = [var.critical_notification_email]
 }
 
 locals {
@@ -415,15 +415,15 @@ module "govwifi_prometheus" {
   fe-radius-out = module.frontend.fe-radius-out
 
   wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
-  london-radius-ip-addresses = var.london-radius-ip-addresses
-  dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
+  london_radius_ip_addresses = var.london_radius_ip_addresses
+  dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
 
   # Feature toggle creating Prometheus server.
   # Value defaults to 0 and should only be enabled (i.e., value = 1) in staging-london and wifi-london
   create_prometheus_server = 1
 
-  prometheus-IP = var.prometheus-IP-london
-  grafana-IP    = "${var.grafana-IP}/32"
+  prometheus_ip = var.prometheus_ip_london
+  grafana_ip    = var.grafana_ip
 }
 
 module "govwifi_grafana" {
@@ -451,17 +451,14 @@ module "govwifi_grafana" {
 
   vpc-id = module.backend.backend-vpc-id
 
-  # The value of bastion-server-IP isn't actually an IP address, but a
-  # /32 CIDR block, extract the IP address from CIDR block here before
-  # passing it on.
-  bastion_ip = split("/", var.bastion-server-IP)[0]
+  bastion_ip = var.bastion_server_ip
 
-  administrator-IPs = var.administrator-IPs
+  administrator_ips = var.administrator_ips
 
-  prometheus-IPs = concat(
-    split(",", "${var.prometheus-IP-london}/32"),
-    split(",", "${var.prometheus-IP-ireland}/32")
-  )
+  prometheus_ips = [
+    var.prometheus_ip_london,
+    var.prometheus_ip_ireland
+  ]
 
   use_env_prefix = var.use_env_prefix
 }

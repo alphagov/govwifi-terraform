@@ -49,7 +49,7 @@ variable "safe-restart-enabled" {
   default = 1
 }
 
-variable "safe-restart-sentry-dsn" {
+variable "safe_restart_sentry_dsn" {
   default = ""
 }
 
@@ -72,13 +72,13 @@ variable "radius-server-ips" {
   type = list(string)
 }
 
-variable "authentication-sentry-dsn" {
+variable "authentication_sentry_dsn" {
 }
 
-variable "user-signup-sentry-dsn" {
+variable "user_signup_sentry_dsn" {
 }
 
-variable "logging-sentry-dsn" {
+variable "logging_sentry_dsn" {
 }
 
 variable "backend-sg-list" {

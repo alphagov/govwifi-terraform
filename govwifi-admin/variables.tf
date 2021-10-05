@@ -79,11 +79,11 @@ variable "db-backup-window" {
 variable "rds-monitoring-role" {
 }
 
-variable "london-radius-ip-addresses" {
+variable "london_radius_ip_addresses" {
   type = list(string)
 }
 
-variable "dublin-radius-ip-addresses" {
+variable "dublin_radius_ip_addresses" {
   type = list(string)
 }
 
@@ -108,7 +108,7 @@ variable "user-db-name" {
 variable "zendesk-api-endpoint" {
 }
 
-variable "zendesk-api-user" {
+variable "zendesk_api_user" {
 }
 
 variable "public-google-api-key" {

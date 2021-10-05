@@ -55,10 +55,10 @@ resource "aws_ecs_task_definition" "admin_task" {
           "value": "1"
         },{
           "name": "LONDON_RADIUS_IPS",
-          "value": "${join(",", var.london-radius-ip-addresses)}"
+          "value": "${join(",", var.london_radius_ip_addresses)}"
         },{
           "name": "DUBLIN_RADIUS_IPS",
-          "value": "${join(",", var.dublin-radius-ip-addresses)}"
+          "value": "${join(",", var.dublin_radius_ip_addresses)}"
         },{
           "name": "SENTRY_DSN",
           "value": "${var.sentry-dsn}"
@@ -109,7 +109,7 @@ resource "aws_ecs_task_definition" "admin_task" {
           "value": "${var.zendesk-api-endpoint}"
         },{
           "name": "ZENDESK_API_USER",
-          "value": "${var.zendesk-api-user}"
+          "value": "${var.zendesk_api_user}"
         },{
           "name": "GOOGLE_MAPS_PUBLIC_API_KEY",
           "value": "${var.public-google-api-key}"

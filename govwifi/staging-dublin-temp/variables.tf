@@ -77,30 +77,30 @@ variable "user-rr-hostname" {
   default     = "users-rr.dublin.staging-temp.wifi.service.gov.uk"
 }
 
-variable "auth-sentry-dsn" {
+variable "auth_sentry_dsn" {
   type = string
 }
 
-variable "notification-email" {
+variable "notification_email" {
 }
 
-variable "prometheus-IP-london" {
+variable "prometheus_ip_london" {
 }
 
-variable "prometheus-IP-ireland" {
+variable "prometheus_ip_ireland" {
 }
 
-variable "london-radius-ip-addresses" {
+variable "london_radius_ip_addresses" {
   type        = list(any)
   description = "Frontend RADIUS server IP addresses - London"
 }
 
-variable "dublin-radius-ip-addresses" {
+variable "dublin_radius_ip_addresses" {
   type        = list(string)
   description = "Frontend RADIUS server IP addresses - Dublin"
 }
 
-variable "grafana-IP" {
+variable "grafana_ip" {
 }
 
 variable "use_env_prefix" {

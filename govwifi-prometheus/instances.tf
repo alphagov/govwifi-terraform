@@ -29,12 +29,12 @@ data "template_file" "prometheus_config" {
   template = file("${path.module}/prometheus.yml")
 
   vars = {
-    london-radius-ip-addresses-one   = element(var.london-radius-ip-addresses, 0)
-    london-radius-ip-addresses-two   = element(var.london-radius-ip-addresses, 1)
-    london-radius-ip-addresses-three = element(var.london-radius-ip-addresses, 2)
-    dublin-radius-ip-addresses-one   = element(var.dublin-radius-ip-addresses, 0)
-    dublin-radius-ip-addresses-two   = element(var.dublin-radius-ip-addresses, 1)
-    dublin-radius-ip-addresses-three = element(var.dublin-radius-ip-addresses, 2)
+    london-radius-ip-addresses-one   = element(var.london_radius_ip_addresses, 0)
+    london-radius-ip-addresses-two   = element(var.london_radius_ip_addresses, 1)
+    london-radius-ip-addresses-three = element(var.london_radius_ip_addresses, 2)
+    dublin-radius-ip-addresses-one   = element(var.dublin_radius_ip_addresses, 0)
+    dublin-radius-ip-addresses-two   = element(var.dublin_radius_ip_addresses, 1)
+    dublin-radius-ip-addresses-three = element(var.dublin_radius_ip_addresses, 2)
   }
 }
 
@@ -100,6 +100,6 @@ resource "aws_eip_association" "prometheus_eip_assoc" {
   count       = var.create_prometheus_server
   depends_on  = [aws_instance.prometheus_instance]
   instance_id = aws_instance.prometheus_instance[0].id
-  public_ip   = var.prometheus-IP
+  public_ip   = var.prometheus_ip
 }
 

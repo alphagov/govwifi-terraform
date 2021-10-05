@@ -71,8 +71,8 @@ resource "aws_s3_bucket_policy" "admin_bucket_policy" {
   formatlist(
     "\"%s\"",
     concat(
-      var.london-radius-ip-addresses,
-      var.dublin-radius-ip-addresses,
+      var.london_radius_ip_addresses,
+      var.dublin_radius_ip_addresses,
     ),
   ),
 )}

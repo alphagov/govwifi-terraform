@@ -60,30 +60,30 @@ variable "ami" {
 
 # Secrets
 
-variable "user-signup-sentry-dsn" {
+variable "user_signup_sentry_dsn" {
   type    = string
   default = ""
 }
 
-variable "london-radius-ip-addresses" {
+variable "london_radius_ip_addresses" {
   type        = list(string)
   description = "Frontend RADIUS server IP addresses - London"
 }
 
-variable "dublin-radius-ip-addresses" {
+variable "dublin_radius_ip_addresses" {
   type        = list(string)
   description = "Frontend RADIUS server IP addresses - Dublin"
 }
 
-variable "auth-sentry-dsn" {
+variable "auth_sentry_dsn" {
   type = string
 }
 
-variable "safe-restart-sentry-dsn" {
+variable "safe_restart_sentry_dsn" {
   type = string
 }
 
-variable "logging-sentry-dsn" {
+variable "logging_sentry_dsn" {
   type    = string
   default = ""
 }
@@ -112,25 +112,25 @@ variable "user-rr-hostname" {
   default     = "users-rr.dublin.production.wifi.service.gov.uk"
 }
 
-variable "critical-notification-email" {
+variable "critical_notification_email" {
   type = string
 }
 
-variable "capacity-notification-email" {
+variable "capacity_notification_email" {
   type = string
 }
 
-variable "devops-notification-email" {
+variable "devops_notification_email" {
   type = string
 }
 
-variable "prometheus-IP-london" {
+variable "prometheus_ip_london" {
 }
 
-variable "prometheus-IP-ireland" {
+variable "prometheus_ip_ireland" {
 }
 
-variable "grafana-IP" {
+variable "grafana_ip" {
 }
 
 variable "use_env_prefix" {
