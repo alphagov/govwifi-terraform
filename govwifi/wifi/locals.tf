@@ -13,3 +13,7 @@ locals {
 locals {
   pagerduty_https_endpoint = jsondecode(data.aws_secretsmanager_secret_version.pagerduty_config.secret_string)["integration-url"]
 }
+
+locals {
+  frontend_radius_ips = concat(var.london-radius-ip-addresses, var.dublin-radius-ip-addresses)
+}

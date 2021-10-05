@@ -93,7 +93,7 @@ module "backend" {
 
   backend-subnet-IPs  = var.backend-subnet-IPs
   administrator-IPs   = var.administrator-IPs
-  frontend-radius-IPs = var.frontend-radius-IPs
+  frontend-radius-IPs = local.frontend_radius_ips
 
   # eu-west-2, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
   #  bastion-ami                = "ami-ae6d81c9"
@@ -204,7 +204,7 @@ module "frontend" {
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 
-  radius-CIDR-blocks = split(",", var.frontend-radius-IPs)
+  radius-CIDR-blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 
   use_env_prefix = var.use_env_prefix
 
@@ -337,7 +337,7 @@ module "api" {
   db-read-replica-hostname  = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                  = "staging"
   sentry-current-env        = "secondary-staging"
-  radius-server-ips         = split(",", var.frontend-radius-IPs)
+  radius-server-ips         = local.frontend_radius_ips
   authentication-sentry-dsn = var.auth-sentry-dsn
   safe-restart-sentry-dsn   = var.safe-restart-sentry-dsn
   user-signup-sentry-dsn    = var.user-signup-sentry-dsn
