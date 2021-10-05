@@ -92,7 +92,7 @@ module "backend" {
 
   backend-subnet-IPs  = var.backend-subnet-IPs
   administrator-IPs   = var.administrator-IPs
-  frontend-radius-IPs = var.frontend-radius-IPs
+  frontend-radius-IPs = local.frontend_radius_ips
 
   # Instance-specific setup -------------------------------
   # eu-west-1, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
@@ -252,7 +252,7 @@ module "frontend" {
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
   prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
 
-  radius-CIDR-blocks = split(",", var.frontend-radius-IPs)
+  radius-CIDR-blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 
   use_env_prefix = var.use_env_prefix
 }
@@ -302,7 +302,7 @@ module "api" {
   db-read-replica-hostname  = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                  = "production"
   sentry-current-env        = "production"
-  radius-server-ips         = split(",", var.frontend-radius-IPs)
+  radius-server-ips         = local.frontend_radius_ips
   authentication-sentry-dsn = var.auth-sentry-dsn
   safe-restart-sentry-dsn   = var.safe-restart-sentry-dsn
   user-signup-docker-image  = ""

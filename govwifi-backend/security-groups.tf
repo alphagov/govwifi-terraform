@@ -112,7 +112,7 @@ resource "aws_security_group" "be_vpn_out" {
 
     cidr_blocks = distinct(concat(
       split(",", var.backend-subnet-IPs),
-      split(",", var.frontend-radius-IPs),
+      [for ip in var.frontend-radius-IPs : "${ip}/32"],
       [var.prometheus-IP-ireland],
       [var.prometheus-IP-london],
       [var.grafana-IP],
@@ -133,14 +133,14 @@ resource "aws_security_group" "be_radius_api_in" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = distinct(split(",", var.frontend-radius-IPs))
+    cidr_blocks = [for ip in var.frontend-radius-IPs : "${ip}/32"]
   }
 
   ingress {
     from_port   = 8443
     to_port     = 8443
     protocol    = "tcp"
-    cidr_blocks = distinct(split(",", var.frontend-radius-IPs))
+    cidr_blocks = [for ip in var.frontend-radius-IPs : "${ip}/32"]
   }
 }
 

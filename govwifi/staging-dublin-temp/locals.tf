@@ -9,3 +9,7 @@ locals {
 locals {
   route53_zone_id = jsondecode(data.aws_secretsmanager_secret_version.route53_zone_id.secret_string)["route53-zone-id"]
 }
+
+locals {
+  frontend_radius_ips = concat(var.london-radius-ip-addresses, var.dublin-radius-ip-addresses)
+}
