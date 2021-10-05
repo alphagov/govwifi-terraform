@@ -92,7 +92,6 @@ module "backend" {
 
   backend-subnet-IPs  = var.backend-subnet-IPs
   administrator-IPs   = var.administrator-IPs
-  bastion-server-IP   = var.bastion-server-IP
   frontend-radius-IPs = var.frontend-radius-IPs
 
   # Instance-specific setup -------------------------------
