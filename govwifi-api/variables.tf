@@ -62,9 +62,6 @@ variable "user-rr-hostname" {
 variable "db-hostname" {
 }
 
-variable "db-read-replica-hostname" {
-}
-
 variable "rack-env" {
 }
 

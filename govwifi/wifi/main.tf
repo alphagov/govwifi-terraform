@@ -290,7 +290,6 @@ module "api" {
   backup-rds-to-s3-docker-image = ""
 
   db-hostname               = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  db-read-replica-hostname  = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                  = "production"
   sentry-current-env        = "production"
   radius-server-ips         = local.frontend_radius_ips

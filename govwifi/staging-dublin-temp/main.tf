@@ -280,8 +280,6 @@ module "api" {
   user-db-hostname = ""
   user-rr-hostname = var.user-rr-hostname
 
-  # There is no read replica for the staging database
-  db-read-replica-hostname  = ""
   rack-env                  = "staging"
   sentry-current-env        = "secondary-staging"
   radius-server-ips         = local.frontend_radius_ips
