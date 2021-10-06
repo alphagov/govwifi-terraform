@@ -19,19 +19,9 @@ variable "subnet-ids" {
   type        = list(string)
 }
 
-variable "ami" {
-  description = "AMI id to launch, must be in the region specified by the region variable"
-}
-
 variable "ecr-repository-count" {
   description = "Whether or not to create ECR repository"
   default     = 0
-}
-
-variable "ecs-service-role" {
-}
-
-variable "ecs-instance-profile-id" {
 }
 
 variable "rack-env" {
@@ -42,16 +32,8 @@ variable "sentry-current-env" {
   description = "The environment that Sentry will log errors to: e.g. staging"
 }
 
-variable "ssh-key-name" {
-  description = "SSH key applied to the EC2 instance"
-}
-
 variable "vpc-id" {
   description = "VPC ID used for placing the ALB into"
-}
-
-variable "min-size" {
-  description = "Minimum number of EC2 hosts"
 }
 
 variable "instance-count" {
@@ -60,11 +42,6 @@ variable "instance-count" {
 
 variable "admin-docker-image" {
   description = "Docker image URL pointing to the admin platform application"
-}
-
-variable "health_check_grace_period" {
-  default     = "300"
-  description = "Time after instance comes into service before checking health"
 }
 
 variable "critical-notifications-arn" {

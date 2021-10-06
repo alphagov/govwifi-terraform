@@ -213,20 +213,15 @@ module "govwifi_admin" {
   Env-Subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  ami             = var.ami
-  ssh-key-name    = var.ssh-key-name
   aws-region      = var.aws-region
   aws-region-name = var.aws-region-name
   vpc-id          = module.backend.backend-vpc-id
   instance-count  = 1
-  min-size        = 1
 
-  admin-docker-image      = format("%s/admin:staging", local.docker_image_path)
-  rack-env                = "staging"
-  sentry-current-env      = "staging"
-  ecr-repository-count    = 1
-  ecs-instance-profile-id = module.backend.ecs-instance-profile-id
-  ecs-service-role        = module.backend.ecs-service-role
+  admin-docker-image   = format("%s/admin:staging", local.docker_image_path)
+  rack-env             = "staging"
+  sentry-current-env   = "staging"
+  ecr-repository-count = 1
 
   subnet-ids = module.backend.backend-subnet-ids
 
