@@ -297,7 +297,6 @@ module "api" {
   logging-sentry-dsn        = ""
   user-signup-sentry-dsn    = ""
   subnet-ids                = module.backend.backend-subnet-ids
-  user-signup-api-base-url  = ""
   user-db-hostname          = var.user-db-hostname
   user-rr-hostname          = var.user-rr-hostname
   background-jobs-enabled   = 0

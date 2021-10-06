@@ -312,7 +312,6 @@ module "api" {
   user-signup-sentry-dsn    = var.user-signup-sentry-dsn
   logging-sentry-dsn        = var.logging-sentry-dsn
   subnet-ids                = module.backend.backend-subnet-ids
-  user-signup-api-base-url  = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
   admin-bucket-name         = "govwifi-staging-temp.wifi-admin"
   user-signup-api-is-public = 1
 

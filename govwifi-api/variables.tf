@@ -130,11 +130,6 @@ variable "wordlist-file-path" {
 variable "vpc-id" {
 }
 
-variable "user-signup-api-base-url" {
-  description = "DEPRECATED"
-  default     = ""
-}
-
 variable "iam-count" {
   default     = 0
   description = "Whether or not to iam roles"
