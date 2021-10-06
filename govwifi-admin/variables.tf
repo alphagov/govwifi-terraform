@@ -19,11 +19,6 @@ variable "subnet-ids" {
   type        = list(string)
 }
 
-variable "users" {
-  description = "List of users to be added to the EC2 instance"
-  type        = list(string)
-}
-
 variable "ami" {
   description = "AMI id to launch, must be in the region specified by the region variable"
 }

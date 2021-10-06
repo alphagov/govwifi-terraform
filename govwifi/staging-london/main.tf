@@ -215,7 +215,6 @@ module "govwifi_admin" {
 
   ami             = var.ami
   ssh-key-name    = var.ssh-key-name
-  users           = var.users
   aws-region      = var.aws-region
   aws-region-name = var.aws-region-name
   vpc-id          = module.backend.backend-vpc-id
