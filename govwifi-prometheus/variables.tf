@@ -40,11 +40,6 @@ variable "wifi-frontend-subnet" {
   type = list(string)
 }
 
-variable "radius-ip-addresses" {
-  type    = list(string)
-  default = []
-}
-
 # Feature toggle to create (1) or not create (0) Prometheus server
 # Default value is 0, we only want Prometheus enabled in Staging and Production (London only).
 # To enable Prometheus, set the value to 1 in the relevant <environment>/main.tf
