@@ -520,7 +520,6 @@ module "govwifi_elasticsearch" {
   source         = "../../govwifi-elasticsearch"
   domain-name    = "${var.Env-Name}-elasticsearch"
   Env-Name       = var.Env-Name
-  Env-Subdomain  = var.Env-Subdomain
   aws-region     = var.aws-region
   aws-account-id = local.aws_account_id
   vpc-id         = module.backend.backend-vpc-id

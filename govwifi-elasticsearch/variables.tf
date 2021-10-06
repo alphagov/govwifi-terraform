@@ -1,9 +1,6 @@
 variable "Env-Name" {
 }
 
-variable "Env-Subdomain" {
-}
-
 variable "aws-region" {
 }
 
