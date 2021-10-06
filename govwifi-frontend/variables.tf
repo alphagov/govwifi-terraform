@@ -30,10 +30,6 @@ variable "zone-subnets" {
 variable "radius-instance-count" {
 }
 
-variable "radius-instance-sg-ids" {
-  type = list(string)
-}
-
 variable "frontend-docker-image" {
 }
 

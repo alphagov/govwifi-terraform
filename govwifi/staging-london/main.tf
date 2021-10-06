@@ -190,9 +190,6 @@ module "frontend" {
   route53-critical-notifications-arn = module.route53-notifications.topic-arn
   devops-notifications-arn           = module.notifications.topic-arn
 
-  # Security groups ---------------------------------------
-  radius-instance-sg-ids = []
-
   bastion_server_ip = split("/", var.bastion-server-IP)[0]
 
   prometheus-IP-london  = "${var.prometheus-IP-london}/32"
