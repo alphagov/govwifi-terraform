@@ -281,9 +281,8 @@ module "api" {
   iam-count              = 1
   safe-restart-enabled   = 1
 
-  capacity-notifications-arn = module.notifications.topic-arn
-  devops-notifications-arn   = module.notifications.topic-arn
-  notification_arn           = module.notifications.topic-arn
+  devops-notifications-arn = module.notifications.topic-arn
+  notification_arn         = module.notifications.topic-arn
 
   auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user-signup-docker-image      = format("%s/user-signup-api:staging", local.docker_image_path)
