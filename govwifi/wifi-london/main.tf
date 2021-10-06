@@ -509,7 +509,6 @@ module "govwifi_slack_alerts" {
   critical-notifications-topic-arn         = module.critical-notifications.topic-arn
   capacity-notifications-topic-arn         = module.capacity-notifications.topic-arn
   route53-critical-notifications-topic-arn = module.route53-critical-notifications.topic-arn
-  gds-slack-channel-id                     = var.gds-slack-channel-id
 }
 
 module "govwifi_elasticsearch" {
