@@ -55,9 +55,6 @@ variable "notification_arn" {
   type        = string
 }
 
-variable "db-instance-count" {
-}
-
 variable "admin-db-user" {
 }
 

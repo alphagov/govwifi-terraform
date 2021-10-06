@@ -230,7 +230,6 @@ module "govwifi_admin" {
 
   admin-db-user = var.admin-db-username
 
-  db-instance-count        = 1
   db-instance-type         = "db.t2.medium"
   db-storage-gb            = 120
   db-backup-retention-days = 1
