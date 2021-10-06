@@ -265,8 +265,6 @@ module "api" {
   safe-restart-docker-image     = ""
   backup-rds-to-s3-docker-image = ""
 
-  background-jobs-enabled = 0
-
   db-hostname = ""
 
   user-db-hostname = ""

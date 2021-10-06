@@ -141,10 +141,6 @@ variable "admin-bucket-name" {
   description = "Name of the admin S3 bucket"
 }
 
-variable "background-jobs-enabled" {
-  default = 0
-}
-
 variable "firetext-token" {
   type    = string
   default = ""

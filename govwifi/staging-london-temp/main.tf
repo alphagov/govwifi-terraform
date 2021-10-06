@@ -293,10 +293,9 @@ module "api" {
   safe-restart-docker-image     = format("%s/safe-restarter:staging", local.docker_image_path)
   backup-rds-to-s3-docker-image = format("%s/database-backup:staging", local.docker_image_path)
 
-  wordlist-bucket-count   = 1
-  wordlist-file-path      = "../wordlist-short"
-  ecr-repository-count    = 1
-  background-jobs-enabled = 1
+  wordlist-bucket-count = 1
+  wordlist-file-path    = "../wordlist-short"
+  ecr-repository-count  = 1
 
   db-hostname = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
 
