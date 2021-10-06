@@ -279,7 +279,6 @@ module "api" {
   safe-restart-enabled = 0
   event-rule-count     = 0
 
-  critical-notifications-arn = module.critical-notifications.topic-arn
   capacity-notifications-arn = module.capacity-notifications.topic-arn
   devops-notifications-arn   = module.devops-notifications.topic-arn
   notification_arn           = module.region_pagerduty.topic_arn

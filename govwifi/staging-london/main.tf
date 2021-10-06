@@ -281,7 +281,6 @@ module "api" {
   iam-count              = 1
   safe-restart-enabled   = 1
 
-  critical-notifications-arn = module.notifications.topic-arn
   capacity-notifications-arn = module.notifications.topic-arn
   devops-notifications-arn   = module.notifications.topic-arn
   notification_arn           = module.notifications.topic-arn

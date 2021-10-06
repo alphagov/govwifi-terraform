@@ -85,9 +85,6 @@ variable "backend-sg-list" {
   type = list(string)
 }
 
-variable "critical-notifications-arn" {
-}
-
 variable "capacity-notifications-arn" {
 }
 
