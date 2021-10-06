@@ -225,8 +225,6 @@ module "govwifi_admin" {
 
   subnet-ids = module.backend.backend-subnet-ids
 
-  admin-db-user = var.admin-db-username
-
   db-instance-type         = "db.t2.medium"
   db-storage-gb            = 120
   db-backup-retention-days = 1

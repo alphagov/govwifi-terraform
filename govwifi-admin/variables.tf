@@ -55,9 +55,6 @@ variable "notification_arn" {
   type        = string
 }
 
-variable "admin-db-user" {
-}
-
 variable "db-backup-retention-days" {
 }
 
