@@ -14,11 +14,6 @@ variable "aws-region-name" {
   description = "E.g. London"
 }
 
-variable "elb-sg-list" {
-  description = "Security groups to apply to the ELB in front of the admin"
-  type        = list(string)
-}
-
 variable "subnet-ids" {
   description = "List of AWS subnet IDs to place the EC2 instances and ELB into"
   type        = list(string)

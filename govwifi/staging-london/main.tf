@@ -231,8 +231,6 @@ module "govwifi_admin" {
 
   subnet-ids = module.backend.backend-subnet-ids
 
-  elb-sg-list = []
-
   admin-db-user = var.admin-db-username
 
   db-instance-count        = 1
@@ -334,8 +332,6 @@ module "api" {
   user-signup-api-base-url  = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
   admin-bucket-name         = "govwifi-staging-admin"
   user-signup-api-is-public = 1
-
-  elb-sg-list = []
 
   backend-sg-list = [
     module.backend.be-admin-in,

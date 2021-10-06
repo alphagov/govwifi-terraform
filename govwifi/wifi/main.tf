@@ -312,8 +312,6 @@ module "api" {
   user-rr-hostname          = var.user-rr-hostname
   background-jobs-enabled   = 0
 
-  elb-sg-list = []
-
   backend-sg-list = [
     module.backend.be-admin-in,
   ]

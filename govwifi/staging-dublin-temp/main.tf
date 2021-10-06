@@ -299,8 +299,6 @@ module "api" {
   ecs-service-role          = module.backend.ecs-service-role
   admin-bucket-name         = ""
 
-  elb-sg-list = []
-
   backend-sg-list = [
     module.backend.be-admin-in,
   ]

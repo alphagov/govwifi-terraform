@@ -101,10 +101,6 @@ variable "user-signup-sentry-dsn" {
 variable "logging-sentry-dsn" {
 }
 
-variable "elb-sg-list" {
-  type = list(string)
-}
-
 variable "backend-sg-list" {
   type = list(string)
 }

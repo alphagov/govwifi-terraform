@@ -245,8 +245,6 @@ module "govwifi_admin" {
 
   subnet-ids = module.backend.backend-subnet-ids
 
-  elb-sg-list = []
-
   db-sg-list = []
 
   admin-db-user = var.admin-db-username
@@ -341,8 +339,6 @@ module "api" {
   admin-bucket-name         = "govwifi-production-admin"
   background-jobs-enabled   = 1
   user-signup-api-is-public = 1
-
-  elb-sg-list = []
 
   backend-sg-list = [
     module.backend.be-admin-in,
