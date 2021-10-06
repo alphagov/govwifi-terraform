@@ -264,14 +264,9 @@ module "api" {
   Env-Subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  ami                     = var.ami
-  ssh-key-name            = var.ssh-key-name
-  users                   = var.users
   backend-elb-count       = 1
   backend-instance-count  = 2
   authorisation-api-count = 3
-  backend-min-size        = 1
-  backend-cpualarm-count  = 1
   aws-account-id          = local.aws_account_id
   aws-region-name         = lower(var.aws-region-name)
   aws-region              = var.aws-region
@@ -305,7 +300,6 @@ module "api" {
   logging-sentry-dsn        = ""
   user-signup-sentry-dsn    = ""
   subnet-ids                = module.backend.backend-subnet-ids
-  ecs-instance-profile-id   = module.backend.ecs-instance-profile-id
   ecs-service-role          = module.backend.ecs-service-role
   user-signup-api-base-url  = ""
   user-db-hostname          = var.user-db-hostname

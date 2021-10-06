@@ -248,13 +248,8 @@ module "api" {
   Env-Subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  ami                    = ""
-  ssh-key-name           = ""
-  users                  = []
   backend-elb-count      = 1
   backend-instance-count = 2
-  backend-min-size       = 1
-  backend-cpualarm-count = 1
   aws-account-id         = local.aws_account_id
   aws-region-name        = var.aws-region-name
   aws-region             = var.aws-region
@@ -295,7 +290,6 @@ module "api" {
   user-signup-sentry-dsn    = ""
   logging-sentry-dsn        = ""
   subnet-ids                = module.backend.backend-subnet-ids
-  ecs-instance-profile-id   = module.backend.ecs-instance-profile-id
   ecs-service-role          = module.backend.ecs-service-role
   admin-bucket-name         = ""
 
