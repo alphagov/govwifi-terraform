@@ -22,9 +22,6 @@ variable "aws-region" {
 variable "aws-region-name" {
 }
 
-variable "backend-subnet-IPs" {
-}
-
 variable "administrator-IPs" {
 }
 
