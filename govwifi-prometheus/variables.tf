@@ -4,14 +4,6 @@ variable "Env-Name" {
 variable "aws-region" {
 }
 
-variable "zone-subnets" {
-  default = {
-    zone0 = "10.102.1.0/24"
-    zone1 = "10.102.2.0/24"
-    zone2 = "10.102.3.0/24"
-  }
-}
-
 variable "prometheus_volume_size" {
   default = "40"
 }
