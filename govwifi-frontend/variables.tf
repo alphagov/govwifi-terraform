@@ -63,10 +63,6 @@ variable "radiusd-params" {
   default = "-f"
 }
 
-variable "users" {
-  type = list(string)
-}
-
 variable "rack-env" {
   default = ""
 }

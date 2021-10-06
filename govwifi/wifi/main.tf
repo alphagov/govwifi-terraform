@@ -227,7 +227,6 @@ module "frontend" {
   elastic-ip-list       = local.frontend_region_ips
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
-  users                 = var.users
   frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
 

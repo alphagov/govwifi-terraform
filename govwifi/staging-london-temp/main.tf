@@ -177,7 +177,6 @@ module "frontend" {
   elastic-ip-list       = local.frontend_region_ips
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
-  users                 = var.users
   frontend-docker-image = format("%s/frontend:staging", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:staging", local.docker_image_path)
   create-ecr            = 1
