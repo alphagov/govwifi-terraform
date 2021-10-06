@@ -12,7 +12,7 @@ resource "aws_security_group" "be-perf-out" {
     from_port   = 1812
     to_port     = 1812
     protocol    = "udp"
-    cidr_blocks = split(",", var.frontend-radius-IPs)
+    cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
   }
 
   # accounting
@@ -20,7 +20,7 @@ resource "aws_security_group" "be-perf-out" {
     from_port   = 1813
     to_port     = 1813
     protocol    = "udp"
-    cidr_blocks = split(",", var.frontend-radius-IPs)
+    cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
   }
 
   # healthchecks and direct calls to ELB
