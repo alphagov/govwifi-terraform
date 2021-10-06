@@ -14,11 +14,6 @@ variable "aws-region-name" {
   description = "E.g. London"
 }
 
-variable "ec2-sg-list" {
-  description = "Security groups to apply to the EC2 instances used by ECS"
-  type        = list(string)
-}
-
 variable "elb-sg-list" {
   description = "Security groups to apply to the ELB in front of the admin"
   type        = list(string)
@@ -118,10 +113,6 @@ variable "db-maintenance-window" {
 }
 
 variable "db-backup-window" {
-}
-
-variable "db-sg-list" {
-  type = list(string)
 }
 
 variable "rds-monitoring-role" {

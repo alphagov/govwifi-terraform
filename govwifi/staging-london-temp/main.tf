@@ -236,8 +236,6 @@ module "govwifi_admin" {
 
   elb-sg-list = []
 
-  ec2-sg-list = []
-
   admin-db-user = var.admin-db-username
 
   db-instance-count        = 1
@@ -254,8 +252,6 @@ module "govwifi_admin" {
 
   user-db-host = var.user-db-hostname
   user-db-name = "govwifi_staging_users"
-
-  db-sg-list = []
 
   critical-notifications-arn = module.notifications.topic-arn
   capacity-notifications-arn = module.notifications.topic-arn

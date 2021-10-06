@@ -247,8 +247,6 @@ module "govwifi_admin" {
 
   elb-sg-list = []
 
-  ec2-sg-list = []
-
   db-sg-list = []
 
   admin-db-user = var.admin-db-username
