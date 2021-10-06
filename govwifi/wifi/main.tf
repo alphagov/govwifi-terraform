@@ -180,7 +180,6 @@ module "dns" {
   }
 
   source             = "../../global-dns"
-  Env-Name           = var.Env-Name
   Env-Subdomain      = var.Env-Subdomain
   route53-zone-id    = local.route53_zone_id
   status-page-domain = "bl6klm1cjshh.stspg-customer.com"

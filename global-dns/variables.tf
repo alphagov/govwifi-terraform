@@ -1,6 +1,3 @@
-variable "Env-Name" {
-}
-
 variable "Env-Subdomain" {
 }
 
