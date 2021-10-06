@@ -312,7 +312,6 @@ module "critical-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-wifi-critical"
   emails     = [var.critical-notification-email]
 }
@@ -324,7 +323,6 @@ module "capacity-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-wifi-capacity"
   emails     = [var.capacity-notification-email]
 }
@@ -336,7 +334,6 @@ module "devops-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-wifi-devops"
   emails     = [var.devops-notification-email]
 }
@@ -348,7 +345,6 @@ module "route53-critical-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-wifi-critical"
   emails     = [var.critical-notification-email]
 }

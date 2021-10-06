@@ -325,7 +325,6 @@ module "notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-staging"
   emails     = [var.notification-email]
 }
@@ -337,7 +336,6 @@ module "route53-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-staging-london"
   emails     = [var.notification-email]
 }
