@@ -286,7 +286,6 @@ module "api" {
   user-signup-sentry-dsn    = ""
   logging-sentry-dsn        = ""
   subnet-ids                = module.backend.backend-subnet-ids
-  ecs-service-role          = module.backend.ecs-service-role
   admin-bucket-name         = ""
 
   backend-sg-list = [

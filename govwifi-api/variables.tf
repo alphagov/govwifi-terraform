@@ -97,9 +97,6 @@ variable "subnet-ids" {
   type = list(string)
 }
 
-variable "ecs-service-role" {
-}
-
 variable "auth-docker-image" {
 }
 

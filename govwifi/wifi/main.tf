@@ -297,7 +297,6 @@ module "api" {
   logging-sentry-dsn        = ""
   user-signup-sentry-dsn    = ""
   subnet-ids                = module.backend.backend-subnet-ids
-  ecs-service-role          = module.backend.ecs-service-role
   user-signup-api-base-url  = ""
   user-db-hostname          = var.user-db-hostname
   user-rr-hostname          = var.user-rr-hostname
