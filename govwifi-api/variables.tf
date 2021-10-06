@@ -130,11 +130,6 @@ variable "wordlist-file-path" {
 variable "vpc-id" {
 }
 
-variable "iam-count" {
-  default     = 0
-  description = "Whether or not to iam roles"
-}
-
 variable "admin-bucket-name" {
   default     = ""
   type        = string

@@ -281,7 +281,6 @@ module "api" {
   aws-region             = var.aws-region
   route53-zone-id        = local.route53_zone_id
   vpc-id                 = module.backend.backend-vpc-id
-  iam-count              = 1
   safe-restart-enabled   = 1
 
   devops-notifications-arn = module.notifications.topic-arn
