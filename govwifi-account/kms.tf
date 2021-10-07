@@ -10,5 +10,5 @@ resource "aws_kms_key" "kms_cloudtrail_logs_manangement_events" {
 resource "aws_kms_alias" "cloudtrail_secrets_management_alias" {
   count         = var.is_production_aws_account ? 1 : 0
   name          = "alias/kms-cloudtrail-logs-manangement-events"
-  target_key_id = aws_kms_key.kms_cloudtrail_logs_manangement_events.key_id
+  target_key_id = aws_kms_key.kms_cloudtrail_logs_manangement_events[0].key_id
 }
