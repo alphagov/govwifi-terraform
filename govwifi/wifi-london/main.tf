@@ -245,10 +245,6 @@ module "govwifi_admin" {
 
   subnet-ids = module.backend.backend-subnet-ids
 
-  elb-sg-list = []
-
-  ec2-sg-list = []
-
   db-sg-list = []
 
   admin-db-user = var.admin-db-username
@@ -343,8 +339,6 @@ module "api" {
   admin-bucket-name         = "govwifi-production-admin"
   background-jobs-enabled   = 1
   user-signup-api-is-public = 1
-
-  elb-sg-list = []
 
   backend-sg-list = [
     module.backend.be-admin-in,
@@ -515,7 +509,6 @@ module "govwifi_slack_alerts" {
   critical-notifications-topic-arn         = module.critical-notifications.topic-arn
   capacity-notifications-topic-arn         = module.capacity-notifications.topic-arn
   route53-critical-notifications-topic-arn = module.route53-critical-notifications.topic-arn
-  gds-slack-channel-id                     = var.gds-slack-channel-id
 }
 
 module "govwifi_elasticsearch" {
@@ -526,7 +519,6 @@ module "govwifi_elasticsearch" {
   source         = "../../govwifi-elasticsearch"
   domain-name    = "${var.Env-Name}-elasticsearch"
   Env-Name       = var.Env-Name
-  Env-Subdomain  = var.Env-Subdomain
   aws-region     = var.aws-region
   aws-account-id = local.aws_account_id
   vpc-id         = module.backend.backend-vpc-id

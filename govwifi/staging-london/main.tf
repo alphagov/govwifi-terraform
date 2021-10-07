@@ -175,7 +175,6 @@ module "frontend" {
   elastic-ip-list       = local.frontend_region_ips
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
-  users                 = var.users
   frontend-docker-image = format("%s/frontend:staging", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:staging", local.docker_image_path)
   create-ecr            = 1
@@ -189,9 +188,6 @@ module "frontend" {
   # This must be based on us-east-1, as that's where the alarms go
   route53-critical-notifications-arn = module.route53-notifications.topic-arn
   devops-notifications-arn           = module.notifications.topic-arn
-
-  # Security groups ---------------------------------------
-  radius-instance-sg-ids = []
 
   bastion_server_ip = split("/", var.bastion-server-IP)[0]
 
@@ -213,31 +209,18 @@ module "govwifi_admin" {
   Env-Subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  ami             = var.ami
-  ssh-key-name    = var.ssh-key-name
-  users           = var.users
   aws-region      = var.aws-region
   aws-region-name = var.aws-region-name
   vpc-id          = module.backend.backend-vpc-id
   instance-count  = 1
-  min-size        = 1
 
-  admin-docker-image      = format("%s/admin:staging", local.docker_image_path)
-  rack-env                = "staging"
-  sentry-current-env      = "staging"
-  ecr-repository-count    = 1
-  ecs-instance-profile-id = module.backend.ecs-instance-profile-id
-  ecs-service-role        = module.backend.ecs-service-role
+  admin-docker-image   = format("%s/admin:staging", local.docker_image_path)
+  rack-env             = "staging"
+  sentry-current-env   = "staging"
+  ecr-repository-count = 1
 
   subnet-ids = module.backend.backend-subnet-ids
 
-  elb-sg-list = []
-
-  ec2-sg-list = []
-
-  admin-db-user = var.admin-db-username
-
-  db-instance-count        = 1
   db-instance-type         = "db.t2.medium"
   db-storage-gb            = 120
   db-backup-retention-days = 1
@@ -251,8 +234,6 @@ module "govwifi_admin" {
 
   user-db-host = var.user-db-hostname
   user-db-name = "govwifi_staging_users"
-
-  db-sg-list = []
 
   critical-notifications-arn = module.notifications.topic-arn
   capacity-notifications-arn = module.notifications.topic-arn
@@ -286,25 +267,17 @@ module "api" {
   Env-Subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  ami                    = var.ami
-  ssh-key-name           = var.ssh-key-name
-  users                  = var.users
   backend-elb-count      = 1
   backend-instance-count = 2
-  backend-min-size       = 1
-  backend-cpualarm-count = 1
   aws-account-id         = local.aws_account_id
   aws-region-name        = var.aws-region-name
   aws-region             = var.aws-region
   route53-zone-id        = local.route53_zone_id
   vpc-id                 = module.backend.backend-vpc-id
-  iam-count              = 1
   safe-restart-enabled   = 1
 
-  critical-notifications-arn = module.notifications.topic-arn
-  capacity-notifications-arn = module.notifications.topic-arn
-  devops-notifications-arn   = module.notifications.topic-arn
-  notification_arn           = module.notifications.topic-arn
+  devops-notifications-arn = module.notifications.topic-arn
+  notification_arn         = module.notifications.topic-arn
 
   auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user-signup-docker-image      = format("%s/user-signup-api:staging", local.docker_image_path)
@@ -312,10 +285,9 @@ module "api" {
   safe-restart-docker-image     = format("%s/safe-restarter:staging", local.docker_image_path)
   backup-rds-to-s3-docker-image = format("%s/database-backup:staging", local.docker_image_path)
 
-  wordlist-bucket-count   = 1
-  wordlist-file-path      = "../wordlist-short"
-  ecr-repository-count    = 1
-  background-jobs-enabled = 1
+  wordlist-bucket-count = 1
+  wordlist-file-path    = "../wordlist-short"
+  ecr-repository-count  = 1
 
   db-hostname = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
 
@@ -323,8 +295,6 @@ module "api" {
 
   user-rr-hostname = var.user-db-hostname
 
-  # There is no read replica for the staging database
-  db-read-replica-hostname  = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                  = "staging"
   sentry-current-env        = "staging"
   radius-server-ips         = local.frontend_radius_ips
@@ -333,13 +303,8 @@ module "api" {
   user-signup-sentry-dsn    = var.user-signup-sentry-dsn
   logging-sentry-dsn        = var.logging-sentry-dsn
   subnet-ids                = module.backend.backend-subnet-ids
-  ecs-instance-profile-id   = module.backend.ecs-instance-profile-id
-  ecs-service-role          = module.backend.ecs-service-role
-  user-signup-api-base-url  = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
   admin-bucket-name         = "govwifi-staging-admin"
   user-signup-api-is-public = 1
-
-  elb-sg-list = []
 
   backend-sg-list = [
     module.backend.be-admin-in,
@@ -360,7 +325,6 @@ module "notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-staging"
   emails     = [var.notification-email]
 }
@@ -372,7 +336,6 @@ module "route53-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-staging-london"
   emails     = [var.notification-email]
 }
@@ -472,7 +435,6 @@ module "govwifi_elasticsearch" {
   source         = "../../govwifi-elasticsearch"
   domain-name    = "${var.Env-Name}-elasticsearch"
   Env-Name       = var.Env-Name
-  Env-Subdomain  = var.Env-Subdomain
   aws-region     = var.aws-region
   aws-account-id = local.aws_account_id
   vpc-id         = module.backend.backend-vpc-id

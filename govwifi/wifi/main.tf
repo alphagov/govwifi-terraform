@@ -180,7 +180,6 @@ module "dns" {
   }
 
   source             = "../../global-dns"
-  Env-Name           = var.Env-Name
   Env-Subdomain      = var.Env-Subdomain
   route53-zone-id    = local.route53_zone_id
   status-page-domain = "bl6klm1cjshh.stspg-customer.com"
@@ -227,7 +226,6 @@ module "frontend" {
   elastic-ip-list       = local.frontend_region_ips
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
-  users                 = var.users
   frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
 
@@ -239,9 +237,6 @@ module "frontend" {
 
   route53-critical-notifications-arn = module.route53-critical-notifications.topic-arn
   devops-notifications-arn           = module.devops-notifications.topic-arn
-
-  # Security groups ---------------------------------------
-  radius-instance-sg-ids = []
 
   bastion_server_ip = split("/", var.bastion-server-IP)[0]
 
@@ -264,14 +259,9 @@ module "api" {
   Env-Subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  ami                     = var.ami
-  ssh-key-name            = var.ssh-key-name
-  users                   = var.users
   backend-elb-count       = 1
   backend-instance-count  = 2
   authorisation-api-count = 3
-  backend-min-size        = 1
-  backend-cpualarm-count  = 1
   aws-account-id          = local.aws_account_id
   aws-region-name         = lower(var.aws-region-name)
   aws-region              = var.aws-region
@@ -284,10 +274,8 @@ module "api" {
   safe-restart-enabled = 0
   event-rule-count     = 0
 
-  critical-notifications-arn = module.critical-notifications.topic-arn
-  capacity-notifications-arn = module.capacity-notifications.topic-arn
-  devops-notifications-arn   = module.devops-notifications.topic-arn
-  notification_arn           = module.region_pagerduty.topic_arn
+  devops-notifications-arn = module.devops-notifications.topic-arn
+  notification_arn         = module.region_pagerduty.topic_arn
 
   auth-docker-image             = format("%s/authorisation-api:production", local.docker_image_path)
   logging-docker-image          = format("%s/logging-api:production", local.docker_image_path)
@@ -295,7 +283,6 @@ module "api" {
   backup-rds-to-s3-docker-image = ""
 
   db-hostname               = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  db-read-replica-hostname  = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                  = "production"
   sentry-current-env        = "production"
   radius-server-ips         = local.frontend_radius_ips
@@ -305,14 +292,8 @@ module "api" {
   logging-sentry-dsn        = ""
   user-signup-sentry-dsn    = ""
   subnet-ids                = module.backend.backend-subnet-ids
-  ecs-instance-profile-id   = module.backend.ecs-instance-profile-id
-  ecs-service-role          = module.backend.ecs-service-role
-  user-signup-api-base-url  = ""
   user-db-hostname          = var.user-db-hostname
   user-rr-hostname          = var.user-rr-hostname
-  background-jobs-enabled   = 0
-
-  elb-sg-list = []
 
   backend-sg-list = [
     module.backend.be-admin-in,
@@ -330,7 +311,6 @@ module "critical-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-wifi-critical"
   emails     = [var.critical-notification-email]
 }
@@ -342,7 +322,6 @@ module "capacity-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-wifi-capacity"
   emails     = [var.capacity-notification-email]
 }
@@ -354,7 +333,6 @@ module "devops-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-wifi-devops"
   emails     = [var.devops-notification-email]
 }
@@ -366,7 +344,6 @@ module "route53-critical-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-wifi-critical"
   emails     = [var.critical-notification-email]
 }

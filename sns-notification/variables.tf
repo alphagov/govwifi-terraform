@@ -1,7 +1,3 @@
-variable "env-name" {
-  type = string
-}
-
 variable "topic-name" {
   type = string
 }

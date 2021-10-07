@@ -108,10 +108,6 @@ variable "user-rr-instance-type" {
   default = "db.t2.medium"
 }
 
-variable "user-rr-storage-gb" {
-  default = 20
-}
-
 variable "critical-notifications-arn" {
 }
 

@@ -30,10 +30,6 @@ variable "zone-subnets" {
 variable "radius-instance-count" {
 }
 
-variable "radius-instance-sg-ids" {
-  type = list(string)
-}
-
 variable "frontend-docker-image" {
 }
 
@@ -65,10 +61,6 @@ variable "enable-detailed-monitoring" {
 
 variable "radiusd-params" {
   default = "-f"
-}
-
-variable "users" {
-  type = list(string)
 }
 
 variable "rack-env" {

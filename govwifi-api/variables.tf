@@ -24,28 +24,11 @@ variable "event-rule-count" {
   default = 1
 }
 
-variable "ami" {
-  description = "AMI id to launch, must be in the region specified by the region variable"
-}
-
-variable "ssh-key-name" {
-}
-
 variable "backend-instance-count" {
 }
 
 variable "authorisation-api-count" {
   default = 3
-}
-
-variable "backend-min-size" {
-}
-
-variable "backend-max-size" {
-  default = 10
-}
-
-variable "backend-cpualarm-count" {
 }
 
 variable "backend-elb-count" {
@@ -79,9 +62,6 @@ variable "user-rr-hostname" {
 variable "db-hostname" {
 }
 
-variable "db-read-replica-hostname" {
-}
-
 variable "rack-env" {
 }
 
@@ -101,18 +81,8 @@ variable "user-signup-sentry-dsn" {
 variable "logging-sentry-dsn" {
 }
 
-variable "elb-sg-list" {
-  type = list(string)
-}
-
 variable "backend-sg-list" {
   type = list(string)
-}
-
-variable "critical-notifications-arn" {
-}
-
-variable "capacity-notifications-arn" {
 }
 
 variable "devops-notifications-arn" {
@@ -123,23 +93,8 @@ variable "notification_arn" {
   type        = string
 }
 
-variable "users" {
-  type = list(string)
-}
-
 variable "subnet-ids" {
   type = list(string)
-}
-
-variable "ecs-instance-profile-id" {
-}
-
-variable "ecs-service-role" {
-}
-
-variable "health_check_grace_period" {
-  default     = "300"
-  description = "Time after instance comes into service before checking health"
 }
 
 variable "auth-docker-image" {
@@ -175,24 +130,10 @@ variable "wordlist-file-path" {
 variable "vpc-id" {
 }
 
-variable "user-signup-api-base-url" {
-  description = "DEPRECATED"
-  default     = ""
-}
-
-variable "iam-count" {
-  default     = 0
-  description = "Whether or not to iam roles"
-}
-
 variable "admin-bucket-name" {
   default     = ""
   type        = string
   description = "Name of the admin S3 bucket"
-}
-
-variable "background-jobs-enabled" {
-  default = 0
 }
 
 variable "firetext-token" {

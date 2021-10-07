@@ -205,7 +205,6 @@ module "frontend" {
   elastic-ip-list       = local.frontend_region_ips
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
-  users                 = var.users
   frontend-docker-image = format("%s/frontend:staging", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:staging", local.docker_image_path)
 
@@ -217,9 +216,6 @@ module "frontend" {
 
   route53-critical-notifications-arn = module.route53-notifications.topic-arn
   devops-notifications-arn           = module.notifications.topic-arn
-
-  # Security groups ---------------------------------------
-  radius-instance-sg-ids = []
 
   bastion_server_ip = split("/", var.bastion-server-IP)[0]
 
@@ -242,13 +238,8 @@ module "api" {
   Env-Subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  ami                    = ""
-  ssh-key-name           = ""
-  users                  = []
   backend-elb-count      = 1
   backend-instance-count = 2
-  backend-min-size       = 1
-  backend-cpualarm-count = 1
   aws-account-id         = local.aws_account_id
   aws-region-name        = var.aws-region-name
   aws-region             = var.aws-region
@@ -261,10 +252,8 @@ module "api" {
   safe-restart-enabled = 0
   event-rule-count     = 0
 
-  critical-notifications-arn = module.notifications.topic-arn
-  capacity-notifications-arn = module.notifications.topic-arn
-  devops-notifications-arn   = module.notifications.topic-arn
-  notification_arn           = module.notifications.topic-arn
+  devops-notifications-arn = module.notifications.topic-arn
+  notification_arn         = module.notifications.topic-arn
 
   auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user-signup-docker-image      = ""
@@ -272,15 +261,11 @@ module "api" {
   safe-restart-docker-image     = ""
   backup-rds-to-s3-docker-image = ""
 
-  background-jobs-enabled = 0
-
   db-hostname = ""
 
   user-db-hostname = ""
   user-rr-hostname = var.user-rr-hostname
 
-  # There is no read replica for the staging database
-  db-read-replica-hostname  = ""
   rack-env                  = "staging"
   sentry-current-env        = "staging"
   radius-server-ips         = local.frontend_radius_ips
@@ -289,11 +274,7 @@ module "api" {
   user-signup-sentry-dsn    = ""
   logging-sentry-dsn        = ""
   subnet-ids                = module.backend.backend-subnet-ids
-  ecs-instance-profile-id   = module.backend.ecs-instance-profile-id
-  ecs-service-role          = module.backend.ecs-service-role
   admin-bucket-name         = ""
-
-  elb-sg-list = []
 
   backend-sg-list = [
     module.backend.be-admin-in,
@@ -311,7 +292,6 @@ module "notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-staging"
   emails     = [var.notification-email]
 }
@@ -323,7 +303,6 @@ module "route53-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-staging"
   emails     = [var.notification-email]
 }
