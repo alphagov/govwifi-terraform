@@ -142,6 +142,10 @@ resource "aws_ecs_service" "logging_api_service" {
     container_name   = "logging"
     container_port   = "8080"
   }
+
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
 }
 
 resource "aws_alb_target_group" "logging_api_tg" {
