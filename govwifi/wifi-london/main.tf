@@ -69,9 +69,8 @@ module "govwifi_account" {
     aws = aws.AWS-main
   }
 
-  source            = "../../govwifi-account"
-  aws-account-id    = local.aws_account_id
-  administrator-IPs = var.administrator-IPs
+  source         = "../../govwifi-account"
+  aws-account-id = local.aws_account_id
 }
 
 # ====================================================================
@@ -191,7 +190,6 @@ module "frontend" {
   elastic-ip-list       = local.frontend_region_ips
   ami                   = var.ami
   ssh-key-name          = var.ssh-key-name
-  users                 = var.users
   frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
 
@@ -204,9 +202,6 @@ module "frontend" {
   # This must be based on us-east-1, as that's where the alarms go
   route53-critical-notifications-arn = module.route53-critical-notifications.topic-arn
   devops-notifications-arn           = module.devops-notifications.topic-arn
-
-  # Security groups ---------------------------------------
-  radius-instance-sg-ids = []
 
   bastion_server_ip = split("/", var.bastion-server-IP)[0]
 
@@ -228,28 +223,17 @@ module "govwifi_admin" {
   Env-Subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  ami             = var.ami
-  ssh-key-name    = var.ssh-key-name
-  users           = var.users
   aws-region      = var.aws-region
   aws-region-name = var.aws-region-name
   vpc-id          = module.backend.backend-vpc-id
   instance-count  = 2
-  min-size        = 2
 
-  admin-docker-image      = format("%s/admin:production", local.docker_image_path)
-  rack-env                = "production"
-  sentry-current-env      = "production"
-  ecs-instance-profile-id = module.backend.ecs-instance-profile-id
-  ecs-service-role        = module.backend.ecs-service-role
+  admin-docker-image = format("%s/admin:production", local.docker_image_path)
+  rack-env           = "production"
+  sentry-current-env = "production"
 
   subnet-ids = module.backend.backend-subnet-ids
 
-  db-sg-list = []
-
-  admin-db-user = var.admin-db-username
-
-  db-instance-count        = 1
   db-instance-type         = "db.t2.large"
   db-storage-gb            = 120
   db-backup-retention-days = 1
@@ -296,24 +280,16 @@ module "api" {
   Env-Subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  ami                    = var.ami
-  ssh-key-name           = var.ssh-key-name
-  users                  = var.users
   backend-elb-count      = 1
   backend-instance-count = 3
-  backend-min-size       = 1
-  backend-cpualarm-count = 1
   aws-account-id         = local.aws_account_id
   aws-region-name        = var.aws-region-name
   aws-region             = var.aws-region
   route53-zone-id        = local.route53_zone_id
   vpc-id                 = module.backend.backend-vpc-id
-  iam-count              = 1
 
-  critical-notifications-arn = module.critical-notifications.topic-arn
-  capacity-notifications-arn = module.capacity-notifications.topic-arn
-  devops-notifications-arn   = module.devops-notifications.topic-arn
-  notification_arn           = module.region_pagerduty.topic_arn
+  devops-notifications-arn = module.devops-notifications.topic-arn
+  notification_arn         = module.region_pagerduty.topic_arn
 
   auth-docker-image             = format("%s/authorisation-api:production", local.docker_image_path)
   user-signup-docker-image      = format("%s/user-signup-api:production", local.docker_image_path)
@@ -322,7 +298,6 @@ module "api" {
   backup-rds-to-s3-docker-image = format("%s/database-backup:production", local.docker_image_path)
 
   db-hostname               = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  db-read-replica-hostname  = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                  = "production"
   sentry-current-env        = "production"
   radius-server-ips         = local.frontend_radius_ips
@@ -331,13 +306,9 @@ module "api" {
   user-signup-sentry-dsn    = var.user-signup-sentry-dsn
   logging-sentry-dsn        = var.logging-sentry-dsn
   subnet-ids                = module.backend.backend-subnet-ids
-  ecs-instance-profile-id   = module.backend.ecs-instance-profile-id
-  ecs-service-role          = module.backend.ecs-service-role
-  user-signup-api-base-url  = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443"
   user-db-hostname          = var.user-db-hostname
   user-rr-hostname          = var.user-rr-hostname
   admin-bucket-name         = "govwifi-production-admin"
-  background-jobs-enabled   = 1
   user-signup-api-is-public = 1
 
   backend-sg-list = [
@@ -359,7 +330,6 @@ module "critical-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-wifi-critical"
   emails     = [var.critical-notification-email]
 }
@@ -371,7 +341,6 @@ module "capacity-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-wifi-capacity"
   emails     = [var.capacity-notification-email]
 }
@@ -383,7 +352,6 @@ module "devops-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-wifi-devops"
   emails     = [var.devops-notification-email]
 }
@@ -395,7 +363,6 @@ module "route53-critical-notifications" {
 
   source = "../../sns-notification"
 
-  env-name   = var.Env-Name
   topic-name = "govwifi-wifi-critical-london"
   emails     = [var.critical-notification-email]
 }
