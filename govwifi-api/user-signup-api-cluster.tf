@@ -120,7 +120,7 @@ resource "aws_ecs_task_definition" "user_signup_api_task" {
           "value": "${var.sentry-current-env}"
         },{
           "name": "SENTRY_DSN",
-          "value": "${var.user-signup-sentry-dsn}"
+          "value": "${var.user_signup_sentry_dsn}"
         },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.Env-Name}"

@@ -96,10 +96,10 @@ variable "radius-CIDR-blocks" {
   type        = list(string)
 }
 
-variable "prometheus-IP-london" {
+variable "prometheus_ip_london" {
 }
 
-variable "prometheus-IP-ireland" {
+variable "prometheus_ip_ireland" {
 }
 
 variable "use_env_prefix" {

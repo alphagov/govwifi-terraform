@@ -71,7 +71,7 @@ module "backend" {
     zone2 = "10.100.3.0/24"
   }
 
-  administrator-IPs   = var.administrator-IPs
+  administrator_ips   = var.administrator_ips
   frontend-radius-IPs = local.frontend_radius_ips
 
   # Instance-specific setup -------------------------------
@@ -82,7 +82,7 @@ module "backend" {
   bastion-ami = "ami-08bac620dc84221eb"
 
   bastion-instance-type     = "t2.micro"
-  bastion-server-ip         = split("/", var.bastion-server-IP)[0]
+  bastion-server-ip         = var.bastion_server_ip
   bastion-ssh-key-name      = "govwifi-staging-bastion-key-20181025"
   enable-bastion-monitoring = false
   users                     = var.users
@@ -116,9 +116,9 @@ module "backend" {
   user-db-hostname      = ""
   user-db-instance-type = ""
   user-db-storage-gb    = 0
-  prometheus-IP-london  = "${var.prometheus-IP-london}/32"
-  prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
-  grafana-IP            = "${var.grafana-IP}/32"
+  prometheus_ip_london  = var.prometheus_ip_london
+  prometheus_ip_ireland = var.prometheus_ip_ireland
+  grafana_ip            = var.grafana_ip
 
   use_env_prefix = var.use_env_prefix
 
@@ -217,10 +217,10 @@ module "frontend" {
   route53-critical-notifications-arn = module.route53-notifications.topic-arn
   devops-notifications-arn           = module.notifications.topic-arn
 
-  bastion_server_ip = split("/", var.bastion-server-IP)[0]
+  bastion_server_ip = var.bastion_server_ip
 
-  prometheus-IP-london  = "${var.prometheus-IP-london}/32"
-  prometheus-IP-ireland = "${var.prometheus-IP-ireland}/32"
+  prometheus_ip_london  = var.prometheus_ip_london
+  prometheus_ip_ireland = var.prometheus_ip_ireland
 
   radius-CIDR-blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 
@@ -269,10 +269,10 @@ module "api" {
   rack-env                  = "staging"
   sentry-current-env        = "staging"
   radius-server-ips         = local.frontend_radius_ips
-  authentication-sentry-dsn = var.auth-sentry-dsn
-  safe-restart-sentry-dsn   = ""
-  user-signup-sentry-dsn    = ""
-  logging-sentry-dsn        = ""
+  authentication_sentry_dsn = var.auth_sentry_dsn
+  safe_restart_sentry_dsn   = ""
+  user_signup_sentry_dsn    = ""
+  logging_sentry_dsn        = ""
   subnet-ids                = module.backend.backend-subnet-ids
   admin-bucket-name         = ""
 
@@ -293,7 +293,7 @@ module "notifications" {
   source = "../../sns-notification"
 
   topic-name = "govwifi-staging"
-  emails     = [var.notification-email]
+  emails     = [var.notification_email]
 }
 
 module "route53-notifications" {
@@ -304,7 +304,7 @@ module "route53-notifications" {
   source = "../../sns-notification"
 
   topic-name = "govwifi-staging"
-  emails     = [var.notification-email]
+  emails     = [var.notification_email]
 }
 
 module "govwifi_prometheus" {
@@ -326,13 +326,13 @@ module "govwifi_prometheus" {
   fe-radius-out = module.frontend.fe-radius-out
 
   wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
-  london-radius-ip-addresses = var.london-radius-ip-addresses
-  dublin-radius-ip-addresses = var.dublin-radius-ip-addresses
+  london_radius_ip_addresses = var.london_radius_ip_addresses
+  dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
 
   # Feature toggle creating Prometheus server.
   # Value defaults to 0 and should only be enabled (i.e., value = 1)
   create_prometheus_server = 0
 
-  prometheus-IP = var.prometheus-IP-ireland
-  grafana-IP    = "${var.grafana-IP}/32"
+  prometheus_ip = var.prometheus_ip_ireland
+  grafana_ip    = var.grafana_ip
 }

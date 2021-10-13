@@ -22,7 +22,7 @@ variable "aws-region" {
 variable "aws-region-name" {
 }
 
-variable "administrator-IPs" {
+variable "administrator_ips" {
 }
 
 variable "frontend-radius-IPs" {
@@ -126,13 +126,13 @@ variable "user-replica-source-db" {
   default = ""
 }
 
-variable "prometheus-IP-london" {
+variable "prometheus_ip_london" {
 }
 
-variable "prometheus-IP-ireland" {
+variable "prometheus_ip_ireland" {
 }
 
-variable "grafana-IP" {
+variable "grafana_ip" {
 }
 
 variable "use_env_prefix" {

@@ -45,7 +45,7 @@ variable "bastion_ip" {
   type        = string
 }
 
-variable "prometheus-IPs" {
+variable "prometheus_ips" {
   description = "The list of allowed prometheus servers to connect to the EC2 instances on 9090."
   type        = list(string)
   default     = []
@@ -56,7 +56,7 @@ variable "subnet-ids" {
   type        = list(string)
 }
 
-variable "administrator-IPs" {
+variable "administrator_ips" {
   description = "IPs associated with the GDS/CDIO VPN to allow access"
 }
 

@@ -12,7 +12,7 @@ resource "aws_security_group" "grafana_alb_in" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = var.administrator-IPs
+    cidr_blocks = [for ip in var.administrator_ips : "${ip}/32"]
   }
 }
 
@@ -88,7 +88,7 @@ resource "aws_security_group" "grafana_ec2_out" {
     from_port   = 9090
     to_port     = 9090
     protocol    = "tcp"
-    cidr_blocks = distinct(var.prometheus-IPs)
+    cidr_blocks = [for ip in var.prometheus_ips : "${ip}/32"]
   }
 
   egress {
