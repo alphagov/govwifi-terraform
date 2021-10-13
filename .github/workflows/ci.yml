@@ -6,10 +6,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: terraform fmt
+      - name: lint
         run: |
-          brew install tfenv
+          brew install tfenv tflint findutils
           tfenv install $(cat .terraform-version)
           tfenv use $(cat .terraform-version)
-          find . -name '*.tf' | xargs tools/terraform-format.sh
-
+          tflint --init
+          PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH" make lint
