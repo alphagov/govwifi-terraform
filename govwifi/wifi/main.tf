@@ -301,7 +301,7 @@ module "api" {
 
   use_env_prefix = var.use_env_prefix
 
-  low_cpu_threshold = 1
+  low_cpu_threshold = 10
 }
 
 module "critical-notifications" {
