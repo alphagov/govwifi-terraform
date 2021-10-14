@@ -1,5 +1,4 @@
 resource "aws_iam_policy" "AWSLambdaBasicExecutionRole_e112f67b_c533_4923_98f7_38c38c5e51dc" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSLambdaBasicExecutionRole-e112f67b-c533-4923-98f7-38c38c5e51dc"
   path        = "/service-role/"
   description = ""
@@ -30,7 +29,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "AWSLambdaBasicExecutionRole_9d382291_dcd5_4d68_8a4d_aef9bab6e0b5" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSLambdaBasicExecutionRole-9d382291-dcd5-4d68-8a4d-aef9bab6e0b5"
   path        = "/service-role/"
   description = ""
@@ -61,7 +59,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "ITHC_Staging_Cyberis_Policy" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "ITHC-Staging-Cyberis-Policy"
   path        = "/"
   description = ""
@@ -100,7 +97,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "CloudTrailPolicyForCloudWatchLogs_dab06026_75de_4ad1_a922_e4fc41e01568" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "CloudTrailPolicyForCloudWatchLogs_dab06026-75de-4ad1-a922-e4fc41e01568"
   path        = "/service-role/"
   description = "CloudTrail policy to send logs to CloudWatch Logs"
@@ -136,7 +132,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "AWSLambdaBasicExecutionRole_164db990_7033_4bb4_aaed_380d56e59518" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSLambdaBasicExecutionRole-164db990-7033-4bb4-aaed-380d56e59518"
   path        = "/service-role/"
   description = ""
@@ -167,7 +162,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "ITHC_Access_Key_Policy" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "ITHC-Access-Key-Policy"
   path        = "/"
   description = "Grant ITHC pentester permission to create an Access Key. Delete once ITHC is complete. This is a one-time-only access policy."
@@ -193,7 +187,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "AWS_Events_Invoke_ECS_961488249" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWS_Events_Invoke_ECS_961488249"
   path        = "/service-role/"
   description = ""
@@ -235,7 +228,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "s3crr_kms_for_govwifi_staging_london_tfstate_to_govwifi_staging_dublin_tfstate" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "s3crr_kms_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate"
   path        = "/service-role/"
   description = ""
@@ -319,7 +311,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "GovWifi_Admin" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "GovWifi-Admin"
   path        = "/"
   description = "Full access to all GovWifi resources in Live and Staging"
@@ -345,7 +336,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "s3crr_for_govwifi_staging_dublin_tfstate_to_govwifi_staging_london_tfstate" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "s3crr_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate"
   path        = "/service-role/"
   description = ""
@@ -382,7 +372,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "govwifi_staging_london_accesslogs_replication_policy" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "govwifi-staging-london-accesslogs-replication-policy"
   path        = "/"
   description = ""
@@ -426,7 +415,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "govwifi_staging_dublin_accesslogs_replication_policy" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "govwifi-staging-dublin-accesslogs-replication-policy"
   path        = "/"
   description = ""
@@ -470,7 +458,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "s3crr_for_test_wifi_mfadelete_to_test_wifi_mfadelete_replica" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "s3crr_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replica"
   path        = "/service-role/"
   description = ""
@@ -507,7 +494,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "GovWifi_Developers" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "GovWifi-Developers"
   path        = "/"
   description = "Allows access to all GovWifi Staging Resources"
@@ -543,7 +529,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "govwifi_wifi_dublin_tfstate_replication_policy" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "govwifi-wifi-dublin-tfstate-replication-policy"
   path        = "/"
   description = ""
@@ -587,7 +572,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "s3crr_for_govwifi_staging_london_tfstate_to_govwifi_staging_dublin_tfstate" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "s3crr_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate"
   path        = "/service-role/"
   description = ""
@@ -624,7 +608,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "GovWifi_Audit" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "GovWifi-Audit"
   path        = "/"
   description = "Can view selected resources in entire tennancy - for ITHC SyOps audit"
@@ -759,7 +742,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "s3crr_kms_for_govwifi_staging_dublin_tfstate_to_govwifi_staging_london_tfstate" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate"
   path        = "/service-role/"
   description = ""
@@ -843,7 +825,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "govwifi_wifi_london_tfstate_replication_policy" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "govwifi-wifi-london-tfstate-replication-policy"
   path        = "/"
   description = ""
@@ -887,7 +868,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "govwifi_wifi_dublin_accesslogs_replication_policy" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "govwifi-wifi-dublin-accesslogs-replication-policy"
   path        = "/"
   description = ""
@@ -931,7 +911,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "s3crr_for_govwifi_staging_london_accesslogs_to_govwifi_staging_ireland_accesslogs" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "s3crr_for_govwifi-staging-london-accesslogs_to_govwifi-staging-ireland-accesslogs"
   path        = "/service-role/"
   description = ""
@@ -968,7 +947,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "LambdaUpdateFunctionCode" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "LambdaUpdateFunctionCode"
   path        = "/"
   description = "For use with deployment from Jenkins"
@@ -990,7 +968,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "govwifi_staging_london_tfstate_replication_policy" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "govwifi-staging-london-tfstate-replication-policy"
   path        = "/"
   description = ""
@@ -1034,7 +1011,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "govwifi_wifi_london_accesslogs_replication_policy" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "govwifi-wifi-london-accesslogs-replication-policy"
   path        = "/"
   description = ""
@@ -1078,7 +1054,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "govwifi_staging_dublin_tfstate_replication_policy" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "govwifi-staging-dublin-tfstate-replication-policy"
   path        = "/"
   description = ""
@@ -1122,7 +1097,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "GovWifi_Admin_S3_Policy" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "GovWifi-Admin-S3-Policy"
   path        = "/"
   description = "Allows access to specific S3 buckets with explicit deny on following actions DeleteBucket, DeleteObject, DeleteBucketPolicy"
@@ -1238,7 +1212,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "s3crr_for_govwifi_staging_ireland_accesslogs_to_govwifi_staging_london_accesslogs" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "s3crr_for_govwifi-staging-ireland-accesslogs_to_govwifi-staging-london-accesslogs"
   path        = "/service-role/"
   description = ""
@@ -1275,7 +1248,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "GovWifi_Support" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "GovWifi-Support"
   path        = "/"
   description = "Can view selected resources in Live environment and create AWS Support requests"
@@ -1504,7 +1476,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "govwifi_staging_tfstate_nodelete" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "govwifi-staging-tfstate-nodelete"
   path        = "/"
   description = "Prevents accidental deletion of objects in all tfstate buckets"
@@ -1553,7 +1524,6 @@ POLICY
 }
 
 resource "aws_iam_policy" "read_wordlist_policy" {
-  count       = var.is_production_aws_account ? 1 : 0
   name        = "read-wordlist-policy"
   path        = "/"
   description = "Allows deploy pipeline group to read wordlist"

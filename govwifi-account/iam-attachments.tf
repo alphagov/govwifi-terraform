@@ -1,5 +1,4 @@
 resource "aws_iam_group_policy_attachment" "GovWifi_Audit_policy_attachment_GovWifi_Audit" {
-  count      = var.is_production_aws_account ? 1 : 0
   group      = "GovWifi-Audit"
   policy_arn = "arn:aws:iam::${var.aws-account-id}:policy/GovWifi-Audit"
 }
@@ -20,7 +19,6 @@ resource "aws_iam_group_policy_attachment" "AmazonEC2ContainerRegistryPowerUser_
 }
 
 resource "aws_iam_group_policy_attachment" "read_wordlist_policy_GovWifi_Pipeline" {
-  count      = var.is_production_aws_account ? 1 : 0
   group      = "GovWifi-Pipeline"
   policy_arn = "arn:aws:iam::${var.aws-account-id}:policy/read-wordlist-policy"
 }
@@ -29,3 +27,4 @@ resource "aws_iam_group_policy_attachment" "can_restart_ecs_services_GovWifi_Pip
   group      = "GovWifi-Pipeline"
   policy_arn = "arn:aws:iam::${var.aws-account-id}:policy/can-restart-ecs-services"
 }
+
