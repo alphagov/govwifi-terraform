@@ -130,9 +130,6 @@ variable "prometheus_ip_ireland" {
 variable "grafana_ip" {
 }
 
-variable "gds_slack_channel_id" {
-}
-
 variable "use_env_prefix" {
   default     = false
   type        = bool
