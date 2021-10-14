@@ -97,11 +97,6 @@ variable "user-rr-hostname" {
   default     = "users-rr.london.staging-temp.wifi.service.gov.uk"
 }
 
-variable "admin_db_username" {
-  type        = string
-  description = "Database main username for govwifi-admin"
-}
-
 variable "zendesk_api_user" {
   type        = string
   description = "Username for authenticating with Zendesk API"
