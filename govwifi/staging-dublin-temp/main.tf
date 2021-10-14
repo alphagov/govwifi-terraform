@@ -277,8 +277,6 @@ module "api" {
   radius-server-ips         = local.frontend_radius_ips
   authentication_sentry_dsn = var.auth_sentry_dsn
   safe_restart_sentry_dsn   = ""
-  user_signup_sentry_dsn    = ""
-  logging_sentry_dsn        = ""
   subnet-ids                = module.backend.backend-subnet-ids
   admin-bucket-name         = ""
 

@@ -97,11 +97,6 @@ variable "user-rr-hostname" {
   default     = "users-rr.london.production.wifi.service.gov.uk"
 }
 
-variable "admin_db_username" {
-  type        = string
-  description = "Database main username for govwifi-admin"
-}
-
 variable "zendesk_api_user" {
   type        = string
   description = "User for authenticating with Zendesk API"
@@ -142,9 +137,6 @@ variable "prometheus_ip_ireland" {
 }
 
 variable "grafana_ip" {
-}
-
-variable "gds_slack_channel_id" {
 }
 
 variable "use_env_prefix" {

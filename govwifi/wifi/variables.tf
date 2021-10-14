@@ -60,11 +60,6 @@ variable "ami" {
 
 # Secrets
 
-variable "user_signup_sentry_dsn" {
-  type    = string
-  default = ""
-}
-
 variable "london_radius_ip_addresses" {
   type        = list(string)
   description = "Frontend RADIUS server IP addresses - London"
@@ -81,11 +76,6 @@ variable "auth_sentry_dsn" {
 
 variable "safe_restart_sentry_dsn" {
   type = string
-}
-
-variable "logging_sentry_dsn" {
-  type    = string
-  default = ""
 }
 
 variable "london-api-base-url" {
