@@ -63,6 +63,18 @@ module "govwifi_keys" {
 
 }
 
+# Global ====================================================================
+
+module "govwifi_account" {
+  providers = {
+    aws = aws.AWS-main
+  }
+
+  source                    = "../../govwifi-account"
+  aws-account-id            = local.aws_account_id
+  is_production_aws_account = var.is_production_aws_account
+}
+
 # London Backend ==================================================================
 module "backend" {
   providers = {

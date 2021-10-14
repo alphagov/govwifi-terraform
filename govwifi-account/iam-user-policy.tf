@@ -51,8 +51,9 @@ POLICY
 }
 
 resource "aws_iam_user_policy" "backup_s3_read_buckets_user_policy" {
-  name = "backup-s3-read-buckets"
-  user = "it-govwifi-backup-reader"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "backup-s3-read-buckets"
+  user  = "it-govwifi-backup-reader"
 
   policy = <<POLICY
 {
@@ -88,4 +89,3 @@ resource "aws_iam_user_policy" "backup_s3_read_buckets_user_policy" {
 POLICY
 
 }
-

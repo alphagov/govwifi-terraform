@@ -1,6 +1,7 @@
 resource "aws_iam_role" "admin_ecsTaskExecutionRole_production_London" {
-  name = "admin-ecsTaskExecutionRole-production-London"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "admin-ecsTaskExecutionRole-production-London"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -21,8 +22,9 @@ POLICY
 }
 
 resource "aws_iam_role" "admin_ecsTaskExecutionRole_staging_London" {
-  name = "admin-ecsTaskExecutionRole-staging-London"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "admin-ecsTaskExecutionRole-staging-London"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -43,8 +45,9 @@ POLICY
 }
 
 resource "aws_iam_role" "AggregateStagingMetrics_role_gej26flk" {
-  name = "AggregateStagingMetrics-role-gej26flk"
-  path = "/service-role/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "AggregateStagingMetrics-role-gej26flk"
+  path  = "/service-role/"
 
   assume_role_policy = <<POLICY
 {
@@ -64,8 +67,9 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForAmazonGuardDuty" {
-  name = "AWSServiceRoleForAmazonGuardDuty"
-  path = "/aws-service-role/guardduty.amazonaws.com/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "AWSServiceRoleForAmazonGuardDuty"
+  path  = "/aws-service-role/guardduty.amazonaws.com/"
 
   assume_role_policy = <<POLICY
 {
@@ -85,8 +89,9 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForApplicationAutoScaling_ECSService" {
-  name = "AWSServiceRoleForApplicationAutoScaling_ECSService"
-  path = "/aws-service-role/ecs.application-autoscaling.amazonaws.com/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "AWSServiceRoleForApplicationAutoScaling_ECSService"
+  path  = "/aws-service-role/ecs.application-autoscaling.amazonaws.com/"
 
   assume_role_policy = <<POLICY
 {
@@ -106,6 +111,7 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForAutoScaling" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSServiceRoleForAutoScaling"
   path        = "/aws-service-role/autoscaling.amazonaws.com/"
   description = "Default Service-Linked Role enables access to AWS Services and Resources used or managed by Auto Scaling"
@@ -128,8 +134,9 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForCloudTrail" {
-  name = "AWSServiceRoleForCloudTrail"
-  path = "/aws-service-role/cloudtrail.amazonaws.com/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "AWSServiceRoleForCloudTrail"
+  path  = "/aws-service-role/cloudtrail.amazonaws.com/"
 
   assume_role_policy = <<POLICY
 {
@@ -149,6 +156,7 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForCloudWatchCrossAccount" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSServiceRoleForCloudWatchCrossAccount"
   path        = "/aws-service-role/cloudwatch-crossaccount.amazonaws.com/"
   description = "Allows CloudWatch to assume CloudWatch-CrossAccountSharing roles in remote accounts on behalf of the current account in order to display data cross-account, cross region"
@@ -171,6 +179,7 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForECS" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSServiceRoleForECS"
   path        = "/aws-service-role/ecs.amazonaws.com/"
   description = "Role to enable Amazon ECS to manage your cluster."
@@ -193,6 +202,7 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForElastiCache" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSServiceRoleForElastiCache"
   path        = "/aws-service-role/elasticache.amazonaws.com/"
   description = "Allows ElastiCache to manage AWS resources for your cache on your behalf."
@@ -215,6 +225,7 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForElasticLoadBalancing" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSServiceRoleForElasticLoadBalancing"
   path        = "/aws-service-role/elasticloadbalancing.amazonaws.com/"
   description = "Allows ELB to call AWS services on your behalf."
@@ -237,6 +248,7 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForGlobalAccelerator" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSServiceRoleForGlobalAccelerator"
   path        = "/aws-service-role/globalaccelerator.amazonaws.com/"
   description = "Allows Global Accelerator to call AWS services on customer's behalf"
@@ -259,6 +271,7 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForOrganizations" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSServiceRoleForOrganizations"
   path        = "/aws-service-role/organizations.amazonaws.com/"
   description = "Service-linked role used by AWS Organizations to enable integration of other AWS services with Organizations."
@@ -281,6 +294,7 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForRDS" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSServiceRoleForRDS"
   path        = "/aws-service-role/rds.amazonaws.com/"
   description = "Allows Amazon RDS to manage AWS resources on your behalf"
@@ -303,8 +317,9 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForSecurityHub" {
-  name = "AWSServiceRoleForSecurityHub"
-  path = "/aws-service-role/securityhub.amazonaws.com/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "AWSServiceRoleForSecurityHub"
+  path  = "/aws-service-role/securityhub.amazonaws.com/"
 
   assume_role_policy = <<POLICY
 {
@@ -324,6 +339,7 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForSupport" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSServiceRoleForSupport"
   path        = "/aws-service-role/support.amazonaws.com/"
   description = "Enables resource access for AWS to provide billing, administrative and support services"
@@ -346,6 +362,7 @@ POLICY
 }
 
 resource "aws_iam_role" "AWSServiceRoleForTrustedAdvisor" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "AWSServiceRoleForTrustedAdvisor"
   path        = "/aws-service-role/trustedadvisor.amazonaws.com/"
   description = "Access for the AWS Trusted Advisor Service to help reduce cost, increase performance, and improve security of your AWS environment."
@@ -368,8 +385,9 @@ POLICY
 }
 
 resource "aws_iam_role" "CloudTrail_CloudWatchLogs_Role" {
-  name = "CloudTrail_CloudWatchLogs_Role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "CloudTrail_CloudWatchLogs_Role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -390,8 +408,9 @@ POLICY
 }
 
 resource "aws_iam_role" "Dublin_ecs_instance_role_staging" {
-  name = "Dublin-ecs-instance-role-staging"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-ecs-instance-role-staging"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -412,8 +431,9 @@ POLICY
 }
 
 resource "aws_iam_role" "Dublin_ecs_instance_role_wifi" {
-  name = "Dublin-ecs-instance-role-wifi"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-ecs-instance-role-wifi"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -434,8 +454,9 @@ POLICY
 }
 
 resource "aws_iam_role" "Dublin_ecs_service_role_staging" {
-  name = "Dublin-ecs-service-role-staging"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-ecs-service-role-staging"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -456,8 +477,9 @@ POLICY
 }
 
 resource "aws_iam_role" "Dublin_ecs_service_role_wifi" {
-  name = "Dublin-ecs-service-role-wifi"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-ecs-service-role-wifi"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -478,8 +500,9 @@ POLICY
 }
 
 resource "aws_iam_role" "Dublin_frontend_ecs_instance_role_staging" {
-  name = "Dublin-frontend-ecs-instance-role-staging"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-frontend-ecs-instance-role-staging"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -500,8 +523,9 @@ POLICY
 }
 
 resource "aws_iam_role" "Dublin_frontend_ecs_instance_role_wifi" {
-  name = "Dublin-frontend-ecs-instance-role-wifi"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-frontend-ecs-instance-role-wifi"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -522,8 +546,9 @@ POLICY
 }
 
 resource "aws_iam_role" "Dublin_frontend_ecs_task_role_staging" {
-  name = "Dublin-frontend-ecs-task-role-staging"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-frontend-ecs-task-role-staging"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -544,8 +569,9 @@ POLICY
 }
 
 resource "aws_iam_role" "Dublin_frontend_ecs_task_role_wifi" {
-  name = "Dublin-frontend-ecs-task-role-wifi"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-frontend-ecs-task-role-wifi"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -566,8 +592,9 @@ POLICY
 }
 
 resource "aws_iam_role" "Dublin_staging_rds_monitoring_role" {
-  name = "Dublin-staging-rds-monitoring-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-staging-rds-monitoring-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -588,8 +615,9 @@ POLICY
 }
 
 resource "aws_iam_role" "Dublin_wifi_backend_bastion_instance_role" {
-  name = "Dublin-wifi-backend-bastion-instance-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-wifi-backend-bastion-instance-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -610,8 +638,9 @@ POLICY
 }
 
 resource "aws_iam_role" "Dublin_wifi_rds_monitoring_role" {
-  name = "Dublin-wifi-rds-monitoring-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-wifi-rds-monitoring-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -632,8 +661,9 @@ POLICY
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole_production_dublin" {
-  name = "ecsTaskExecutionRole-production-dublin"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "ecsTaskExecutionRole-production-dublin"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -654,8 +684,9 @@ POLICY
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole_production_London" {
-  name = "ecsTaskExecutionRole-production-London"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "ecsTaskExecutionRole-production-London"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -676,8 +707,9 @@ POLICY
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole_staging_Dublin" {
-  name = "ecsTaskExecutionRole-staging-Dublin"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "ecsTaskExecutionRole-staging-Dublin"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -698,8 +730,9 @@ POLICY
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole_staging_London" {
-  name = "ecsTaskExecutionRole-staging-London"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "ecsTaskExecutionRole-staging-London"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -720,8 +753,9 @@ POLICY
 }
 
 resource "aws_iam_role" "flowlogsRole" {
-  name = "flowlogsRole"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "flowlogsRole"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -742,6 +776,7 @@ POLICY
 }
 
 resource "aws_iam_role" "frontend_execution_role" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "frontend-execution-role"
   path        = "/"
   description = "Allows ECS tasks to call AWS services on your behalf."
@@ -765,6 +800,7 @@ POLICY
 }
 
 resource "aws_iam_role" "GDSAdminAccessGovWifi" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "GDSAdminAccessGovWifi"
   path        = "/"
   description = "Allows EC2 instances to call AWS services on your behalf."
@@ -796,8 +832,9 @@ POLICY
 }
 
 resource "aws_iam_role" "govwifi_staging_dublin_accesslogs_replication_role" {
-  name = "govwifi-staging-dublin-accesslogs-replication-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "govwifi-staging-dublin-accesslogs-replication-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -818,8 +855,9 @@ POLICY
 }
 
 resource "aws_iam_role" "govwifi_staging_dublin_tfstate_replication_role" {
-  name = "govwifi-staging-dublin-tfstate-replication-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "govwifi-staging-dublin-tfstate-replication-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -840,8 +878,9 @@ POLICY
 }
 
 resource "aws_iam_role" "govwifi_staging_london_accesslogs_replication_role" {
-  name = "govwifi-staging-london-accesslogs-replication-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "govwifi-staging-london-accesslogs-replication-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -862,8 +901,9 @@ POLICY
 }
 
 resource "aws_iam_role" "govwifi_staging_london_tfstate_replication_role" {
-  name = "govwifi-staging-london-tfstate-replication-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "govwifi-staging-london-tfstate-replication-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -884,8 +924,9 @@ POLICY
 }
 
 resource "aws_iam_role" "govwifi_wifi_dublin_accesslogs_replication_role" {
-  name = "govwifi-wifi-dublin-accesslogs-replication-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "govwifi-wifi-dublin-accesslogs-replication-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -906,8 +947,9 @@ POLICY
 }
 
 resource "aws_iam_role" "govwifi_wifi_dublin_tfstate_replication_role" {
-  name = "govwifi-wifi-dublin-tfstate-replication-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "govwifi-wifi-dublin-tfstate-replication-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -928,8 +970,9 @@ POLICY
 }
 
 resource "aws_iam_role" "govwifi_wifi_london_accesslogs_replication_role" {
-  name = "govwifi-wifi-london-accesslogs-replication-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "govwifi-wifi-london-accesslogs-replication-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -950,8 +993,9 @@ POLICY
 }
 
 resource "aws_iam_role" "govwifi_wifi_london_tfstate_replication_role" {
-  name = "govwifi-wifi-london-tfstate-replication-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "govwifi-wifi-london-tfstate-replication-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -972,8 +1016,9 @@ POLICY
 }
 
 resource "aws_iam_role" "GovWifiMetricsAggregationPrototype_role_ayhlh17x" {
-  name = "GovWifiMetricsAggregationPrototype-role-ayhlh17x"
-  path = "/service-role/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "GovWifiMetricsAggregationPrototype-role-ayhlh17x"
+  path  = "/service-role/"
 
   assume_role_policy = <<POLICY
 {
@@ -993,6 +1038,7 @@ POLICY
 }
 
 resource "aws_iam_role" "ITHC_RO_SecAud_Access" {
+  count                = var.is_production_aws_account ? 1 : 0
   name                 = "ITHC-RO-SecAud-Access"
   path                 = "/"
   permissions_boundary = "arn:aws:iam::aws:policy/ReadOnlyAccess"
@@ -1017,8 +1063,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_ecs_admin_instance_role_staging" {
-  name = "London-ecs-admin-instance-role-staging"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-ecs-admin-instance-role-staging"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1039,8 +1086,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_ecs_admin_instance_role_wifi" {
-  name = "London-ecs-admin-instance-role-wifi"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-ecs-admin-instance-role-wifi"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1061,8 +1109,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_ecs_instance_role_staging" {
-  name = "London-ecs-instance-role-staging"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-ecs-instance-role-staging"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1083,8 +1132,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_ecs_instance_role_wifi" {
-  name = "London-ecs-instance-role-wifi"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-ecs-instance-role-wifi"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1105,8 +1155,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_ecs_service_role_staging" {
-  name = "London-ecs-service-role-staging"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-ecs-service-role-staging"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1127,8 +1178,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_ecs_service_role_wifi" {
-  name = "London-ecs-service-role-wifi"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-ecs-service-role-wifi"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1149,8 +1201,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_frontend_ecs_instance_role_staging" {
-  name = "London-frontend-ecs-instance-role-staging"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-frontend-ecs-instance-role-staging"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1171,8 +1224,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_frontend_ecs_instance_role_wifi" {
-  name = "London-frontend-ecs-instance-role-wifi"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-frontend-ecs-instance-role-wifi"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1193,8 +1247,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_frontend_ecs_task_role_staging" {
-  name = "London-frontend-ecs-task-role-staging"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-frontend-ecs-task-role-staging"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1215,8 +1270,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_frontend_ecs_task_role_wifi" {
-  name = "London-frontend-ecs-task-role-wifi"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-frontend-ecs-task-role-wifi"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1237,8 +1293,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_staging_backend_bastion_instance_role" {
-  name = "London-staging-backend-bastion-instance-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-staging-backend-bastion-instance-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1259,8 +1316,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_staging_rds_monitoring_role" {
-  name = "London-staging-rds-monitoring-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-staging-rds-monitoring-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1281,8 +1339,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_wifi_backend_bastion_instance_role" {
-  name = "London-wifi-backend-bastion-instance-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-wifi-backend-bastion-instance-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1303,8 +1362,9 @@ POLICY
 }
 
 resource "aws_iam_role" "London_wifi_rds_monitoring_role" {
-  name = "London-wifi-rds-monitoring-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-wifi-rds-monitoring-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1325,8 +1385,9 @@ POLICY
 }
 
 resource "aws_iam_role" "NewsiteRedirect_SESEmailForwardRole_1BAO15HN9AO0C" {
-  name = "NewsiteRedirect-SESEmailForwardRole-1BAO15HN9AO0C"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "NewsiteRedirect-SESEmailForwardRole-1BAO15HN9AO0C"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1346,8 +1407,9 @@ POLICY
 }
 
 resource "aws_iam_role" "rds_monitoring_role" {
-  name = "rds-monitoring-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "rds-monitoring-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1368,8 +1430,9 @@ POLICY
 }
 
 resource "aws_iam_role" "s3crr_role_for_govwifi_staging_dublin_tfstate_to_govwifi_staging" {
-  name = "s3crr_role_for_govwifi-staging-dublin-tfstate_to_govwifi-staging"
-  path = "/service-role/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "s3crr_role_for_govwifi-staging-dublin-tfstate_to_govwifi-staging"
+  path  = "/service-role/"
 
   assume_role_policy = <<POLICY
 {
@@ -1389,8 +1452,9 @@ POLICY
 }
 
 resource "aws_iam_role" "s3crr_role_for_govwifi_staging_ireland_accesslogs_to_govwifi_sta" {
-  name = "s3crr_role_for_govwifi-staging-ireland-accesslogs_to_govwifi-sta"
-  path = "/service-role/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "s3crr_role_for_govwifi-staging-ireland-accesslogs_to_govwifi-sta"
+  path  = "/service-role/"
 
   assume_role_policy = <<POLICY
 {
@@ -1410,8 +1474,9 @@ POLICY
 }
 
 resource "aws_iam_role" "s3crr_role_for_govwifi_staging_london_accesslogs_to_govwifi_stag" {
-  name = "s3crr_role_for_govwifi-staging-london-accesslogs_to_govwifi-stag"
-  path = "/service-role/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "s3crr_role_for_govwifi-staging-london-accesslogs_to_govwifi-stag"
+  path  = "/service-role/"
 
   assume_role_policy = <<POLICY
 {
@@ -1431,8 +1496,9 @@ POLICY
 }
 
 resource "aws_iam_role" "s3crr_role_for_govwifi_staging_london_tfstate_to_govwifi_staging" {
-  name = "s3crr_role_for_govwifi-staging-london-tfstate_to_govwifi-staging"
-  path = "/service-role/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "s3crr_role_for_govwifi-staging-london-tfstate_to_govwifi-staging"
+  path  = "/service-role/"
 
   assume_role_policy = <<POLICY
 {
@@ -1452,8 +1518,9 @@ POLICY
 }
 
 resource "aws_iam_role" "s3crr_role_for_test_wifi_mfadelete_to_test_wifi_mfadelete_replic" {
-  name = "s3crr_role_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replic"
-  path = "/service-role/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "s3crr_role_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replic"
+  path  = "/service-role/"
 
   assume_role_policy = <<POLICY
 {
@@ -1473,8 +1540,9 @@ POLICY
 }
 
 resource "aws_iam_role" "SNSSuccessFeedback" {
-  name = "SNSSuccessFeedback"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "SNSSuccessFeedback"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1494,8 +1562,9 @@ POLICY
 }
 
 resource "aws_iam_role" "staging_logging_api_task_role" {
-  name = "staging-logging-api-task-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "staging-logging-api-task-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1516,8 +1585,9 @@ POLICY
 }
 
 resource "aws_iam_role" "staging_logging_scheduled_task_role" {
-  name = "staging-logging-scheduled-task-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "staging-logging-scheduled-task-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1538,8 +1608,9 @@ POLICY
 }
 
 resource "aws_iam_role" "staging_safe_restart_scheduled_task_role" {
-  name = "staging-safe-restart-scheduled-task-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "staging-safe-restart-scheduled-task-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1560,8 +1631,9 @@ POLICY
 }
 
 resource "aws_iam_role" "staging_safe_restart_task_role" {
-  name = "staging-safe-restart-task-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "staging-safe-restart-task-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1582,8 +1654,9 @@ POLICY
 }
 
 resource "aws_iam_role" "staging_user_signup_api_task_role" {
-  name = "staging-user-signup-api-task-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "staging-user-signup-api-task-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1604,8 +1677,9 @@ POLICY
 }
 
 resource "aws_iam_role" "staging_user_signup_scheduled_task_role" {
-  name = "staging-user-signup-scheduled-task-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "staging-user-signup-scheduled-task-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1626,8 +1700,9 @@ POLICY
 }
 
 resource "aws_iam_role" "StagingMetricsAggregator_prototype_role_saci182v" {
-  name = "StagingMetricsAggregator-prototype-role-saci182v"
-  path = "/service-role/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "StagingMetricsAggregator-prototype-role-saci182v"
+  path  = "/service-role/"
 
   assume_role_policy = <<POLICY
 {
@@ -1647,6 +1722,7 @@ POLICY
 }
 
 resource "aws_iam_role" "test_assume_role" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "test-assume-role"
   path        = "/"
   description = "Allows ECS tasks to call AWS services on your behalf."
@@ -1674,8 +1750,9 @@ POLICY
 }
 
 resource "aws_iam_role" "test_staging_rds_role" {
-  name = "test-staging-rds-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "test-staging-rds-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1696,8 +1773,9 @@ POLICY
 }
 
 resource "aws_iam_role" "wifi_logging_api_task_role" {
-  name = "wifi-logging-api-task-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "wifi-logging-api-task-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1718,8 +1796,9 @@ POLICY
 }
 
 resource "aws_iam_role" "wifi_logging_scheduled_task_role" {
-  name = "wifi-logging-scheduled-task-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "wifi-logging-scheduled-task-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1740,8 +1819,9 @@ POLICY
 }
 
 resource "aws_iam_role" "wifi_safe_restart_scheduled_task_role" {
-  name = "wifi-safe-restart-scheduled-task-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "wifi-safe-restart-scheduled-task-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1762,8 +1842,9 @@ POLICY
 }
 
 resource "aws_iam_role" "wifi_safe_restart_task_role" {
-  name = "wifi-safe-restart-task-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "wifi-safe-restart-task-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1784,8 +1865,9 @@ POLICY
 }
 
 resource "aws_iam_role" "wifi_user_signup_api_task_role" {
-  name = "wifi-user-signup-api-task-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "wifi-user-signup-api-task-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1806,8 +1888,9 @@ POLICY
 }
 
 resource "aws_iam_role" "wifi_user_signup_scheduled_task_role" {
-  name = "wifi-user-signup-scheduled-task-role"
-  path = "/"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "wifi-user-signup-scheduled-task-role"
+  path  = "/"
 
   assume_role_policy = <<POLICY
 {
@@ -1828,8 +1911,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "CloudTrail_CloudWatchLogs_Role_oneClick_CloudTrail_CloudWatchLogs_Role_1510330346083" {
-  name = "oneClick_CloudTrail_CloudWatchLogs_Role_1510330346083"
-  role = "CloudTrail_CloudWatchLogs_Role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "oneClick_CloudTrail_CloudWatchLogs_Role_1510330346083"
+  role  = "CloudTrail_CloudWatchLogs_Role"
 
   policy = <<POLICY
 {
@@ -1862,8 +1946,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_ecs_instance_role_staging_Dublin_ecs_instance_policy_staging" {
-  name = "Dublin-ecs-instance-policy-staging"
-  role = "Dublin-ecs-instance-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-ecs-instance-policy-staging"
+  role  = "Dublin-ecs-instance-role-staging"
 
   policy = <<POLICY
 {
@@ -1917,8 +2002,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_ecs_instance_role_wifi_Dublin_ecs_instance_policy_wifi" {
-  name = "Dublin-ecs-instance-policy-wifi"
-  role = "Dublin-ecs-instance-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-ecs-instance-policy-wifi"
+  role  = "Dublin-ecs-instance-role-wifi"
 
   policy = <<POLICY
 {
@@ -1972,8 +2058,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_ecs_service_role_staging_Dublin_ecs_service_policy_staging" {
-  name = "Dublin-ecs-service-policy-staging"
-  role = "Dublin-ecs-service-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-ecs-service-policy-staging"
+  role  = "Dublin-ecs-service-role-staging"
 
   policy = <<POLICY
 {
@@ -2008,8 +2095,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_ecs_service_role_wifi_Dublin_ecs_service_policy_wifi" {
-  name = "Dublin-ecs-service-policy-wifi"
-  role = "Dublin-ecs-service-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-ecs-service-policy-wifi"
+  role  = "Dublin-ecs-service-role-wifi"
 
   policy = <<POLICY
 {
@@ -2044,8 +2132,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_frontend_ecs_instance_role_staging_Dublin_frontend_ecs_instance_policy_staging" {
-  name = "Dublin-frontend-ecs-instance-policy-staging"
-  role = "Dublin-frontend-ecs-instance-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-frontend-ecs-instance-policy-staging"
+  role  = "Dublin-frontend-ecs-instance-role-staging"
 
   policy = <<POLICY
 {
@@ -2099,8 +2188,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_frontend_ecs_instance_role_wifi_Dublin_frontend_ecs_instance_policy_wifi" {
-  name = "Dublin-frontend-ecs-instance-policy-wifi"
-  role = "Dublin-frontend-ecs-instance-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-frontend-ecs-instance-policy-wifi"
+  role  = "Dublin-frontend-ecs-instance-role-wifi"
 
   policy = <<POLICY
 {
@@ -2154,8 +2244,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_staging_Dublin_frontend_admin_bucket_staging" {
-  name = "Dublin-frontend-admin-bucket-staging"
-  role = "Dublin-frontend-ecs-task-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-frontend-admin-bucket-staging"
+  role  = "Dublin-frontend-ecs-task-role-staging"
 
   policy = <<POLICY
 {
@@ -2180,8 +2271,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_staging_Dublin_frontend_cert_bucket_staging" {
-  name = "Dublin-frontend-cert-bucket-staging"
-  role = "Dublin-frontend-ecs-task-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-frontend-cert-bucket-staging"
+  role  = "Dublin-frontend-ecs-task-role-staging"
 
   policy = <<POLICY
 {
@@ -2206,8 +2298,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_staging_Dublin_frontend_ecs_service_policy_staging" {
-  name = "Dublin-frontend-ecs-service-policy-staging"
-  role = "Dublin-frontend-ecs-task-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-frontend-ecs-service-policy-staging"
+  role  = "Dublin-frontend-ecs-task-role-staging"
 
   policy = <<POLICY
 {
@@ -2228,8 +2321,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_wifi_Dublin_frontend_admin_bucket_wifi" {
-  name = "Dublin-frontend-admin-bucket-wifi"
-  role = "Dublin-frontend-ecs-task-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-frontend-admin-bucket-wifi"
+  role  = "Dublin-frontend-ecs-task-role-wifi"
 
   policy = <<POLICY
 {
@@ -2254,8 +2348,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_wifi_Dublin_frontend_cert_bucket_wifi" {
-  name = "Dublin-frontend-cert-bucket-wifi"
-  role = "Dublin-frontend-ecs-task-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-frontend-cert-bucket-wifi"
+  role  = "Dublin-frontend-ecs-task-role-wifi"
 
   policy = <<POLICY
 {
@@ -2280,8 +2375,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_wifi_Dublin_frontend_ecs_service_policy_wifi" {
-  name = "Dublin-frontend-ecs-service-policy-wifi"
-  role = "Dublin-frontend-ecs-task-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-frontend-ecs-service-policy-wifi"
+  role  = "Dublin-frontend-ecs-task-role-wifi"
 
   policy = <<POLICY
 {
@@ -2302,8 +2398,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_staging_rds_monitoring_role_Dublin_staging_rds_monitoring_policy" {
-  name = "Dublin-staging-rds-monitoring-policy"
-  role = "Dublin-staging-rds-monitoring-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-staging-rds-monitoring-policy"
+  role  = "Dublin-staging-rds-monitoring-role"
 
   policy = <<POLICY
 {
@@ -2340,8 +2437,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_wifi_backend_bastion_instance_role_Dublin_wifi_backend_bastion_instance_policy" {
-  name = "Dublin-wifi-backend-bastion-instance-policy"
-  role = "Dublin-wifi-backend-bastion-instance-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-wifi-backend-bastion-instance-policy"
+  role  = "Dublin-wifi-backend-bastion-instance-role"
 
   policy = <<POLICY
 {
@@ -2366,8 +2464,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "Dublin_wifi_rds_monitoring_role_Dublin_wifi_rds_monitoring_policy" {
-  name = "Dublin-wifi-rds-monitoring-policy"
-  role = "Dublin-wifi-rds-monitoring-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "Dublin-wifi-rds-monitoring-policy"
+  role  = "Dublin-wifi-rds-monitoring-role"
 
   policy = <<POLICY
 {
@@ -2404,8 +2503,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "flowlogsRole_oneClick_flowlogsRole_1480343201952" {
-  name = "oneClick_flowlogsRole_1480343201952"
-  role = "flowlogsRole"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "oneClick_flowlogsRole_1480343201952"
+  role  = "flowlogsRole"
 
   policy = <<POLICY
 {
@@ -2428,8 +2528,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_ecs_admin_instance_role_staging_London_ecs_admin_instance_policy_staging" {
-  name = "London-ecs-admin-instance-policy-staging"
-  role = "London-ecs-admin-instance-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-ecs-admin-instance-policy-staging"
+  role  = "London-ecs-admin-instance-role-staging"
 
   policy = <<POLICY
 {
@@ -2534,8 +2635,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_ecs_admin_instance_role_wifi_London_ecs_admin_instance_policy_wifi" {
-  name = "London-ecs-admin-instance-policy-wifi"
-  role = "London-ecs-admin-instance-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-ecs-admin-instance-policy-wifi"
+  role  = "London-ecs-admin-instance-role-wifi"
 
   policy = <<POLICY
 {
@@ -2640,8 +2742,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_ecs_instance_role_staging_London_ecs_instance_policy_staging" {
-  name = "London-ecs-instance-policy-staging"
-  role = "London-ecs-instance-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-ecs-instance-policy-staging"
+  role  = "London-ecs-instance-role-staging"
 
   policy = <<POLICY
 {
@@ -2695,8 +2798,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_ecs_instance_role_wifi_London_ecs_instance_policy_wifi" {
-  name = "London-ecs-instance-policy-wifi"
-  role = "London-ecs-instance-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-ecs-instance-policy-wifi"
+  role  = "London-ecs-instance-role-wifi"
 
   policy = <<POLICY
 {
@@ -2750,8 +2854,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_ecs_service_role_staging_London_ecs_service_policy_staging" {
-  name = "London-ecs-service-policy-staging"
-  role = "London-ecs-service-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-ecs-service-policy-staging"
+  role  = "London-ecs-service-role-staging"
 
   policy = <<POLICY
 {
@@ -2786,8 +2891,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_ecs_service_role_wifi_London_ecs_service_policy_wifi" {
-  name = "London-ecs-service-policy-wifi"
-  role = "London-ecs-service-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-ecs-service-policy-wifi"
+  role  = "London-ecs-service-role-wifi"
 
   policy = <<POLICY
 {
@@ -2822,8 +2928,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_frontend_ecs_instance_role_staging_London_frontend_ecs_instance_policy_staging" {
-  name = "London-frontend-ecs-instance-policy-staging"
-  role = "London-frontend-ecs-instance-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-frontend-ecs-instance-policy-staging"
+  role  = "London-frontend-ecs-instance-role-staging"
 
   policy = <<POLICY
 {
@@ -2877,8 +2984,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_frontend_ecs_instance_role_wifi_London_frontend_ecs_instance_policy_wifi" {
-  name = "London-frontend-ecs-instance-policy-wifi"
-  role = "London-frontend-ecs-instance-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-frontend-ecs-instance-policy-wifi"
+  role  = "London-frontend-ecs-instance-role-wifi"
 
   policy = <<POLICY
 {
@@ -2932,8 +3040,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_frontend_ecs_task_role_staging_London_frontend_admin_bucket_staging" {
-  name = "London-frontend-admin-bucket-staging"
-  role = "London-frontend-ecs-task-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-frontend-admin-bucket-staging"
+  role  = "London-frontend-ecs-task-role-staging"
 
   policy = <<POLICY
 {
@@ -2958,8 +3067,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_frontend_ecs_task_role_staging_London_frontend_cert_bucket_staging" {
-  name = "London-frontend-cert-bucket-staging"
-  role = "London-frontend-ecs-task-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-frontend-cert-bucket-staging"
+  role  = "London-frontend-ecs-task-role-staging"
 
   policy = <<POLICY
 {
@@ -2984,8 +3094,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_frontend_ecs_task_role_staging_London_frontend_ecs_service_policy_staging" {
-  name = "London-frontend-ecs-service-policy-staging"
-  role = "London-frontend-ecs-task-role-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-frontend-ecs-service-policy-staging"
+  role  = "London-frontend-ecs-task-role-staging"
 
   policy = <<POLICY
 {
@@ -3006,8 +3117,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_frontend_ecs_task_role_wifi_London_frontend_admin_bucket_wifi" {
-  name = "London-frontend-admin-bucket-wifi"
-  role = "London-frontend-ecs-task-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-frontend-admin-bucket-wifi"
+  role  = "London-frontend-ecs-task-role-wifi"
 
   policy = <<POLICY
 {
@@ -3032,8 +3144,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_frontend_ecs_task_role_wifi_London_frontend_cert_bucket_wifi" {
-  name = "London-frontend-cert-bucket-wifi"
-  role = "London-frontend-ecs-task-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-frontend-cert-bucket-wifi"
+  role  = "London-frontend-ecs-task-role-wifi"
 
   policy = <<POLICY
 {
@@ -3058,8 +3171,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_frontend_ecs_task_role_wifi_London_frontend_ecs_service_policy_wifi" {
-  name = "London-frontend-ecs-service-policy-wifi"
-  role = "London-frontend-ecs-task-role-wifi"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-frontend-ecs-service-policy-wifi"
+  role  = "London-frontend-ecs-task-role-wifi"
 
   policy = <<POLICY
 {
@@ -3080,8 +3194,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_staging_backend_bastion_instance_role_London_staging_backend_bastion_instance_policy" {
-  name = "London-staging-backend-bastion-instance-policy"
-  role = "London-staging-backend-bastion-instance-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-staging-backend-bastion-instance-policy"
+  role  = "London-staging-backend-bastion-instance-role"
 
   policy = <<POLICY
 {
@@ -3106,8 +3221,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_staging_rds_monitoring_role_London_staging_rds_monitoring_policy" {
-  name = "London-staging-rds-monitoring-policy"
-  role = "London-staging-rds-monitoring-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-staging-rds-monitoring-policy"
+  role  = "London-staging-rds-monitoring-role"
 
   policy = <<POLICY
 {
@@ -3144,8 +3260,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_wifi_backend_bastion_instance_role_London_wifi_backend_bastion_instance_policy" {
-  name = "London-wifi-backend-bastion-instance-policy"
-  role = "London-wifi-backend-bastion-instance-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-wifi-backend-bastion-instance-policy"
+  role  = "London-wifi-backend-bastion-instance-role"
 
   policy = <<POLICY
 {
@@ -3170,8 +3287,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "London_wifi_rds_monitoring_role_London_wifi_rds_monitoring_policy" {
-  name = "London-wifi-rds-monitoring-policy"
-  role = "London-wifi-rds-monitoring-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "London-wifi-rds-monitoring-policy"
+  role  = "London-wifi-rds-monitoring-role"
 
   policy = <<POLICY
 {
@@ -3208,8 +3326,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "NewsiteRedirect_SESEmailForwardRole_1BAO15HN9AO0C_SESEmailForward" {
-  name = "SESEmailForward"
-  role = "NewsiteRedirect-SESEmailForwardRole-1BAO15HN9AO0C"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "SESEmailForward"
+  role  = "NewsiteRedirect-SESEmailForwardRole-1BAO15HN9AO0C"
 
   policy = <<POLICY
 {
@@ -3239,8 +3358,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "SNSSuccessFeedback_oneClick_SNSSuccessFeedback_1479821088561" {
-  name = "oneClick_SNSSuccessFeedback_1479821088561"
-  role = "SNSSuccessFeedback"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "oneClick_SNSSuccessFeedback_1479821088561"
+  role  = "SNSSuccessFeedback"
 
   policy = <<POLICY
 {
@@ -3266,8 +3386,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "staging_logging_scheduled_task_role_staging_logging_scheduled_task_policy" {
-  name = "staging-logging-scheduled-task-policy"
-  role = "staging-logging-scheduled-task-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "staging-logging-scheduled-task-policy"
+  role  = "staging-logging-scheduled-task-role"
 
   policy = <<POLICY
 {
@@ -3297,8 +3418,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "staging_safe_restart_scheduled_task_role_staging_safe_restart_scheduled_task_policy" {
-  name = "staging-safe-restart-scheduled-task-policy"
-  role = "staging-safe-restart-scheduled-task-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "staging-safe-restart-scheduled-task-policy"
+  role  = "staging-safe-restart-scheduled-task-role"
 
   policy = <<POLICY
 {
@@ -3328,8 +3450,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "staging_safe_restart_task_role_staging_safe_restart_task_policy" {
-  name = "staging-safe-restart-task-policy"
-  role = "staging-safe-restart-task-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "staging-safe-restart-task-policy"
+  role  = "staging-safe-restart-task-role"
 
   policy = <<POLICY
 {
@@ -3353,8 +3476,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "staging_user_signup_api_task_role_staging_user_signup_api_task_policy" {
-  name = "staging-user-signup-api-task-policy"
-  role = "staging-user-signup-api-task-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "staging-user-signup-api-task-policy"
+  role  = "staging-user-signup-api-task-role"
 
   policy = <<POLICY
 {
@@ -3390,8 +3514,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "staging_user_signup_scheduled_task_role_staging_user_signup_scheduled_task_policy" {
-  name = "staging-user-signup-scheduled-task-policy"
-  role = "staging-user-signup-scheduled-task-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "staging-user-signup-scheduled-task-policy"
+  role  = "staging-user-signup-scheduled-task-role"
 
   policy = <<POLICY
 {
@@ -3421,8 +3546,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "wifi_logging_scheduled_task_role_wifi_logging_scheduled_task_policy" {
-  name = "wifi-logging-scheduled-task-policy"
-  role = "wifi-logging-scheduled-task-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "wifi-logging-scheduled-task-policy"
+  role  = "wifi-logging-scheduled-task-role"
 
   policy = <<POLICY
 {
@@ -3452,8 +3578,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "wifi_safe_restart_scheduled_task_role_wifi_safe_restart_scheduled_task_policy" {
-  name = "wifi-safe-restart-scheduled-task-policy"
-  role = "wifi-safe-restart-scheduled-task-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "wifi-safe-restart-scheduled-task-policy"
+  role  = "wifi-safe-restart-scheduled-task-role"
 
   policy = <<POLICY
 {
@@ -3483,8 +3610,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "wifi_safe_restart_task_role_wifi_safe_restart_task_policy" {
-  name = "wifi-safe-restart-task-policy"
-  role = "wifi-safe-restart-task-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "wifi-safe-restart-task-policy"
+  role  = "wifi-safe-restart-task-role"
 
   policy = <<POLICY
 {
@@ -3508,8 +3636,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "wifi_user_signup_api_task_role_wifi_user_signup_api_task_policy" {
-  name = "wifi-user-signup-api-task-policy"
-  role = "wifi-user-signup-api-task-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "wifi-user-signup-api-task-policy"
+  role  = "wifi-user-signup-api-task-role"
 
   policy = <<POLICY
 {
@@ -3545,8 +3674,9 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "wifi_user_signup_scheduled_task_role_wifi_user_signup_scheduled_task_policy" {
-  name = "wifi-user-signup-scheduled-task-policy"
-  role = "wifi-user-signup-scheduled-task-role"
+  count = var.is_production_aws_account ? 1 : 0
+  name  = "wifi-user-signup-scheduled-task-policy"
+  role  = "wifi-user-signup-scheduled-task-role"
 
   policy = <<POLICY
 {
@@ -3574,4 +3704,3 @@ resource "aws_iam_role_policy" "wifi_user_signup_scheduled_task_role_wifi_user_s
 POLICY
 
 }
-

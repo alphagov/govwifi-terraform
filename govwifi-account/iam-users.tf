@@ -1,10 +1,12 @@
 resource "aws_iam_user" "govwifi_pipeline_deploy_prod" {
+  count         = var.is_production_aws_account ? 1 : 0
   name          = "govwifi-pipeline-deploy-prod"
   path          = "/"
   force_destroy = false
 }
 
 resource "aws_iam_user" "govwifi_pipeline_deploy_admin" {
+  count         = var.is_production_aws_account ? 1 : 0
   name          = "govwifi-pipeline-deploy-admin"
   path          = "/"
   force_destroy = false
@@ -23,6 +25,7 @@ resource "aws_iam_user" "govwifi_pipeline_deploy_smoketest" {
 }
 
 resource "aws_iam_user" "govwifi_pipeline_terraform" {
+  count         = var.is_production_aws_account ? 1 : 0
   name          = "govwifi-pipeline-terraform"
   path          = "/"
   force_destroy = false
@@ -31,7 +34,8 @@ resource "aws_iam_user" "govwifi_pipeline_terraform" {
 # Groups for the users
 
 resource "aws_iam_user_group_membership" "govwifi_pipeline_terraform" {
-  user = "govwifi-pipeline-terraform"
+  count = var.is_production_aws_account ? 1 : 0
+  user  = "govwifi-pipeline-terraform"
 
   groups = [
     "AWS-Admin",
@@ -39,7 +43,8 @@ resource "aws_iam_user_group_membership" "govwifi_pipeline_terraform" {
 }
 
 resource "aws_iam_user_group_membership" "govwifi_pipeline_deploy_prod" {
-  user = "govwifi-pipeline-deploy-prod"
+  count = var.is_production_aws_account ? 1 : 0
+  user  = "govwifi-pipeline-deploy-prod"
 
   groups = [
     "GovWifi-Pipeline",
@@ -47,7 +52,8 @@ resource "aws_iam_user_group_membership" "govwifi_pipeline_deploy_prod" {
 }
 
 resource "aws_iam_user_group_membership" "govwifi_pipeline_deploy_staging" {
-  user = "govwifi-pipeline-deploy-staging"
+  count = var.is_production_aws_account ? 1 : 0
+  user  = "govwifi-pipeline-deploy-staging"
 
   groups = [
     "GovWifi-Pipeline",
@@ -63,7 +69,8 @@ resource "aws_iam_user_group_membership" "govwifi_pipeline_deploy_smoketest" {
 }
 
 resource "aws_iam_user_group_membership" "govwifi_pipeline_deploy_admin" {
-  user = "govwifi-pipeline-deploy-admin"
+  count = var.is_production_aws_account ? 1 : 0
+  user  = "govwifi-pipeline-deploy-admin"
 
   groups = [
     "GovWifi-Pipeline",
@@ -77,6 +84,7 @@ resource "aws_iam_user" "monitoring_stats_user" {
 }
 
 resource "aws_iam_user" "it_govwifi_backup_reader" {
+  count         = var.is_production_aws_account ? 1 : 0
   name          = "it-govwifi-backup-reader"
   path          = "/"
   force_destroy = false
