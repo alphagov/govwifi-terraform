@@ -1532,6 +1532,7 @@ POLICY
 }
 
 resource "aws_iam_policy" "can_restart_ecs_services" {
+  count       = var.is_production_aws_account ? 1 : 0
   name        = "can-restart-ecs-services"
   path        = "/"
   description = "Allows deploy pipeline group to restart elasticsearch services"

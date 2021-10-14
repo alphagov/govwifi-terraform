@@ -5,6 +5,7 @@ resource "aws_iam_group_policy_attachment" "GovWifi_Audit_policy_attachment_GovW
 }
 
 resource "aws_iam_group_policy_attachment" "LambdaUpdateFunctionCode_policy_attachment_GovWifi_Pipeline" {
+  count      = var.is_production_aws_account ? 1 : 0
   group      = "GovWifi-Pipeline"
   policy_arn = "arn:aws:iam::${var.aws-account-id}:policy/LambdaUpdateFunctionCode"
 }
