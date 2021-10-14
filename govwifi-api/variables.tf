@@ -80,6 +80,7 @@ variable "user_signup_sentry_dsn" {
 }
 
 variable "logging_sentry_dsn" {
+  default = ""
 }
 
 variable "backend-sg-list" {
