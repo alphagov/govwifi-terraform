@@ -78,11 +78,6 @@ variable "safe_restart_sentry_dsn" {
   type = string
 }
 
-variable "logging_sentry_dsn" {
-  type    = string
-  default = ""
-}
-
 variable "london-api-base-url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
