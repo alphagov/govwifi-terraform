@@ -76,6 +76,7 @@ variable "authentication_sentry_dsn" {
 }
 
 variable "user_signup_sentry_dsn" {
+  default = ""
 }
 
 variable "logging_sentry_dsn" {

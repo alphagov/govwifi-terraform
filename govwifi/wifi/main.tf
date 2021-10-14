@@ -290,7 +290,6 @@ module "api" {
   safe_restart_sentry_dsn   = var.safe_restart_sentry_dsn
   user-signup-docker-image  = ""
   logging_sentry_dsn        = ""
-  user_signup_sentry_dsn    = ""
   subnet-ids                = module.backend.backend-subnet-ids
   user-db-hostname          = var.user-db-hostname
   user-rr-hostname          = var.user-rr-hostname
