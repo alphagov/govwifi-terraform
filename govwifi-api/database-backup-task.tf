@@ -57,7 +57,7 @@ resource "aws_ecs_task_definition" "backup_rds_to_s3_task_definition" {
           "value": ""
         },{
           "name": "S3_BUCKET",
-          "value": "govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-mysql-backup-data"
+          "value": "${var.rds_mysql_backup_bucket}"
         }
       ],
       "secrets": [
@@ -210,15 +210,15 @@ resource "aws_iam_role_policy" "backup_rds_to_s3_task_policy" {
       ],
       "Resource": [
         "arn:aws:kms:eu-west-2:${var.aws-account-id}:key/*",
-        "arn:aws:s3:::govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-mysql-backup-data",
-        "arn:aws:s3:::govwifi-${var.Env-Name}-${lower(var.aws-region-name)}-mysql-backup-data/*"
+        "arn:aws:s3:::${var.rds_mysql_backup_bucket}",
+        "arn:aws:s3:::${var.rds_mysql_backup_bucket}/*"
       ]
   }, {
       "Sid": "sid4",
       "Effect": "Allow",
       "Action": [
         "kms:GenerateDataKey*",
-        "kms:Encrypt", 
+        "kms:Encrypt",
         "kms:Decrypt",
         "kms:ReEncrypt*",
         "kms:DescribeKey"
@@ -307,4 +307,3 @@ resource "aws_cloudwatch_event_target" "backup_rds_to_s3" {
 EOF
 
 }
-

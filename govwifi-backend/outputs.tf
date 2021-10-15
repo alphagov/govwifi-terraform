@@ -26,3 +26,6 @@ output "vpc-cidr-block" {
   value = var.vpc_cidr_block
 }
 
+output "rds_mysql_backup_bucket" {
+  value = var.backup_mysql_rds ? aws_s3_bucket.rds_mysql_backup_bucket[0].id : null
+}

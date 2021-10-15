@@ -315,8 +315,9 @@ module "api" {
 
   metrics-bucket-name = module.govwifi_dashboard.metrics-bucket-name
 
-  use_env_prefix   = var.use_env_prefix
-  backup_mysql_rds = var.backup_mysql_rds
+  use_env_prefix          = var.use_env_prefix
+  rds_mysql_backup_bucket = module.backend.rds_mysql_backup_bucket
+  backup_mysql_rds        = var.backup_mysql_rds
 
   low_cpu_threshold = 0.3
 
