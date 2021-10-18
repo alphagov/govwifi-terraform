@@ -1,4 +1,8 @@
-provider "aws" {
-  alias = "route53-alarms"
+terraform {
+  required_providers {
+    aws = {
+      source                = "hashicorp/aws"
+      configuration_aliases = [aws.route53-alarms]
+    }
+  }
 }
-
