@@ -468,7 +468,7 @@ resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
           "value": "${var.Env-Name}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
-          "value": "govwifi-${var.rack-env}-admin"
+          "value": "${var.admin-bucket-name}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
