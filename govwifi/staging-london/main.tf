@@ -1,6 +1,6 @@
 module "tfstate" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source             = "../../terraform-state"
@@ -37,7 +37,7 @@ terraform {
 }
 
 provider "aws" {
-  alias  = "AWS-main"
+  alias  = "main"
   region = var.aws-region
 }
 
@@ -48,7 +48,7 @@ provider "aws" {
 
 module "govwifi_keys" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source = "../../govwifi-keys"
@@ -66,7 +66,7 @@ module "govwifi_keys" {
 # London Backend ==================================================================
 module "backend" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
     # Instance-specific setup -------------------------------
   }
 
@@ -138,7 +138,7 @@ module "backend" {
 # London Frontend ==================================================================
 module "frontend" {
   providers = {
-    aws           = aws.AWS-main
+    aws           = aws.main
     aws.us_east_1 = aws.us_east_1
   }
 
@@ -201,7 +201,7 @@ module "frontend" {
 
 module "govwifi_admin" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source                    = "../../govwifi-admin"
@@ -258,7 +258,7 @@ module "govwifi_admin" {
 
 module "api" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source                    = "../../govwifi-api"
@@ -320,7 +320,7 @@ module "api" {
 
 module "notifications" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source = "../../sns-notification"
@@ -342,7 +342,7 @@ module "route53-notifications" {
 
 module "govwifi_dashboard" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source   = "../../govwifi-dashboard"
@@ -359,7 +359,7 @@ when we create a separate staging environment.
 */
 module "govwifi_prometheus" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source     = "../../govwifi-prometheus"
@@ -389,7 +389,7 @@ module "govwifi_prometheus" {
 
 module "govwifi_grafana" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source                     = "../../govwifi-grafana"
@@ -425,7 +425,7 @@ module "govwifi_grafana" {
 
 module "govwifi_elasticsearch" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source         = "../../govwifi-elasticsearch"
