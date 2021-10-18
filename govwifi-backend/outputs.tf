@@ -23,6 +23,6 @@ output "be-admin-in" {
 }
 
 output "vpc-cidr-block" {
-  value = var.vpc-cidr-block
+  value = var.vpc_cidr_block
 }
 

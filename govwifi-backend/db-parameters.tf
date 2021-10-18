@@ -1,16 +1,16 @@
 resource "aws_db_subnet_group" "db_subnets" {
-  name        = "wifi-${var.Env-Name}-subnets"
-  description = "GovWifi ${var.Env-Name} backend subnets"
+  name        = "wifi-${var.env_name}-subnets"
+  description = "GovWifi ${var.env_name} backend subnets"
   subnet_ids  = aws_subnet.wifi_backend_subnet.*.id
 
   tags = {
-    Name = "wifi-${var.Env-Name}-subnets"
+    Name = "wifi-${var.env_name}-subnets"
   }
 }
 
 resource "aws_db_parameter_group" "db_parameters" {
-  count       = var.db-instance-count
-  name        = "${var.Env-Name}-db-parameter-group"
+  count       = var.db_instance_count
+  name        = "${var.env_name}-db-parameter-group"
   family      = "mysql5.7"
   description = "DB parameter configuration"
 
@@ -35,13 +35,13 @@ resource "aws_db_parameter_group" "db_parameters" {
   }
 
   tags = {
-    Name = "${title(var.Env-Name)} DB parameter group"
+    Name = "${title(var.env_name)} DB parameter group"
   }
 }
 
 resource "aws_db_parameter_group" "user_db_parameters" {
-  count       = var.db-instance-count
-  name        = "${var.Env-Name}-user-db-parameter-group"
+  count       = var.db_instance_count
+  name        = "${var.env_name}-user-db-parameter-group"
   family      = "mysql8.0"
   description = "User DB parameter configuration"
 
@@ -66,12 +66,12 @@ resource "aws_db_parameter_group" "user_db_parameters" {
   }
 
   tags = {
-    Name = "${title(var.Env-Name)} User DB parameter group"
+    Name = "${title(var.env_name)} User DB parameter group"
   }
 }
 
 resource "aws_db_parameter_group" "rr_parameters" {
-  name = "${var.Env-Name}-rr-parameter-group"
+  name = "${var.env_name}-rr-parameter-group"
 
   family      = "mysql5.7"
   description = "DB read replica parameter configuration"
@@ -97,13 +97,13 @@ resource "aws_db_parameter_group" "rr_parameters" {
   }
 
   tags = {
-    Name = "${title(var.Env-Name)} DB read replica parameter group"
+    Name = "${title(var.env_name)} DB read replica parameter group"
   }
 }
 
 resource "aws_db_parameter_group" "user_rr_parameters" {
-  count = var.user-db-replica-count
-  name  = "${var.Env-Name}-user-rr-parameter-group"
+  count = var.user_db_replica_count
+  name  = "${var.env_name}-user-rr-parameter-group"
 
   family      = "mysql8.0"
   description = "DB read replica parameter configuration"
@@ -129,14 +129,14 @@ resource "aws_db_parameter_group" "user_rr_parameters" {
   }
 
   tags = {
-    Name = "${title(var.Env-Name)} User DB read replica parameter group"
+    Name = "${title(var.env_name)} User DB read replica parameter group"
   }
 }
 
 resource "aws_db_option_group" "mariadb_audit" {
   # No harm in keeping the parameter group even if there is DB instance currently
-  #count                    = "${var.db-instance-count}"
-  name = "${var.Env-Name}-db-audit"
+  #count                    = "${var.db_instance_count}"
+  name = "${var.env_name}-db-audit"
 
   option_group_description = "Mariadb audit configuration"
   engine_name              = "mysql"
@@ -147,12 +147,12 @@ resource "aws_db_option_group" "mariadb_audit" {
   }
 
   tags = {
-    Name = "${title(var.Env-Name)} DB Audit configuration"
+    Name = "${title(var.env_name)} DB Audit configuration"
   }
 }
 
 resource "aws_db_option_group" "user_mariadb_audit" {
-  count = var.db-instance-count
+  count = var.db_instance_count
   name  = "${var.env}-user-db-audit"
 
   option_group_description = "Mariadb audit configuration"

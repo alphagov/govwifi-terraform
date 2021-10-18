@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "user_db_cpu_alarm" {
-  count               = var.db-instance-count
+  count               = var.db_instance_count
   alarm_name          = "${var.env}-user-db-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -14,12 +14,12 @@ resource "aws_cloudwatch_metric_alarm" "user_db_cpu_alarm" {
   }
 
   alarm_description  = "Database CPU utilization exceeding threshold. Investigate database logs for root cause."
-  alarm_actions      = [var.critical-notifications-arn]
+  alarm_actions      = [var.critical_notifications_arn]
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_db_memory" {
-  count               = var.db-instance-count
+  count               = var.db_instance_count
   alarm_name          = "${var.env}-user-db-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -34,12 +34,12 @@ resource "aws_cloudwatch_metric_alarm" "user_db_memory" {
   }
 
   alarm_description  = "Database is running low on free memory. Investigate database logs for root cause."
-  alarm_actions      = [var.critical-notifications-arn]
+  alarm_actions      = [var.critical_notifications_arn]
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_db_storage" {
-  count               = var.db-instance-count
+  count               = var.db_instance_count
   alarm_name          = "${var.env}-user-db-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -47,7 +47,7 @@ resource "aws_cloudwatch_metric_alarm" "user_db_storage" {
   namespace           = "AWS/RDS"
   period              = "60"
   statistic           = "Minimum"
-  threshold           = var.db-storage-alarm-threshold
+  threshold           = var.db_storage_alarm_threshold
   datapoints_to_alarm = "1"
 
   dimensions = {
@@ -55,12 +55,12 @@ resource "aws_cloudwatch_metric_alarm" "user_db_storage" {
   }
 
   alarm_description  = "Database is running low on free storage space. Investigate database logs for root cause."
-  alarm_actions      = [var.capacity-notifications-arn]
+  alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_rr_burst_balance" {
-  count               = var.user-db-replica-count
+  count               = var.user_db_replica_count
   alarm_name          = "${var.env}-user-rr-burstbalanace-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -75,12 +75,12 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_burst_balance" {
   }
 
   alarm_description  = "Read replica database's available IOPS burst balance is running low. Investigate disk usage on the RDS instance."
-  alarm_actions      = [var.capacity-notifications-arn]
+  alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "missing"
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_rr_lagging" {
-  count               = var.user-db-replica-count
+  count               = var.user_db_replica_count
   alarm_name          = "${var.env}-user-rr-lagging-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
@@ -95,12 +95,12 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_lagging" {
   }
 
   alarm_description  = "Read replica database replication lag exceeding threshold. Investigate connections to the primary database."
-  alarm_actions      = [var.capacity-notifications-arn]
+  alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_rr_cpu" {
-  count               = var.user-db-replica-count
+  count               = var.user_db_replica_count
   alarm_name          = "${var.env}-user-rr-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -115,12 +115,12 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_cpu" {
   }
 
   alarm_description  = "Read replica database CPU utilization exceeding threshold. Investigate database logs for root cause."
-  alarm_actions      = [var.capacity-notifications-arn]
+  alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_rr_memory" {
-  count               = var.user-db-replica-count
+  count               = var.user_db_replica_count
   alarm_name          = "${var.env}-user-rr-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -135,12 +135,12 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_memory" {
   }
 
   alarm_description  = "Read replica database is running low on free memory. Investigate database logs for root cause."
-  alarm_actions      = [var.capacity-notifications-arn]
+  alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_rr_storage" {
-  count               = var.user-db-replica-count
+  count               = var.user_db_replica_count
   alarm_name          = "${var.env}-user-rr-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
@@ -156,7 +156,7 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_storage" {
   }
 
   alarm_description  = "Read replica database is running low on free storage space. Investigate database logs for root cause."
-  alarm_actions      = [var.capacity-notifications-arn]
+  alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "breaching"
 }
 

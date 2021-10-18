@@ -1,127 +1,127 @@
-variable "Env-Name" {
+variable "env_name" {
 }
 
 variable "env" {
 }
 
-variable "Env-Subdomain" {
+variable "env_subdomain" {
 }
 
-variable "route53-zone-id" {
+variable "route53_zone_id" {
 }
 
-variable "vpc-cidr-block" {
+variable "vpc_cidr_block" {
 }
 
-variable "aws-account-id" {
+variable "aws_account_id" {
 }
 
-variable "aws-region" {
+variable "aws_region" {
 }
 
-variable "aws-region-name" {
+variable "aws_region_name" {
 }
 
 variable "administrator_ips" {
 }
 
-variable "frontend-radius-IPs" {
+variable "frontend_radius_ips" {
 }
 
-variable "zone-count" {
+variable "zone_count" {
 }
 
-variable "zone-names" {
+variable "zone_names" {
   type = map(string)
 }
 
-variable "zone-subnets" {
+variable "zone_subnets" {
   type = map(string)
 }
 
-variable "enable-bastion" {
+variable "enable_bastion" {
   default = 1
 }
 
-variable "bastion-ami" {
+variable "bastion_ami" {
 }
 
-variable "bastion-instance-type" {
+variable "bastion_instance_type" {
 }
 
-variable "bastion-server-ip" {
+variable "bastion_server_ip" {
 }
 
-variable "bastion-ssh-key-name" {
+variable "bastion_ssh_key_name" {
 }
 
-variable "user-db-hostname" {
+variable "user_db_hostname" {
 }
 
-variable "user-rr-hostname" {
+variable "user_rr_hostname" {
 }
 
-variable "db-instance-count" {
+variable "db_instance_count" {
 }
 
-variable "db-replica-count" {
+variable "db_replica_count" {
 }
 
-variable "user-db-replica-count" {
+variable "user_db_replica_count" {
   default = 0
 }
 
-variable "db-backup-retention-days" {
+variable "db_backup_retention_days" {
 }
 
-variable "db-encrypt-at-rest" {
+variable "db_encrypt_at_rest" {
 }
 
-variable "session-db-instance-type" {
+variable "session_db_instance_type" {
 }
 
-variable "user-db-instance-type" {
+variable "user_db_instance_type" {
 }
 
-variable "db-monitoring-interval" {
+variable "db_monitoring_interval" {
 }
 
-variable "session-db-storage-gb" {
+variable "session_db_storage_gb" {
 }
 
-variable "user-db-storage-gb" {
+variable "user_db_storage_gb" {
 }
 
-variable "db-maintenance-window" {
+variable "db_maintenance_window" {
 }
 
-variable "db-backup-window" {
+variable "db_backup_window" {
 }
 
-variable "rr-instance-type" {
+variable "rr_instance_type" {
 }
 
-variable "rr-storage-gb" {
+variable "rr_storage_gb" {
 }
 
-variable "user-rr-instance-type" {
+variable "user_rr_instance_type" {
   default = "db.t2.medium"
 }
 
-variable "critical-notifications-arn" {
+variable "critical_notifications_arn" {
 }
 
-variable "capacity-notifications-arn" {
+variable "capacity_notifications_arn" {
 }
 
-variable "enable-bastion-monitoring" {
+variable "enable_bastion_monitoring" {
 }
 
 variable "users" {
   type = list(string)
 }
 
-variable "user-replica-source-db" {
+variable "user_replica_source_db" {
   type    = string
   default = ""
 }
@@ -144,7 +144,7 @@ variable "backup_mysql_rds" {
   type        = bool
 }
 
-variable "db-storage-alarm-threshold" {
+variable "db_storage_alarm_threshold" {
   description = "DB storage threshold used for alarms. Value varies based on environment and storage average."
   type        = number
 }

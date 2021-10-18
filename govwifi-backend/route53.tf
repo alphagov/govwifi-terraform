@@ -3,9 +3,9 @@
 
 # CNAME for the database for this environment
 resource "aws_route53_record" "db" {
-  count   = var.db-instance-count
-  zone_id = var.route53-zone-id
-  name    = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+  count   = var.db_instance_count
+  zone_id = var.route53_zone_id
+  name    = "db.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk"
   type    = "CNAME"
   ttl     = "300"
   records = [aws_db_instance.db[0].address]
@@ -13,27 +13,27 @@ resource "aws_route53_record" "db" {
 
 # CNAME for the DB read replica for this environment
 resource "aws_route53_record" "rr" {
-  count   = var.db-replica-count
-  zone_id = var.route53-zone-id
-  name    = "rr.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+  count   = var.db_replica_count
+  zone_id = var.route53_zone_id
+  name    = "rr.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk"
   type    = "CNAME"
   ttl     = "300"
   records = [aws_db_instance.read_replica[0].address]
 }
 
 resource "aws_route53_record" "users_db" {
-  count   = var.db-instance-count
-  zone_id = var.route53-zone-id
-  name    = var.user-db-hostname
+  count   = var.db_instance_count
+  zone_id = var.route53_zone_id
+  name    = var.user_db_hostname
   type    = "CNAME"
   ttl     = "300"
   records = [aws_db_instance.users_db[0].address]
 }
 
 resource "aws_route53_record" "users_rr" {
-  count   = var.user-db-replica-count
-  zone_id = var.route53-zone-id
-  name    = var.user-rr-hostname
+  count   = var.user_db_replica_count
+  zone_id = var.route53_zone_id
+  name    = var.user_rr_hostname
   type    = "CNAME"
   ttl     = "300"
   records = [aws_db_instance.users_read_replica[0].address]

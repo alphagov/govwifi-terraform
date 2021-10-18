@@ -71,58 +71,58 @@ module "backend" {
 
   source                    = "../../govwifi-backend"
   env                       = "staging"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
+  env_name                  = var.Env-Name
+  env_subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
   # AWS VPC setup -----------------------------------------
-  aws-region      = var.aws-region
-  route53-zone-id = local.route53_zone_id
-  aws-region-name = var.aws-region-name
-  vpc-cidr-block  = "10.103.0.0/16"
-  zone-count      = var.zone-count
-  zone-names      = var.zone-names
+  aws_region      = var.aws-region
+  route53_zone_id = local.route53_zone_id
+  aws_region_name = var.aws-region-name
+  vpc_cidr_block  = "10.103.0.0/16"
+  zone_count      = var.zone-count
+  zone_names      = var.zone-names
 
-  zone-subnets = {
+  zone_subnets = {
     zone0 = "10.103.1.0/24"
     zone1 = "10.103.2.0/24"
     zone2 = "10.103.3.0/24"
   }
 
   administrator_ips   = var.administrator_ips
-  frontend-radius-IPs = local.frontend_radius_ips
+  frontend_radius_ips = local.frontend_radius_ips
 
   # eu-west-2, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
   #  bastion-ami                = "ami-ae6d81c9"
   # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS
-  bastion-ami                = "ami-096cb92bb3580c759"
-  bastion-instance-type      = "t2.micro"
-  bastion-server-ip          = var.bastion_server_ip
-  bastion-ssh-key-name       = "govwifi-staging-bastion-key-20181025"
-  enable-bastion-monitoring  = false
+  bastion_ami                = "ami-096cb92bb3580c759"
+  bastion_instance_type      = "t2.micro"
+  bastion_server_ip          = var.bastion_server_ip
+  bastion_ssh_key_name       = "govwifi-staging-bastion-key-20181025"
+  enable_bastion_monitoring  = false
   users                      = var.users
-  aws-account-id             = local.aws_account_id
-  db-instance-count          = 1
-  session-db-instance-type   = "db.t2.small"
-  session-db-storage-gb      = 20
-  db-backup-retention-days   = 1
-  db-encrypt-at-rest         = true
-  db-maintenance-window      = "sat:01:42-sat:02:12"
-  db-backup-window           = "04:42-05:42"
-  db-replica-count           = 0
-  rr-instance-type           = "db.t2.large"
-  rr-storage-gb              = 200
-  user-rr-hostname           = var.user-rr-hostname
-  critical-notifications-arn = module.notifications.topic-arn
-  capacity-notifications-arn = module.notifications.topic-arn
+  aws_account_id             = local.aws_account_id
+  db_instance_count          = 1
+  session_db_instance_type   = "db.t2.small"
+  session_db_storage_gb      = 20
+  db_backup_retention_days   = 1
+  db_encrypt_at_rest         = true
+  db_maintenance_window      = "sat:01:42-sat:02:12"
+  db_backup_window           = "04:42-05:42"
+  db_replica_count           = 0
+  rr_instance_type           = "db.t2.large"
+  rr_storage_gb              = 200
+  user_rr_hostname           = var.user-rr-hostname
+  critical_notifications_arn = module.notifications.topic-arn
+  capacity_notifications_arn = module.notifications.topic-arn
 
   # Seconds. Set to zero to disable monitoring
-  db-monitoring-interval = 60
+  db_monitoring_interval = 60
 
   # Passed to application
-  user-db-hostname      = var.user-db-hostname
-  user-db-instance-type = "db.t2.small"
-  user-db-storage-gb    = 20
+  user_db_hostname      = var.user-db-hostname
+  user_db_instance_type = "db.t2.small"
+  user_db_storage_gb    = 20
 
   prometheus_ip_london  = var.prometheus_ip_london
   prometheus_ip_ireland = var.prometheus_ip_ireland
@@ -131,7 +131,7 @@ module "backend" {
   use_env_prefix   = var.use_env_prefix
   backup_mysql_rds = var.backup_mysql_rds
 
-  db-storage-alarm-threshold = 19327342936
+  db_storage_alarm_threshold = 19327342936
 }
 
 # London Frontend ==================================================================
