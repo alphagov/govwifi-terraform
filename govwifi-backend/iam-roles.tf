@@ -1,5 +1,5 @@
 resource "aws_iam_role_policy" "ecs_instance_policy" {
-  name = "${var.aws-region-name}-ecs-instance-policy-${var.Env-Name}"
+  name = "${var.aws_region_name}-ecs-instance-policy-${var.env_name}"
   role = aws_iam_role.ecs_instance_role.id
 
   policy = <<EOF
@@ -52,7 +52,7 @@ EOF
 }
 
 resource "aws_iam_role" "ecs_instance_role" {
-  name = "${var.aws-region-name}-ecs-instance-role-${var.Env-Name}"
+  name = "${var.aws_region_name}-ecs-instance-role-${var.env_name}"
 
   assume_role_policy = <<EOF
 {
@@ -73,12 +73,12 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "ecs_instance_profile" {
-  name = "${var.aws-region-name}-ecs-instance-profile-${var.Env-Name}"
+  name = "${var.aws_region_name}-ecs-instance-profile-${var.env_name}"
   role = aws_iam_role.ecs_instance_role.name
 }
 
 resource "aws_iam_role_policy" "ecs_service_policy" {
-  name = "${var.aws-region-name}-ecs-service-policy-${var.Env-Name}"
+  name = "${var.aws_region_name}-ecs-service-policy-${var.env_name}"
   role = aws_iam_role.ecs_service_role.id
 
   policy = <<EOF
@@ -103,7 +103,7 @@ resource "aws_iam_role_policy" "ecs_service_policy" {
         "elasticloadbalancing:DeregisterTargets"
       ],
       "Resource": [
-        "arn:aws:elasticloadbalancing:${var.aws-region}:${var.aws-account-id}:loadbalancer/wifi-backend-elb-${var.Env-Name}",
+        "arn:aws:elasticloadbalancing:${var.aws_region}:${var.aws_account_id}:loadbalancer/wifi-backend-elb-${var.env_name}",
         "*"
       ]
     }
@@ -114,7 +114,7 @@ EOF
 }
 
 resource "aws_iam_role" "ecs_service_role" {
-  name = "${var.aws-region-name}-ecs-service-role-${var.Env-Name}"
+  name = "${var.aws_region_name}-ecs-service-role-${var.env_name}"
 
   assume_role_policy = <<EOF
 {
@@ -135,7 +135,7 @@ EOF
 }
 
 resource "aws_iam_role" "rds_monitoring_role" {
-  name = "${var.aws-region-name}-${var.Env-Name}-rds-monitoring-role"
+  name = "${var.aws_region_name}-${var.env_name}-rds-monitoring-role"
 
   assume_role_policy = <<EOF
 {
@@ -157,7 +157,7 @@ EOF
 
 resource "aws_iam_role_policy" "rds_monitoring_policy" {
   depends_on = [aws_iam_role.rds_monitoring_role]
-  name       = "${var.aws-region-name}-${var.Env-Name}-rds-monitoring-policy"
+  name       = "${var.aws_region_name}-${var.env_name}-rds-monitoring-policy"
   role       = aws_iam_role.rds_monitoring_role.name
 
   policy = <<EOF

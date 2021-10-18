@@ -54,77 +54,77 @@ module "backend" {
 
   source                    = "../../govwifi-backend"
   env                       = "staging"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
+  env_name                  = var.Env-Name
+  env_subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
 
   # AWS VPC setup -----------------------------------------
-  aws-region      = var.aws-region
-  route53-zone-id = local.route53_zone_id
-  aws-region-name = var.aws-region-name
-  vpc-cidr-block  = "10.104.0.0/16"
-  zone-count      = var.zone-count
-  zone-names      = var.zone-names
+  aws_region      = var.aws-region
+  route53_zone_id = local.route53_zone_id
+  aws_region_name = var.aws-region-name
+  vpc_cidr_block  = "10.104.0.0/16"
+  zone_count      = var.zone-count
+  zone_names      = var.zone-names
 
-  zone-subnets = {
+  zone_subnets = {
     zone0 = "10.104.1.0/24"
     zone1 = "10.104.2.0/24"
     zone2 = "10.104.3.0/24"
   }
 
   administrator_ips   = var.administrator_ips
-  frontend-radius-IPs = local.frontend_radius_ips
+  frontend_radius_ips = local.frontend_radius_ips
 
   # Instance-specific setup -------------------------------
   # eu-west-1, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
-  enable-bastion = 0
+  enable_bastion = 0
   #bastion-ami = "ami-51d3e928"
   # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS
-  bastion-ami = "ami-08bac620dc84221eb"
+  bastion_ami = "ami-08bac620dc84221eb"
 
-  bastion-instance-type     = "t2.micro"
-  bastion-server-ip         = var.bastion_server_ip
-  bastion-ssh-key-name      = "staging-temp-bastion-20200717"
-  enable-bastion-monitoring = false
+  bastion_instance_type     = "t2.micro"
+  bastion_server_ip         = var.bastion_server_ip
+  bastion_ssh_key_name      = "staging-temp-bastion-20200717"
+  enable_bastion_monitoring = false
   users                     = var.users
-  aws-account-id            = local.aws_account_id
+  aws_account_id            = local.aws_account_id
 
-  db-encrypt-at-rest       = true
-  db-maintenance-window    = "sat:00:42-sat:01:12"
-  db-backup-window         = "03:42-04:42"
-  db-backup-retention-days = 1
+  db_encrypt_at_rest       = true
+  db_maintenance_window    = "sat:00:42-sat:01:12"
+  db_backup_window         = "03:42-04:42"
+  db_backup_retention_days = 1
 
-  db-instance-count        = 0
-  session-db-instance-type = ""
-  session-db-storage-gb    = 0
+  db_instance_count        = 0
+  session_db_instance_type = ""
+  session_db_storage_gb    = 0
 
-  db-replica-count = 0
-  rr-instance-type = ""
-  rr-storage-gb    = 0
+  db_replica_count = 0
+  rr_instance_type = ""
+  rr_storage_gb    = 0
 
-  user-db-replica-count  = 1
-  user-replica-source-db = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-staging-user-db"
-  user-rr-instance-type  = "db.t2.small"
+  user_db_replica_count  = 1
+  user_replica_source_db = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-staging-user-db"
+  user_rr_instance_type  = "db.t2.small"
 
-  user-rr-hostname           = var.user-rr-hostname
-  critical-notifications-arn = module.notifications.topic-arn
-  capacity-notifications-arn = module.notifications.topic-arn
+  user_rr_hostname           = var.user-rr-hostname
+  critical_notifications_arn = module.notifications.topic-arn
+  capacity_notifications_arn = module.notifications.topic-arn
 
   # Seconds. Set to zero to disable monitoring
-  db-monitoring-interval = 60
+  db_monitoring_interval = 60
 
   # Passed to application
-  user-db-hostname      = ""
-  user-db-instance-type = ""
-  user-db-storage-gb    = 0
+  user_db_hostname      = ""
+  user_db_instance_type = ""
+  user_db_storage_gb    = 0
   prometheus_ip_london  = var.prometheus_ip_london
   prometheus_ip_ireland = var.prometheus_ip_ireland
   grafana_ip            = var.grafana_ip
 
   use_env_prefix = var.use_env_prefix
 
-  db-storage-alarm-threshold = 19327342936
+  db_storage_alarm_threshold = 19327342936
 }
 
 # Emails ======================================================================

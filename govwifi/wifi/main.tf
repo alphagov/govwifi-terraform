@@ -71,72 +71,72 @@ module "backend" {
 
   source                    = "../../govwifi-backend"
   env                       = "production"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
+  env_name                  = var.Env-Name
+  env_subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
 
   # AWS VPC setup -----------------------------------------
-  aws-region      = var.aws-region
-  aws-region-name = var.aws-region-name
-  route53-zone-id = local.route53_zone_id
-  vpc-cidr-block  = "10.42.0.0/16"
-  zone-count      = var.zone-count
-  zone-names      = var.zone-names
+  aws_region      = var.aws-region
+  aws_region_name = var.aws-region-name
+  route53_zone_id = local.route53_zone_id
+  vpc_cidr_block  = "10.42.0.0/16"
+  zone_count      = var.zone-count
+  zone_names      = var.zone-names
 
-  zone-subnets = {
+  zone_subnets = {
     zone0 = "10.42.1.0/24"
     zone1 = "10.42.2.0/24"
     zone2 = "10.42.3.0/24"
   }
 
   administrator_ips   = var.administrator_ips
-  frontend-radius-IPs = local.frontend_radius_ips
+  frontend_radius_ips = local.frontend_radius_ips
 
   # Instance-specific setup -------------------------------
   # eu-west-1, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
   # bastion-ami = "ami-51d3e928"
   # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS
-  bastion-ami               = "ami-08bac620dc84221eb"
-  bastion-instance-type     = "t2.micro"
-  bastion-server-ip         = var.bastion_server_ip
-  bastion-ssh-key-name      = "govwifi-bastion-key-20210630"
-  enable-bastion-monitoring = true
+  bastion_ami               = "ami-08bac620dc84221eb"
+  bastion_instance_type     = "t2.micro"
+  bastion_server_ip         = var.bastion_server_ip
+  bastion_ssh_key_name      = "govwifi-bastion-key-20210630"
+  enable_bastion_monitoring = true
   users                     = var.users
-  aws-account-id            = local.aws_account_id
+  aws_account_id            = local.aws_account_id
 
-  db-instance-count        = 0
-  session-db-instance-type = "db.m4.xlarge"
-  session-db-storage-gb    = 1000
-  db-backup-retention-days = 7
-  db-encrypt-at-rest       = true
-  db-maintenance-window    = "wed:01:42-wed:02:12"
-  db-backup-window         = "04:42-05:42"
+  db_instance_count        = 0
+  session_db_instance_type = "db.m4.xlarge"
+  session_db_storage_gb    = 1000
+  db_backup_retention_days = 7
+  db_encrypt_at_rest       = true
+  db_maintenance_window    = "wed:01:42-wed:02:12"
+  db_backup_window         = "04:42-05:42"
 
-  db-replica-count      = 0
-  user-db-replica-count = 1
-  rr-instance-type      = "db.m3.medium"
-  rr-storage-gb         = 1000
+  db_replica_count      = 0
+  user_db_replica_count = 1
+  rr_instance_type      = "db.m3.medium"
+  rr_storage_gb         = 1000
 
-  critical-notifications-arn = module.critical-notifications.topic-arn
-  capacity-notifications-arn = module.capacity-notifications.topic-arn
-  user-replica-source-db     = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-production-user-db"
+  critical_notifications_arn = module.critical-notifications.topic-arn
+  capacity_notifications_arn = module.capacity-notifications.topic-arn
+  user_replica_source_db     = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-production-user-db"
 
   # Seconds. Set to zero to disable monitoring
-  db-monitoring-interval = 60
+  db_monitoring_interval = 60
 
   # Passed to application
-  user-db-instance-type = "db.t2.medium"
-  user-db-hostname      = var.user-db-hostname
-  user-db-storage-gb    = 20
-  user-rr-hostname      = var.user-rr-hostname
+  user_db_instance_type = "db.t2.medium"
+  user_db_hostname      = var.user-db-hostname
+  user_db_storage_gb    = 20
+  user_rr_hostname      = var.user-rr-hostname
   prometheus_ip_london  = var.prometheus_ip_london
   prometheus_ip_ireland = var.prometheus_ip_ireland
   grafana_ip            = var.grafana_ip
 
   use_env_prefix = var.use_env_prefix
 
-  db-storage-alarm-threshold = 32212254720
+  db_storage_alarm_threshold = 32212254720
 }
 
 # Emails ======================================================================

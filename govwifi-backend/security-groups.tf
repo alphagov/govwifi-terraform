@@ -4,7 +4,7 @@ resource "aws_security_group" "be_ecs_out" {
   vpc_id      = aws_vpc.wifi_backend.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Backend ECS out"
+    Name = "${title(var.env_name)} Backend ECS out"
   }
 
   egress {
@@ -32,14 +32,14 @@ resource "aws_security_group" "be_ecs_out" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = values(var.zone-subnets)
+    cidr_blocks = values(var.zone_subnets)
   }
 
   egress {
     from_port   = 11211
     to_port     = 11211
     protocol    = "tcp"
-    cidr_blocks = values(var.zone-subnets)
+    cidr_blocks = values(var.zone_subnets)
   }
 }
 
@@ -49,14 +49,14 @@ resource "aws_security_group" "be_db_in" {
   vpc_id      = aws_vpc.wifi_backend.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Backend DB in"
+    Name = "${title(var.env_name)} Backend DB in"
   }
 
   ingress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = values(var.zone-subnets)
+    cidr_blocks = values(var.zone_subnets)
   }
 }
 
@@ -66,14 +66,14 @@ resource "aws_security_group" "be_admin_in" {
   vpc_id      = aws_vpc.wifi_backend.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Backend Admin in"
+    Name = "${title(var.env_name)} Backend Admin in"
   }
 
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = distinct(concat(["${var.bastion-server-ip}/32"], values(var.zone-subnets)))
+    cidr_blocks = distinct(concat(["${var.bastion_server_ip}/32"], values(var.zone_subnets)))
   }
 }
 
@@ -83,7 +83,7 @@ resource "aws_security_group" "be_vpn_in" {
   vpc_id      = aws_vpc.wifi_backend.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Backend VPN in"
+    Name = "${title(var.env_name)} Backend VPN in"
   }
 
   ingress {
@@ -102,7 +102,7 @@ resource "aws_security_group" "be_vpn_out" {
   vpc_id      = aws_vpc.wifi_backend.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Backend VPN out"
+    Name = "${title(var.env_name)} Backend VPN out"
   }
 
   egress {
@@ -111,8 +111,8 @@ resource "aws_security_group" "be_vpn_out" {
     protocol  = "tcp"
 
     cidr_blocks = distinct(concat(
-      values(var.zone-subnets),
-      [for ip in var.frontend-radius-IPs : "${ip}/32"],
+      values(var.zone_subnets),
+      [for ip in var.frontend_radius_ips : "${ip}/32"],
       ["${var.prometheus_ip_ireland}/32"],
       ["${var.prometheus_ip_london}/32"],
       ["${var.grafana_ip}/32"],
@@ -126,21 +126,21 @@ resource "aws_security_group" "be_radius_api_in" {
   vpc_id      = aws_vpc.wifi_backend.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Backend RADIUS API in"
+    Name = "${title(var.env_name)} Backend RADIUS API in"
   }
 
   ingress {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = [for ip in var.frontend-radius-IPs : "${ip}/32"]
+    cidr_blocks = [for ip in var.frontend_radius_ips : "${ip}/32"]
   }
 
   ingress {
     from_port   = 8443
     to_port     = 8443
     protocol    = "tcp"
-    cidr_blocks = [for ip in var.frontend-radius-IPs : "${ip}/32"]
+    cidr_blocks = [for ip in var.frontend_radius_ips : "${ip}/32"]
   }
 }
 

@@ -1,9 +1,9 @@
 # Using custom ubuntu AMI id, as the micro size is only supported for paravirtual images.
 resource "aws_instance" "management" {
-  count         = var.enable-bastion
-  ami           = var.bastion-ami
-  instance_type = var.bastion-instance-type
-  key_name      = var.bastion-ssh-key-name
+  count         = var.enable_bastion
+  ami           = var.bastion_ami
+  instance_type = var.bastion_instance_type
+  key_name      = var.bastion_ssh_key_name
   subnet_id     = aws_subnet.wifi_backend_subnet[0].id
 
   vpc_security_group_ids = [
@@ -13,7 +13,7 @@ resource "aws_instance" "management" {
   ]
 
   iam_instance_profile = aws_iam_instance_profile.bastion_instance_profile[0].id
-  monitoring           = var.enable-bastion-monitoring
+  monitoring           = var.enable_bastion_monitoring
 
   depends_on = [aws_iam_instance_profile.bastion_instance_profile]
 
@@ -113,30 +113,30 @@ state_file = /var/awslogs/state/agent-state
 
 [/var/log/syslog]
 file = /var/log/syslog
-log_group_name = ${var.Env-Name}-bastion/var/log/syslog
+log_group_name = ${var.env_name}-bastion/var/log/syslog
 log_stream_name = {instance_id}
 datetime_format = %b %d %H:%M:%S
 
 [/var/log/auth.log]
 file = /var/log/auth.log
-log_group_name = ${var.Env-Name}-bastion/var/log/auth.log
+log_group_name = ${var.env_name}-bastion/var/log/auth.log
 log_stream_name = {instance_id}
 datetime_format = %b %d %H:%M:%S
 
 [/var/log/dmesg]
 file = /var/log/dmesg
-log_group_name = ${var.Env-Name}-bastion/var/log/dmesg
+log_group_name = ${var.env_name}-bastion/var/log/dmesg
 log_stream_name = {instance_id}
 
 [/var/log/unattended-upgrades/unattended-upgrades.log]
 file = /var/log/unattended-upgrades/unattended-upgrades.log
-log_group_name = ${var.Env-Name}-bastion/var/log/unattended-upgrades/unattended-upgrades.log
+log_group_name = ${var.env_name}-bastion/var/log/unattended-upgrades/unattended-upgrades.log
 log_stream_name = {instance_id}
 datetime_format = %Y-%m-%d %H:%M:%S
 
 [/var/log/cloud-init-output.log]
 file = /var/log/cloud-init-output.log
-log_group_name = ${var.Env-Name}-bastion/var/log/cloud-init-output.log
+log_group_name = ${var.env_name}-bastion/var/log/cloud-init-output.log
 log_stream_name = {instance_id}
 
 EOF
@@ -172,21 +172,21 @@ sudo make altinstall
 # Retrieve and run awslogs install script
 cd /
 run-until-success sudo curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
-sudo python$PYTHON_MAIN_VERSION ./awslogs-agent-setup.py -n -r ${var.aws-region} -c ./initial-awslogs.conf
+sudo python$PYTHON_MAIN_VERSION ./awslogs-agent-setup.py -n -r ${var.aws_region} -c ./initial-awslogs.conf
 
 --==BOUNDARY==--
 DATA
 
 
   tags = {
-    Name = "${title(var.Env-Name)} Bastion - backend (${aws_vpc.wifi_backend.id})"
-    Env  = title(var.Env-Name)
+    Name = "${title(var.env_name)} Bastion - backend (${aws_vpc.wifi_backend.id})"
+    Env  = title(var.env_name)
   }
 }
 
 resource "aws_iam_role" "bastion_instance_role" {
-  count = var.enable-bastion
-  name  = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-role"
+  count = var.enable_bastion
+  name  = "${var.aws_region_name}-${var.env_name}-backend-bastion-instance-role"
 
   assume_role_policy = <<EOF
 {
@@ -207,8 +207,8 @@ EOF
 }
 
 resource "aws_iam_role_policy" "bastion_instance_policy" {
-  count      = var.enable-bastion
-  name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-policy"
+  count      = var.enable_bastion
+  name       = "${var.aws_region_name}-${var.env_name}-backend-bastion-instance-policy"
   role       = aws_iam_role.bastion_instance_role[0].id
   depends_on = [aws_iam_role.bastion_instance_role]
 
@@ -235,8 +235,8 @@ EOF
 }
 
 resource "aws_iam_role_policy" "bastion_instance_policy_pp" {
-  count = var.enable-bastion
-  name  = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-policy"
+  count = var.enable_bastion
+  name  = "${var.aws_region_name}-${var.env_name}-backend-bastion-instance-policy"
   role  = aws_iam_role.bastion_instance_role[0].id
   depends_on = [
     aws_iam_role.bastion_instance_role
@@ -265,21 +265,21 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "bastion_instance_profile" {
-  count      = var.enable-bastion
-  name       = "${var.aws-region-name}-${var.Env-Name}-backend-bastion-instance-profile"
+  count      = var.enable_bastion
+  name       = "${var.aws_region_name}-${var.env_name}-backend-bastion-instance-profile"
   role       = aws_iam_role.bastion_instance_role[0].name
   depends_on = [aws_iam_role.bastion_instance_role]
 }
 
 resource "aws_eip_association" "eip_assoc" {
-  count       = var.enable-bastion
+  count       = var.enable_bastion
   instance_id = aws_instance.management[0].id
-  public_ip   = var.bastion-server-ip
+  public_ip   = var.bastion_server_ip
 }
 
 resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
-  count               = var.enable-bastion
-  alarm_name          = "${lower(var.Env-Name)}-bastion-status-alarm"
+  count               = var.enable_bastion
+  alarm_name          = "${lower(var.env_name)}-bastion-status-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
   metric_name         = "StatusCheckFailed"
@@ -294,7 +294,7 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
   }
 
   alarm_description  = "This metric monitors the status of the bastion server."
-  alarm_actions      = [var.capacity-notifications-arn]
+  alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "breaching"
 }
 

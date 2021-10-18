@@ -83,61 +83,61 @@ module "backend" {
 
   source                    = "../../govwifi-backend"
   env                       = "production"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
+  env_name                  = var.Env-Name
+  env_subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
 
   # AWS VPC setup -----------------------------------------
-  aws-region      = var.aws-region
-  aws-region-name = var.aws-region-name
-  route53-zone-id = local.route53_zone_id
-  vpc-cidr-block  = "10.84.0.0/16"
-  zone-count      = var.zone-count
-  zone-names      = var.zone-names
+  aws_region      = var.aws-region
+  aws_region_name = var.aws-region-name
+  route53_zone_id = local.route53_zone_id
+  vpc_cidr_block  = "10.84.0.0/16"
+  zone_count      = var.zone-count
+  zone_names      = var.zone-names
 
-  zone-subnets = {
+  zone_subnets = {
     zone0 = "10.84.1.0/24"
     zone1 = "10.84.2.0/24"
     zone2 = "10.84.3.0/24"
   }
 
   administrator_ips   = var.administrator_ips
-  frontend-radius-IPs = local.frontend_radius_ips
+  frontend_radius_ips = local.frontend_radius_ips
 
   # eu-west-2, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
   #bastion-ami                = "ami-ae6d81c9"
   # eu-west-2, CIS Ubuntu Linux 20.04 LTS
-  bastion-ami                = "ami-096cb92bb3580c759"
-  bastion-instance-type      = "t2.micro"
-  bastion-server-ip          = var.bastion_server_ip
-  bastion-ssh-key-name       = "govwifi-bastion-key-20210630"
-  enable-bastion-monitoring  = true
+  bastion_ami                = "ami-096cb92bb3580c759"
+  bastion_instance_type      = "t2.micro"
+  bastion_server_ip          = var.bastion_server_ip
+  bastion_ssh_key_name       = "govwifi-bastion-key-20210630"
+  enable_bastion_monitoring  = true
   users                      = var.users
-  aws-account-id             = local.aws_account_id
-  db-instance-count          = 1
-  session-db-instance-type   = "db.m4.xlarge"
-  session-db-storage-gb      = 1000
-  db-backup-retention-days   = 7
-  db-encrypt-at-rest         = true
-  db-maintenance-window      = "wed:01:42-wed:02:12"
-  db-backup-window           = "03:05-04:05"
-  db-replica-count           = 1
-  rr-instance-type           = "db.m4.xlarge"
-  rr-storage-gb              = 1000
-  critical-notifications-arn = module.critical-notifications.topic-arn
-  capacity-notifications-arn = module.capacity-notifications.topic-arn
-  user-replica-source-db     = "wifi-production-user-db"
+  aws_account_id             = local.aws_account_id
+  db_instance_count          = 1
+  session_db_instance_type   = "db.m4.xlarge"
+  session_db_storage_gb      = 1000
+  db_backup_retention_days   = 7
+  db_encrypt_at_rest         = true
+  db_maintenance_window      = "wed:01:42-wed:02:12"
+  db_backup_window           = "03:05-04:05"
+  db_replica_count           = 1
+  rr_instance_type           = "db.m4.xlarge"
+  rr_storage_gb              = 1000
+  critical_notifications_arn = module.critical-notifications.topic-arn
+  capacity_notifications_arn = module.capacity-notifications.topic-arn
+  user_replica_source_db     = "wifi-production-user-db"
 
   # Seconds. Set to zero to disable monitoring
-  db-monitoring-interval = 60
+  db_monitoring_interval = 60
 
   # Passed to application
-  user-db-hostname      = var.user-db-hostname
-  user-rr-hostname      = var.user-rr-hostname
-  user-db-instance-type = "db.t2.medium"
-  user-db-storage-gb    = 1000
-  user-db-replica-count = 1
+  user_db_hostname      = var.user-db-hostname
+  user_rr_hostname      = var.user-rr-hostname
+  user_db_instance_type = "db.t2.medium"
+  user_db_storage_gb    = 1000
+  user_db_replica_count = 1
 
   prometheus_ip_london  = var.prometheus_ip_london
   prometheus_ip_ireland = var.prometheus_ip_ireland
@@ -146,7 +146,7 @@ module "backend" {
   use_env_prefix   = var.use_env_prefix
   backup_mysql_rds = var.backup_mysql_rds
 
-  db-storage-alarm-threshold = 32212254720
+  db_storage_alarm_threshold = 32212254720
 }
 
 # London Frontend ======DIFFERENT AWS REGION===================================
