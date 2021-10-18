@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
-  provider = aws.route53-alarms
+  provider = aws.us_east_1
   count    = var.radius-instance-count
   alarm_name = "${element(
     aws_route53_health_check.radius.*.reference_name,
@@ -33,7 +33,7 @@ resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
 # https://trello.com/c/Jsis2ZR1/1042-5-upgrade-the-terraform-aws-provider-to-a-more-recent-version
 #
 # resource "aws_cloudwatch_composite_alarm" "all_radius_servers_down" {
-#   provider = aws.route53-alarms
+#   provider = aws.us_east_1
 #   alarm_name = "${var.Env-Name} ${var.aws-region} All Radius servers down"
 
 #   alarm_actions = [var.pagerduty_notification_arn]
@@ -42,7 +42,7 @@ resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
 # }
 
 resource "aws_cloudwatch_metric_alarm" "radius_latency" {
-  provider = aws.route53-alarms
+  provider = aws.us_east_1
   count    = var.radius-instance-count
   alarm_name = "${element(
     aws_route53_health_check.radius.*.reference_name,

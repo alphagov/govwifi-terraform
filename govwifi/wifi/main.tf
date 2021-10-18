@@ -42,7 +42,7 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias  = "route53-alarms"
+  alias  = "us_east_1"
   region = "us-east-1"
 }
 
@@ -189,8 +189,8 @@ module "dns" {
 # Frontend ====================================================================
 module "frontend" {
   providers = {
-    aws                = aws.AWS-main
-    aws.route53-alarms = aws.route53-alarms
+    aws           = aws.AWS-main
+    aws.us_east_1 = aws.us_east_1
   }
 
   source                    = "../../govwifi-frontend"
@@ -340,7 +340,7 @@ module "devops-notifications" {
 
 module "route53-critical-notifications" {
   providers = {
-    aws = aws.route53-alarms
+    aws = aws.us_east_1
   }
 
   source = "../../sns-notification"
@@ -363,7 +363,7 @@ module "region_pagerduty" {
 # in this region
 module "us_east_1_pagerduty" {
   providers = {
-    aws = aws.route53-alarms
+    aws = aws.us_east_1
   }
 
   source = "../../govwifi-pagerduty-integration"
