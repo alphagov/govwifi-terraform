@@ -182,8 +182,9 @@ resource "aws_alb_listener_rule" "logging_api_lr" {
   }
 
   condition {
-    field  = "path-pattern"
-    values = ["/logging/*"]
+    path_pattern {
+      values = ["/logging/*"]
+    }
   }
 }
 

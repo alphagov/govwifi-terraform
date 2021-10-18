@@ -129,8 +129,9 @@ resource "aws_alb_listener_rule" "static" {
   }
 
   condition {
-    field  = "path-pattern"
-    values = ["/authorize/*"]
+    path_pattern {
+      values = ["/authorize/*"]
+    }
   }
 }
 
