@@ -19,7 +19,7 @@ resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
   }
 
   alarm_actions = [
-    var.route53-critical-notifications-arn,
+    var.us_east_1_critical_notifications_arn,
   ]
 
   alarm_description = "Route53 healthcheck request failed to authenticate via FreeRADIUS and Authentication API. Investigate CloudWatch logs for root cause."
@@ -61,7 +61,7 @@ resource "aws_cloudwatch_metric_alarm" "radius_latency" {
   }
 
   alarm_actions = [
-    var.route53-critical-notifications-arn,
+    var.us_east_1_critical_notifications_arn,
   ]
 
   alarm_description = "FreeRADIUS response rate is slow (greater than 1s). Investigate CloudWatch logs for root cause."
@@ -79,7 +79,7 @@ resource "aws_cloudwatch_metric_alarm" "radius_cannot_connect_to_api" {
   namespace           = aws_cloudwatch_log_metric_filter.radius_cannot_connect_to_api.metric_transformation[0].namespace
 
   alarm_actions = [
-    var.route53-critical-notifications-arn,
+    var.critical_notifications_arn,
   ]
 
   alarm_description = "FreeRADIUS cannot connect to the Logging and/or Authentication API. Investigate CloudWatch logs for root cause."

@@ -79,7 +79,11 @@ variable "create-ecr" {
 variable "bastion_server_ip" {
 }
 
-variable "route53-critical-notifications-arn" {
+variable "critical_notifications_arn" {
+  type = string
+}
+
+variable "us_east_1_critical_notifications_arn" {
   type = string
 }
 

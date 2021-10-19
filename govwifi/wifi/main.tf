@@ -235,7 +235,8 @@ module "frontend" {
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.dublin-api-base-url
 
-  route53-critical-notifications-arn = module.route53-critical-notifications.topic-arn
+  critical_notifications_arn           = module.critical-notifications.topic-arn
+  us_east_1_critical_notifications_arn = module.route53-critical-notifications.topic-arn
 
   bastion_server_ip = var.bastion_server_ip
 
