@@ -132,7 +132,7 @@ variable "wordlist-file-path" {
 variable "vpc-id" {
 }
 
-variable "admin-bucket-name" {
+variable "admin_app_data_s3_bucket_name" {
   default     = ""
   type        = string
   description = "Name of the admin S3 bucket"

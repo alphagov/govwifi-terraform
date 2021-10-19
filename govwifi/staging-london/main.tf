@@ -179,8 +179,7 @@ module "frontend" {
   raddb-docker-image    = format("%s/raddb:staging", local.docker_image_path)
   create-ecr            = 1
 
-  # admin bucket
-  admin-bucket-name = "govwifi-staging-admin"
+  admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
 
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.london-api-base-url
@@ -302,7 +301,9 @@ module "api" {
   user_signup_sentry_dsn    = var.user_signup_sentry_dsn
   logging_sentry_dsn        = var.logging_sentry_dsn
   subnet-ids                = module.backend.backend-subnet-ids
-  admin-bucket-name         = "govwifi-staging-admin"
+
+  admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
+
   user-signup-api-is-public = 1
 
   backend-sg-list = [

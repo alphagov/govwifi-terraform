@@ -45,6 +45,16 @@ provider "aws" {
   region = "us-east-1"
 }
 
+data "terraform_remote_state" "london" {
+  backend = "s3"
+
+  config = {
+    bucket = "govwifi-staging-london-tfstate"
+    key    = "london-tfstate"
+    region = "eu-west-2"
+  }
+}
+
 # Backend ==================================================================
 module "backend" {
   providers = {
@@ -208,8 +218,7 @@ module "frontend" {
   frontend-docker-image = format("%s/frontend:staging", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:staging", local.docker_image_path)
 
-  # admin bucket
-  admin-bucket-name = "govwifi-staging-admin"
+  admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
 
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.dublin-api-base-url
@@ -272,7 +281,8 @@ module "api" {
   authentication_sentry_dsn = var.auth_sentry_dsn
   safe_restart_sentry_dsn   = ""
   subnet-ids                = module.backend.backend-subnet-ids
-  admin-bucket-name         = ""
+
+  admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
 
   backend-sg-list = [
     module.backend.be-admin-in,

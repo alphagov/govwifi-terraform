@@ -1,5 +1,5 @@
 locals {
-  admin-bucket-arn = "arn:aws:s3:::${var.admin-bucket-name}"
+  admin_app_data_s3_bucket_arn = "arn:aws:s3:::${var.admin_app_data_s3_bucket_name}"
 }
 
 resource "aws_iam_role_policy" "ecs_instance_policy" {
@@ -159,8 +159,8 @@ data "aws_iam_policy_document" "admin_bucket_policy" {
     ]
 
     resources = [
-      local.admin-bucket-arn,
-      "${local.admin-bucket-arn}/*",
+      local.admin_app_data_s3_bucket_arn,
+      "${local.admin_app_data_s3_bucket_arn}/*",
     ]
   }
 }
