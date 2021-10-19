@@ -236,7 +236,6 @@ module "frontend" {
   auth-api-base-url    = var.dublin-api-base-url
 
   route53-critical-notifications-arn = module.route53-critical-notifications.topic-arn
-  devops-notifications-arn           = module.devops-notifications.topic-arn
 
   bastion_server_ip = var.bastion_server_ip
 

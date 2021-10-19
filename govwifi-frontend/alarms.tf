@@ -79,7 +79,7 @@ resource "aws_cloudwatch_metric_alarm" "radius_cannot_connect_to_api" {
   namespace           = aws_cloudwatch_log_metric_filter.radius_cannot_connect_to_api.metric_transformation[0].namespace
 
   alarm_actions = [
-    var.devops-notifications-arn,
+    var.route53-critical-notifications-arn,
   ]
 
   alarm_description = "FreeRADIUS cannot connect to the Logging and/or Authentication API. Investigate CloudWatch logs for root cause."
