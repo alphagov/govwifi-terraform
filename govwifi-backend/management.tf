@@ -281,7 +281,7 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
   count               = var.enable_bastion
   alarm_name          = "${lower(var.env_name)}-bastion-status-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "2"
+  evaluation_periods  = "3"
   metric_name         = "StatusCheckFailed"
   namespace           = "AWS/EC2"
   period              = "60"
