@@ -417,10 +417,6 @@ module "govwifi_prometheus" {
   london_radius_ip_addresses = var.london_radius_ip_addresses
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
 
-  # Feature toggle creating Prometheus server.
-  # Value defaults to 0 and should only be enabled (i.e., value = 1) in staging-london and wifi-london
-  create_prometheus_server = 1
-
   prometheus_ip = var.prometheus_ip_london
   grafana_ip    = var.grafana_ip
 }

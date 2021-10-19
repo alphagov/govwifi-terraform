@@ -45,7 +45,6 @@ data "template_file" "prometheus_startup" {
 # The element() function used in subnets wraps around when the index is over the number of elements
 # eg. in the 4th iteration the value returned will be the 1st, if there are only 3 elements in the list.
 resource "aws_instance" "prometheus_instance" {
-  count                   = var.create_prometheus_server
   ami                     = data.aws_ami.ubuntu.id
   instance_type           = "t2.small"
   key_name                = var.ssh-key-name
@@ -77,7 +76,6 @@ resource "aws_instance" "prometheus_instance" {
 }
 
 resource "aws_ebs_volume" "prometheus_ebs" {
-  count             = var.create_prometheus_server
   size              = 40
   encrypted         = true
   availability_zone = "${var.aws-region}a"
@@ -88,17 +86,15 @@ resource "aws_ebs_volume" "prometheus_ebs" {
 }
 
 resource "aws_volume_attachment" "prometheus_ebs_attach" {
-  count       = var.create_prometheus_server
   depends_on  = [aws_ebs_volume.prometheus_ebs]
   device_name = "/dev/xvdp"
-  volume_id   = aws_ebs_volume.prometheus_ebs[0].id
-  instance_id = aws_instance.prometheus_instance[0].id
+  volume_id   = aws_ebs_volume.prometheus_ebs.id
+  instance_id = aws_instance.prometheus_instance.id
 }
 
 resource "aws_eip_association" "prometheus_eip_assoc" {
-  count       = var.create_prometheus_server
   depends_on  = [aws_instance.prometheus_instance]
-  instance_id = aws_instance.prometheus_instance[0].id
+  instance_id = aws_instance.prometheus_instance.id
   public_ip   = var.prometheus_ip
 }
 
