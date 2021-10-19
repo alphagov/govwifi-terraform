@@ -189,7 +189,6 @@ module "frontend" {
 
   # This must be based on us-east-1, as that's where the alarms go
   route53-critical-notifications-arn = module.route53-notifications.topic-arn
-  devops-notifications-arn           = module.notifications.topic-arn
 
   bastion_server_ip = var.bastion_server_ip
 

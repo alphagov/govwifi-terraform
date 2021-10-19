@@ -83,10 +83,6 @@ variable "route53-critical-notifications-arn" {
   type = string
 }
 
-variable "devops-notifications-arn" {
-  type = string
-}
-
 variable "admin-bucket-name" {
   type = string
 }
