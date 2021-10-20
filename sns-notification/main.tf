@@ -1,5 +1,5 @@
 resource "aws_sns_topic" "this" {
-  name = var.topic-name
+  name = var.topic_name
 }
 
 data "template_file" "email_subscription" {
@@ -11,7 +11,7 @@ data "template_file" "email_subscription" {
     topic_arn = aws_sns_topic.this.arn
     # Name must be alphanumeric, unique, but also consistent based on the email address.
     # It also needs to stay under 255 characters.
-    name = sha256("${var.topic-name}-${element(var.emails, count.index)}")
+    name = sha256("${var.topic_name}-${element(var.emails, count.index)}")
   }
 
   template = <<-STACK
@@ -29,7 +29,7 @@ STACK
 
 resource "aws_cloudformation_stack" "email" {
   count = local.enable-emails
-  name  = "${var.topic-name}-subscriptions"
+  name  = "${var.topic_name}-subscriptions"
 
   template_body = <<-STACK
   {
