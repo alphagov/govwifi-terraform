@@ -1,5 +1,5 @@
 resource "aws_ses_receipt_rule" "user_signup_rule" {
-  name          = "${var.Env-Name}-user-signup-rule"
+  name          = "${var.env_name}-user-signup-rule"
   rule_set_name = "GovWifiRuleSet"
   enabled       = true
   scan_enabled  = true
@@ -10,14 +10,14 @@ resource "aws_ses_receipt_rule" "user_signup_rule" {
   ]
 
   recipients = [
-    "enrol@${var.Env-Subdomain}.service.gov.uk",
-    "enroll@${var.Env-Subdomain}.service.gov.uk",
-    "signup@${var.Env-Subdomain}.service.gov.uk",
-    "sponsor@${var.Env-Subdomain}.service.gov.uk",
+    "enrol@${var.env_subdomain}.service.gov.uk",
+    "enroll@${var.env_subdomain}.service.gov.uk",
+    "signup@${var.env_subdomain}.service.gov.uk",
+    "sponsor@${var.env_subdomain}.service.gov.uk",
   ]
 
   s3_action {
-    bucket_name = "${var.Env-Name}-emailbucket"
+    bucket_name = "${var.env_name}-emailbucket"
     topic_arn   = aws_sns_topic.user_signup_notifications.arn
     position    = 1
   }
@@ -29,11 +29,11 @@ resource "aws_ses_receipt_rule" "user_signup_rule" {
 }
 
 resource "aws_ses_receipt_rule" "all_mail_rule" {
-  name          = "${var.Env-Name}-all-mail-rule"
+  name          = "${var.env_name}-all-mail-rule"
   rule_set_name = "GovWifiRuleSet"
   enabled       = true
   scan_enabled  = true
-  after         = "${var.Env-Name}-user-signup-rule"
+  after         = "${var.env_name}-user-signup-rule"
 
   depends_on = [
     aws_sns_topic.govwifi_email_notifications,
@@ -42,22 +42,22 @@ resource "aws_ses_receipt_rule" "all_mail_rule" {
   ]
 
   recipients = [
-    "verify@${var.Env-Subdomain}.service.gov.uk",
+    "verify@${var.env_subdomain}.service.gov.uk",
   ]
 
   s3_action {
-    bucket_name = "${var.Env-Name}-emailbucket"
+    bucket_name = "${var.env_name}-emailbucket"
     topic_arn   = aws_sns_topic.govwifi_email_notifications.arn
     position    = 1
   }
 }
 
 resource "aws_ses_receipt_rule" "newsite_mail_rule" {
-  name          = "${var.Env-Name}-newsite-mail-rule"
+  name          = "${var.env_name}-newsite-mail-rule"
   rule_set_name = "GovWifiRuleSet"
   enabled       = true
   scan_enabled  = true
-  after         = "${var.Env-Name}-all-mail-rule"
+  after         = "${var.env_name}-all-mail-rule"
 
   depends_on = [
     aws_sns_topic.govwifi_email_notifications,
@@ -66,21 +66,21 @@ resource "aws_ses_receipt_rule" "newsite_mail_rule" {
   ]
 
   recipients = [
-    "newsite@${var.Env-Subdomain}.service.gov.uk",
+    "newsite@${var.env_subdomain}.service.gov.uk",
   ]
 
   sns_action {
-    topic_arn = var.devops-notifications-arn
+    topic_arn = var.devops_notifications_arn
     position  = 1
   }
 }
 
 resource "aws_ses_receipt_rule" "admin_email_rule" {
-  name          = "${var.Env-Name}-admin-email-rule"
+  name          = "${var.env_name}-admin-email-rule"
   rule_set_name = "GovWifiRuleSet"
   enabled       = true
   scan_enabled  = true
-  after         = "${var.Env-Name}-newsite-mail-rule"
+  after         = "${var.env_name}-newsite-mail-rule"
 
   depends_on = [
     aws_s3_bucket.admin_emailbucket,
@@ -88,28 +88,28 @@ resource "aws_ses_receipt_rule" "admin_email_rule" {
   ]
 
   recipients = [
-    "admin@${var.Env-Subdomain}.service.gov.uk",
+    "admin@${var.env_subdomain}.service.gov.uk",
   ]
 
   s3_action {
-    bucket_name = "${var.Env-Name}-admin-emailbucket"
+    bucket_name = "${var.env_name}-admin-emailbucket"
     position    = 1
   }
 }
 
 resource "aws_ses_receipt_rule" "log_request_rule" {
-  name          = "${var.Env-Name}-log-request-rule"
+  name          = "${var.env_name}-log-request-rule"
   rule_set_name = "GovWifiRuleSet"
   enabled       = true
   scan_enabled  = true
-  after         = "${var.Env-Name}-admin-email-rule"
+  after         = "${var.env_name}-admin-email-rule"
 
   recipients = [
-    "logrequest@${var.Env-Subdomain}.service.gov.uk",
+    "logrequest@${var.env_subdomain}.service.gov.uk",
   ]
 
   sns_action {
-    topic_arn = var.devops-notifications-arn
+    topic_arn = var.devops_notifications_arn
     position  = 1
   }
 }

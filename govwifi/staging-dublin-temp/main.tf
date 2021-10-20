@@ -146,21 +146,21 @@ module "emails" {
   source = "../../govwifi-emails"
 
   is_production_aws_account = var.is_production_aws_account
-  product-name              = var.product-name
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
-  aws-account-id            = local.aws_account_id
-  route53-zone-id           = local.route53_zone_id
-  aws-region                = var.aws-region
-  aws-region-name           = var.aws-region-name
-  mail-exchange-server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
-  devops-notifications-arn  = module.notifications.topic-arn
+  product_name              = var.product-name
+  env_name                  = var.Env-Name
+  env_subdomain             = var.Env-Subdomain
+  aws_account_id            = local.aws_account_id
+  route53_zone_id           = local.route53_zone_id
+  aws_region                = var.aws-region
+  aws_region_name           = var.aws-region-name
+  mail_exchange_server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
+  devops_notifications_arn  = module.notifications.topic-arn
 
-  user-signup-notifications-endpoint = "https://user-signup-api.${var.Env-Subdomain}.service.gov.uk:8443/user-signup/email-notification"
+  user_signup_notifications_endpoint = "https://user-signup-api.${var.Env-Subdomain}.service.gov.uk:8443/user-signup/email-notification"
 
   // The SNS endpoint is disabled in the secondary AWS account
   // We will conduct an SNS inventory (see this card: https://trello.com/c/EMeet3tl/315-investigate-and-inventory-sns-topics)
-  sns-endpoint = ""
+  sns_endpoint = ""
 }
 
 module "govwifi_keys" {
