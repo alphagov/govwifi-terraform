@@ -2,7 +2,7 @@
 # Access logs
 # --------------------------------------------------------------
 
-resource "aws_iam_role" "accesslogs-replication" {
+resource "aws_iam_role" "accesslogs_replication" {
   name = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs-replication-role"
 
   assume_role_policy = <<POLICY
@@ -23,7 +23,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "accesslogs-replication" {
+resource "aws_iam_policy" "accesslogs_replication" {
   name = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-accesslogs-replication-policy"
 
   policy = <<EOF
@@ -37,7 +37,7 @@ resource "aws_iam_policy" "accesslogs-replication" {
       ],
       "Effect": "Allow",
       "Resource": [
-        "${aws_s3_bucket.accesslogs-bucket.arn}"
+        "${aws_s3_bucket.accesslogs_bucket.arn}"
       ]
     },
     {
@@ -47,7 +47,7 @@ resource "aws_iam_policy" "accesslogs-replication" {
       ],
       "Effect": "Allow",
       "Resource": [
-        "${aws_s3_bucket.accesslogs-bucket.arn}/*"
+        "${aws_s3_bucket.accesslogs_bucket.arn}/*"
       ]
     },
     {
@@ -64,13 +64,13 @@ EOF
 
 }
 
-resource "aws_iam_policy_attachment" "accesslogs-replication" {
+resource "aws_iam_policy_attachment" "accesslogs_replication" {
   name       = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-accesslogs-replication"
-  roles      = [aws_iam_role.accesslogs-replication.name]
-  policy_arn = aws_iam_policy.accesslogs-replication.arn
+  roles      = [aws_iam_role.accesslogs_replication.name]
+  policy_arn = aws_iam_policy.accesslogs_replication.arn
 }
 
-resource "aws_s3_bucket" "accesslogs-bucket" {
+resource "aws_s3_bucket" "accesslogs_bucket" {
   bucket = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
   region = var.aws-region
   acl    = "log-delivery-write"
@@ -101,7 +101,7 @@ resource "aws_s3_bucket" "accesslogs-bucket" {
   }
 
   replication_configuration {
-    role = aws_iam_role.accesslogs-replication.arn
+    role = aws_iam_role.accesslogs_replication.arn
 
     rules {
       # ID is necessary to prevent continuous change issue
