@@ -31,19 +31,19 @@ resource "aws_route53_record" "user_signup_api_global" {
 
 resource "aws_route53_record" "user_signup_api_regional_verification" {
   count   = var.user-signup-enabled
-  name    = aws_acm_certificate.user_signup_api_regional[0].domain_validation_options[0].resource_record_name
-  type    = aws_acm_certificate.user_signup_api_regional[0].domain_validation_options[0].resource_record_type
+  name    = one(aws_acm_certificate.user_signup_api_regional[0].domain_validation_options).resource_record_name
+  type    = one(aws_acm_certificate.user_signup_api_regional[0].domain_validation_options).resource_record_type
   zone_id = var.route53-zone-id
-  records = [aws_acm_certificate.user_signup_api_regional[0].domain_validation_options[0].resource_record_value]
+  records = [one(aws_acm_certificate.user_signup_api_regional[0].domain_validation_options).resource_record_value]
   ttl     = 60
 }
 
 resource "aws_route53_record" "user_signup_api_global_verification" {
   count   = var.user-signup-enabled
-  name    = aws_acm_certificate.user_signup_api_global[0].domain_validation_options[0].resource_record_name
-  type    = aws_acm_certificate.user_signup_api_global[0].domain_validation_options[0].resource_record_type
+  name    = one(aws_acm_certificate.user_signup_api_global[0].domain_validation_options).resource_record_name
+  type    = one(aws_acm_certificate.user_signup_api_global[0].domain_validation_options).resource_record_type
   zone_id = var.route53-zone-id
-  records = [aws_acm_certificate.user_signup_api_global[0].domain_validation_options[0].resource_record_value]
+  records = [one(aws_acm_certificate.user_signup_api_global[0].domain_validation_options).resource_record_value]
   ttl     = 60
 }
 

@@ -31,19 +31,19 @@ resource "aws_route53_record" "elb_global" {
 
 resource "aws_route53_record" "elb_global_cert_validation" {
   count   = var.backend-elb-count
-  name    = aws_acm_certificate.api_elb_global[0].domain_validation_options[0].resource_record_name
-  type    = aws_acm_certificate.api_elb_global[0].domain_validation_options[0].resource_record_type
+  name    = one(aws_acm_certificate.api_elb_global[0].domain_validation_options).resource_record_name
+  type    = one(aws_acm_certificate.api_elb_global[0].domain_validation_options).resource_record_type
   zone_id = var.route53-zone-id
-  records = [aws_acm_certificate.api_elb_global[0].domain_validation_options[0].resource_record_value]
+  records = [one(aws_acm_certificate.api_elb_global[0].domain_validation_options).resource_record_value]
   ttl     = 60
 }
 
 resource "aws_route53_record" "elb_regional_cert_validation" {
   count   = var.backend-elb-count
-  name    = aws_acm_certificate.api_elb_regional[0].domain_validation_options[0].resource_record_name
-  type    = aws_acm_certificate.api_elb_regional[0].domain_validation_options[0].resource_record_type
+  name    = one(aws_acm_certificate.api_elb_regional[0].domain_validation_options).resource_record_name
+  type    = one(aws_acm_certificate.api_elb_regional[0].domain_validation_options).resource_record_type
   zone_id = var.route53-zone-id
-  records = [aws_acm_certificate.api_elb_regional[0].domain_validation_options[0].resource_record_value]
+  records = [one(aws_acm_certificate.api_elb_regional[0].domain_validation_options).resource_record_value]
   ttl     = 60
 }
 

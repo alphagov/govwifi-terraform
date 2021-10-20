@@ -72,7 +72,6 @@ resource "aws_iam_policy_attachment" "accesslogs-replication" {
 
 resource "aws_s3_bucket" "accesslogs-bucket" {
   bucket = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
-  region = var.aws-region
   acl    = "log-delivery-write"
 
   tags = {

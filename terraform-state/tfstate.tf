@@ -87,7 +87,6 @@ resource "aws_kms_alias" "tfstate-key-alias" {
 
 resource "aws_s3_bucket" "state-bucket" {
   bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
-  region = var.aws-region
 
   policy = <<EOF
 {
