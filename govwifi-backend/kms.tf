@@ -11,6 +11,6 @@ resource "aws_kms_key" "mysql_rds_backup_s3_key" {
 
 resource "aws_kms_alias" "mysql_rds_backup_s3_key_alias" {
   count         = var.backup_mysql_rds ? 1 : 0
-  name          = "alias/${var.env_name}_mysql_rds_backup_s3_key"
+  name          = "alias/mysql_rds_backup_s3_key"
   target_key_id = aws_kms_key.mysql_rds_backup_s3_key[0].key_id
 }

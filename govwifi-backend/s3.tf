@@ -33,7 +33,7 @@ resource "aws_s3_bucket" "rds_mysql_backup_bucket" {
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        kms_master_key_id = "alias/${var.env_name}_mysql_rds_backup_s3_key"
+        kms_master_key_id = "alias/mysql_rds_backup_s3_key"
         sse_algorithm     = "aws:kms"
       }
     }
