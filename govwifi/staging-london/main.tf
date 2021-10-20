@@ -17,6 +17,8 @@ module "tfstate" {
 }
 
 terraform {
+  required_version = "~> 0.15.5"
+
   backend "s3" {
     # Interpolation is not allowed here.
     #bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
