@@ -280,6 +280,8 @@ module "api" {
   safe_restart_sentry_dsn   = ""
   subnet-ids                = module.backend.backend-subnet-ids
   admin-bucket-name         = ""
+  backup_mysql_rds          = false
+  rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
 
   backend-sg-list = [
     module.backend.be-admin-in,

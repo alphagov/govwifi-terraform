@@ -138,7 +138,7 @@ variable "use_env_prefix" {
 
 variable "backup_mysql_rds" {
   description = "Conditional to indicate whether to make artifacts for and run RDS MySQL backups."
-  default     = false
+  default     = true
   type        = bool
 }
 
