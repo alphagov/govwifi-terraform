@@ -1,5 +1,5 @@
 # Resources for setting up s3 for terraform backend. (state storage in s3)
-resource "aws_iam_role" "tfstate-replication" {
+resource "aws_iam_role" "tfstate_replication" {
   name = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-replication-role"
 
   assume_role_policy = <<POLICY
@@ -20,7 +20,7 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "tfstate-replication" {
+resource "aws_iam_policy" "tfstate_replication" {
   name = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-replication-policy"
 
   policy = <<EOF
@@ -34,7 +34,7 @@ resource "aws_iam_policy" "tfstate-replication" {
       ],
       "Effect": "Allow",
       "Resource": [
-        "${aws_s3_bucket.state-bucket.arn}"
+        "${aws_s3_bucket.state_bucket.arn}"
       ]
     },
     {
@@ -44,7 +44,7 @@ resource "aws_iam_policy" "tfstate-replication" {
       ],
       "Effect": "Allow",
       "Resource": [
-        "${aws_s3_bucket.state-bucket.arn}/*"
+        "${aws_s3_bucket.state_bucket.arn}/*"
       ]
     },
     {
@@ -61,13 +61,13 @@ EOF
 
 }
 
-resource "aws_iam_policy_attachment" "tfstate-replication" {
+resource "aws_iam_policy_attachment" "tfstate_replication" {
   name       = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-replication"
-  roles      = [aws_iam_role.tfstate-replication.name]
-  policy_arn = aws_iam_policy.tfstate-replication.arn
+  roles      = [aws_iam_role.tfstate_replication.name]
+  policy_arn = aws_iam_policy.tfstate_replication.arn
 }
 
-resource "aws_kms_key" "tfstate-key" {
+resource "aws_kms_key" "tfstate_key" {
   description             = "KMS key for the encryption of tfstate buckets."
   deletion_window_in_days = 10
   is_enabled              = true
@@ -80,12 +80,12 @@ resource "aws_kms_key" "tfstate-key" {
   }
 }
 
-resource "aws_kms_alias" "tfstate-key-alias" {
+resource "aws_kms_alias" "tfstate_key_alias" {
   name          = "alias/${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-key"
-  target_key_id = aws_kms_key.tfstate-key.key_id
+  target_key_id = aws_kms_key.tfstate_key.key_id
 }
 
-resource "aws_s3_bucket" "state-bucket" {
+resource "aws_s3_bucket" "state_bucket" {
   bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
 
   policy = <<EOF
@@ -125,7 +125,7 @@ EOF
   }
 
   replication_configuration {
-    role = aws_iam_role.tfstate-replication.arn
+    role = aws_iam_role.tfstate_replication.arn
 
     rules {
       # ID is necessary to prevent continuous change issue
@@ -143,7 +143,7 @@ EOF
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        kms_master_key_id = aws_kms_key.tfstate-key.arn
+        kms_master_key_id = aws_kms_key.tfstate_key.arn
         sse_algorithm     = "aws:kms"
       }
     }
