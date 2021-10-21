@@ -113,8 +113,8 @@ module "backend" {
   rr_instance_type           = "db.t2.large"
   rr_storage_gb              = 200
   user_rr_hostname           = var.user-rr-hostname
-  critical_notifications_arn = module.notifications.topic-arn
-  capacity_notifications_arn = module.notifications.topic-arn
+  critical_notifications_arn = ""
+  capacity_notifications_arn = ""
 
   # Seconds. Set to zero to disable monitoring
   db_monitoring_interval = 60
@@ -129,7 +129,7 @@ module "backend" {
   grafana_ip            = var.grafana_ip
 
   use_env_prefix   = var.use_env_prefix
-  backup_mysql_rds = var.backup_mysql_rds
+  backup_mysql_rds = false
 
   db_storage_alarm_threshold = 19327342936
 }
@@ -185,8 +185,8 @@ module "frontend" {
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.london-api-base-url
 
-  critical_notifications_arn           = module.notifications.topic-arn
-  us_east_1_critical_notifications_arn = module.route53-notifications.topic-arn
+  critical_notifications_arn           = ""
+  us_east_1_critical_notifications_arn = ""
 
   bastion_server_ip = var.bastion_server_ip
 
@@ -234,8 +234,8 @@ module "govwifi_admin" {
   user-db-host = var.user-db-hostname
   user-db-name = "govwifi_staging_users"
 
-  critical-notifications-arn = module.notifications.topic-arn
-  capacity-notifications-arn = module.notifications.topic-arn
+  critical-notifications-arn = ""
+  capacity-notifications-arn = ""
 
   rds-monitoring-role = module.backend.rds-monitoring-role
 
@@ -252,7 +252,7 @@ module "govwifi_admin" {
 
   use_env_prefix = true
 
-  notification_arn = module.notifications.topic-arn
+  notification_arn = ""
 }
 
 module "api" {
@@ -275,8 +275,8 @@ module "api" {
   vpc-id                 = module.backend.backend-vpc-id
   safe-restart-enabled   = 1
 
-  devops-notifications-arn = module.notifications.topic-arn
-  notification_arn         = module.notifications.topic-arn
+  devops-notifications-arn = ""
+  notification_arn         = ""
 
   auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user-signup-docker-image      = format("%s/user-signup-api:staging", local.docker_image_path)
@@ -313,30 +313,9 @@ module "api" {
 
   use_env_prefix   = var.use_env_prefix
   backup_mysql_rds = var.backup_mysql_rds
+  rds_mysql_backup_bucket = module.backend.rds_mysql_backup_bucket
 
   low_cpu_threshold = 0.3
-}
-
-module "notifications" {
-  providers = {
-    aws = aws.main
-  }
-
-  source = "../../sns-notification"
-
-  topic_name = "govwifi-staging"
-  emails     = [var.notification_email]
-}
-
-module "route53-notifications" {
-  providers = {
-    aws = aws.us_east_1
-  }
-
-  source = "../../sns-notification"
-
-  topic_name = "govwifi-staging-london"
-  emails     = [var.notification_email]
 }
 
 module "govwifi_dashboard" {
@@ -395,7 +374,7 @@ module "govwifi_grafana" {
   Env-Name                   = var.Env-Name
   Env-Subdomain              = var.Env-Subdomain
   aws-region                 = var.aws-region
-  critical-notifications-arn = module.notifications.topic-arn
+  critical-notifications-arn = ""
   is_production_aws_account  = var.is_production_aws_account
 
   ssh-key-name = var.ssh-key-name
