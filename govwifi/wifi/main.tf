@@ -1,6 +1,6 @@
 module "tfstate" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source             = "../../terraform-state"
@@ -37,18 +37,18 @@ terraform {
 }
 
 provider "aws" {
-  alias  = "AWS-main"
+  alias  = "main"
   region = var.aws-region
 }
 
 provider "aws" {
-  alias  = "route53-alarms"
+  alias  = "us_east_1"
   region = "us-east-1"
 }
 
 module "govwifi_keys" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source = "../../govwifi-keys"
@@ -67,7 +67,7 @@ module "govwifi_keys" {
 # Backend =====================================================================
 module "backend" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source                    = "../../govwifi-backend"
@@ -143,7 +143,7 @@ module "backend" {
 # Emails ======================================================================
 module "emails" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source = "../../govwifi-emails"
@@ -168,7 +168,7 @@ module "emails" {
 #moved for wifi-london
 #module "govwifi_account" {
 #  providers = {
-#    "aws" = "aws.AWS-main"
+#    "aws" = "aws.main"
 #  }
 #
 #  source     = "../../govwifi-account"
@@ -177,7 +177,7 @@ module "emails" {
 
 module "dns" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source             = "../../global-dns"
@@ -189,8 +189,8 @@ module "dns" {
 # Frontend ====================================================================
 module "frontend" {
   providers = {
-    aws                = aws.AWS-main
-    aws.route53-alarms = aws.route53-alarms
+    aws           = aws.main
+    aws.us_east_1 = aws.us_east_1
   }
 
   source                    = "../../govwifi-frontend"
@@ -251,7 +251,7 @@ module "frontend" {
 
 module "api" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   env                       = "production"
@@ -307,7 +307,7 @@ module "api" {
 
 module "critical-notifications" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source = "../../sns-notification"
@@ -318,7 +318,7 @@ module "critical-notifications" {
 
 module "capacity-notifications" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source = "../../sns-notification"
@@ -329,7 +329,7 @@ module "capacity-notifications" {
 
 module "devops-notifications" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source = "../../sns-notification"
@@ -340,7 +340,7 @@ module "devops-notifications" {
 
 module "route53-critical-notifications" {
   providers = {
-    aws = aws.route53-alarms
+    aws = aws.us_east_1
   }
 
   source = "../../sns-notification"
@@ -351,7 +351,7 @@ module "route53-critical-notifications" {
 
 module "region_pagerduty" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source = "../../govwifi-pagerduty-integration"
@@ -363,7 +363,7 @@ module "region_pagerduty" {
 # in this region
 module "us_east_1_pagerduty" {
   providers = {
-    aws = aws.route53-alarms
+    aws = aws.us_east_1
   }
 
   source = "../../govwifi-pagerduty-integration"
@@ -373,7 +373,7 @@ module "us_east_1_pagerduty" {
 
 module "govwifi_prometheus" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source     = "../../govwifi-prometheus"

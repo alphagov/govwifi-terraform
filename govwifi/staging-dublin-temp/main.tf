@@ -1,6 +1,6 @@
 module "tfstate" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source             = "../../terraform-state"
@@ -38,19 +38,19 @@ terraform {
 }
 
 provider "aws" {
-  alias  = "AWS-main"
+  alias  = "main"
   region = var.aws-region
 }
 
 provider "aws" {
-  alias  = "route53-alarms"
+  alias  = "us_east_1"
   region = "us-east-1"
 }
 
 # Backend ==================================================================
 module "backend" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source                    = "../../govwifi-backend"
@@ -131,7 +131,7 @@ module "backend" {
 # Emails ======================================================================
 module "emails" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source = "../../govwifi-emails"
@@ -156,7 +156,7 @@ module "emails" {
 
 module "govwifi_keys" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source = "../../govwifi-keys"
@@ -175,8 +175,8 @@ module "govwifi_keys" {
 # Frontend ====================================================================
 module "frontend" {
   providers = {
-    aws                = aws.AWS-main
-    aws.route53-alarms = aws.route53-alarms
+    aws           = aws.main
+    aws.us_east_1 = aws.us_east_1
   }
 
   source                    = "../../govwifi-frontend"
@@ -236,7 +236,7 @@ module "frontend" {
 
 module "api" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source                    = "../../govwifi-api"
@@ -294,7 +294,7 @@ module "api" {
 
 module "notifications" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source = "../../sns-notification"
@@ -305,7 +305,7 @@ module "notifications" {
 
 module "route53-notifications" {
   providers = {
-    aws = aws.route53-alarms
+    aws = aws.us_east_1
   }
 
   source = "../../sns-notification"
@@ -316,7 +316,7 @@ module "route53-notifications" {
 
 module "govwifi_prometheus" {
   providers = {
-    aws = aws.AWS-main
+    aws = aws.main
   }
 
   source     = "../../govwifi-prometheus"
