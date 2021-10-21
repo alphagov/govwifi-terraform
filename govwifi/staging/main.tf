@@ -106,8 +106,8 @@ module "backend" {
   user_rr_instance_type  = "db.t2.small"
 
   user_rr_hostname           = var.user-rr-hostname
-  critical_notifications_arn = module.notifications.topic-arn
-  capacity_notifications_arn = module.notifications.topic-arn
+  critical_notifications_arn = ""
+  capacity_notifications_arn = ""
 
   # Seconds. Set to zero to disable monitoring
   db_monitoring_interval = 60
@@ -123,29 +123,6 @@ module "backend" {
   use_env_prefix = var.use_env_prefix
 
   db_storage_alarm_threshold = 19327342936
-}
-
-# Emails ======================================================================
-module "emails" {
-  providers = {
-    aws = aws.main
-  }
-
-  is_production_aws_account = var.is_production_aws_account
-  source                    = "../../govwifi-emails"
-  product-name              = var.product-name
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
-  aws-account-id            = local.aws_account_id
-  route53-zone-id           = local.route53_zone_id
-  aws-region                = var.aws-region
-  aws-region-name           = var.aws-region-name
-  mail-exchange-server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
-  devops-notifications-arn  = module.notifications.topic-arn
-
-  #sns-endpoint             = "https://elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk/sns/"
-  sns-endpoint                       = "https://elb.london.${var.Env-Subdomain}.service.gov.uk/sns/"
-  user-signup-notifications-endpoint = "https://user-signup-api.${var.Env-Subdomain}.service.gov.uk:8443/user-signup/email-notification"
 }
 
 module "govwifi_keys" {
@@ -214,8 +191,8 @@ module "frontend" {
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.dublin-api-base-url
 
-  critical_notifications_arn           = module.notifications.topic-arn
-  us_east_1_critical_notifications_arn = module.route53-notifications.topic-arn
+  critical_notifications_arn           = ""
+  us_east_1_critical_notifications_arn = ""
 
   bastion_server_ip = var.bastion_server_ip
 
@@ -252,8 +229,8 @@ module "api" {
   safe-restart-enabled = 0
   event-rule-count     = 0
 
-  devops-notifications-arn = module.notifications.topic-arn
-  notification_arn         = module.notifications.topic-arn
+  devops-notifications-arn = ""
+  notification_arn         = ""
 
   auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user-signup-docker-image      = ""
@@ -273,6 +250,8 @@ module "api" {
   safe_restart_sentry_dsn   = ""
   subnet-ids                = module.backend.backend-subnet-ids
   admin-bucket-name         = ""
+  backup_mysql_rds          = false
+  rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
 
   backend-sg-list = [
     module.backend.be-admin-in,
@@ -281,28 +260,6 @@ module "api" {
   use_env_prefix = var.use_env_prefix
 
   low_cpu_threshold = 0.3
-}
-
-module "notifications" {
-  providers = {
-    aws = aws.main
-  }
-
-  source = "../../sns-notification"
-
-  topic_name = "govwifi-staging"
-  emails     = [var.notification_email]
-}
-
-module "route53-notifications" {
-  providers = {
-    aws = aws.us_east_1
-  }
-
-  source = "../../sns-notification"
-
-  topic_name = "govwifi-staging"
-  emails     = [var.notification_email]
 }
 
 module "govwifi_prometheus" {
