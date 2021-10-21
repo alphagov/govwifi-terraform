@@ -330,7 +330,7 @@ module "critical-notifications" {
 
   source = "../../sns-notification"
 
-  topic-name = "govwifi-wifi-critical"
+  topic_name = "govwifi-wifi-critical"
   emails     = [var.critical_notification_email]
 }
 
@@ -341,7 +341,7 @@ module "capacity-notifications" {
 
   source = "../../sns-notification"
 
-  topic-name = "govwifi-wifi-capacity"
+  topic_name = "govwifi-wifi-capacity"
   emails     = [var.capacity_notification_email]
 }
 
@@ -352,7 +352,7 @@ module "devops-notifications" {
 
   source = "../../sns-notification"
 
-  topic-name = "govwifi-wifi-devops"
+  topic_name = "govwifi-wifi-devops"
   emails     = [var.devops_notification_email]
 }
 
@@ -363,7 +363,7 @@ module "route53-critical-notifications" {
 
   source = "../../sns-notification"
 
-  topic-name = "govwifi-wifi-critical-london"
+  topic_name = "govwifi-wifi-critical-london"
   emails     = [var.critical_notification_email]
 }
 
