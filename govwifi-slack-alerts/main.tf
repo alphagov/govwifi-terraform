@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+  }
+}
+
 resource "aws_iam_role" "govwifi_wifi_london_aws_chatbot_role" {
   name        = "govwifi-aws-chatbot-role"
   path        = "/"
