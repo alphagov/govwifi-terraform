@@ -408,6 +408,45 @@ EOF
 
 }
 
+resource "aws_cloudwatch_event_target" "publish_metrics_to_data_bucket" {
+  count     = var.logging-enabled
+  target_id = "${var.Env-Name}-logging-publish-metrics-to-data-bucket"
+  arn       = aws_ecs_cluster.api_cluster.arn
+  rule      = aws_cloudwatch_event_rule.weekly_metrics_logging_event[0].name
+  role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
+
+  ecs_target {
+    task_count          = 1
+    task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
+    launch_type         = "FARGATE"
+    platform_version    = "1.3.0"
+
+    network_configuration {
+      subnets = var.subnet-ids
+
+      security_groups = concat(
+        var.backend-sg-list,
+        [aws_security_group.api_in.id],
+        [aws_security_group.api_out.id]
+      )
+
+      assign_public_ip = true
+    }
+  }
+
+  input = <<EOF
+{
+  "containerOverrides": [
+    {
+      "name": "logging",
+      "command": ["bundle", "exec", "rake", "sync_s3_to_data_bucket[${var.metrics-bucket-name}, ${var.export-data-bucket-name}]"]
+    }
+  ]
+}
+EOF
+
+}
+
 resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
   count                    = var.logging-enabled
   family                   = "logging-api-scheduled-task-${var.Env-Name}"
