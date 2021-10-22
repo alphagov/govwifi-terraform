@@ -316,7 +316,7 @@ module "api" {
 
   use_env_prefix          = var.use_env_prefix
   rds_mysql_backup_bucket = module.backend.rds_mysql_backup_bucket
-  backup_mysql_rds        = var.backup_mysql_rds
+  backup_mysql_rds        = false
 
   low_cpu_threshold = 0.3
 
