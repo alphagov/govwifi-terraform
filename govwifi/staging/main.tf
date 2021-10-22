@@ -204,64 +204,6 @@ module "frontend" {
   use_env_prefix = var.use_env_prefix
 }
 
-module "api" {
-  providers = {
-    aws = aws.main
-  }
-
-  source                    = "../../govwifi-api"
-  env                       = "staging"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
-  is_production_aws_account = var.is_production_aws_account
-
-  backend-elb-count      = 1
-  backend-instance-count = 2
-  aws-account-id         = local.aws_account_id
-  aws-region-name        = var.aws-region-name
-  aws-region             = var.aws-region
-  route53-zone-id        = local.route53_zone_id
-  vpc-id                 = module.backend.backend-vpc-id
-
-  user-signup-enabled  = 0
-  logging-enabled      = 0
-  alarm-count          = 0
-  safe-restart-enabled = 0
-  event-rule-count     = 0
-
-  devops-notifications-arn = ""
-  notification_arn         = ""
-
-  auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
-  user-signup-docker-image      = ""
-  logging-docker-image          = ""
-  safe-restart-docker-image     = ""
-  backup-rds-to-s3-docker-image = ""
-
-  db-hostname = ""
-
-  user-db-hostname = ""
-  user-rr-hostname = var.user-rr-hostname
-
-  rack-env                  = "staging"
-  sentry-current-env        = "staging"
-  radius-server-ips         = local.frontend_radius_ips
-  authentication_sentry_dsn = var.auth_sentry_dsn
-  safe_restart_sentry_dsn   = ""
-  subnet-ids                = module.backend.backend-subnet-ids
-  admin-bucket-name         = ""
-  backup_mysql_rds          = false
-  rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
-
-  backend-sg-list = [
-    module.backend.be-admin-in,
-  ]
-
-  use_env_prefix = var.use_env_prefix
-
-  low_cpu_threshold = 0.3
-}
-
 module "govwifi_prometheus" {
   providers = {
     aws = aws.main
