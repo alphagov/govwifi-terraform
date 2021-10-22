@@ -226,7 +226,7 @@ resource "aws_iam_role_policy" "backup_rds_to_s3_task_policy" {
       "Resource": "arn:aws:kms:eu-west-2:${var.aws-account-id}:key/*",
       "Condition": {
         "StringLike": {
-          "kms:RequestAlias": "alias/staging_mysql_rds_backup_s3_key"
+          "kms:RequestAlias": "alias/mysql_rds_backup_s3_key"
         }
       }
     }
