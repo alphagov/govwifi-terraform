@@ -1,19 +1,7 @@
-resource "aws_iam_instance_profile" "Dublin_ecs_instance_profile_staging" {
-  name = "Dublin-ecs-instance-profile-staging"
-  path = "/"
-  role = "Dublin-ecs-instance-role-staging"
-}
-
 resource "aws_iam_instance_profile" "Dublin_ecs_instance_profile_wifi" {
   name = "Dublin-ecs-instance-profile-wifi"
   path = "/"
   role = "Dublin-ecs-instance-role-wifi"
-}
-
-resource "aws_iam_instance_profile" "Dublin_frontend_ecs_instance_profile_staging" {
-  name = "Dublin-frontend-ecs-instance-profile-staging"
-  path = "/"
-  role = "Dublin-frontend-ecs-instance-role-staging"
 }
 
 resource "aws_iam_instance_profile" "Dublin_frontend_ecs_instance_profile_wifi" {
@@ -69,4 +57,3 @@ resource "aws_iam_instance_profile" "London_wifi_backend_bastion_instance_profil
   path = "/"
   role = "London-wifi-backend-bastion-instance-role"
 }
-

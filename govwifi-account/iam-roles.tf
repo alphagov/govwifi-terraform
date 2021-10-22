@@ -389,27 +389,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "Dublin_ecs_instance_role_staging" {
-  name = "Dublin-ecs-instance-role-staging"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
 
 resource "aws_iam_role" "Dublin_ecs_instance_role_wifi" {
   name = "Dublin-ecs-instance-role-wifi"
@@ -424,28 +403,6 @@ resource "aws_iam_role" "Dublin_ecs_instance_role_wifi" {
       "Effect": "Allow",
       "Principal": {
         "Service": "ec2.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "Dublin_ecs_service_role_staging" {
-  name = "Dublin-ecs-service-role-staging"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     }
@@ -477,28 +434,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "Dublin_frontend_ecs_instance_role_staging" {
-  name = "Dublin-frontend-ecs-instance-role-staging"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "Dublin_frontend_ecs_instance_role_wifi" {
   name = "Dublin-frontend-ecs-instance-role-wifi"
   path = "/"
@@ -521,28 +456,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "Dublin_frontend_ecs_task_role_staging" {
-  name = "Dublin-frontend-ecs-task-role-staging"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "Dublin_frontend_ecs_task_role_wifi" {
   name = "Dublin-frontend-ecs-task-role-wifi"
   path = "/"
@@ -556,28 +469,6 @@ resource "aws_iam_role" "Dublin_frontend_ecs_task_role_wifi" {
       "Effect": "Allow",
       "Principal": {
         "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "Dublin_staging_rds_monitoring_role" {
-  name = "Dublin-staging-rds-monitoring-role"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "monitoring.rds.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     }
@@ -655,28 +546,6 @@ POLICY
 
 resource "aws_iam_role" "ecsTaskExecutionRole_production_London" {
   name = "ecsTaskExecutionRole-production-London"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "ecsTaskExecutionRole_staging_Dublin" {
-  name = "ecsTaskExecutionRole-staging-Dublin"
   path = "/"
 
   assume_role_policy = <<POLICY
@@ -1861,61 +1730,6 @@ POLICY
 
 }
 
-resource "aws_iam_role_policy" "Dublin_ecs_instance_role_staging_Dublin_ecs_instance_policy_staging" {
-  name = "Dublin-ecs-instance-policy-staging"
-  role = "Dublin-ecs-instance-role-staging"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ecs:CreateCluster",
-        "ecs:DeregisterContainerInstance",
-        "ecs:DiscoverPollEndpoint",
-        "ecs:Poll",
-        "ecs:RegisterContainerInstance",
-        "ecs:StartTelemetrySession",
-        "ecs:Submit*",
-        "ecr:GetAuthorizationToken",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:BatchGetImage"
-      ],
-      "Resource": [
-        "*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogStreams"
-      ],
-      "Resource": [
-        "arn:aws:logs:*:*:*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "cloudwatch:PutMetricData",
-        "cloudwatch:GetMetricStatistics",
-        "cloudwatch:ListMetrics",
-        "ec2:DescribeTags"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role_policy" "Dublin_ecs_instance_role_wifi_Dublin_ecs_instance_policy_wifi" {
   name = "Dublin-ecs-instance-policy-wifi"
   role = "Dublin-ecs-instance-role-wifi"
@@ -1971,42 +1785,6 @@ POLICY
 
 }
 
-resource "aws_iam_role_policy" "Dublin_ecs_service_role_staging_Dublin_ecs_service_policy_staging" {
-  name = "Dublin-ecs-service-policy-staging"
-  role = "Dublin-ecs-service-role-staging"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:AuthorizeSecurityGroupIngress",
-        "ec2:Describe*"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
-        "elasticloadbalancing:Describe*",
-        "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
-        "elasticloadbalancing:RegisterTargets",
-        "elasticloadbalancing:DeregisterTargets"
-      ],
-      "Resource": [
-        "arn:aws:elasticloadbalancing:eu-west-1:${var.aws-account-id}:loadbalancer/wifi-backend-elb-staging",
-        "*"
-      ]
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role_policy" "Dublin_ecs_service_role_wifi_Dublin_ecs_service_policy_wifi" {
   name = "Dublin-ecs-service-policy-wifi"
   role = "Dublin-ecs-service-role-wifi"
@@ -2036,61 +1814,6 @@ resource "aws_iam_role_policy" "Dublin_ecs_service_role_wifi_Dublin_ecs_service_
         "arn:aws:elasticloadbalancing:eu-west-1:${var.aws-account-id}:loadbalancer/wifi-backend-elb-wifi",
         "*"
       ]
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "Dublin_frontend_ecs_instance_role_staging_Dublin_frontend_ecs_instance_policy_staging" {
-  name = "Dublin-frontend-ecs-instance-policy-staging"
-  role = "Dublin-frontend-ecs-instance-role-staging"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ecs:CreateCluster",
-        "ecs:DeregisterContainerInstance",
-        "ecs:DiscoverPollEndpoint",
-        "ecs:Poll",
-        "ecs:RegisterContainerInstance",
-        "ecs:StartTelemetrySession",
-        "ecs:Submit*",
-        "ecr:GetAuthorizationToken",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:BatchGetImage"
-      ],
-      "Resource": [
-        "*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogStreams"
-      ],
-      "Resource": [
-        "arn:aws:logs:*:*:*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "cloudwatch:PutMetricData",
-        "cloudwatch:GetMetricStatistics",
-        "cloudwatch:ListMetrics",
-        "ec2:DescribeTags"
-      ],
-      "Resource": "*"
     }
   ]
 }
@@ -2144,80 +1867,6 @@ resource "aws_iam_role_policy" "Dublin_frontend_ecs_instance_role_wifi_Dublin_fr
         "cloudwatch:GetMetricStatistics",
         "cloudwatch:ListMetrics",
         "ec2:DescribeTags"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_staging_Dublin_frontend_admin_bucket_staging" {
-  name = "Dublin-frontend-admin-bucket-staging"
-  role = "Dublin-frontend-ecs-task-role-staging"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": [
-        "s3:ListBucket",
-        "s3:GetObject"
-      ],
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-admin/*",
-        "arn:aws:s3:::govwifi-staging-admin"
-      ]
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_staging_Dublin_frontend_cert_bucket_staging" {
-  name = "Dublin-frontend-cert-bucket-staging"
-  role = "Dublin-frontend-ecs-task-role-staging"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": [
-        "s3:ListBucket",
-        "s3:GetObject"
-      ],
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-dublin-frontend-cert/*",
-        "arn:aws:s3:::govwifi-staging-dublin-frontend-cert"
-      ]
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_staging_Dublin_frontend_ecs_service_policy_staging" {
-  name = "Dublin-frontend-ecs-service-policy-staging"
-  role = "Dublin-frontend-ecs-task-role-staging"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:AuthorizeSecurityGroupIngress",
-        "ec2:Describe*"
       ],
       "Resource": "*"
     }
@@ -2294,44 +1943,6 @@ resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_wifi_Dublin_fronte
         "ec2:Describe*"
       ],
       "Resource": "*"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "Dublin_staging_rds_monitoring_role_Dublin_staging_rds_monitoring_policy" {
-  name = "Dublin-staging-rds-monitoring-policy"
-  role = "Dublin-staging-rds-monitoring-role"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "EnableCreationAndManagementOfRDSCloudwatchLogGroups",
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:PutRetentionPolicy"
-      ],
-      "Resource": [
-        "arn:aws:logs:*:*:log-group:RDS*"
-      ]
-    },
-    {
-      "Sid": "EnableCreationAndManagementOfRDSCloudwatchLogStreams",
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogStreams",
-        "logs:GetLogEvents"
-      ],
-      "Resource": [
-        "arn:aws:logs:*:*:log-group:RDS*:log-stream:*"
-      ]
     }
   ]
 }
@@ -3574,4 +3185,3 @@ resource "aws_iam_role_policy" "wifi_user_signup_scheduled_task_role_wifi_user_s
 POLICY
 
 }
-
