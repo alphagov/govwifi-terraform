@@ -350,7 +350,7 @@ module "govwifi_dashboard" {
   }
 
   source   = "../../govwifi-dashboard"
-  Env-Name = var.Env-Name
+  env_name = var.Env-Name
 }
 
 /*

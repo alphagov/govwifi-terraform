@@ -1,10 +1,10 @@
 resource "aws_s3_bucket" "metrics_bucket" {
-  bucket = "govwifi-${var.Env-Name}-metrics-bucket"
+  bucket = "govwifi-${var.env_name}-metrics-bucket"
   acl    = "private"
 
   tags = {
-    Name        = "${title(var.Env-Name)} Metrics data"
-    Environment = title(var.Env-Name)
+    Name        = "${title(var.env_name)} Metrics data"
+    Environment = title(var.env_name)
   }
 
   versioning {

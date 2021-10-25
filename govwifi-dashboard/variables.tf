@@ -1,4 +1,4 @@
-variable "Env-Name" {
+variable "env_name" {
   description = "E.g. staging"
 }
 
