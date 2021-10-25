@@ -239,7 +239,7 @@ module "frontend" {
   frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
 
-  admin_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
+  admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
 
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.dublin-api-base-url
