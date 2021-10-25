@@ -69,7 +69,7 @@ resource "aws_ecs_task_definition" "logging_api_task" {
           "value": "${var.Env-Name}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
-          "value": "${var.admin-bucket-name}"
+          "value": "${var.admin_app_data_s3_bucket_name}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
@@ -225,7 +225,7 @@ resource "aws_iam_role_policy" "logging_api_task_policy" {
       "Action": [
         "s3:GetObject"
       ],
-      "Resource": "arn:aws:s3:::${var.admin-bucket-name}/*"
+      "Resource": "arn:aws:s3:::${var.admin_app_data_s3_bucket_name}/*"
     },
     {
       "Effect": "Allow",

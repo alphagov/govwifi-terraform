@@ -507,7 +507,7 @@ resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
           "value": "${var.Env-Name}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
-          "value": "${var.admin-bucket-name}"
+          "value": "${var.admin_app_data_s3_bucket_name}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"

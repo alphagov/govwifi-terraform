@@ -70,7 +70,7 @@ EOF
 
 data "aws_s3_bucket" "admin-bucket" {
   count  = var.user-signup-enabled
-  bucket = var.admin-bucket-name
+  bucket = var.admin_app_data_s3_bucket_name
 }
 
 resource "aws_ecs_task_definition" "user_signup_api_task" {

@@ -45,6 +45,16 @@ provider "aws" {
   region = "us-east-1"
 }
 
+data "terraform_remote_state" "london" {
+  backend = "s3"
+
+  config = {
+    bucket = "govwifi-wifi-london-tfstate"
+    key    = "london-tfstate"
+    region = "eu-west-2"
+  }
+}
+
 module "govwifi_keys" {
   providers = {
     aws = aws.main
@@ -229,8 +239,7 @@ module "frontend" {
   frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
 
-  # admin bucket
-  admin-bucket-name = "govwifi-production-admin"
+  admin_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
 
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.dublin-api-base-url

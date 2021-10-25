@@ -193,8 +193,7 @@ module "frontend" {
   frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
 
-  # admin bucket
-  admin-bucket-name = "govwifi-production-admin"
+  admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
 
   logging-api-base-url = var.london-api-base-url
   auth-api-base-url    = var.london-api-base-url
@@ -307,8 +306,9 @@ module "api" {
   subnet-ids                = module.backend.backend-subnet-ids
   user-db-hostname          = var.user-db-hostname
   user-rr-hostname          = var.user-rr-hostname
-  admin-bucket-name         = "govwifi-production-admin"
   user-signup-api-is-public = 1
+
+  admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
 
   backend-sg-list = [
     module.backend.be-admin-in,

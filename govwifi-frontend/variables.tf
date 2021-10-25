@@ -87,7 +87,7 @@ variable "us_east_1_critical_notifications_arn" {
   type = string
 }
 
-variable "admin-bucket-name" {
+variable "admin_app_data_s3_bucket_name" {
   type = string
 }
 
