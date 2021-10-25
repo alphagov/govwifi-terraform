@@ -41,7 +41,7 @@ resource "aws_cloudformation_stack" "aws_slack_chatbot" {
           "LoggingLevel" : "NONE",
           "SlackChannelId" : "${local.slack-channel-id}",
           "SlackWorkspaceId" : "${local.slack-workplace-id}",
-          "SnsTopicArns" : [ "${var.critical-notifications-topic-arn}","${var.capacity-notifications-topic-arn}","${var.route53-critical-notifications-topic-arn}" ]
+          "SnsTopicArns" : [ "${var.critical_notifications_topic_arn}","${var.capacity_notifications_topic_arn}","${var.route53_critical_notifications_topic_arn}" ]
         }
       }
     }
