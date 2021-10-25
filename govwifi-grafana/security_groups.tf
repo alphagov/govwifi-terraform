@@ -1,10 +1,10 @@
 resource "aws_security_group" "grafana_alb_in" {
-  name        = "grafana-alb-in-${var.Env-Name}"
+  name        = "grafana-alb-in-${var.env_name}"
   description = "Allow Inbound Traffic to the Grafana ALB"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} Grafana ALB Traffic In"
+    Name = "${title(var.env_name)} Grafana ALB Traffic In"
   }
 
   ingress {
@@ -17,12 +17,12 @@ resource "aws_security_group" "grafana_alb_in" {
 }
 
 resource "aws_security_group" "grafana_alb_out" {
-  name        = "grafana-alb-out-${var.Env-Name}"
+  name        = "grafana-alb-out-${var.env_name}"
   description = "Allow Outbound Traffic from the Grafana ALB"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} Grafana ALB Traffic Out"
+    Name = "${title(var.env_name)} Grafana ALB Traffic Out"
   }
 
   # Has an egress rule, defined as a separate resource below to avoid
@@ -41,12 +41,12 @@ resource "aws_security_group_rule" "grafana_alb_out_egress" {
 }
 
 resource "aws_security_group" "grafana_ec2_in" {
-  name        = "grafana-ec2-in-${var.Env-Name}"
+  name        = "grafana-ec2-in-${var.env_name}"
   description = "Allow Inbound Traffic To Grafana from the ALB"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} Grafana EC2 Traffic In"
+    Name = "${title(var.env_name)} Grafana EC2 Traffic In"
   }
 
   ingress {
@@ -67,12 +67,12 @@ resource "aws_security_group" "grafana_ec2_in" {
 }
 
 resource "aws_security_group" "grafana_ec2_out" {
-  name        = "grafana-ec2-out-${var.Env-Name}"
+  name        = "grafana-ec2-out-${var.env_name}"
   description = "Allow Outbound Traffic From the Grafana EC2 container"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} Grafana EC2 Traffic Out"
+    Name = "${title(var.env_name)} Grafana EC2 Traffic Out"
   }
 
   egress {

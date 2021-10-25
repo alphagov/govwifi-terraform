@@ -1,7 +1,7 @@
 resource "aws_lb" "grafana_alb" {
-  name     = "grafana-alb-${var.Env-Name}"
+  name     = "grafana-alb-${var.env_name}"
   internal = false
-  subnets  = var.subnet-ids
+  subnets  = var.subnet_ids
 
   security_groups = [
     aws_security_group.grafana_alb_in.id,
@@ -11,7 +11,7 @@ resource "aws_lb" "grafana_alb" {
   load_balancer_type = "application"
 
   tags = {
-    Name = "grafana-alb-${var.Env-Name}"
+    Name = "grafana-alb-${var.env_name}"
   }
 }
 
@@ -30,10 +30,10 @@ resource "aws_alb_listener" "alb_listener" {
 
 resource "aws_alb_target_group" "grafana_tg" {
   depends_on           = [aws_lb.grafana_alb]
-  name                 = "grafana-${var.Env-Name}-fg-tg"
+  name                 = "grafana-${var.env_name}-fg-tg"
   port                 = "3000"
   protocol             = "HTTP"
-  vpc_id               = var.vpc-id
+  vpc_id               = var.vpc_id
   target_type          = "ip"
   deregistration_delay = 10
 

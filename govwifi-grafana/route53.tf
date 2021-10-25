@@ -1,6 +1,6 @@
 resource "aws_route53_record" "grafana_route53_record" {
   zone_id = data.aws_route53_zone.zone.id
-  name    = "grafana.${var.Env-Subdomain}.service.gov.uk"
+  name    = "grafana.${var.env_subdomain}.service.gov.uk"
   type    = "A"
 
   alias {
@@ -11,6 +11,6 @@ resource "aws_route53_record" "grafana_route53_record" {
 }
 
 data "aws_route53_zone" "zone" {
-  name         = var.is_production_aws_account ? "wifi.service.gov.uk." : "${var.Env-Subdomain}.service.gov.uk."
+  name         = var.is_production_aws_account ? "wifi.service.gov.uk." : "${var.env_subdomain}.service.gov.uk."
   private_zone = false
 }
