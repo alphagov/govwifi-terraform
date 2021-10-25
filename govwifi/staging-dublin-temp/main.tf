@@ -322,33 +322,3 @@ module "route53-notifications" {
   topic_name = "govwifi-staging-dublin-temp"
   emails     = [var.notification_email]
 }
-
-module "govwifi_prometheus" {
-  providers = {
-    aws = aws.main
-  }
-
-  source     = "../../govwifi-prometheus"
-  Env-Name   = var.Env-Name
-  aws-region = var.aws-region
-
-  ssh-key-name = var.ssh-key-name
-
-  frontend-vpc-id = module.frontend.frontend-vpc-id
-
-  fe-admin-in   = module.frontend.fe-admin-in
-  fe-ecs-out    = module.frontend.fe-ecs-out
-  fe-radius-in  = module.frontend.fe-radius-in
-  fe-radius-out = module.frontend.fe-radius-out
-
-  wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
-  london_radius_ip_addresses = var.london_radius_ip_addresses
-  dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
-
-  # Feature toggle creating Prometheus server.
-  # Value defaults to 0 and should only be enabled (i.e., value = 1)
-  create_prometheus_server = 0
-
-  prometheus_ip = var.prometheus_ip_ireland
-  grafana_ip    = var.grafana_ip
-}
