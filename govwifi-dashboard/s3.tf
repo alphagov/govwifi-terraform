@@ -12,3 +12,15 @@ resource "aws_s3_bucket" "metrics_bucket" {
   }
 }
 
+resource "aws_s3_bucket" "export_data_bucket" {
+  bucket = "govwifi-export-data-bucket"
+  acl    = "private"
+
+  tags = {
+    Name = "Exported metrics data"
+  }
+
+  versioning {
+    enabled = false
+  }
+}

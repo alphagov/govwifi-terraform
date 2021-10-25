@@ -153,6 +153,12 @@ variable "metrics-bucket-name" {
   description = "Name of the S3 bucket to write metrics into"
 }
 
+variable "export-data-bucket-name" {
+  type        = string
+  default     = ""
+  description = "Name of the bucket we use to export data to data.gov.uk"
+}
+
 variable "use_env_prefix" {
 
 }
