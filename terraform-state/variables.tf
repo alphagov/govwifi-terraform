@@ -1,21 +1,21 @@
-variable "Env-Name" {
+variable "env_name" {
 }
 
-variable "aws-account-id" {
+variable "aws_account_id" {
 }
 
-variable "aws-region-name" {
+variable "aws_region_name" {
 }
 
-variable "backup-region-name" {
+variable "backup_region_name" {
 }
 
-variable "product-name" {
+variable "product_name" {
 }
 
-variable "accesslogs-glacier-transition-days" {
+variable "accesslogs_glacier_transition_days" {
 }
 
-variable "accesslogs-expiration-days" {
+variable "accesslogs_expiration_days" {
 }
 
