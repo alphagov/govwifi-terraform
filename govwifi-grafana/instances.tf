@@ -17,11 +17,9 @@ data "aws_ami" "ubuntu" {
 # The element() function used in subnets wraps around when the index is over the number of elements
 # eg. in the 4th iteration the value returned will be the 1st, if there are only 3 elements in the list.
 resource "aws_instance" "grafana_instance" {
-  count                   = var.create_grafana_server
   ami                     = data.aws_ami.ubuntu.id
   instance_type           = "t2.small"
   key_name                = var.ssh-key-name
-  subnet_id               = element(var.backend-subnet-ids, count.index)
   user_data               = data.template_file.grafana_user_data.rendered
   disable_api_termination = false
   ebs_optimized           = false
@@ -47,7 +45,6 @@ resource "aws_instance" "grafana_instance" {
 }
 
 resource "aws_ebs_volume" "grafana_ebs" {
-  count             = var.create_grafana_server
   size              = 40
   encrypted         = true
   availability_zone = "${var.aws-region}a"
@@ -58,11 +55,10 @@ resource "aws_ebs_volume" "grafana_ebs" {
 }
 
 resource "aws_volume_attachment" "grafana_ebs_attach" {
-  count       = var.create_grafana_server
   depends_on  = [aws_ebs_volume.grafana_ebs]
   device_name = var.grafana-device-name
-  volume_id   = aws_ebs_volume.grafana_ebs[0].id
-  instance_id = aws_instance.grafana_instance[0].id
+  volume_id   = aws_ebs_volume.grafana_ebs.id
+  instance_id = aws_instance.grafana_instance.id
 }
 
 data "template_file" "grafana_user_data" {

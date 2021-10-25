@@ -52,6 +52,6 @@ resource "aws_alb_target_group" "grafana_tg" {
 
 resource "aws_alb_target_group_attachment" "grafana" {
   target_group_arn = aws_alb_target_group.grafana_tg.arn
-  target_id        = aws_instance.grafana_instance[0].private_ip
+  target_id        = aws_instance.grafana_instance.private_ip
   port             = 3000
 }

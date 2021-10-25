@@ -14,7 +14,7 @@ resource "aws_cloudwatch_metric_alarm" "grafana_instance_status" {
   threshold           = "0"
 
   dimensions = {
-    InstanceId = aws_instance.grafana_instance.*.id[0]
+    InstanceId = aws_instance.grafana_instance.id
   }
 
 }
@@ -35,7 +35,7 @@ resource "aws_cloudwatch_metric_alarm" "grafana_system_status" {
   threshold           = "0"
 
   dimensions = {
-    InstanceId = aws_instance.grafana_instance.*.id[0]
+    InstanceId = aws_instance.grafana_instance.id
   }
 
 }
