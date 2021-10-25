@@ -21,7 +21,6 @@ resource "aws_instance" "grafana_instance" {
   ami                     = data.aws_ami.ubuntu.id
   instance_type           = "t2.small"
   key_name                = var.ssh-key-name
-  subnet_id               = element(var.backend-subnet-ids, count.index)
   user_data               = data.template_file.grafana_user_data.rendered
   disable_api_termination = false
   ebs_optimized           = false
