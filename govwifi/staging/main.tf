@@ -7,7 +7,6 @@ module "tfstate" {
   product-name       = var.product-name
   Env-Name           = var.Env-Name
   aws-account-id     = local.aws_account_id
-  aws-region         = var.aws-region
   aws-region-name    = var.aws-region-name
   backup-region-name = var.backup-region-name
 
