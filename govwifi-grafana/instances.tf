@@ -19,13 +19,13 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "grafana_instance" {
   ami                     = data.aws_ami.ubuntu.id
   instance_type           = "t2.small"
-  key_name                = var.ssh-key-name
+  key_name                = var.ssh_key_name
   user_data               = data.template_file.grafana_user_data.rendered
   disable_api_termination = false
   ebs_optimized           = false
 
   vpc_security_group_ids = [
-    var.be-admin-in,
+    var.be_admin_in,
     aws_security_group.grafana_ec2_in.id,
     aws_security_group.grafana_ec2_out.id,
   ]
@@ -33,8 +33,8 @@ resource "aws_instance" "grafana_instance" {
   iam_instance_profile = aws_iam_instance_profile.grafana_instance_profile.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Grafana-Server"
-    Env  = title(var.Env-Name)
+    Name = "${title(var.env_name)} Grafana-Server"
+    Env  = title(var.env_name)
   }
 
   lifecycle {
@@ -47,16 +47,16 @@ resource "aws_instance" "grafana_instance" {
 resource "aws_ebs_volume" "grafana_ebs" {
   size              = 40
   encrypted         = true
-  availability_zone = "${var.aws-region}a"
+  availability_zone = "${var.aws_region}a"
 
   tags = {
-    Name = "${var.Env-Name} Grafana volume"
+    Name = "${var.env_name} Grafana volume"
   }
 }
 
 resource "aws_volume_attachment" "grafana_ebs_attach" {
   depends_on  = [aws_ebs_volume.grafana_ebs]
-  device_name = var.grafana-device-name
+  device_name = var.grafana_device_name
   volume_id   = aws_ebs_volume.grafana_ebs.id
   instance_id = aws_instance.grafana_instance.id
 }
@@ -65,13 +65,13 @@ data "template_file" "grafana_user_data" {
   template = file("${path.module}/user_data.sh")
 
   vars = {
-    grafana-log-group       = "${var.Env-Name}-grafana-log-group"
+    grafana-log-group       = "${var.env_name}-grafana-log-group"
     grafana_admin           = local.grafana-admin
     google_client_secret    = local.google-client-secret
     google_client_id        = local.google-client-id
     grafana_server_root_url = local.grafana-server-root-url
-    grafana_device_name     = var.grafana-device-name
-    grafana_docker_version  = var.grafana-docker-version
+    grafana_device_name     = var.grafana_device_name
+    grafana_docker_version  = var.grafana_docker_version
   }
 }
 

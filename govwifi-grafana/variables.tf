@@ -1,36 +1,36 @@
 # Unless there is a default provided, all values are inherited from the main deployment file.
 # Values can also be overwritten from the main deployment file.
 
-variable "Env-Name" {
+variable "env_name" {
   description = "Environment name for the component."
   type        = string
 }
 
-variable "Env-Subdomain" {
+variable "env_subdomain" {
   description = "E.g. grafana.staging.wifi"
 }
 
-variable "aws-region" {
+variable "aws_region" {
   description = "AWS region for the component."
   type        = string
 }
 
-variable "ssh-key-name" {
+variable "ssh_key_name" {
   description = "The SSH key name to use."
   type        = string
 }
 
-variable "backend-subnet-ids" {
+variable "backend_subnet_ids" {
   description = "List of AWS subnet IDs to place the EC2 instances and ELB into."
   type        = list(string)
 }
 
-variable "be-admin-in" {
+variable "be_admin_in" {
   description = "The relevant security group for this component."
   type        = string
 }
 
-variable "vpc-id" {
+variable "vpc_id" {
   description = "VPC ID used for the Application Load Balancer."
   type        = string
 }
@@ -46,7 +46,7 @@ variable "prometheus_ips" {
   default     = []
 }
 
-variable "subnet-ids" {
+variable "subnet_ids" {
   description = "List of AWS subnet IDs to place the EC2 instances and ELB into"
   type        = list(string)
 }
@@ -55,19 +55,19 @@ variable "administrator_ips" {
   description = "IPs associated with the GDS/CDIO VPN to allow access"
 }
 
-variable "grafana-device-name" {
+variable "grafana_device_name" {
   description = "Name of Grafana Persistent Drive Device Name"
   type        = string
   default     = "/dev/xvdp"
 }
 
-variable "grafana-docker-version" {
+variable "grafana_docker_version" {
   description = "Grafana Docker Version Number"
   type        = string
   default     = "7.5.2"
 }
 
-variable "critical-notifications-arn" {
+variable "critical_notifications_arn" {
   description = "Arn of the critical-nofications sns topic"
   type        = string
 }

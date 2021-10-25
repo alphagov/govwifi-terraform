@@ -432,21 +432,21 @@ module "govwifi_grafana" {
   }
 
   source                     = "../../govwifi-grafana"
-  Env-Name                   = var.Env-Name
-  Env-Subdomain              = var.Env-Subdomain
-  aws-region                 = var.aws-region
-  critical-notifications-arn = module.critical-notifications.topic-arn
+  env_name                   = var.Env-Name
+  env_subdomain              = var.Env-Subdomain
+  aws_region                 = var.aws-region
+  critical_notifications_arn = module.critical-notifications.topic-arn
   is_production_aws_account  = var.is_production_aws_account
 
-  ssh-key-name = var.ssh-key-name
+  ssh_key_name = var.ssh-key-name
 
-  subnet-ids = module.backend.backend-subnet-ids
+  subnet_ids = module.backend.backend-subnet-ids
 
-  backend-subnet-ids = module.backend.backend-subnet-ids
+  backend_subnet_ids = module.backend.backend-subnet-ids
 
-  be-admin-in = module.backend.be-admin-in
+  be_admin_in = module.backend.be-admin-in
 
-  vpc-id = module.backend.backend-vpc-id
+  vpc_id = module.backend.backend-vpc-id
 
   bastion_ip = var.bastion_server_ip
 

@@ -13,9 +13,9 @@ resource "aws_vpc_endpoint" "vpc_endpoint" {
 
   service_name = "com.amazonaws.eu-west-2.secretsmanager"
 
-  subnet_ids = var.backend-subnet-ids
+  subnet_ids = var.backend_subnet_ids
 
   vpc_endpoint_type = "Interface"
 
-  vpc_id = var.vpc-id
+  vpc_id = var.vpc_id
 }

@@ -1,8 +1,8 @@
 resource "aws_cloudwatch_metric_alarm" "grafana_instance_status" {
 
-  alarm_name         = "${var.Env-Name}-grafana-instance-status"
-  alarm_description  = "Alert in event of ${var.Env-Name}-grafana EC2 on instance Status Check failure. Investigate Grafana CloudWatch logs for root cause."
-  alarm_actions      = [var.critical-notifications-arn]
+  alarm_name         = "${var.env_name}-grafana-instance-status"
+  alarm_description  = "Alert in event of ${var.env_name}-grafana EC2 on instance Status Check failure. Investigate Grafana CloudWatch logs for root cause."
+  alarm_actions      = [var.critical_notifications_arn]
   treat_missing_data = "breaching"
 
   namespace           = "AWS/EC2"
@@ -21,9 +21,9 @@ resource "aws_cloudwatch_metric_alarm" "grafana_instance_status" {
 
 resource "aws_cloudwatch_metric_alarm" "grafana_system_status" {
 
-  alarm_name         = "${var.Env-Name}-grafana-system-status"
-  alarm_description  = "Alert in event of ${var.Env-Name}-grafana EC2 on system Status Check failure. Investigate Grafana CloudWatch logs for root cause."
-  alarm_actions      = [var.critical-notifications-arn]
+  alarm_name         = "${var.env_name}-grafana-system-status"
+  alarm_description  = "Alert in event of ${var.env_name}-grafana EC2 on system Status Check failure. Investigate Grafana CloudWatch logs for root cause."
+  alarm_actions      = [var.critical_notifications_arn]
   treat_missing_data = "breaching"
 
   namespace           = "AWS/EC2"
@@ -42,9 +42,9 @@ resource "aws_cloudwatch_metric_alarm" "grafana_system_status" {
 
 resource "aws_cloudwatch_metric_alarm" "grafana_service_status" {
 
-  alarm_name         = "${var.Env-Name}-grafana-service-status"
-  alarm_description  = "Alert in event of ${var.Env-Name}-grafana can not load the login page. This likely indicates the Grafana service is not running."
-  alarm_actions      = [var.critical-notifications-arn]
+  alarm_name         = "${var.env_name}-grafana-service-status"
+  alarm_description  = "Alert in event of ${var.env_name}-grafana can not load the login page. This likely indicates the Grafana service is not running."
+  alarm_actions      = [var.critical_notifications_arn]
   treat_missing_data = "breaching"
 
   namespace           = "AWS/ApplicationELB"
@@ -57,7 +57,7 @@ resource "aws_cloudwatch_metric_alarm" "grafana_service_status" {
 
   dimensions = {
     TargetGroup      = aws_alb_target_group.grafana_tg.arn_suffix,
-    AvailabilityZone = "${var.aws-region}a",
+    AvailabilityZone = "${var.aws_region}a",
     LoadBalancer     = aws_lb.grafana_alb.arn_suffix
   }
 
