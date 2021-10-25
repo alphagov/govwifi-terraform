@@ -1,20 +1,20 @@
-variable "Env-Name" {
+variable "env_name" {
 }
 
-variable "aws-region" {
+variable "aws_region" {
 }
 
-variable "backend-subnet-id" {
+variable "backend_subnet_id" {
 }
 
-variable "vpc-id" {
+variable "vpc_id" {
 }
 
-variable "vpc-cidr-block" {
+variable "vpc_cidr_block" {
 }
 
-variable "aws-account-id" {
+variable "aws_account_id" {
 }
 
-variable "domain-name" {
+variable "domain_name" {
 }

@@ -431,14 +431,14 @@ module "govwifi_elasticsearch" {
   }
 
   source         = "../../govwifi-elasticsearch"
-  domain-name    = "${var.Env-Name}-elasticsearch"
-  Env-Name       = var.Env-Name
-  aws-region     = var.aws-region
-  aws-account-id = local.aws_account_id
-  vpc-id         = module.backend.backend-vpc-id
-  vpc-cidr-block = module.backend.vpc-cidr-block
+  domain_name    = "${var.Env-Name}-elasticsearch"
+  env_name       = var.Env-Name
+  aws_region     = var.aws-region
+  aws_account_id = local.aws_account_id
+  vpc_id         = module.backend.backend-vpc-id
+  vpc_cidr_block = module.backend.vpc-cidr-block
 
-  backend-subnet-id = module.backend.backend-subnet-ids[0]
+  backend_subnet_id = module.backend.backend-subnet-ids[0]
 }
 
 module "govwifi_datasync" {

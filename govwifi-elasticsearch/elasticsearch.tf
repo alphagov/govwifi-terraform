@@ -1,22 +1,22 @@
 resource "aws_security_group" "elasticsearch_inbound" {
   name        = "elasticsearch-inbound"
   description = "Allow Outbound Traffic From the API"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} Elasticsearch inbound traffic"
+    Name = "${title(var.env_name)} Elasticsearch inbound traffic"
   }
 
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = [var.vpc-cidr-block]
+    cidr_blocks = [var.vpc_cidr_block]
   }
 }
 
 resource "aws_elasticsearch_domain" "govwifi_elasticsearch" {
-  domain_name           = var.domain-name
+  domain_name           = var.domain_name
   elasticsearch_version = "7.9"
 
   cluster_config {
@@ -28,7 +28,7 @@ resource "aws_elasticsearch_domain" "govwifi_elasticsearch" {
 
   vpc_options {
     subnet_ids = [
-      var.backend-subnet-id
+      var.backend_subnet_id
     ]
 
     security_group_ids = [
@@ -51,7 +51,7 @@ resource "aws_elasticsearch_domain" "govwifi_elasticsearch" {
         "AWS": "*"
       },
       "Action": "es:*",
-      "Resource": "arn:aws:es:${var.aws-region}:${var.aws-account-id}:domain/${var.domain-name}/*"
+      "Resource": "arn:aws:es:${var.aws_region}:${var.aws_account_id}:domain/${var.domain_name}/*"
     }
   ]
 }
