@@ -57,7 +57,7 @@ resource "aws_ecs_task_definition" "backup_rds_to_s3_task_definition" {
           "value": ""
         },{
           "name": "S3_BUCKET",
-          "value": "${var.rds_mysql_backup_bucket}"
+          "value": "test"
         }
       ],
       "secrets": [
@@ -210,8 +210,8 @@ resource "aws_iam_role_policy" "backup_rds_to_s3_task_policy" {
       ],
       "Resource": [
         "arn:aws:kms:eu-west-2:${var.aws-account-id}:key/*",
-        "arn:aws:s3:::${var.rds_mysql_backup_bucket}",
-        "arn:aws:s3:::${var.rds_mysql_backup_bucket}/*"
+        "arn:aws:s3:::test",
+        "arn:aws:s3:::test/*"
       ]
   }, {
       "Sid": "sid4",
