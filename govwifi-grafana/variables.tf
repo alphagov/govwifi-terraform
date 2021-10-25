@@ -30,11 +30,6 @@ variable "be-admin-in" {
   type        = string
 }
 
-variable "create_grafana_server" {
-  description = "A feature toggle for the Grafana instance (1 = enabled; value defaults to disabled and is overwritten in the main deployment file.)"
-  default     = "0"
-}
-
 variable "vpc-id" {
   description = "VPC ID used for the Application Load Balancer."
   type        = string

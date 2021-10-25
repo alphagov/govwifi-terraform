@@ -410,9 +410,7 @@ module "govwifi_grafana" {
   backend-subnet-ids = module.backend.backend-subnet-ids
   be-admin-in        = module.backend.be-admin-in
 
-  # Feature toggle so we only create the Grafana instance in Staging London
-  create_grafana_server = "1"
-  vpc-id                = module.backend.backend-vpc-id
+  vpc-id = module.backend.backend-vpc-id
 
   bastion_ip = var.bastion_server_ip
 
