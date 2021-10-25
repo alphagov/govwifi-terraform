@@ -1,5 +1,5 @@
-variable "critical-notifications-topic-arn" {}
+variable "critical_notifications_topic_arn" {}
 
-variable "capacity-notifications-topic-arn" {}
+variable "capacity_notifications_topic_arn" {}
 
-variable "route53-critical-notifications-topic-arn" {}
+variable "route53_critical_notifications_topic_arn" {}
