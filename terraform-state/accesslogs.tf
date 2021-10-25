@@ -3,7 +3,7 @@
 # --------------------------------------------------------------
 
 resource "aws_iam_role" "accesslogs_replication" {
-  name = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs-replication-role"
+  name = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs-replication-role"
 
   assume_role_policy = <<POLICY
 {
@@ -24,7 +24,7 @@ POLICY
 }
 
 resource "aws_iam_policy" "accesslogs_replication" {
-  name = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-accesslogs-replication-policy"
+  name = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-accesslogs-replication-policy"
 
   policy = <<EOF
 {
@@ -56,7 +56,7 @@ resource "aws_iam_policy" "accesslogs_replication" {
          "s3:ReplicateDelete"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${lower(var.product-name)}-${var.Env-Name}-${lower(var.backup-region-name)}-accesslogs/*"
+      "Resource": "arn:aws:s3:::${lower(var.product_name)}-${var.env_name}-${lower(var.backup_region_name)}-accesslogs/*"
     }
   ]
 }
@@ -65,19 +65,19 @@ EOF
 }
 
 resource "aws_iam_policy_attachment" "accesslogs_replication" {
-  name       = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-accesslogs-replication"
+  name       = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-accesslogs-replication"
   roles      = [aws_iam_role.accesslogs_replication.name]
   policy_arn = aws_iam_policy.accesslogs_replication.arn
 }
 
 resource "aws_s3_bucket" "accesslogs_bucket" {
-  bucket = "${lower(var.product-name)}-${var.Env-Name}-${lower(var.aws-region-name)}-accesslogs"
+  bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
   acl    = "log-delivery-write"
 
   tags = {
-    Region      = title(var.aws-region-name)
-    Product     = var.product-name
-    Environment = title(var.Env-Name)
+    Region      = title(var.aws_region_name)
+    Product     = var.product_name
+    Environment = title(var.env_name)
     Category    = "Accesslogs"
   }
 
@@ -86,16 +86,16 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
   }
 
   lifecycle_rule {
-    id      = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-accesslogs-lifecycle"
+    id      = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-accesslogs-lifecycle"
     enabled = true
 
     transition {
-      days          = var.accesslogs-glacier-transition-days
+      days          = var.accesslogs_glacier_transition_days
       storage_class = "GLACIER"
     }
 
     expiration {
-      days = var.accesslogs-expiration-days
+      days = var.accesslogs_expiration_days
     }
   }
 
@@ -104,12 +104,12 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
 
     rules {
       # ID is necessary to prevent continuous change issue
-      id     = "${lower(var.aws-region-name)}-to-${lower(var.backup-region-name)}-accesslogs-backup"
-      prefix = "${lower(var.aws-region-name)}-accesslogs-backup"
+      id     = "${lower(var.aws_region_name)}-to-${lower(var.backup_region_name)}-accesslogs-backup"
+      prefix = "${lower(var.aws_region_name)}-accesslogs-backup"
       status = "Enabled"
 
       destination {
-        bucket        = "arn:aws:s3:::${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.backup-region-name)}-accesslogs"
+        bucket        = "arn:aws:s3:::${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.backup_region_name)}-accesslogs"
         storage_class = "STANDARD"
       }
     }

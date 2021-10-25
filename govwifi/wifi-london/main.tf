@@ -4,15 +4,15 @@ module "tfstate" {
   }
 
   source             = "../../terraform-state"
-  product-name       = var.product-name
-  Env-Name           = var.Env-Name
-  aws-account-id     = local.aws_account_id
-  aws-region-name    = var.aws-region-name
-  backup-region-name = var.backup-region-name
+  product_name       = var.product-name
+  env_name           = var.Env-Name
+  aws_account_id     = local.aws_account_id
+  aws_region_name    = var.aws-region-name
+  backup_region_name = var.backup-region-name
 
   # TODO: separate module for accesslogs
-  accesslogs-glacier-transition-days = 30
-  accesslogs-expiration-days         = 90
+  accesslogs_glacier_transition_days = 30
+  accesslogs_expiration_days         = 90
 }
 
 terraform {

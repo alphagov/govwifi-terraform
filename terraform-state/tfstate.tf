@@ -1,6 +1,6 @@
 # Resources for setting up s3 for terraform backend. (state storage in s3)
 resource "aws_iam_role" "tfstate_replication" {
-  name = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-replication-role"
+  name = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate-replication-role"
 
   assume_role_policy = <<POLICY
 {
@@ -21,7 +21,7 @@ POLICY
 }
 
 resource "aws_iam_policy" "tfstate_replication" {
-  name = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-replication-policy"
+  name = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate-replication-policy"
 
   policy = <<EOF
 {
@@ -53,7 +53,7 @@ resource "aws_iam_policy" "tfstate_replication" {
         "s3:ReplicateDelete"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${lower(var.product-name)}-${var.Env-Name}-${lower(var.backup-region-name)}-tfstate/*"
+      "Resource": "arn:aws:s3:::${lower(var.product_name)}-${var.env_name}-${lower(var.backup_region_name)}-tfstate/*"
     }
   ]
 }
@@ -62,7 +62,7 @@ EOF
 }
 
 resource "aws_iam_policy_attachment" "tfstate_replication" {
-  name       = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-replication"
+  name       = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate-replication"
   roles      = [aws_iam_role.tfstate_replication.name]
   policy_arn = aws_iam_policy.tfstate_replication.arn
 }
@@ -73,20 +73,20 @@ resource "aws_kms_key" "tfstate_key" {
   is_enabled              = true
 
   tags = {
-    Region      = title(var.aws-region-name)
-    Product     = var.product-name
-    Environment = title(var.Env-Name)
+    Region      = title(var.aws_region_name)
+    Product     = var.product_name
+    Environment = title(var.env_name)
     Category    = "TFstate"
   }
 }
 
 resource "aws_kms_alias" "tfstate_key_alias" {
-  name          = "alias/${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate-key"
+  name          = "alias/${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate-key"
   target_key_id = aws_kms_key.tfstate_key.key_id
 }
 
 resource "aws_s3_bucket" "state_bucket" {
-  bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
+  bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate"
 
   policy = <<EOF
 {
@@ -96,10 +96,10 @@ resource "aws_s3_bucket" "state_bucket" {
             "Effect": "Allow",
             "Principal": "*",
             "Action": "s3:*",
-            "Resource": "arn:aws:s3:::${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate/*",
+            "Resource": "arn:aws:s3:::${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate/*",
             "Condition": {
                 "StringEquals": {
-                    "aws:SourceAccount": "${var.aws-account-id}",
+                    "aws:SourceAccount": "${var.aws_account_id}",
                     "s3:x-amz-acl": "bucket-owner-full-control"
                 }
             }
@@ -109,9 +109,9 @@ EOF
 
 
   tags = {
-    Region      = title(var.aws-region-name)
-    Product     = var.product-name
-    Environment = title(var.Env-Name)
+    Region      = title(var.aws_region_name)
+    Product     = var.product_name
+    Environment = title(var.env_name)
     Category    = "TFstate"
   }
 
@@ -120,8 +120,8 @@ EOF
   }
 
   logging {
-    target_bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-accesslogs"
-    target_prefix = "${lower(var.aws-region-name)}-tfstate"
+    target_bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-accesslogs"
+    target_prefix = "${lower(var.aws_region_name)}-tfstate"
   }
 
   replication_configuration {
@@ -129,12 +129,12 @@ EOF
 
     rules {
       # ID is necessary to prevent continuous change issue
-      id     = "${lower(var.aws-region-name)}-to-${lower(var.backup-region-name)}-tfstate-backup"
-      prefix = "${lower(var.aws-region-name)}-tfstate"
+      id     = "${lower(var.aws_region_name)}-to-${lower(var.backup_region_name)}-tfstate-backup"
+      prefix = "${lower(var.aws_region_name)}-tfstate"
       status = "Enabled"
 
       destination {
-        bucket        = "arn:aws:s3:::${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.backup-region-name)}-tfstate"
+        bucket        = "arn:aws:s3:::${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.backup_region_name)}-tfstate"
         storage_class = "STANDARD_IA"
       }
     }
