@@ -1,35 +1,35 @@
-variable "product-name" {
+variable "product_name" {
 }
 
-variable "Env-Name" {
+variable "env_name" {
 }
 
-variable "Env-Subdomain" {
+variable "env_subdomain" {
 }
 
-variable "aws-account-id" {
+variable "aws_account_id" {
 }
 
-variable "route53-zone-id" {
+variable "route53_zone_id" {
 }
 
-variable "aws-region" {
+variable "aws_region" {
 }
 
-variable "aws-region-name" {
+variable "aws_region_name" {
 }
 
-variable "mail-exchange-server" {
+variable "mail_exchange_server" {
 }
 
-variable "sns-endpoint" {
+variable "sns_endpoint" {
 }
 
-variable "user-signup-notifications-endpoint" {
+variable "user_signup_notifications_endpoint" {
   description = "HTTP endpoint used by SNS to send user signup email notifications"
 }
 
-variable "devops-notifications-arn" {
+variable "devops_notifications_arn" {
 }
 
 variable "is_production_aws_account" {

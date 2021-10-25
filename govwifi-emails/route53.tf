@@ -3,10 +3,10 @@
 
 # MX record for this environment
 resource "aws_route53_record" "mx" {
-  zone_id = var.route53-zone-id
-  name    = "${var.Env-Subdomain}.service.gov.uk"
+  zone_id = var.route53_zone_id
+  name    = "${var.env_subdomain}.service.gov.uk"
   type    = "MX"
   ttl     = "300"
-  records = [var.mail-exchange-server]
+  records = [var.mail_exchange_server]
 }
 
