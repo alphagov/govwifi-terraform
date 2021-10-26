@@ -134,70 +134,6 @@ module "backend" {
   db_storage_alarm_threshold = 19327342936
 }
 
-# London Frontend ==================================================================
-module "frontend" {
-  providers = {
-    aws           = aws.main
-    aws.us_east_1 = aws.us_east_1
-  }
-
-  source                    = "../../govwifi-frontend"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
-  is_production_aws_account = var.is_production_aws_account
-
-  # AWS VPC setup -----------------------------------------
-  # LONDON
-  aws-region = var.aws-region
-
-  aws-region-name    = var.aws-region-name
-  route53-zone-id    = local.route53_zone_id
-  vpc-cidr-block     = "10.102.0.0/16"
-  zone-count         = var.zone-count
-  zone-names         = var.zone-names
-  rack-env           = "staging"
-  sentry-current-env = "staging"
-
-  zone-subnets = {
-    zone0 = "10.102.1.0/24"
-    zone1 = "10.102.2.0/24"
-    zone2 = "10.102.3.0/24"
-  }
-
-  # Instance-specific setup -------------------------------
-  radius-instance-count      = 3
-  enable-detailed-monitoring = false
-
-  # eg. dns records are generated for radius(N).x.service.gov.uk
-  # where N = this base + 1 + server#
-  dns-numbering-base = 3
-
-  elastic-ip-list       = local.frontend_region_ips
-  ami                   = var.ami
-  ssh-key-name          = var.ssh-key-name
-  frontend-docker-image = format("%s/frontend:staging", local.docker_image_path)
-  raddb-docker-image    = format("%s/raddb:staging", local.docker_image_path)
-  create-ecr            = 1
-
-  # admin bucket
-  admin-bucket-name = "govwifi-staging-admin"
-
-  logging-api-base-url = var.london-api-base-url
-  auth-api-base-url    = var.london-api-base-url
-
-  critical_notifications_arn           = ""
-  us_east_1_critical_notifications_arn = ""
-
-  bastion_server_ip = var.bastion_server_ip
-
-  prometheus_ip_london  = var.prometheus_ip_london
-  prometheus_ip_ireland = var.prometheus_ip_ireland
-
-  radius-CIDR-blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
-
-  use_env_prefix = var.use_env_prefix
-}
-
 module "govwifi_admin" {
   providers = {
     aws = aws.main
@@ -325,44 +261,6 @@ module "govwifi_dashboard" {
 
   source   = "../../govwifi-dashboard"
   Env-Name = var.Env-Name
-}
-
-/*
-We are only configuring a Prometheus server in Staging London for now, although
-in production the instance is available in both regions.
-The server will scrape metrics from the agents configured in both regions.
-There are some problems with the Staging Bastion instance that is preventing
-us from mirroring the setup in Production in Staging. This will be rectified
-when we create a separate staging environment.
-*/
-module "govwifi_prometheus" {
-  providers = {
-    aws = aws.main
-  }
-
-  source     = "../../govwifi-prometheus"
-  Env-Name   = var.Env-Name
-  aws-region = var.aws-region
-
-  ssh-key-name = var.ssh-key-name
-
-  frontend-vpc-id = module.frontend.frontend-vpc-id
-
-  fe-admin-in   = module.frontend.fe-admin-in
-  fe-ecs-out    = module.frontend.fe-ecs-out
-  fe-radius-in  = module.frontend.fe-radius-in
-  fe-radius-out = module.frontend.fe-radius-out
-
-  wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
-  london_radius_ip_addresses = var.london_radius_ip_addresses
-  dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
-
-  # Feature toggle creating Prometheus server.
-  # Value defaults to 0 and is only enabled (i.e., value = 1) in staging-london
-  create_prometheus_server = 1
-
-  prometheus_ip = var.prometheus_ip_london
-  grafana_ip    = var.grafana_ip
 }
 
 module "govwifi_grafana" {
