@@ -34,12 +34,6 @@ resource "aws_iam_instance_profile" "London_ecs_instance_profile_wifi" {
   role = "London-ecs-instance-role-wifi"
 }
 
-resource "aws_iam_instance_profile" "London_frontend_ecs_instance_profile_staging" {
-  name = "London-frontend-ecs-instance-profile-staging"
-  path = "/"
-  role = "London-frontend-ecs-instance-role-staging"
-}
-
 resource "aws_iam_instance_profile" "London_frontend_ecs_instance_profile_wifi" {
   name = "London-frontend-ecs-instance-profile-wifi"
   path = "/"
