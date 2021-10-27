@@ -192,6 +192,7 @@ module "frontend" {
   ssh-key-name          = var.ssh-key-name
   frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
   raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
+  create-ecr            = 1
 
   admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
 
