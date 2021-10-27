@@ -134,63 +134,6 @@ module "backend" {
   db_storage_alarm_threshold = 19327342936
 }
 
-module "govwifi_admin" {
-  providers = {
-    aws = aws.main
-  }
-
-  source                    = "../../govwifi-admin"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
-  is_production_aws_account = var.is_production_aws_account
-
-  aws-region      = var.aws-region
-  aws-region-name = var.aws-region-name
-  vpc-id          = module.backend.backend-vpc-id
-  instance-count  = 1
-
-  admin-docker-image   = format("%s/admin:staging", local.docker_image_path)
-  rack-env             = "staging"
-  sentry-current-env   = "staging"
-  ecr-repository-count = 1
-
-  subnet-ids = module.backend.backend-subnet-ids
-
-  db-instance-type         = "db.t2.medium"
-  db-storage-gb            = 120
-  db-backup-retention-days = 1
-  db-encrypt-at-rest       = true
-  db-maintenance-window    = "sat:00:42-sat:01:12"
-  db-backup-window         = "03:42-04:42"
-  db-monitoring-interval   = 60
-
-  rr-db-host = "db.london.staging.wifi.service.gov.uk"
-  rr-db-name = "govwifi_staging"
-
-  user-db-host = var.user-db-hostname
-  user-db-name = "govwifi_staging_users"
-
-  critical-notifications-arn = ""
-  capacity-notifications-arn = ""
-
-  rds-monitoring-role = module.backend.rds-monitoring-role
-
-  london_radius_ip_addresses = var.london_radius_ip_addresses
-  dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
-  sentry-dsn                 = var.admin_sentry_dsn
-  logging-api-search-url     = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
-  public-google-api-key      = var.public-google-api-key
-
-  zendesk-api-endpoint = "https://govuk.zendesk.com/api/v2/"
-  zendesk_api_user     = var.zendesk_api_user
-
-  bastion_server_ip = var.bastion_server_ip
-
-  use_env_prefix = true
-
-  notification_arn = ""
-}
-
 module "api" {
   providers = {
     aws = aws.main
