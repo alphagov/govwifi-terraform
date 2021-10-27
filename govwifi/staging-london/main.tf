@@ -245,72 +245,11 @@ module "api" {
     module.backend.be-admin-in,
   ]
 
-  metrics-bucket-name = module.govwifi_dashboard.metrics-bucket-name
+  metrics-bucket-name = ""
 
   use_env_prefix   = var.use_env_prefix
   backup_mysql_rds = var.backup_mysql_rds
   rds_mysql_backup_bucket = module.backend.rds_mysql_backup_bucket
 
   low_cpu_threshold = 0.3
-}
-
-module "govwifi_dashboard" {
-  providers = {
-    aws = aws.main
-  }
-
-  source   = "../../govwifi-dashboard"
-  Env-Name = var.Env-Name
-}
-
-module "govwifi_grafana" {
-  providers = {
-    aws = aws.main
-  }
-
-  source                     = "../../govwifi-grafana"
-  Env-Name                   = var.Env-Name
-  Env-Subdomain              = var.Env-Subdomain
-  aws-region                 = var.aws-region
-  critical-notifications-arn = ""
-  is_production_aws_account  = var.is_production_aws_account
-
-  ssh-key-name = var.ssh-key-name
-
-  subnet-ids = module.backend.backend-subnet-ids
-
-  backend-subnet-ids = module.backend.backend-subnet-ids
-
-  be-admin-in = module.backend.be-admin-in
-
-  # Feature toggle so we only create the Grafana instance in Staging London
-  create_grafana_server = "1"
-
-  vpc-id = module.backend.backend-vpc-id
-
-  bastion_ip = var.bastion_server_ip
-
-  administrator_ips = var.administrator_ips
-
-  prometheus_ips = [
-    var.prometheus_ip_london,
-  ]
-
-  use_env_prefix = var.use_env_prefix
-}
-
-module "govwifi_elasticsearch" {
-  providers = {
-    aws = aws.main
-  }
-
-  source         = "../../govwifi-elasticsearch"
-  domain_name    = "${var.Env-Name}-elasticsearch"
-  env_name       = var.Env-Name
-  aws_region     = var.aws-region
-  aws_account_id = local.aws_account_id
-  vpc_id         = module.backend.backend-vpc-id
-  vpc_cidr_block = module.backend.vpc-cidr-block
-
-  backend_subnet_id = module.backend.backend-subnet-ids[0]
 }
