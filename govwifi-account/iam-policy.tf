@@ -58,44 +58,6 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "ITHC_Staging_Cyberis_Policy" {
-  name        = "ITHC-Staging-Cyberis-Policy"
-  path        = "/"
-  description = ""
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "VisualEditor0",
-      "Effect": "Deny",
-      "Action": "*",
-      "Resource": "*",
-      "Condition": {
-        "NotIpAddress": {
-          "aws:SourceIp": [
-            "90.155.48.192/26",
-            "81.2.127.144/28",
-            "88.97.60.11/24",
-            "3.10.4.97/24",
-            "213.86.153.212/32",
-            "213.86.153.213/32",
-            "213.86.153.214/32",
-            "213.86.153.235/32",
-            "213.86.153.236/32",
-            "213.86.153.237/32",
-            "85.133.67.244/32"
-          ]
-        }
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_policy" "CloudTrailPolicyForCloudWatchLogs_dab06026_75de_4ad1_a922_e4fc41e01568" {
   name        = "CloudTrailPolicyForCloudWatchLogs_dab06026-75de-4ad1-a922-e4fc41e01568"
   path        = "/service-role/"
@@ -227,89 +189,6 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "s3crr_kms_for_govwifi_staging_london_tfstate_to_govwifi_staging_dublin_tfstate" {
-  name        = "s3crr_kms_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate"
-  path        = "/service-role/"
-  description = ""
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:ListBucket",
-        "s3:GetReplicationConfiguration",
-        "s3:GetObjectVersionForReplication",
-        "s3:GetObjectVersionAcl"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-london-tfstate",
-        "arn:aws:s3:::govwifi-staging-london-tfstate/*"
-      ]
-    },
-    {
-      "Action": [
-        "s3:ReplicateObject",
-        "s3:ReplicateDelete",
-        "s3:ReplicateTags",
-        "s3:GetObjectVersionTagging"
-      ],
-      "Effect": "Allow",
-      "Condition": {
-        "StringLikeIfExists": {
-          "s3:x-amz-server-side-encryption": [
-            "aws:kms",
-            "AES256"
-          ],
-          "s3:x-amz-server-side-encryption-aws-kms-key-id": [
-            "arn:aws:kms:eu-west-1:${var.aws-account-id}:key/a6535eb7-ca94-4abc-8ecb-94b8650be41a"
-          ]
-        }
-      },
-      "Resource": "arn:aws:s3:::govwifi-staging-dublin-tfstate/*"
-    },
-    {
-      "Action": [
-        "kms:Decrypt"
-      ],
-      "Effect": "Allow",
-      "Condition": {
-        "StringLike": {
-          "kms:ViaService": "s3.eu-west-2.amazonaws.com",
-          "kms:EncryptionContext:aws:s3:arn": [
-            "arn:aws:s3:::govwifi-staging-london-tfstate/*"
-          ]
-        }
-      },
-      "Resource": [
-        "arn:aws:kms:eu-west-2:${var.aws-account-id}:key/1d262f07-6e60-423a-b1e6-61fb6d95eca3"
-      ]
-    },
-    {
-      "Action": [
-        "kms:Encrypt"
-      ],
-      "Effect": "Allow",
-      "Condition": {
-        "StringLike": {
-          "kms:ViaService": "s3.eu-west-1.amazonaws.com",
-          "kms:EncryptionContext:aws:s3:arn": [
-            "arn:aws:s3:::govwifi-staging-dublin-tfstate/*"
-          ]
-        }
-      },
-      "Resource": [
-        "arn:aws:kms:eu-west-1:${var.aws-account-id}:key/a6535eb7-ca94-4abc-8ecb-94b8650be41a"
-      ]
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_policy" "GovWifi_Admin" {
   name        = "GovWifi-Admin"
   path        = "/"
@@ -328,128 +207,6 @@ resource "aws_iam_policy" "GovWifi_Admin" {
           "ec2:ResourceTag/Product": "GovWifi"
         }
       }
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_policy" "s3crr_for_govwifi_staging_dublin_tfstate_to_govwifi_staging_london_tfstate" {
-  name        = "s3crr_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate"
-  path        = "/service-role/"
-  description = ""
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:Get*",
-        "s3:ListBucket"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-dublin-tfstate",
-        "arn:aws:s3:::govwifi-staging-dublin-tfstate/*"
-      ]
-    },
-    {
-      "Action": [
-        "s3:ReplicateObject",
-        "s3:ReplicateDelete",
-        "s3:ReplicateTags",
-        "s3:GetObjectVersionTagging"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::govwifi-staging-london-tfstate/*"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_policy" "govwifi_staging_london_accesslogs_replication_policy" {
-  name        = "govwifi-staging-london-accesslogs-replication-policy"
-  path        = "/"
-  description = ""
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:GetReplicationConfiguration",
-        "s3:ListBucket"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-london-accesslogs"
-      ]
-    },
-    {
-      "Action": [
-        "s3:GetObjectVersion",
-        "s3:GetObjectVersionAcl"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-london-accesslogs/*"
-      ]
-    },
-    {
-      "Action": [
-        "s3:ReplicateObject",
-        "s3:ReplicateDelete"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::govwifi-staging-dublin-accesslogs/*"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_policy" "govwifi_staging_dublin_accesslogs_replication_policy" {
-  name        = "govwifi-staging-dublin-accesslogs-replication-policy"
-  path        = "/"
-  description = ""
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:GetReplicationConfiguration",
-        "s3:ListBucket"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-dublin-accesslogs"
-      ]
-    },
-    {
-      "Action": [
-        "s3:GetObjectVersion",
-        "s3:GetObjectVersionAcl"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-dublin-accesslogs/*"
-      ]
-    },
-    {
-      "Action": [
-        "s3:ReplicateObject",
-        "s3:ReplicateDelete"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::govwifi-staging-london-accesslogs/*"
     }
   ]
 }
@@ -564,42 +321,6 @@ resource "aws_iam_policy" "govwifi_wifi_dublin_tfstate_replication_policy" {
       ],
       "Effect": "Allow",
       "Resource": "arn:aws:s3:::govwifi-wifi-london-tfstate/*"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_policy" "s3crr_for_govwifi_staging_london_tfstate_to_govwifi_staging_dublin_tfstate" {
-  name        = "s3crr_for_govwifi-staging-london-tfstate_to_govwifi-staging-dublin-tfstate"
-  path        = "/service-role/"
-  description = ""
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:Get*",
-        "s3:ListBucket"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-london-tfstate",
-        "arn:aws:s3:::govwifi-staging-london-tfstate/*"
-      ]
-    },
-    {
-      "Action": [
-        "s3:ReplicateObject",
-        "s3:ReplicateDelete",
-        "s3:ReplicateTags",
-        "s3:GetObjectVersionTagging"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::govwifi-staging-dublin-tfstate/*"
     }
   ]
 }
@@ -741,89 +462,6 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "s3crr_kms_for_govwifi_staging_dublin_tfstate_to_govwifi_staging_london_tfstate" {
-  name        = "s3crr_kms_for_govwifi-staging-dublin-tfstate_to_govwifi-staging-london-tfstate"
-  path        = "/service-role/"
-  description = ""
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:ListBucket",
-        "s3:GetReplicationConfiguration",
-        "s3:GetObjectVersionForReplication",
-        "s3:GetObjectVersionAcl"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-dublin-tfstate",
-        "arn:aws:s3:::govwifi-staging-dublin-tfstate/*"
-      ]
-    },
-    {
-      "Action": [
-        "s3:ReplicateObject",
-        "s3:ReplicateDelete",
-        "s3:ReplicateTags",
-        "s3:GetObjectVersionTagging"
-      ],
-      "Effect": "Allow",
-      "Condition": {
-        "StringLikeIfExists": {
-          "s3:x-amz-server-side-encryption": [
-            "aws:kms",
-            "AES256"
-          ],
-          "s3:x-amz-server-side-encryption-aws-kms-key-id": [
-            "arn:aws:kms:eu-west-2:${var.aws-account-id}:key/1d262f07-6e60-423a-b1e6-61fb6d95eca3"
-          ]
-        }
-      },
-      "Resource": "arn:aws:s3:::govwifi-staging-london-tfstate/*"
-    },
-    {
-      "Action": [
-        "kms:Decrypt"
-      ],
-      "Effect": "Allow",
-      "Condition": {
-        "StringLike": {
-          "kms:ViaService": "s3.eu-west-1.amazonaws.com",
-          "kms:EncryptionContext:aws:s3:arn": [
-            "arn:aws:s3:::govwifi-staging-dublin-tfstate/*"
-          ]
-        }
-      },
-      "Resource": [
-        "arn:aws:kms:eu-west-1:${var.aws-account-id}:key/a6535eb7-ca94-4abc-8ecb-94b8650be41a"
-      ]
-    },
-    {
-      "Action": [
-        "kms:Encrypt"
-      ],
-      "Effect": "Allow",
-      "Condition": {
-        "StringLike": {
-          "kms:ViaService": "s3.eu-west-2.amazonaws.com",
-          "kms:EncryptionContext:aws:s3:arn": [
-            "arn:aws:s3:::govwifi-staging-london-tfstate/*"
-          ]
-        }
-      },
-      "Resource": [
-        "arn:aws:kms:eu-west-2:${var.aws-account-id}:key/1d262f07-6e60-423a-b1e6-61fb6d95eca3"
-      ]
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_policy" "govwifi_wifi_london_tfstate_replication_policy" {
   name        = "govwifi-wifi-london-tfstate-replication-policy"
   path        = "/"
@@ -910,42 +548,6 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "s3crr_for_govwifi_staging_london_accesslogs_to_govwifi_staging_ireland_accesslogs" {
-  name        = "s3crr_for_govwifi-staging-london-accesslogs_to_govwifi-staging-ireland-accesslogs"
-  path        = "/service-role/"
-  description = ""
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:Get*",
-        "s3:ListBucket"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-london-accesslogs",
-        "arn:aws:s3:::govwifi-staging-london-accesslogs/*"
-      ]
-    },
-    {
-      "Action": [
-        "s3:ReplicateObject",
-        "s3:ReplicateDelete",
-        "s3:ReplicateTags",
-        "s3:GetObjectVersionTagging"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::govwifi-staging-ireland-accesslogs/*"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_policy" "LambdaUpdateFunctionCode" {
   name        = "LambdaUpdateFunctionCode"
   path        = "/"
@@ -960,49 +562,6 @@ resource "aws_iam_policy" "LambdaUpdateFunctionCode" {
       "Effect": "Allow",
       "Action": "lambda:UpdateFunctionCode",
       "Resource": "arn:aws:lambda:*:*:function:*"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_policy" "govwifi_staging_london_tfstate_replication_policy" {
-  name        = "govwifi-staging-london-tfstate-replication-policy"
-  path        = "/"
-  description = ""
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:GetReplicationConfiguration",
-        "s3:ListBucket"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-london-tfstate"
-      ]
-    },
-    {
-      "Action": [
-        "s3:GetObjectVersion",
-        "s3:GetObjectVersionAcl"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-london-tfstate/*"
-      ]
-    },
-    {
-      "Action": [
-        "s3:ReplicateObject",
-        "s3:ReplicateDelete"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::govwifi-staging-dublin-tfstate/*"
     }
   ]
 }
@@ -1046,49 +605,6 @@ resource "aws_iam_policy" "govwifi_wifi_london_accesslogs_replication_policy" {
       ],
       "Effect": "Allow",
       "Resource": "arn:aws:s3:::govwifi-wifi-dublin-accesslogs/*"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_policy" "govwifi_staging_dublin_tfstate_replication_policy" {
-  name        = "govwifi-staging-dublin-tfstate-replication-policy"
-  path        = "/"
-  description = ""
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:GetReplicationConfiguration",
-        "s3:ListBucket"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-dublin-tfstate"
-      ]
-    },
-    {
-      "Action": [
-        "s3:GetObjectVersion",
-        "s3:GetObjectVersionAcl"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-dublin-tfstate/*"
-      ]
-    },
-    {
-      "Action": [
-        "s3:ReplicateObject",
-        "s3:ReplicateDelete"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::govwifi-staging-london-tfstate/*"
     }
   ]
 }
@@ -1204,42 +720,6 @@ resource "aws_iam_policy" "GovWifi_Admin_S3_Policy" {
         "arn:aws:s3:::govwifi-staging-dublin-tfstate",
         "arn:aws:s3:::govwifi-staging-london-tfstate"
       ]
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_policy" "s3crr_for_govwifi_staging_ireland_accesslogs_to_govwifi_staging_london_accesslogs" {
-  name        = "s3crr_for_govwifi-staging-ireland-accesslogs_to_govwifi-staging-london-accesslogs"
-  path        = "/service-role/"
-  description = ""
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:Get*",
-        "s3:ListBucket"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-ireland-accesslogs",
-        "arn:aws:s3:::govwifi-staging-ireland-accesslogs/*"
-      ]
-    },
-    {
-      "Action": [
-        "s3:ReplicateObject",
-        "s3:ReplicateDelete",
-        "s3:ReplicateTags",
-        "s3:GetObjectVersionTagging"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::govwifi-staging-london-accesslogs/*"
     }
   ]
 }
@@ -1468,33 +948,6 @@ resource "aws_iam_policy" "GovWifi_Support" {
           "ec2:ResourceTag/Product": "GovWifi"
         }
       }
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_policy" "govwifi_staging_tfstate_nodelete" {
-  name        = "govwifi-staging-tfstate-nodelete"
-  path        = "/"
-  description = "Prevents accidental deletion of objects in all tfstate buckets"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "VisualEditor0",
-      "Effect": "Deny",
-      "Action": [
-        "s3:DeleteObject",
-        "s3:DeleteBucket"
-      ],
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-dublin-tfstate",
-        "arn:aws:s3:::govwifi-staging-london-tfstate"
-      ]
     }
   ]
 }
