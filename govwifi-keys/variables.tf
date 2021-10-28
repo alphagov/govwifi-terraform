@@ -22,6 +22,3 @@ variable "govwifi-key-name-pub" {
   description = "SSH public key for the frontend RADIUS instances."
   type        = string
 }
-
-variable "is_production_aws_account" {
-}
