@@ -544,28 +544,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "ecsTaskExecutionRole_staging_London" {
-  name = "ecsTaskExecutionRole-staging-London"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "flowlogsRole" {
   name = "flowlogsRole"
   path = "/"
@@ -885,28 +863,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "London_ecs_instance_role_staging" {
-  name = "London-ecs-instance-role-staging"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "London_ecs_instance_role_wifi" {
   name = "London-ecs-instance-role-wifi"
   path = "/"
@@ -920,28 +876,6 @@ resource "aws_iam_role" "London_ecs_instance_role_wifi" {
       "Effect": "Allow",
       "Principal": {
         "Service": "ec2.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "London_ecs_service_role_staging" {
-  name = "London-ecs-service-role-staging"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     }
@@ -1008,50 +942,6 @@ resource "aws_iam_role" "London_frontend_ecs_task_role_wifi" {
       "Effect": "Allow",
       "Principal": {
         "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "London_staging_backend_bastion_instance_role" {
-  name = "London-staging-backend-bastion-instance-role"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "London_staging_rds_monitoring_role" {
-  name = "London-staging-rds-monitoring-role"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "monitoring.rds.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     }
@@ -1265,138 +1155,6 @@ resource "aws_iam_role" "SNSSuccessFeedback" {
       "Effect": "Allow",
       "Principal": {
         "Service": "sns.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "staging_logging_api_task_role" {
-  name = "staging-logging-api-task-role"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "staging_logging_scheduled_task_role" {
-  name = "staging-logging-scheduled-task-role"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "events.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "staging_safe_restart_scheduled_task_role" {
-  name = "staging-safe-restart-scheduled-task-role"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "events.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "staging_safe_restart_task_role" {
-  name = "staging-safe-restart-task-role"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "staging_user_signup_api_task_role" {
-  name = "staging-user-signup-api-task-role"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "staging_user_signup_scheduled_task_role" {
-  name = "staging-user-signup-scheduled-task-role"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "events.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     }
@@ -2056,61 +1814,6 @@ POLICY
 
 }
 
-resource "aws_iam_role_policy" "London_ecs_instance_role_staging_London_ecs_instance_policy_staging" {
-  name = "London-ecs-instance-policy-staging"
-  role = "London-ecs-instance-role-staging"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ecs:CreateCluster",
-        "ecs:DeregisterContainerInstance",
-        "ecs:DiscoverPollEndpoint",
-        "ecs:Poll",
-        "ecs:RegisterContainerInstance",
-        "ecs:StartTelemetrySession",
-        "ecs:Submit*",
-        "ecr:GetAuthorizationToken",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:BatchGetImage"
-      ],
-      "Resource": [
-        "*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogStreams"
-      ],
-      "Resource": [
-        "arn:aws:logs:*:*:*"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "cloudwatch:PutMetricData",
-        "cloudwatch:GetMetricStatistics",
-        "cloudwatch:ListMetrics",
-        "ec2:DescribeTags"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role_policy" "London_ecs_instance_role_wifi_London_ecs_instance_policy_wifi" {
   name = "London-ecs-instance-policy-wifi"
   role = "London-ecs-instance-role-wifi"
@@ -2159,42 +1862,6 @@ resource "aws_iam_role_policy" "London_ecs_instance_role_wifi_London_ecs_instanc
         "ec2:DescribeTags"
       ],
       "Resource": "*"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "London_ecs_service_role_staging_London_ecs_service_policy_staging" {
-  name = "London-ecs-service-policy-staging"
-  role = "London-ecs-service-role-staging"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:AuthorizeSecurityGroupIngress",
-        "ec2:Describe*"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
-        "elasticloadbalancing:Describe*",
-        "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
-        "elasticloadbalancing:RegisterTargets",
-        "elasticloadbalancing:DeregisterTargets"
-      ],
-      "Resource": [
-        "arn:aws:elasticloadbalancing:eu-west-2:${var.aws-account-id}:loadbalancer/wifi-backend-elb-staging",
-        "*"
-      ]
     }
   ]
 }
@@ -2367,70 +2034,6 @@ POLICY
 
 }
 
-resource "aws_iam_role_policy" "London_staging_backend_bastion_instance_role_London_staging_backend_bastion_instance_policy" {
-  name = "London-staging-backend-bastion-instance-policy"
-  role = "London-staging-backend-bastion-instance-role"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogStreams"
-      ],
-      "Resource": [
-        "arn:aws:logs:*:*:*"
-      ]
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "London_staging_rds_monitoring_role_London_staging_rds_monitoring_policy" {
-  name = "London-staging-rds-monitoring-policy"
-  role = "London-staging-rds-monitoring-role"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "EnableCreationAndManagementOfRDSCloudwatchLogGroups",
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:PutRetentionPolicy"
-      ],
-      "Resource": [
-        "arn:aws:logs:*:*:log-group:RDS*"
-      ]
-    },
-    {
-      "Sid": "EnableCreationAndManagementOfRDSCloudwatchLogStreams",
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogStreams",
-        "logs:GetLogEvents"
-      ],
-      "Resource": [
-        "arn:aws:logs:*:*:log-group:RDS*:log-stream:*"
-      ]
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role_policy" "London_wifi_backend_bastion_instance_role_London_wifi_backend_bastion_instance_policy" {
   name = "London-wifi-backend-bastion-instance-policy"
   role = "London-wifi-backend-bastion-instance-role"
@@ -2546,161 +2149,6 @@ resource "aws_iam_role_policy" "SNSSuccessFeedback_oneClick_SNSSuccessFeedback_1
       "Resource": [
         "*"
       ]
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "staging_logging_scheduled_task_role_staging_logging_scheduled_task_policy" {
-  name = "staging-logging-scheduled-task-policy"
-  role = "staging-logging-scheduled-task-role"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "ecs:RunTask",
-      "Resource": "arn:aws:ecs:eu-west-2:${var.aws-account-id}:task-definition/logging-api-scheduled-task-staging:*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "iam:PassRole",
-      "Resource": [
-        "*"
-      ],
-      "Condition": {
-        "StringLike": {
-          "iam:PassedToService": "ecs-tasks.amazonaws.com"
-        }
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "staging_safe_restart_scheduled_task_role_staging_safe_restart_scheduled_task_policy" {
-  name = "staging-safe-restart-scheduled-task-policy"
-  role = "staging-safe-restart-scheduled-task-role"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "ecs:RunTask",
-      "Resource": "arn:aws:ecs:eu-west-2:${var.aws-account-id}:task-definition/safe-restart-task-staging:*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "iam:PassRole",
-      "Resource": [
-        "*"
-      ],
-      "Condition": {
-        "StringLike": {
-          "iam:PassedToService": "ecs-tasks.amazonaws.com"
-        }
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "staging_safe_restart_task_role_staging_safe_restart_task_policy" {
-  name = "staging-safe-restart-task-policy"
-  role = "staging-safe-restart-task-role"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ecs:ListClusters",
-        "ecs:ListTasks",
-        "ecs:StopTask",
-        "route53:ListHealthChecks",
-        "route53:GetHealthCheckStatus"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "staging_user_signup_api_task_role_staging_user_signup_api_task_policy" {
-  name = "staging-user-signup-api-task-policy"
-  role = "staging-user-signup-api-task-role"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject"
-      ],
-      "Resource": "arn:aws:s3:::staging-emailbucket/*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject"
-      ],
-      "Resource": [
-        "arn:aws:s3:::govwifi-staging-admin/signup-whitelist.conf"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject"
-      ],
-      "Resource": "arn:aws:s3:::govwifi-staging-metrics-bucket/*"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "staging_user_signup_scheduled_task_role_staging_user_signup_scheduled_task_policy" {
-  name = "staging-user-signup-scheduled-task-policy"
-  role = "staging-user-signup-scheduled-task-role"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "ecs:RunTask",
-      "Resource": "arn:aws:ecs:eu-west-2:${var.aws-account-id}:task-definition/user-signup-api-scheduled-task-staging:*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "iam:PassRole",
-      "Resource": [
-        "*"
-      ],
-      "Condition": {
-        "StringLike": {
-          "iam:PassedToService": "ecs-tasks.amazonaws.com"
-        }
-      }
     }
   ]
 }
