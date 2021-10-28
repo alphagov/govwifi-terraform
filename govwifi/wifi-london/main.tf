@@ -227,9 +227,10 @@ module "govwifi_admin" {
   vpc-id          = module.backend.backend-vpc-id
   instance-count  = 2
 
-  admin-docker-image = format("%s/admin:production", local.docker_image_path)
-  rack-env           = "production"
-  sentry-current-env = "production"
+  admin-docker-image   = format("%s/admin:production", local.docker_image_path)
+  rack-env             = "production"
+  sentry-current-env   = "production"
+  ecr-repository-count = 1
 
   subnet-ids = module.backend.backend-subnet-ids
 
@@ -295,6 +296,10 @@ module "api" {
   logging-docker-image          = format("%s/logging-api:production", local.docker_image_path)
   safe-restart-docker-image     = format("%s/safe-restarter:production", local.docker_image_path)
   backup-rds-to-s3-docker-image = format("%s/database-backup:production", local.docker_image_path)
+
+  wordlist-bucket-count = 1
+  wordlist-file-path    = "../wordlist-short"
+  ecr-repository-count  = 1
 
   db-hostname               = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
   rack-env                  = "production"
