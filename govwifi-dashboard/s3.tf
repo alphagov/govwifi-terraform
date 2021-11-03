@@ -29,14 +29,15 @@ resource "aws_s3_bucket" "export_data_bucket" {
 resource "aws_s3_bucket_policy" "export_data_bucket" {
   bucket = aws_s3_bucket.export_data_bucket.id
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression's result to valid JSON syntax.
-  policy = jsonencode(
-    {
-      "Sid" : "AllowPublicAccessToExportDataBucket",
-      "Effect" : "Allow",
-      "Principal" : "*",
-      "Action" : "s3:GetObject",
-      "Resource" : "${aws_s3_bucket.export_data_bucket.arn}/*"
-  })
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Id" : "ExportDataBucketToPublic",
+    "Statement" : [
+      {
+        "Sid" : "AllowPublicAccessToExportDataBucket",
+        "Effect" : "Allow",
+        "Principal" : "*",
+        "Action" : "s3:GetObject",
+        "Resource" : "${aws_s3_bucket.export_data_bucket.arn}/*"
+  }] })
 }
