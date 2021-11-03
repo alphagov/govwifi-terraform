@@ -319,7 +319,8 @@ module "api" {
     module.backend.be-admin-in,
   ]
 
-  metrics-bucket-name = module.govwifi_dashboard.metrics-bucket-name
+  metrics-bucket-name     = module.govwifi_dashboard.metrics-bucket-name
+  export-data-bucket-name = module.govwifi_dashboard.export-data-bucket-name
 
   use_env_prefix          = var.use_env_prefix
   backup_mysql_rds        = var.backup_mysql_rds
