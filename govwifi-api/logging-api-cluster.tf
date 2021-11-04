@@ -237,6 +237,8 @@ resource "aws_iam_role_policy" "logging_api_task_policy" {
       "Resource": [
         "arn:aws:s3:::${var.metrics-bucket-name}",
         "arn:aws:s3:::${var.metrics-bucket-name}/*"
+        "arn:aws:s3:::${var.export-data-bucket-name}",
+        "arn:aws:s3:::${var.export-data-bucket-name}/*"
       ]
     }
   ]
