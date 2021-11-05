@@ -1,6 +1,6 @@
 variable "env_name" {
   type    = string
-  default = "staging-temp"
+  default = "staging"
 }
 
 variable "product_name" {
@@ -10,13 +10,13 @@ variable "product_name" {
 
 variable "env_subdomain" {
   type        = string
-  default     = "staging-temp.wifi"
+  default     = "staging.wifi"
   description = "Environment-specific subdomain to use under the service domain."
 }
 
 variable "ssh_key_name" {
   type    = string
-  default = "staging-temp-ec2-instances-20200717"
+  default = "staging-ec2-instances-20200717"
 }
 
 # Entries below should probably stay as is for different environments
@@ -88,13 +88,13 @@ variable "admin_sentry_dsn" {
 variable "user_db_hostname" {
   type        = string
   description = "User details database hostname"
-  default     = "users-db.london.staging-temp.wifi.service.gov.uk"
+  default     = "users-db.london.staging.wifi.service.gov.uk"
 }
 
 variable "user_rr_hostname" {
   type        = string
   description = "User details read replica hostname"
-  default     = "users-rr.london.staging-temp.wifi.service.gov.uk"
+  default     = "users-rr.london.staging.wifi.service.gov.uk"
 }
 
 variable "zendesk_api_user" {
@@ -115,7 +115,7 @@ variable "dublin_radius_ip_addresses" {
 variable "london_api_base_url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
-  default     = "https://api-elb.london.staging-temp.wifi.service.gov.uk:8443"
+  default     = "https://api-elb.london.staging.wifi.service.gov.uk:8443"
 }
 
 variable "notification_email" {
