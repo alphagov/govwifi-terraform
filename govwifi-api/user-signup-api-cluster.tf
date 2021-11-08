@@ -78,7 +78,7 @@ resource "aws_ecs_task_definition" "user_signup_api_task" {
   family                   = "user-signup-api-task-${var.env_name}"
   task_role_arn            = aws_iam_role.user_signup_api_task_role[0].arn
   requires_compatibilities = ["FARGATE"]
-  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   memory                   = 512
   cpu                      = "256"
   network_mode             = "awsvpc"

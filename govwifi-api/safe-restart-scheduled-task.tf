@@ -21,7 +21,7 @@ resource "aws_ecr_repository" "safe_restarter_ecr" {
 resource "aws_ecs_task_definition" "safe_restart_task_definition" {
   count                    = var.safe_restart_enabled
   family                   = "safe-restart-task-${var.env_name}"
-  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.safe_restart_task_role[0].arn
   requires_compatibilities = ["FARGATE"]
   cpu                      = 256

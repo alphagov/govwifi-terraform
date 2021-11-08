@@ -22,7 +22,7 @@ resource "aws_ecs_task_definition" "backup_rds_to_s3_task_definition" {
   count                    = var.backup_mysql_rds ? 1 : 0
   family                   = "backup-rds-to-s3-task-${var.env_name}"
   task_role_arn            = aws_iam_role.backup_rds_to_s3_task_role[0].arn
-  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
   cpu                      = 2048
   memory                   = 8192

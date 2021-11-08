@@ -12,7 +12,7 @@ resource "aws_ecr_repository" "authorisation_api_ecr" {
 resource "aws_ecs_task_definition" "authorisation_api_task" {
   family                   = "authorisation-api-task-${var.env_name}"
   requires_compatibilities = ["FARGATE"]
-  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   memory                   = 512
   cpu                      = "256"
   network_mode             = "awsvpc"

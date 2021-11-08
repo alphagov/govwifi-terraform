@@ -28,7 +28,7 @@ resource "aws_ecr_repository" "govwifi_raddb_ecr" {
 resource "aws_ecs_task_definition" "radius_task" {
   family             = "radius-task-${var.env_name}"
   task_role_arn      = aws_iam_role.ecs_task_role.arn
-  execution_role_arn = aws_iam_role.ecsTaskExecutionRole.arn
+  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
 
   volume {
     name = "raddb-certs"
