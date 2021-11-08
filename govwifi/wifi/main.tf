@@ -384,17 +384,17 @@ module "govwifi_prometheus" {
   }
 
   source     = "../../govwifi-prometheus"
-  Env-Name   = var.Env-Name
-  aws-region = var.aws-region
+  env_name   = var.Env-Name
+  aws_region = var.aws-region
 
-  ssh-key-name = var.ssh-key-name
+  ssh_key_name = var.ssh-key-name
 
-  frontend-vpc-id = module.frontend.frontend-vpc-id
+  frontend_vpc_id = module.frontend.frontend-vpc-id
 
-  fe-admin-in   = module.frontend.fe-admin-in
-  fe-ecs-out    = module.frontend.fe-ecs-out
-  fe-radius-in  = module.frontend.fe-radius-in
-  fe-radius-out = module.frontend.fe-radius-out
+  fe_admin_in   = module.frontend.fe-admin-in
+  fe_ecs_out    = module.frontend.fe-ecs-out
+  fe_radius_in  = module.frontend.fe-radius-in
+  fe_radius_out = module.frontend.fe-radius-out
 
   london_radius_ip_addresses = var.london_radius_ip_addresses
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses

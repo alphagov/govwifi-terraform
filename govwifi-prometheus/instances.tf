@@ -19,7 +19,7 @@ data "template_file" "prometheus_user_data" {
 
   vars = {
     data_volume_size     = var.prometheus_volume_size
-    prometheus-log-group = "${var.Env-Name}-prometheus-log-group"
+    prometheus-log-group = "${var.env_name}-prometheus-log-group"
     prometheus_config    = data.template_file.prometheus_config.rendered
     prometheus_startup   = data.template_file.prometheus_startup.rendered
   }
@@ -47,25 +47,25 @@ data "template_file" "prometheus_startup" {
 resource "aws_instance" "prometheus_instance" {
   ami                     = data.aws_ami.ubuntu.id
   instance_type           = "t2.small"
-  key_name                = var.ssh-key-name
+  key_name                = var.ssh_key_name
   user_data               = data.template_file.prometheus_user_data.rendered
   disable_api_termination = false
   ebs_optimized           = false
   monitoring              = false
 
   vpc_security_group_ids = [
-    var.fe-ecs-out,
-    var.fe-admin-in,
-    var.fe-radius-out,
-    var.fe-radius-in,
+    var.fe_ecs_out,
+    var.fe_admin_in,
+    var.fe_radius_out,
+    var.fe_radius_in,
     aws_security_group.grafana_data_in.id,
   ]
 
   iam_instance_profile = aws_iam_instance_profile.prometheus_instance_profile.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Prometheus-Server"
-    Env  = title(var.Env-Name)
+    Name = "${title(var.env_name)} Prometheus-Server"
+    Env  = title(var.env_name)
   }
 
   lifecycle {
@@ -78,10 +78,10 @@ resource "aws_instance" "prometheus_instance" {
 resource "aws_ebs_volume" "prometheus_ebs" {
   size              = 40
   encrypted         = true
-  availability_zone = "${var.aws-region}a"
+  availability_zone = "${var.aws_region}a"
 
   tags = {
-    Name = "${var.Env-Name} Prometheus volume"
+    Name = "${var.env_name} Prometheus volume"
   }
 }
 

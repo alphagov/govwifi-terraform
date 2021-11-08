@@ -1,7 +1,7 @@
-variable "Env-Name" {
+variable "env_name" {
 }
 
-variable "aws-region" {
+variable "aws_region" {
 }
 
 variable "prometheus_volume_size" {
@@ -18,22 +18,22 @@ variable "grafana_ip" {
   type        = string
 }
 
-variable "frontend-vpc-id" {
+variable "frontend_vpc_id" {
 }
 
-variable "ssh-key-name" {
+variable "ssh_key_name" {
 }
 
-variable "fe-admin-in" {
+variable "fe_admin_in" {
 }
 
-variable "fe-ecs-out" {
+variable "fe_ecs_out" {
 }
 
-variable "fe-radius-in" {
+variable "fe_radius_in" {
 }
 
-variable "fe-radius-out" {
+variable "fe_radius_out" {
 }
 
 variable "london_radius_ip_addresses" {
