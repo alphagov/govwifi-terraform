@@ -114,8 +114,8 @@ module "backend" {
   rr_instance_type           = "db.t2.large"
   rr_storage_gb              = 200
   user_rr_hostname           = var.user_rr_hostname
-  critical_notifications_arn = module.notifications.topic-arn
-  capacity_notifications_arn = module.notifications.topic-arn
+  critical_notifications_arn = module.notifications.topic_arn
+  capacity_notifications_arn = module.notifications.topic_arn
 
   # Seconds. Set to zero to disable monitoring
   db_monitoring_interval = 60
@@ -185,8 +185,8 @@ module "frontend" {
   logging_api_base_url = var.london_api_base_url
   auth_api_base_url    = var.london_api_base_url
 
-  critical_notifications_arn           = module.notifications.topic-arn
-  us_east_1_critical_notifications_arn = module.route53-notifications.topic-arn
+  critical_notifications_arn           = module.notifications.topic_arn
+  us_east_1_critical_notifications_arn = module.route53-notifications.topic_arn
 
   bastion_server_ip = var.bastion_server_ip
 
@@ -235,8 +235,8 @@ module "govwifi_admin" {
   user_db_host = var.user_db_hostname
   user_db_name = "govwifi_staging_users"
 
-  critical_notifications_arn = module.notifications.topic-arn
-  capacity_notifications_arn = module.notifications.topic-arn
+  critical_notifications_arn = module.notifications.topic_arn
+  capacity_notifications_arn = module.notifications.topic_arn
 
   rds_monitoring_role = module.backend.rds_monitoring_role
 
@@ -253,7 +253,7 @@ module "govwifi_admin" {
 
   use_env_prefix = var.use_env_prefix
 
-  notification_arn = module.notifications.topic-arn
+  notification_arn = module.notifications.topic_arn
 }
 
 module "api" {
@@ -276,8 +276,8 @@ module "api" {
   vpc_id                 = module.backend.backend_vpc_id
   safe_restart_enabled   = 1
 
-  devops_notifications_arn = module.notifications.topic-arn
-  notification_arn         = module.notifications.topic-arn
+  devops_notifications_arn = module.notifications.topic_arn
+  notification_arn         = module.notifications.topic_arn
 
   auth_docker_image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user_signup_docker_image      = format("%s/user-signup-api:staging", local.docker_image_path)
@@ -395,7 +395,7 @@ module "govwifi_grafana" {
   env_name                   = var.env_name
   env_subdomain              = var.env_subdomain
   aws_region                 = var.aws_region
-  critical_notifications_arn = module.notifications.topic-arn
+  critical_notifications_arn = module.notifications.topic_arn
   is_production_aws_account  = var.is_production_aws_account
 
 

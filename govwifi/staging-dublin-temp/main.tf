@@ -118,8 +118,8 @@ module "backend" {
   user_rr_instance_type  = "db.t2.small"
 
   user_rr_hostname           = var.user_rr_hostname
-  critical_notifications_arn = module.notifications.topic-arn
-  capacity_notifications_arn = module.notifications.topic-arn
+  critical_notifications_arn = module.notifications.topic_arn
+  capacity_notifications_arn = module.notifications.topic_arn
 
   # Seconds. Set to zero to disable monitoring
   db_monitoring_interval = 60
@@ -154,7 +154,7 @@ module "emails" {
   aws_region                = var.aws_region
   aws_region_name           = var.aws_region_name
   mail_exchange_server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
-  devops_notifications_arn  = module.notifications.topic-arn
+  devops_notifications_arn  = module.notifications.topic_arn
 
   user_signup_notifications_endpoint = "https://user-signup-api.${var.env_subdomain}.service.gov.uk:8443/user-signup/email-notification"
 
@@ -228,8 +228,8 @@ module "frontend" {
   logging_api_base_url = var.london_api_base_url
   auth_api_base_url    = var.dublin_api_base_url
 
-  critical_notifications_arn           = module.notifications.topic-arn
-  us_east_1_critical_notifications_arn = module.route53-notifications.topic-arn
+  critical_notifications_arn           = module.notifications.topic_arn
+  us_east_1_critical_notifications_arn = module.route53-notifications.topic_arn
 
   bastion_server_ip = var.bastion_server_ip
 
@@ -267,8 +267,8 @@ module "api" {
   safe_restart_enabled = 0
   event_rule_count     = 0
 
-  devops_notifications_arn = module.notifications.topic-arn
-  notification_arn         = module.notifications.topic-arn
+  devops_notifications_arn = module.notifications.topic_arn
+  notification_arn         = module.notifications.topic_arn
 
   auth_docker_image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user_signup_docker_image      = ""
