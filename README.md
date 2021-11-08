@@ -210,7 +210,7 @@ Terraform's formatting tool takes care of much of the style, but there are some 
 
 #### Naming
 
-When naming resources, data sources, variables and outputs, only use underscores to separate words. For example:
+When naming resources, data sources, variables, locals and outputs, only use underscores to separate words. For example:
 
 ```terraform
 resource "aws_iam_user_policy" "backup_s3_read_buckets" {
