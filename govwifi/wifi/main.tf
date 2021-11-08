@@ -189,9 +189,9 @@ module "dns" {
   }
 
   source             = "../../global-dns"
-  Env-Subdomain      = var.Env-Subdomain
-  route53-zone-id    = local.route53_zone_id
-  status-page-domain = "bl6klm1cjshh.stspg-customer.com"
+  env_subdomain      = var.Env-Subdomain
+  route53_zone_id    = local.route53_zone_id
+  status_page_domain = "bl6klm1cjshh.stspg-customer.com"
 }
 
 # Frontend ====================================================================
