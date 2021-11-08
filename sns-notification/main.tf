@@ -36,7 +36,7 @@ STACK
 }
 
 resource "aws_cloudformation_stack" "email" {
-  count = local.enable-emails
+  count = local.enable_emails
   name  = "${var.topic_name}-subscriptions"
 
   template_body = <<-STACK
