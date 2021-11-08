@@ -10,7 +10,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole_e112f67b_c533_4923_98f7_3
     {
       "Effect": "Allow",
       "Action": "logs:CreateLogGroup",
-      "Resource": "arn:aws:logs:us-east-1:${var.aws-account-id}:*"
+      "Resource": "arn:aws:logs:us-east-1:${var.aws_account_id}:*"
     },
     {
       "Effect": "Allow",
@@ -19,7 +19,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole_e112f67b_c533_4923_98f7_3
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:us-east-1:${var.aws-account-id}:log-group:/aws/lambda/GovWifiMetricsAggregationPrototype:*"
+        "arn:aws:logs:us-east-1:${var.aws_account_id}:log-group:/aws/lambda/GovWifiMetricsAggregationPrototype:*"
       ]
     }
   ]
@@ -40,7 +40,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole_9d382291_dcd5_4d68_8a4d_a
     {
       "Effect": "Allow",
       "Action": "logs:CreateLogGroup",
-      "Resource": "arn:aws:logs:eu-west-1:${var.aws-account-id}:*"
+      "Resource": "arn:aws:logs:eu-west-1:${var.aws_account_id}:*"
     },
     {
       "Effect": "Allow",
@@ -49,7 +49,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole_9d382291_dcd5_4d68_8a4d_a
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:eu-west-1:${var.aws-account-id}:log-group:/aws/lambda/AggregateStagingMetrics:*"
+        "arn:aws:logs:eu-west-1:${var.aws_account_id}:log-group:/aws/lambda/AggregateStagingMetrics:*"
       ]
     }
   ]
@@ -74,7 +74,7 @@ resource "aws_iam_policy" "CloudTrailPolicyForCloudWatchLogs_dab06026_75de_4ad1_
         "logs:CreateLogStream"
       ],
       "Resource": [
-        "arn:aws:logs:eu-west-1:${var.aws-account-id}:log-group:CloudTrail/DefaultLogGroup:log-stream:${var.aws-account-id}_CloudTrail_eu-west-1*"
+        "arn:aws:logs:eu-west-1:${var.aws_account_id}:log-group:CloudTrail/DefaultLogGroup:log-stream:${var.aws_account_id}_CloudTrail_eu-west-1*"
       ]
     },
     {
@@ -84,7 +84,7 @@ resource "aws_iam_policy" "CloudTrailPolicyForCloudWatchLogs_dab06026_75de_4ad1_
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:eu-west-1:${var.aws-account-id}:log-group:CloudTrail/DefaultLogGroup:log-stream:${var.aws-account-id}_CloudTrail_eu-west-1*"
+        "arn:aws:logs:eu-west-1:${var.aws_account_id}:log-group:CloudTrail/DefaultLogGroup:log-stream:${var.aws_account_id}_CloudTrail_eu-west-1*"
       ]
     }
   ]
@@ -105,7 +105,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole_164db990_7033_4bb4_aaed_3
     {
       "Effect": "Allow",
       "Action": "logs:CreateLogGroup",
-      "Resource": "arn:aws:logs:eu-west-2:${var.aws-account-id}:*"
+      "Resource": "arn:aws:logs:eu-west-2:${var.aws_account_id}:*"
     },
     {
       "Effect": "Allow",
@@ -114,7 +114,7 @@ resource "aws_iam_policy" "AWSLambdaBasicExecutionRole_164db990_7033_4bb4_aaed_3
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:eu-west-2:${var.aws-account-id}:log-group:/aws/lambda/StagingMetricsAggregator-prototype:*"
+        "arn:aws:logs:eu-west-2:${var.aws_account_id}:log-group:/aws/lambda/StagingMetricsAggregator-prototype:*"
       ]
     }
   ]
@@ -163,11 +163,11 @@ resource "aws_iam_policy" "AWS_Events_Invoke_ECS_961488249" {
         "ecs:RunTask"
       ],
       "Resource": [
-        "arn:aws:ecs:*:${var.aws-account-id}:task-definition/user-signup-api-task-staging:13"
+        "arn:aws:ecs:*:${var.aws_account_id}:task-definition/user-signup-api-task-staging:13"
       ],
       "Condition": {
         "ArnLike": {
-          "ecs:cluster": "arn:aws:ecs:*:${var.aws-account-id}:cluster/staging-api-cluster"
+          "ecs:cluster": "arn:aws:ecs:*:${var.aws_account_id}:cluster/staging-api-cluster"
         }
       }
     },

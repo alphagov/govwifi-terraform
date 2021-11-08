@@ -829,7 +829,7 @@ resource "aws_iam_role" "ITHC_RO_SecAud_Access" {
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::${var.aws-account-id}:root"
+        "AWS": "arn:aws:iam::${var.aws_account_id}:root"
       },
       "Action": "sts:AssumeRole",
       "Condition": {
@@ -1381,7 +1381,7 @@ resource "aws_iam_role_policy" "CloudTrail_CloudWatchLogs_Role_oneClick_CloudTra
         "logs:CreateLogStream"
       ],
       "Resource": [
-        "arn:aws:logs:eu-west-1:${var.aws-account-id}:log-group:CloudTrail/DefaultLogGroup:log-stream:${var.aws-account-id}_CloudTrail_eu-west-1*"
+        "arn:aws:logs:eu-west-1:${var.aws_account_id}:log-group:CloudTrail/DefaultLogGroup:log-stream:${var.aws_account_id}_CloudTrail_eu-west-1*"
       ]
     },
     {
@@ -1391,7 +1391,7 @@ resource "aws_iam_role_policy" "CloudTrail_CloudWatchLogs_Role_oneClick_CloudTra
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:eu-west-1:${var.aws-account-id}:log-group:CloudTrail/DefaultLogGroup:log-stream:${var.aws-account-id}_CloudTrail_eu-west-1*"
+        "arn:aws:logs:eu-west-1:${var.aws_account_id}:log-group:CloudTrail/DefaultLogGroup:log-stream:${var.aws_account_id}_CloudTrail_eu-west-1*"
       ]
     }
   ]
@@ -1481,7 +1481,7 @@ resource "aws_iam_role_policy" "Dublin_ecs_service_role_wifi_Dublin_ecs_service_
         "elasticloadbalancing:DeregisterTargets"
       ],
       "Resource": [
-        "arn:aws:elasticloadbalancing:eu-west-1:${var.aws-account-id}:loadbalancer/wifi-backend-elb-wifi",
+        "arn:aws:elasticloadbalancing:eu-west-1:${var.aws_account_id}:loadbalancer/wifi-backend-elb-wifi",
         "*"
       ]
     }
@@ -1895,7 +1895,7 @@ resource "aws_iam_role_policy" "London_ecs_service_role_wifi_London_ecs_service_
         "elasticloadbalancing:DeregisterTargets"
       ],
       "Resource": [
-        "arn:aws:elasticloadbalancing:eu-west-2:${var.aws-account-id}:loadbalancer/wifi-backend-elb-wifi",
+        "arn:aws:elasticloadbalancing:eu-west-2:${var.aws_account_id}:loadbalancer/wifi-backend-elb-wifi",
         "*"
       ]
     }
@@ -2167,7 +2167,7 @@ resource "aws_iam_role_policy" "wifi_logging_scheduled_task_role_wifi_logging_sc
     {
       "Effect": "Allow",
       "Action": "ecs:RunTask",
-      "Resource": "arn:aws:ecs:eu-west-2:${var.aws-account-id}:task-definition/logging-api-scheduled-task-wifi:*"
+      "Resource": "arn:aws:ecs:eu-west-2:${var.aws_account_id}:task-definition/logging-api-scheduled-task-wifi:*"
     },
     {
       "Effect": "Allow",
@@ -2198,7 +2198,7 @@ resource "aws_iam_role_policy" "wifi_safe_restart_scheduled_task_role_wifi_safe_
     {
       "Effect": "Allow",
       "Action": "ecs:RunTask",
-      "Resource": "arn:aws:ecs:eu-west-2:${var.aws-account-id}:task-definition/safe-restart-task-wifi:*"
+      "Resource": "arn:aws:ecs:eu-west-2:${var.aws_account_id}:task-definition/safe-restart-task-wifi:*"
     },
     {
       "Effect": "Allow",
@@ -2291,7 +2291,7 @@ resource "aws_iam_role_policy" "wifi_user_signup_scheduled_task_role_wifi_user_s
     {
       "Effect": "Allow",
       "Action": "ecs:RunTask",
-      "Resource": "arn:aws:ecs:eu-west-2:${var.aws-account-id}:task-definition/user-signup-api-scheduled-task-wifi:*"
+      "Resource": "arn:aws:ecs:eu-west-2:${var.aws_account_id}:task-definition/user-signup-api-scheduled-task-wifi:*"
     },
     {
       "Effect": "Allow",

@@ -69,7 +69,7 @@ module "govwifi_account" {
   }
 
   source         = "../../govwifi-account"
-  aws-account-id = local.aws_account_id
+  aws_account_id = local.aws_account_id
 }
 
 # ====================================================================
