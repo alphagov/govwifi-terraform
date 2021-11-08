@@ -24,6 +24,7 @@ resource "aws_ecs_task_definition" "logging_api_task" {
 [
     {
       "volumesFrom": [],
+      "cpu": 0,
       "memory": 512,
       "extraHosts": null,
       "dnsServers": null,
@@ -108,7 +109,6 @@ resource "aws_ecs_task_definition" "logging_api_task" {
           "awslogs-stream-prefix": "${var.env_name}-logging-api-docker-logs"
         }
       },
-      "cpu": 0,
       "privileged": null,
       "expanded": true
     }
