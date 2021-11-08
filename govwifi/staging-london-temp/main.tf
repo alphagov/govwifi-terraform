@@ -211,7 +211,7 @@ module "govwifi_admin" {
 
   aws_region      = var.aws_region
   aws_region_name = var.aws_region_name
-  vpc_id          = module.backend.backend-vpc-id
+  vpc_id          = module.backend.backend_vpc_id
   instance_count  = 1
 
   admin_docker_image   = format("%s/admin:staging", local.docker_image_path)
@@ -219,7 +219,7 @@ module "govwifi_admin" {
   sentry_current_env   = "secondary-staging"
   ecr_repository_count = 1
 
-  subnet_ids = module.backend.backend-subnet-ids
+  subnet_ids = module.backend.backend_subnet_ids
 
   db_instance_type         = "db.t2.medium"
   db_storage_gb            = 120
@@ -238,7 +238,7 @@ module "govwifi_admin" {
   critical_notifications_arn = module.notifications.topic-arn
   capacity_notifications_arn = module.notifications.topic-arn
 
-  rds_monitoring_role = module.backend.rds-monitoring-role
+  rds_monitoring_role = module.backend.rds_monitoring_role
 
   london_radius_ip_addresses = var.london_radius_ip_addresses
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
@@ -273,7 +273,7 @@ module "api" {
   aws_region_name        = var.aws_region_name
   aws_region             = var.aws_region
   route53_zone_id        = local.route53_zone_id
-  vpc_id                 = module.backend.backend-vpc-id
+  vpc_id                 = module.backend.backend_vpc_id
   safe_restart_enabled   = 1
 
   devops_notifications_arn = module.notifications.topic-arn
@@ -302,13 +302,13 @@ module "api" {
   safe_restart_sentry_dsn   = var.safe_restart_sentry_dsn
   user_signup_sentry_dsn    = var.user_signup_sentry_dsn
   logging_sentry_dsn        = var.logging_sentry_dsn
-  subnet_ids                = module.backend.backend-subnet-ids
+  subnet_ids                = module.backend.backend_subnet_ids
   user_signup_api_is_public = 1
 
   admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
 
   backend_sg_list = [
-    module.backend.be-admin-in,
+    module.backend.be_admin_in,
   ]
 
   metrics_bucket_name     = module.govwifi_dashboard.metrics-bucket-name
@@ -401,11 +401,11 @@ module "govwifi_grafana" {
 
   ssh_key_name = var.ssh_key_name
 
-  subnet_ids         = module.backend.backend-subnet-ids
-  backend_subnet_ids = module.backend.backend-subnet-ids
-  be_admin_in        = module.backend.be-admin-in
+  subnet_ids         = module.backend.backend_subnet_ids
+  backend_subnet_ids = module.backend.backend_subnet_ids
+  be_admin_in        = module.backend.be_admin_in
 
-  vpc_id = module.backend.backend-vpc-id
+  vpc_id = module.backend.backend_vpc_id
 
   bastion_ip = var.bastion_server_ip
 
@@ -428,10 +428,10 @@ module "govwifi_elasticsearch" {
   env_name       = var.env_name
   aws_region     = var.aws_region
   aws_account_id = local.aws_account_id
-  vpc_id         = module.backend.backend-vpc-id
-  vpc_cidr_block = module.backend.vpc-cidr-block
+  vpc_id         = module.backend.backend_vpc_id
+  vpc_cidr_block = module.backend.vpc_cidr_block
 
-  backend_subnet_id = module.backend.backend-subnet-ids[0]
+  backend_subnet_id = module.backend.backend_subnet_ids[0]
 }
 
 module "govwifi_datasync" {

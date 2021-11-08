@@ -259,7 +259,7 @@ module "api" {
   aws_region_name        = var.aws_region_name
   aws_region             = var.aws_region
   route53_zone_id        = local.route53_zone_id
-  vpc_id                 = module.backend.backend-vpc-id
+  vpc_id                 = module.backend.backend_vpc_id
 
   user_signup_enabled  = 0
   logging_enabled      = 0
@@ -286,14 +286,14 @@ module "api" {
   radius_server_ips         = local.frontend_radius_ips
   authentication_sentry_dsn = var.auth_sentry_dsn
   safe_restart_sentry_dsn   = ""
-  subnet_ids                = module.backend.backend-subnet-ids
+  subnet_ids                = module.backend.backend_subnet_ids
   backup_mysql_rds          = false
   rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
 
   admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
 
   backend_sg_list = [
-    module.backend.be-admin-in,
+    module.backend.be_admin_in,
   ]
 
   use_env_prefix = var.use_env_prefix

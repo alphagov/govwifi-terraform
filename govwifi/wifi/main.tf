@@ -274,7 +274,7 @@ module "api" {
   aws_region_name         = lower(var.aws_region_name)
   aws_region              = var.aws_region
   route53_zone_id         = local.route53_zone_id
-  vpc_id                  = module.backend.backend-vpc-id
+  vpc_id                  = module.backend.backend_vpc_id
 
   user_signup_enabled  = 0
   logging_enabled      = 0
@@ -297,14 +297,14 @@ module "api" {
   authentication_sentry_dsn = var.auth_sentry_dsn
   safe_restart_sentry_dsn   = var.safe_restart_sentry_dsn
   user_signup_docker_image  = ""
-  subnet_ids                = module.backend.backend-subnet-ids
+  subnet_ids                = module.backend.backend_subnet_ids
   user_db_hostname          = var.user_db_hostname
   user_rr_hostname          = var.user_rr_hostname
   backup_mysql_rds          = false
   rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
 
   backend_sg_list = [
-    module.backend.be-admin-in,
+    module.backend.be_admin_in,
   ]
 
   use_env_prefix = var.use_env_prefix
