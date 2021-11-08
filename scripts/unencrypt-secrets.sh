@@ -9,7 +9,10 @@ command="$1"
 
 # Find all file paths of .gpg files in the .private/passwords/secrets-to-copy directory
 # Exclude any filename secrets*.gpg since the values have been migrated to Secrets Manager
-files=$(find .private/passwords/secrets-to-copy -type f -name '*.gpg' ! -name '*secrets*.gpg')
+files=""
+if [ -d ".private/passwords/secrets-to-copy" ]; then
+    files=$(find .private/passwords/secrets-to-copy -type f -name '*.gpg' ! -name '*secrets*.gpg')
+fi
 
 # Iterate over the all the .gpg files in .private/passwords/secrets-to-copy
 for FILE in $files; do
