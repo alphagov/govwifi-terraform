@@ -1,10 +1,10 @@
 resource "aws_security_group" "admin_alb_in" {
   name        = "admin-alb-in"
   description = "Allow Inbound Traffic to the admin platform ALB"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} Admin ALB Traffic In"
+    Name = "${title(var.env_name)} Admin ALB Traffic In"
   }
 
   ingress {
@@ -18,10 +18,10 @@ resource "aws_security_group" "admin_alb_in" {
 resource "aws_security_group" "admin_alb_out" {
   name        = "admin-alb-out"
   description = "Allow Outbound Traffic from the admin platform ALB"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} Admin ALB Traffic Out"
+    Name = "${title(var.env_name)} Admin ALB Traffic Out"
   }
 
   egress {
@@ -35,10 +35,10 @@ resource "aws_security_group" "admin_alb_out" {
 resource "aws_security_group" "admin_ec2_in" {
   name        = "admin-ec2-in"
   description = "Allow Inbound Traffic To Admin from the ALB"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} Admin EC2 Traffic In"
+    Name = "${title(var.env_name)} Admin EC2 Traffic In"
   }
 
   ingress {
@@ -59,10 +59,10 @@ resource "aws_security_group" "admin_ec2_in" {
 resource "aws_security_group" "admin_ec2_out" {
   name        = "api-ec2-out"
   description = "Allow Outbound Traffic From the Admin EC2 container"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} Admin EC2 Traffic Out"
+    Name = "${title(var.env_name)} Admin EC2 Traffic Out"
   }
 
   egress {
@@ -76,10 +76,10 @@ resource "aws_security_group" "admin_ec2_out" {
 resource "aws_security_group" "admin_db_in" {
   name        = "admin-db-in"
   description = "Allow connections to the DB"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} Admin DB in"
+    Name = "${title(var.env_name)} Admin DB in"
   }
 
   ingress {
@@ -91,6 +91,6 @@ resource "aws_security_group" "admin_db_in" {
 }
 
 data "aws_subnet" "backend_subnet" {
-  count = length(var.subnet-ids)
-  id    = var.subnet-ids[count.index]
+  count = length(var.subnet_ids)
+  id    = var.subnet_ids[count.index]
 }

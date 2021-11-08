@@ -1,7 +1,7 @@
 resource "aws_lb" "admin_alb" {
-  name     = "admin-alb-${var.Env-Name}"
+  name     = "admin-alb-${var.env_name}"
   internal = false
-  subnets  = var.subnet-ids
+  subnets  = var.subnet_ids
 
   security_groups = [
     aws_security_group.admin_alb_in.id,
@@ -11,7 +11,7 @@ resource "aws_lb" "admin_alb" {
   load_balancer_type = "application"
 
   tags = {
-    Name = "admin-alb-${var.Env-Name}"
+    Name = "admin-alb-${var.env_name}"
   }
 }
 

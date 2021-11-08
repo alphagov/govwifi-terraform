@@ -1,20 +1,20 @@
 resource "aws_ecs_cluster" "admin_cluster" {
-  name = "${var.Env-Name}-admin-cluster"
+  name = "${var.env_name}-admin-cluster"
 }
 
 resource "aws_cloudwatch_log_group" "admin_log_group" {
-  name = "${var.Env-Name}-admin-log-group"
+  name = "${var.env_name}-admin-log-group"
 
   retention_in_days = 90
 }
 
 resource "aws_ecr_repository" "govwifi_admin_ecr" {
-  count = var.ecr-repository-count
+  count = var.ecr_repository_count
   name  = "govwifi/admin"
 }
 
 resource "aws_ecs_task_definition" "admin_task" {
-  family                   = "admin-task-${var.Env-Name}"
+  family                   = "admin-task-${var.env_name}"
   requires_compatibilities = ["FARGATE"]
   task_role_arn            = aws_iam_role.ecs_admin_instance_role.arn
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
@@ -37,16 +37,16 @@ resource "aws_ecs_task_definition" "admin_task" {
       "environment": [
         {
           "name": "DB_NAME",
-          "value": "govwifi_admin_${var.rack-env}"
+          "value": "govwifi_admin_${var.rack_env}"
         },{
           "name": "DB_HOST",
           "value": "${aws_db_instance.admin_db.address}"
         },{
           "name": "RACK_ENV",
-          "value": "${var.rack-env}"
+          "value": "${var.rack_env}"
         },{
           "name": "SENTRY_CURRENT_ENV",
-          "value": "${var.sentry-current-env}"
+          "value": "${var.sentry_current_env}"
         },{
           "name": "RAILS_LOG_TO_STDOUT",
           "value": "1"
@@ -61,7 +61,7 @@ resource "aws_ecs_task_definition" "admin_task" {
           "value": "${join(",", var.dublin_radius_ip_addresses)}"
         },{
           "name": "SENTRY_DSN",
-          "value": "${var.sentry-dsn}"
+          "value": "${var.sentry_dsn}"
         },{
           "name": "S3_MOU_BUCKET",
           "value": "${aws_s3_bucket.admin_mou_bucket[0].id}"
@@ -91,28 +91,28 @@ resource "aws_ecs_task_definition" "admin_task" {
           "value": "domains.yml"
         },{
           "name": "LOGGING_API_SEARCH_ENDPOINT",
-          "value": "${var.logging-api-search-url}"
+          "value": "${var.logging_api_search_url}"
         },{
           "name": "RR_DB_HOST",
-          "value": "${var.rr-db-host}"
+          "value": "${var.rr_db_host}"
         },{
           "name": "RR_DB_NAME",
-          "value": "${var.rr-db-name}"
+          "value": "${var.rr_db_name}"
         },{
           "name": "USER_DB_HOST",
-          "value": "${var.user-db-host}"
+          "value": "${var.user_db_host}"
         },{
           "name": "USER_DB_NAME",
-          "value": "${var.user-db-name}"
+          "value": "${var.user_db_name}"
         },{
           "name": "ZENDESK_API_ENDPOINT",
-          "value": "${var.zendesk-api-endpoint}"
+          "value": "${var.zendesk_api_endpoint}"
         },{
           "name": "ZENDESK_API_USER",
           "value": "${var.zendesk_api_user}"
         },{
           "name": "GOOGLE_MAPS_PUBLIC_API_KEY",
-          "value": "${var.public-google-api-key}"
+          "value": "${var.public_google_api_key}"
         }
       ],
       "secrets": [
@@ -154,13 +154,13 @@ resource "aws_ecs_task_definition" "admin_task" {
           "valueFrom": "${data.aws_secretsmanager_secret_version.zendesk_api_token.arn}:zendesk-api-token::"
         }
       ],
-      "image": "${var.admin-docker-image}",
+      "image": "${var.admin_docker_image}",
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "${aws_cloudwatch_log_group.admin_log_group.name}",
-          "awslogs-region": "${var.aws-region}",
-          "awslogs-stream-prefix": "${var.Env-Name}-admin-docker-logs"
+          "awslogs-region": "${var.aws_region}",
+          "awslogs-stream-prefix": "${var.env_name}-admin-docker-logs"
         }
       },
       "expanded": true
@@ -172,10 +172,10 @@ EOF
 
 resource "aws_ecs_service" "admin_service" {
   depends_on       = [aws_alb_listener.alb_listener]
-  name             = "admin-${var.Env-Name}"
+  name             = "admin-${var.env_name}"
   cluster          = aws_ecs_cluster.admin_cluster.id
   task_definition  = aws_ecs_task_definition.admin_task.arn
-  desired_count    = var.instance-count
+  desired_count    = var.instance_count
   launch_type      = "FARGATE"
   platform_version = "1.3.0"
 
@@ -186,7 +186,7 @@ resource "aws_ecs_service" "admin_service" {
   }
 
   network_configuration {
-    subnets = var.subnet-ids
+    subnets = var.subnet_ids
 
     security_groups = [
       aws_security_group.admin_ec2_in.id,
@@ -199,10 +199,10 @@ resource "aws_ecs_service" "admin_service" {
 
 resource "aws_alb_target_group" "admin_tg" {
   depends_on           = [aws_lb.admin_alb]
-  name                 = "admin-${var.Env-Name}-fg-tg"
+  name                 = "admin-${var.env_name}-fg-tg"
   port                 = "3000"
   protocol             = "HTTP"
-  vpc_id               = var.vpc-id
+  vpc_id               = var.vpc_id
   target_type          = "ip"
   deregistration_delay = 10
 

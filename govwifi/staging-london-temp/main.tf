@@ -205,48 +205,48 @@ module "govwifi_admin" {
   }
 
   source                    = "../../govwifi-admin"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
+  env_name                  = var.Env-Name
+  env_subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  aws-region      = var.aws-region
-  aws-region-name = var.aws-region-name
-  vpc-id          = module.backend.backend-vpc-id
-  instance-count  = 1
+  aws_region      = var.aws-region
+  aws_region_name = var.aws-region-name
+  vpc_id          = module.backend.backend-vpc-id
+  instance_count  = 1
 
-  admin-docker-image   = format("%s/admin:staging", local.docker_image_path)
-  rack-env             = "staging"
-  sentry-current-env   = "secondary-staging"
-  ecr-repository-count = 1
+  admin_docker_image   = format("%s/admin:staging", local.docker_image_path)
+  rack_env             = "staging"
+  sentry_current_env   = "secondary-staging"
+  ecr_repository_count = 1
 
-  subnet-ids = module.backend.backend-subnet-ids
+  subnet_ids = module.backend.backend-subnet-ids
 
-  db-instance-type         = "db.t2.medium"
-  db-storage-gb            = 120
-  db-backup-retention-days = 1
-  db-encrypt-at-rest       = true
-  db-maintenance-window    = "sat:00:42-sat:01:12"
-  db-backup-window         = "03:42-04:42"
-  db-monitoring-interval   = 60
+  db_instance_type         = "db.t2.medium"
+  db_storage_gb            = 120
+  db_backup_retention_days = 1
+  db_encrypt_at_rest       = true
+  db_maintenance_window    = "sat:00:42-sat:01:12"
+  db_backup_window         = "03:42-04:42"
+  db_monitoring_interval   = 60
 
-  rr-db-host = "db.london.staging-temp.wifi.service.gov.uk"
-  rr-db-name = "govwifi_staging"
+  rr_db_host = "db.london.staging-temp.wifi.service.gov.uk"
+  rr_db_name = "govwifi_staging"
 
-  user-db-host = var.user-db-hostname
-  user-db-name = "govwifi_staging_users"
+  user_db_host = var.user-db-hostname
+  user_db_name = "govwifi_staging_users"
 
-  critical-notifications-arn = module.notifications.topic-arn
-  capacity-notifications-arn = module.notifications.topic-arn
+  critical_notifications_arn = module.notifications.topic-arn
+  capacity_notifications_arn = module.notifications.topic-arn
 
-  rds-monitoring-role = module.backend.rds-monitoring-role
+  rds_monitoring_role = module.backend.rds-monitoring-role
 
   london_radius_ip_addresses = var.london_radius_ip_addresses
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
-  sentry-dsn                 = var.admin_sentry_dsn
-  logging-api-search-url     = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
-  public-google-api-key      = var.public-google-api-key
+  sentry_dsn                 = var.admin_sentry_dsn
+  logging_api_search_url     = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
+  public_google_api_key      = var.public-google-api-key
 
-  zendesk-api-endpoint = "https://govuk.zendesk.com/api/v2/"
+  zendesk_api_endpoint = "https://govuk.zendesk.com/api/v2/"
   zendesk_api_user     = var.zendesk_api_user
 
   bastion_server_ip = var.bastion_server_ip

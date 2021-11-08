@@ -1,13 +1,13 @@
 resource "aws_s3_bucket" "admin_bucket" {
   count         = 1
-  bucket        = var.is_production_aws_account ? "govwifi-${var.rack-env}-admin" : "govwifi-${var.Env-Subdomain}-admin"
+  bucket        = var.is_production_aws_account ? "govwifi-${var.rack_env}-admin" : "govwifi-${var.env_subdomain}-admin"
   force_destroy = true
   acl           = "private"
 
   tags = {
-    Name        = "${title(var.Env-Name)} Admin data"
-    Region      = title(var.aws-region-name)
-    Environment = title(var.rack-env)
+    Name        = "${title(var.env_name)} Admin data"
+    Region      = title(var.aws_region_name)
+    Environment = title(var.rack_env)
   }
 
   versioning {
@@ -17,14 +17,14 @@ resource "aws_s3_bucket" "admin_bucket" {
 
 resource "aws_s3_bucket" "product_page_data_bucket" {
   count         = 1
-  bucket        = var.is_production_aws_account ? "govwifi-${var.rack-env}-product-page-data" : "govwifi-${var.Env-Subdomain}-product-page-data"
+  bucket        = var.is_production_aws_account ? "govwifi-${var.rack_env}-product-page-data" : "govwifi-${var.env_subdomain}-product-page-data"
   force_destroy = true
   acl           = "public-read"
 
   tags = {
-    Name        = "${title(var.rack-env)} Product page data"
-    Region      = title(var.aws-region-name)
-    Environment = title(var.rack-env)
+    Name        = "${title(var.rack_env)} Product page data"
+    Region      = title(var.aws_region_name)
+    Environment = title(var.rack_env)
   }
 
   versioning {
@@ -34,14 +34,14 @@ resource "aws_s3_bucket" "product_page_data_bucket" {
 
 resource "aws_s3_bucket" "admin_mou_bucket" {
   count         = 1
-  bucket        = var.is_production_aws_account ? "govwifi-${var.rack-env}-admin-mou" : "govwifi-${var.Env-Subdomain}-admin-mou"
+  bucket        = var.is_production_aws_account ? "govwifi-${var.rack_env}-admin-mou" : "govwifi-${var.env_subdomain}-admin-mou"
   force_destroy = true
   acl           = "private"
 
   tags = {
-    Name        = "${title(var.Env-Name)} MOU documents from Admin"
-    Region      = title(var.aws-region-name)
-    Environment = title(var.rack-env)
+    Name        = "${title(var.env_name)} MOU documents from Admin"
+    Region      = title(var.aws_region_name)
+    Environment = title(var.rack_env)
   }
 
   versioning {

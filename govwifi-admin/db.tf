@@ -1,5 +1,5 @@
 resource "aws_db_parameter_group" "db_parameters" {
-  name        = "${var.Env-Name}-admin-db-parameter-group"
+  name        = "${var.env_name}-admin-db-parameter-group"
   family      = "mysql5.7"
   description = "DB parameter configuration for govwifi-admin"
 
@@ -24,12 +24,12 @@ resource "aws_db_parameter_group" "db_parameters" {
   }
 
   tags = {
-    Name = "${title(var.Env-Name)} DB parameter group for govwifi-admin"
+    Name = "${title(var.env_name)} DB parameter group for govwifi-admin"
   }
 }
 
 resource "aws_db_option_group" "mariadb_audit" {
-  name = "${var.Env-Name}-admin-db-audit"
+  name = "${var.env_name}-admin-db-audit"
 
   option_group_description = "Mariadb audit configuration for govwifi-admin"
   engine_name              = "mysql"
@@ -40,32 +40,32 @@ resource "aws_db_option_group" "mariadb_audit" {
   }
 
   tags = {
-    Name = "${title(var.Env-Name)} DB Audit configuration for govwifi-admin"
+    Name = "${title(var.env_name)} DB Audit configuration for govwifi-admin"
   }
 }
 
 resource "aws_db_instance" "admin_db" {
-  allocated_storage           = var.db-storage-gb
+  allocated_storage           = var.db_storage_gb
   storage_type                = "gp2"
   engine                      = "mysql"
   engine_version              = "5.7"
   auto_minor_version_upgrade  = true
   allow_major_version_upgrade = false
   apply_immediately           = true
-  instance_class              = var.db-instance-type
-  identifier                  = "wifi-admin-${var.Env-Name}-db"
-  name                        = "govwifi_admin_${var.rack-env}"
+  instance_class              = var.db_instance_type
+  identifier                  = "wifi-admin-${var.env_name}-db"
+  name                        = "govwifi_admin_${var.rack_env}"
   username                    = local.admin_db_username
   password                    = local.admin_db_password
-  backup_retention_period     = var.db-backup-retention-days
+  backup_retention_period     = var.db_backup_retention_days
   multi_az                    = true
-  storage_encrypted           = var.db-encrypt-at-rest
-  db_subnet_group_name        = "wifi-${var.Env-Name}-subnets"
+  storage_encrypted           = var.db_encrypt_at_rest
+  db_subnet_group_name        = "wifi-${var.env_name}-subnets"
   vpc_security_group_ids      = [aws_security_group.admin_db_in.id]
-  monitoring_role_arn         = var.rds-monitoring-role
-  monitoring_interval         = var.db-monitoring-interval
-  maintenance_window          = var.db-maintenance-window
-  backup_window               = var.db-backup-window
+  monitoring_role_arn         = var.rds_monitoring_role
+  monitoring_interval         = var.db_monitoring_interval
+  maintenance_window          = var.db_maintenance_window
+  backup_window               = var.db_backup_window
   skip_final_snapshot         = true
   deletion_protection         = true
 
@@ -74,12 +74,12 @@ resource "aws_db_instance" "admin_db" {
   parameter_group_name            = aws_db_parameter_group.db_parameters.name
 
   tags = {
-    Name = "${title(var.Env-Name)} DB for govwifi-admin"
+    Name = "${title(var.env_name)} DB for govwifi-admin"
   }
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
-  alarm_name          = "${var.Env-Name}-admin-db-cpu-alarm"
+  alarm_name          = "${var.env_name}-admin-db-cpu-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
@@ -94,12 +94,12 @@ resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
   }
 
   alarm_description  = "This metric monitors the cpu utilization of the DB."
-  alarm_actions      = [var.critical-notifications-arn]
+  alarm_actions      = [var.critical_notifications_arn]
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_memoryalarm" {
-  alarm_name          = "${var.Env-Name}-admin-db-memory-alarm"
+  alarm_name          = "${var.env_name}-admin-db-memory-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "FreeableMemory"
@@ -114,12 +114,12 @@ resource "aws_cloudwatch_metric_alarm" "db_memoryalarm" {
   }
 
   alarm_description  = "This metric monitors the freeable memory available for the DB."
-  alarm_actions      = [var.critical-notifications-arn]
+  alarm_actions      = [var.critical_notifications_arn]
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
-  alarm_name          = "${var.Env-Name}-admin-db-storage-alarm"
+  alarm_name          = "${var.env_name}-admin-db-storage-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "FreeStorageSpace"
@@ -135,12 +135,12 @@ resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
   }
 
   alarm_description  = "This metric monitors the storage space available for the DB."
-  alarm_actions      = [var.capacity-notifications-arn]
+  alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
-  alarm_name          = "${var.Env-Name}-admin-db-burstbalanace-alarm"
+  alarm_name          = "${var.env_name}-admin-db-burstbalanace-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "BurstBalance"
@@ -155,6 +155,6 @@ resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
   }
 
   alarm_description  = "This metric monitors the IOPS burst balance available for the DB."
-  alarm_actions      = [var.critical-notifications-arn]
+  alarm_actions      = [var.critical_notifications_arn]
   treat_missing_data = "missing"
 }

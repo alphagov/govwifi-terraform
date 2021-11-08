@@ -1,5 +1,5 @@
 resource "aws_iam_role" "scheduled_task" {
-  name = "${var.Env-Name}-admin-scheduled-task-role"
+  name = "${var.env_name}-admin-scheduled-task-role"
 
   assume_role_policy = <<DOC
 {
@@ -20,7 +20,7 @@ DOC
 }
 
 resource "aws_iam_role_policy" "scheduled_task" {
-  name = "${var.Env-Name}-admin-scheduled-task-policy"
+  name = "${var.env_name}-admin-scheduled-task-policy"
   role = aws_iam_role.scheduled_task.id
 
   policy = <<DOC
@@ -57,14 +57,14 @@ DOC
 # rake cleanup:orphans
 
 resource "aws_cloudwatch_event_rule" "daily_cleanup_orphan_users" {
-  name                = "${var.Env-Name}-daily-cleanup-orphan-users"
+  name                = "${var.env_name}-daily-cleanup-orphan-users"
   description         = "Triggers daily 03:15 UTC"
   schedule_expression = "cron(15 3 * * ? *)"
   is_enabled          = true
 }
 
 resource "aws_cloudwatch_event_target" "cleanup_orphan_admin_users" {
-  target_id = "${var.Env-Name}-cleanup-orphan-admin-users"
+  target_id = "${var.env_name}-cleanup-orphan-admin-users"
   arn       = aws_ecs_cluster.admin_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_cleanup_orphan_users.name
   role_arn  = aws_iam_role.scheduled_task.arn
@@ -76,7 +76,7 @@ resource "aws_cloudwatch_event_target" "cleanup_orphan_admin_users" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
         [aws_security_group.admin_ec2_in.id],
@@ -103,14 +103,14 @@ EOF
 # rake backup:service_emails
 
 resource "aws_cloudwatch_event_rule" "daily_backup_service_emails" {
-  name                = "${var.Env-Name}-daily-backup-service-emails"
+  name                = "${var.env_name}-daily-backup-service-emails"
   description         = "Triggers daily 03:30 UTC"
   schedule_expression = "cron(30 3 * * ? *)"
   is_enabled          = true
 }
 
 resource "aws_cloudwatch_event_target" "admin_backup_service_emails" {
-  target_id = "${var.Env-Name}-admin-backup-service-emails"
+  target_id = "${var.env_name}-admin-backup-service-emails"
   arn       = aws_ecs_cluster.admin_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_backup_service_emails.name
   role_arn  = aws_iam_role.scheduled_task.arn
@@ -122,7 +122,7 @@ resource "aws_cloudwatch_event_target" "admin_backup_service_emails" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
         [aws_security_group.admin_ec2_in.id],

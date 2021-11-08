@@ -1,5 +1,5 @@
 resource "aws_iam_role_policy" "ecs_admin_instance_policy" {
-  name       = "${var.aws-region-name}-ecs-admin-instance-policy-${var.Env-Name}"
+  name       = "${var.aws_region_name}-ecs-admin-instance-policy-${var.env_name}"
   role       = aws_iam_role.ecs_admin_instance_role.id
   depends_on = [aws_s3_bucket.admin_bucket]
 
@@ -92,13 +92,13 @@ EOF
 }
 
 resource "aws_iam_role" "ecs_admin_instance_role" {
-  name = "${var.aws-region-name}-ecs-admin-instance-role-${var.Env-Name}"
+  name = "${var.aws_region_name}-ecs-admin-instance-role-${var.env_name}"
 
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
 resource "aws_iam_role" "ecsTaskExecutionRole" {
-  name               = "admin-ecsTaskExecutionRole-${var.rack-env}-${var.aws-region-name}"
+  name               = "admin-ecsTaskExecutionRole-${var.rack_env}-${var.aws_region_name}"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
@@ -119,7 +119,7 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
 }
 
 resource "aws_iam_role_policy" "secrets_manager_policy" {
-  name   = "${var.aws-region-name}-admin-api-access-secrets-manager-${var.Env-Name}"
+  name   = "${var.aws_region_name}-admin-api-access-secrets-manager-${var.env_name}"
   role   = aws_iam_role.ecsTaskExecutionRole.id
   policy = data.aws_iam_policy_document.secrets_manager_policy.json
 }

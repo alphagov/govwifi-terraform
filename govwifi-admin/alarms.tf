@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "admin_no_healthy_hosts" {
-  alarm_name          = "${var.Env-Name} admin no healthy hosts"
+  alarm_name          = "${var.env_name} admin no healthy hosts"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "HealthyHostCount"
