@@ -1,14 +1,14 @@
 # CNAME for all radius servers for this environment
 resource "aws_route53_record" "radius" {
-  count   = var.radius-instance-count
-  zone_id = var.route53-zone-id
+  count   = var.radius_instance_count
+  zone_id = var.route53_zone_id
   name = var.is_production_aws_account ? format(
     "radius%d.%s.service.gov.uk",
-    var.dns-numbering-base + count.index + 1,
-    var.Env-Subdomain
+    var.dns_numbering_base + count.index + 1,
+    var.env_subdomain
     ) : format(
     "radius%d.%s.service.gov.uk",
-    var.dns-numbering-base + count.index + 1,
+    var.dns_numbering_base + count.index + 1,
     "staging"
   )
   type    = "CNAME"
@@ -21,12 +21,12 @@ resource "aws_route53_record" "radius" {
 }
 
 resource "aws_route53_health_check" "radius" {
-  count = var.radius-instance-count
+  count = var.radius_instance_count
   reference_name = var.is_production_aws_account ? format(
-    "${var.Env-Name}-${var.aws-region-name}-frontend-%d",
+    "${var.env_name}-${var.aws_region_name}-frontend-%d",
     count.index + 1
     ) : format(
-    "${var.rack-env}-${var.aws-region-name}-frontend-%d",
+    "${var.rack_env}-${var.aws_region_name}-frontend-%d",
     count.index + 1
   )
   ip_address        = element(aws_eip_association.eip_assoc.*.public_ip, count.index)
@@ -38,6 +38,6 @@ resource "aws_route53_health_check" "radius" {
   regions           = ["eu-west-1", "us-east-1", "us-west-1"]
 
   tags = {
-    Name = format("${var.Env-Name}-${var.aws-region-name}-%d", count.index + 1)
+    Name = format("${var.env_name}-${var.aws_region_name}-%d", count.index + 1)
   }
 }

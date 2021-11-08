@@ -1,32 +1,32 @@
 # Create ECS Cluster
 
 resource "aws_ecs_cluster" "frontend_cluster" {
-  name = "${var.Env-Name}-frontend-cluster"
+  name = "${var.env_name}-frontend-cluster"
 }
 
 resource "aws_cloudwatch_log_group" "frontend_log_group" {
-  name = "${var.Env-Name}-frontend-docker-log-group"
+  name = "${var.env_name}-frontend-docker-log-group"
 
   retention_in_days = 90
 }
 
 resource "aws_ecr_repository" "govwifi_frontend_ecr" {
-  count = var.create-ecr
+  count = var.create_ecr
   name  = "govwifi/frontend"
 }
 
 resource "aws_ecr_repository" "govwifi_frontend_base_ecr" {
-  count = var.create-ecr
+  count = var.create_ecr
   name  = "govwifi/frontend-base"
 }
 
 resource "aws_ecr_repository" "govwifi_raddb_ecr" {
-  count = var.create-ecr
+  count = var.create_ecr
   name  = "govwifi/raddb"
 }
 
 resource "aws_ecs_task_definition" "radius_task" {
-  family             = "radius-task-${var.Env-Name}"
+  family             = "radius-task-${var.env_name}"
   task_role_arn      = aws_iam_role.ecs_task_role.arn
   execution_role_arn = aws_iam_role.ecsTaskExecutionRole.arn
 
@@ -76,22 +76,22 @@ resource "aws_ecs_task_definition" "radius_task" {
     "environment": [
       {
         "name": "AUTHORISATION_API_BASE_URL",
-        "value": "${var.auth-api-base-url}"
+        "value": "${var.auth_api_base_url}"
       },{
         "name": "LOGGING_API_BASE_URL",
-        "value": "${var.logging-api-base-url}"
+        "value": "${var.logging_api_base_url}"
       },{
         "name": "RADIUSD_PARAMS",
-        "value": "${var.radiusd-params}"
+        "value": "${var.radiusd_params}"
       },{
         "name": "RACK_ENV",
-        "value": "${var.rack-env}"
+        "value": "${var.rack_env}"
       },{
         "name": "SERVICE_DOMAIN",
-        "value": "${var.Env-Subdomain}"
+        "value": "${var.env_subdomain}"
       },{
         "name": "SENTRY_CURRENT_ENV",
-        "value": "${var.sentry-current-env}"
+        "value": "${var.sentry_current_env}"
       }
     ],
     "secrets": [
@@ -112,13 +112,13 @@ resource "aws_ecs_task_definition" "radius_task" {
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:ssid::"
       }
     ],
-    "image": "${var.frontend-docker-image}",
+    "image": "${var.frontend_docker_image}",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
         "awslogs-group": "${aws_cloudwatch_log_group.frontend_log_group.name}",
-        "awslogs-region": "${var.aws-region}",
-        "awslogs-stream-prefix": "${var.Env-Name}-docker-logs"
+        "awslogs-region": "${var.aws_region}",
+        "awslogs-stream-prefix": "${var.env_name}-docker-logs"
       }
     },
     "cpu": 1000,
@@ -148,13 +148,13 @@ resource "aws_ecs_task_definition" "radius_task" {
         "value": "s3://${aws_s3_bucket.frontend_cert_bucket[0].bucket}"
       }
     ],
-    "image": "${var.raddb-docker-image}",
+    "image": "${var.raddb_docker_image}",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
         "awslogs-group": "${aws_cloudwatch_log_group.frontend_log_group.name}",
-        "awslogs-region": "${var.aws-region}",
-        "awslogs-stream-prefix": "${var.Env-Name}-docker-logs"
+        "awslogs-region": "${var.aws_region}",
+        "awslogs-stream-prefix": "${var.env_name}-docker-logs"
       }
     },
     "memory": 1500,
@@ -167,10 +167,10 @@ EOF
 }
 
 resource "aws_ecs_service" "frontend_service" {
-  name            = "frontend-service-${var.Env-Name}"
+  name            = "frontend-service-${var.env_name}"
   cluster         = aws_ecs_cluster.frontend_cluster.id
   task_definition = aws_ecs_task_definition.radius_task.arn
-  desired_count   = var.radius-instance-count
+  desired_count   = var.radius_instance_count
 
   ordered_placement_strategy {
     type  = "spread"

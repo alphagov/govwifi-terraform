@@ -143,47 +143,47 @@ module "frontend" {
   }
 
   source                    = "../../govwifi-frontend"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
+  env_name                  = var.Env-Name
+  env_subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
   # AWS VPC setup -----------------------------------------
   # LONDON
-  aws-region = var.aws-region
+  aws_region = var.aws-region
 
-  aws-region-name    = var.aws-region-name
-  route53-zone-id    = local.route53_zone_id
-  vpc-cidr-block     = "10.102.0.0/16"
-  zone-count         = var.zone-count
-  zone-names         = var.zone-names
-  rack-env           = "staging"
-  sentry-current-env = "secondary-staging"
+  aws_region_name    = var.aws-region-name
+  route53_zone_id    = local.route53_zone_id
+  vpc_cidr_block     = "10.102.0.0/16"
+  zone_count         = var.zone-count
+  zone_names         = var.zone-names
+  rack_env           = "staging"
+  sentry_current_env = "secondary-staging"
 
-  zone-subnets = {
+  zone_subnets = {
     zone0 = "10.102.1.0/24"
     zone1 = "10.102.2.0/24"
     zone2 = "10.102.3.0/24"
   }
 
   # Instance-specific setup -------------------------------
-  radius-instance-count      = 3
-  enable-detailed-monitoring = false
+  radius_instance_count      = 3
+  enable_detailed_monitoring = false
 
   # eg. dns records are generated for radius(N).x.service.gov.uk
   # where N = this base + 1 + server#
-  dns-numbering-base = 3
+  dns_numbering_base = 3
 
-  elastic-ip-list       = local.frontend_region_ips
+  elastic_ip_list       = local.frontend_region_ips
   ami                   = var.ami
-  ssh-key-name          = var.ssh-key-name
-  frontend-docker-image = format("%s/frontend:staging", local.docker_image_path)
-  raddb-docker-image    = format("%s/raddb:staging", local.docker_image_path)
-  create-ecr            = 1
+  ssh_key_name          = var.ssh-key-name
+  frontend_docker_image = format("%s/frontend:staging", local.docker_image_path)
+  raddb_docker_image    = format("%s/raddb:staging", local.docker_image_path)
+  create_ecr            = 1
 
   admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
 
-  logging-api-base-url = var.london-api-base-url
-  auth-api-base-url    = var.london-api-base-url
+  logging_api_base_url = var.london-api-base-url
+  auth_api_base_url    = var.london-api-base-url
 
   critical_notifications_arn           = module.notifications.topic-arn
   us_east_1_critical_notifications_arn = module.route53-notifications.topic-arn
@@ -193,7 +193,7 @@ module "frontend" {
   prometheus_ip_london  = var.prometheus_ip_london
   prometheus_ip_ireland = var.prometheus_ip_ireland
 
-  radius-CIDR-blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
+  radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 
   use_env_prefix = var.use_env_prefix
 

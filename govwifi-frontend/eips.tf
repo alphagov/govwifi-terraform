@@ -1,5 +1,5 @@
 resource "aws_eip" "radius_eips" {
-  count = var.radius-instance-count
+  count = var.radius_instance_count
   vpc   = true
 
   lifecycle {
@@ -7,9 +7,9 @@ resource "aws_eip" "radius_eips" {
   }
 
   tags = {
-    Name   = "${title(var.Env-Name)} Frontend Radius-${var.dns-numbering-base + count.index + 1}"
-    Region = title(var.aws-region-name)
-    Env    = title(var.Env-Name)
+    Name   = "${title(var.env_name)} Frontend Radius-${var.dns_numbering_base + count.index + 1}"
+    Region = title(var.aws_region_name)
+    Env    = title(var.env_name)
   }
 }
 
