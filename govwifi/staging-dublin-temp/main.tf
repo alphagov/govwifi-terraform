@@ -4,11 +4,11 @@ module "tfstate" {
   }
 
   source             = "../../terraform-state"
-  product_name       = var.product-name
-  env_name           = var.Env-Name
+  product_name       = var.product_name
+  env_name           = var.env_name
   aws_account_id     = local.aws_account_id
-  aws_region_name    = var.aws-region-name
-  backup_region_name = var.backup-region-name
+  aws_region_name    = var.aws_region_name
+  backup_region_name = var.backup_region_name
 
   # TODO: separate module for accesslogs
   accesslogs_glacier_transition_days = 7
@@ -20,9 +20,9 @@ terraform {
 
   backend "s3" {
     # Interpolation is not allowed here.
-    #bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
-    #key    = "${lower(var.aws-region-name)}-tfstate"
-    #region = "${var.aws-region}"
+    #bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate"
+    #key    = "${lower(var.aws_region_name)}-tfstate"
+    #region = "${var.aws_region}"
     bucket = "govwifi-staging-temp-dublin-tfstate"
 
     key     = "dublin-tfstate"
@@ -38,7 +38,7 @@ terraform {
 
 provider "aws" {
   alias  = "main"
-  region = var.aws-region
+  region = var.aws_region
 }
 
 provider "aws" {
@@ -64,18 +64,18 @@ module "backend" {
 
   source                    = "../../govwifi-backend"
   env                       = "staging"
-  env_name                  = var.Env-Name
-  env_subdomain             = var.Env-Subdomain
+  env_name                  = var.env_name
+  env_subdomain             = var.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
 
   # AWS VPC setup -----------------------------------------
-  aws_region      = var.aws-region
+  aws_region      = var.aws_region
   route53_zone_id = local.route53_zone_id
-  aws_region_name = var.aws-region-name
+  aws_region_name = var.aws_region_name
   vpc_cidr_block  = "10.104.0.0/16"
-  zone_count      = var.zone-count
-  zone_names      = var.zone-names
+  zone_count      = var.zone_count
+  zone_names      = var.zone_names
 
   zone_subnets = {
     zone0 = "10.104.1.0/24"
@@ -117,7 +117,7 @@ module "backend" {
   user_replica_source_db = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-staging-user-db"
   user_rr_instance_type  = "db.t2.small"
 
-  user_rr_hostname           = var.user-rr-hostname
+  user_rr_hostname           = var.user_rr_hostname
   critical_notifications_arn = module.notifications.topic-arn
   capacity_notifications_arn = module.notifications.topic-arn
 
@@ -146,17 +146,17 @@ module "emails" {
   source = "../../govwifi-emails"
 
   is_production_aws_account = var.is_production_aws_account
-  product_name              = var.product-name
-  env_name                  = var.Env-Name
-  env_subdomain             = var.Env-Subdomain
+  product_name              = var.product_name
+  env_name                  = var.env_name
+  env_subdomain             = var.env_subdomain
   aws_account_id            = local.aws_account_id
   route53_zone_id           = local.route53_zone_id
-  aws_region                = var.aws-region
-  aws_region_name           = var.aws-region-name
+  aws_region                = var.aws_region
+  aws_region_name           = var.aws_region_name
   mail_exchange_server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
   devops_notifications_arn  = module.notifications.topic-arn
 
-  user_signup_notifications_endpoint = "https://user-signup-api.${var.Env-Subdomain}.service.gov.uk:8443/user-signup/email-notification"
+  user_signup_notifications_endpoint = "https://user-signup-api.${var.env_subdomain}.service.gov.uk:8443/user-signup/email-notification"
 
   // The SNS endpoint is disabled in the secondary AWS account
   // We will conduct an SNS inventory (see this card: https://trello.com/c/EMeet3tl/315-investigate-and-inventory-sns-topics)
@@ -176,7 +176,7 @@ module "govwifi_keys" {
   create_production_bastion_key = 0
   is_production_aws_account     = false
 
-  govwifi_key_name     = var.ssh-key-name
+  govwifi_key_name     = var.ssh_key_name
   govwifi_key_name_pub = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDOxYtGJARr+ZUB9wMWMX/H+myTidFKx+qcBsXuri5zavQ6K4c0WhSkypXfET9BBtC1ZU77B98mftegxKdKcKmFbCVlv39pIX+xj2vjuCzHlzezI1vB4mdAXNhc8b4ArvFJ8lG2GLa1ZD8H/8akpv6EcplwyUv6ZgQMPl6wfMF6d0Qe/eOJ/bV570icX9NYLGkdLRbudkRc12krt6h451qp1vO7f2FQOnPR2cnyLGd/FxhrmAOqJsDk9CRNSwHJe1lsSCz6TkQk1bfCTxZ7g2hWSNRBdWPj0RJbbezy3X3/pz4cFL8mCC1esJ+nptUZ7CXeyirtCObIepniXIItwtdIVqixaMSjfagUGd0L1zFEVuH0bct3mh3u3TyVbNHP4o4pFHvG0sm5R1iDB8/xe2NJdxmAsn3JqeXdsQ6uI/oz31OueFRPyZI0VeDw7B4bhBMZ0w/ncrYJ9jFjfPvzhAVZgQX5Pxtp5MUCeU9+xIdAN2bESmIvaoSEwno7WJ4z61d83pLMFUuS9vNRW4ykgd1BzatLYSkLp/fn/wYNn6DBk7Da6Vs1Y/jgkiDJPGeFlEhW3rqOjTKrpKJBw6LBsMyI0BtkKoPoUTDlKSEX5JlNWBX2z5eSEhe+WEQjc4ZnbLUOKRB5+xNOGahVyk7/VF8ZaZ3/GXWY7MEfZ8TIBBcAjw== "
 
 }
@@ -189,17 +189,17 @@ module "frontend" {
   }
 
   source                    = "../../govwifi-frontend"
-  env_name                  = var.Env-Name
-  env_subdomain             = var.Env-Subdomain
+  env_name                  = var.env_name
+  env_subdomain             = var.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
   # AWS VPC setup -----------------------------------------
-  aws_region         = var.aws-region
-  aws_region_name    = var.aws-region-name
+  aws_region         = var.aws_region
+  aws_region_name    = var.aws_region_name
   route53_zone_id    = local.route53_zone_id
   vpc_cidr_block     = "10.105.0.0/16"
-  zone_count         = var.zone-count
-  zone_names         = var.zone-names
+  zone_count         = var.zone_count
+  zone_names         = var.zone_names
   rack_env           = "staging"
   sentry_current_env = "secondary-staging"
 
@@ -219,14 +219,14 @@ module "frontend" {
 
   elastic_ip_list       = local.frontend_region_ips
   ami                   = var.ami
-  ssh_key_name          = var.ssh-key-name
+  ssh_key_name          = var.ssh_key_name
   frontend_docker_image = format("%s/frontend:staging", local.docker_image_path)
   raddb_docker_image    = format("%s/raddb:staging", local.docker_image_path)
 
   admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
 
-  logging_api_base_url = var.london-api-base-url
-  auth_api_base_url    = var.dublin-api-base-url
+  logging_api_base_url = var.london_api_base_url
+  auth_api_base_url    = var.dublin_api_base_url
 
   critical_notifications_arn           = module.notifications.topic-arn
   us_east_1_critical_notifications_arn = module.route53-notifications.topic-arn
@@ -250,14 +250,14 @@ module "api" {
   source                    = "../../govwifi-api"
   env                       = "staging"
   env_name                  = "staging"
-  env_subdomain             = var.Env-Subdomain
+  env_subdomain             = var.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
   backend_elb_count      = 1
   backend_instance_count = 2
   aws_account_id         = local.aws_account_id
-  aws_region_name        = var.aws-region-name
-  aws_region             = var.aws-region
+  aws_region_name        = var.aws_region_name
+  aws_region             = var.aws_region
   route53_zone_id        = local.route53_zone_id
   vpc_id                 = module.backend.backend-vpc-id
 
@@ -279,7 +279,7 @@ module "api" {
   db_hostname = ""
 
   user_db_hostname = ""
-  user_rr_hostname = var.user-rr-hostname
+  user_rr_hostname = var.user_rr_hostname
 
   rack_env                  = "staging"
   sentry_current_env        = "secondary-staging"
