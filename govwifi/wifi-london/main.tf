@@ -4,11 +4,11 @@ module "tfstate" {
   }
 
   source             = "../../terraform-state"
-  product_name       = var.product-name
-  env_name           = var.Env-Name
+  product_name       = var.product_name
+  env_name           = var.env_name
   aws_account_id     = local.aws_account_id
-  aws_region_name    = var.aws-region-name
-  backup_region_name = var.backup-region-name
+  aws_region_name    = var.aws_region_name
+  backup_region_name = var.backup_region_name
 
   # TODO: separate module for accesslogs
   accesslogs_glacier_transition_days = 30
@@ -20,9 +20,9 @@ terraform {
 
   backend "s3" {
     # Interpolation is not allowed here.
-    #bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
-    #key    = "${lower(var.aws-region-name)}-tfstate"
-    #region = "${var.aws-region}"
+    #bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate"
+    #key    = "${lower(var.aws_region_name)}-tfstate"
+    #region = "${var.aws_region}"
     bucket = "govwifi-wifi-london-tfstate"
 
     key    = "london-tfstate"
@@ -37,7 +37,7 @@ terraform {
 
 provider "aws" {
   alias  = "main"
-  region = var.aws-region
+  region = var.aws_region
 }
 
 provider "aws" {
@@ -57,7 +57,7 @@ module "govwifi_keys" {
   govwifi_bastion_key_name = "govwifi-bastion-key-20210630"
   govwifi_bastion_key_pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDY/Q676Tp5CTpKWVksMPztERDdjWOrYFgVckF9IHGI2wC38ckWFiqawsEZBILUyNZgL/lnOtheN1UZtuGmUUkPxgtPw+YD6gMDcebhSX4wh9GM3JjXAIy9+V/WagQ84Pz10yIp+PlyzcQMu+RVRVzWyTYZUdgMsDt0tFdcgMgUc7FkC252CgtSZHpLXhnukG5KG69CoTO+kuak/k3vX5jwWjIgfMGZwIAq+F9XSIMAwylCmmdE5MetKl0Wx4EI/fm8WqSZXj+yeFRv9mQTus906AnNieOgOrgt4D24/JuRU1JTlZ35iNbOKcwlOTDSlTQrm4FA1sCllphhD/RQVYpMp6EV3xape626xwkucCC2gYnakxTZFHUIeWfC5aHGrqMOMtXRfW0xs+D+vzo3MCWepdIebWR5KVhqkbNUKHBG9e8oJbTYUkoyBZjC7LtI4fgB3+blXyFVuQoAzjf+poPzdPBfCC9eiUJrEHoOljO9yMcdkBfyW3c/o8Sd9PgNufc= bastion@govwifi"
 
-  govwifi_key_name     = var.ssh-key-name
+  govwifi_key_name     = var.ssh_key_name
   govwifi_key_name_pub = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJmLa/tF941z6Dh/jiZCH6Mw/JoTXGkILim/bgDc3PSBKXFmBwkAFUVgnoOUWJDXvZWpuBJv+vUu+ZlmlszFM00BRXpb4ykRuJxWIjJiNzGlgXW69Satl2e9d37ZtLwlAdABgJyvj10QEiBtB1VS0DBRXK9J+CfwNPnwVnfppFGP86GoqE2Il86t+BB/VC//gKMTttIstyl2nqUwkK3Epq66+1ol3AelmUmBjPiyrmkwp+png9F4B86RqSNa/drfXmUGf1czE4+H+CXqOdje2bmnrwxLQ8GY3MYpz0zTVrB3T1IyXXF6dcdcF6ZId9B/10jMiTigvOeUvraFEf9fK7 govwifi@govwifi"
 }
 
@@ -82,18 +82,18 @@ module "backend" {
 
   source                    = "../../govwifi-backend"
   env                       = "production"
-  env_name                  = var.Env-Name
-  env_subdomain             = var.Env-Subdomain
+  env_name                  = var.env_name
+  env_subdomain             = var.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
 
   # AWS VPC setup -----------------------------------------
-  aws_region      = var.aws-region
-  aws_region_name = var.aws-region-name
+  aws_region      = var.aws_region
+  aws_region_name = var.aws_region_name
   route53_zone_id = local.route53_zone_id
   vpc_cidr_block  = "10.84.0.0/16"
-  zone_count      = var.zone-count
-  zone_names      = var.zone-names
+  zone_count      = var.zone_count
+  zone_names      = var.zone_names
 
   zone_subnets = {
     zone0 = "10.84.1.0/24"
@@ -132,8 +132,8 @@ module "backend" {
   db_monitoring_interval = 60
 
   # Passed to application
-  user_db_hostname      = var.user-db-hostname
-  user_rr_hostname      = var.user-rr-hostname
+  user_db_hostname      = var.user_db_hostname
+  user_rr_hostname      = var.user_rr_hostname
   user_db_instance_type = "db.t2.medium"
   user_db_storage_gb    = 1000
   user_db_replica_count = 1
@@ -156,19 +156,19 @@ module "frontend" {
   }
 
   source                    = "../../govwifi-frontend"
-  env_name                  = var.Env-Name
-  env_subdomain             = var.Env-Subdomain
+  env_name                  = var.env_name
+  env_subdomain             = var.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
   # AWS VPC setup -----------------------------------------
   # LONDON
-  aws_region = var.aws-region
+  aws_region = var.aws_region
 
-  aws_region_name    = var.aws-region-name
+  aws_region_name    = var.aws_region_name
   route53_zone_id    = local.route53_zone_id
   vpc_cidr_block     = "10.85.0.0/16"
-  zone_count         = var.zone-count
-  zone_names         = var.zone-names
+  zone_count         = var.zone_count
+  zone_names         = var.zone_names
   rack_env           = "production"
   sentry_current_env = "production"
 
@@ -188,15 +188,15 @@ module "frontend" {
 
   elastic_ip_list       = local.frontend_region_ips
   ami                   = var.ami
-  ssh_key_name          = var.ssh-key-name
+  ssh_key_name          = var.ssh_key_name
   frontend_docker_image = format("%s/frontend:production", local.docker_image_path)
   raddb_docker_image    = format("%s/raddb:production", local.docker_image_path)
   create_ecr            = 1
 
   admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
 
-  logging_api_base_url = var.london-api-base-url
-  auth_api_base_url    = var.london-api-base-url
+  logging_api_base_url = var.london_api_base_url
+  auth_api_base_url    = var.london_api_base_url
 
   critical_notifications_arn           = module.critical-notifications.topic-arn
   us_east_1_critical_notifications_arn = module.route53-critical-notifications.topic-arn
@@ -217,12 +217,12 @@ module "govwifi_admin" {
   }
 
   source                    = "../../govwifi-admin"
-  env_name                  = var.Env-Name
-  env_subdomain             = var.Env-Subdomain
+  env_name                  = var.env_name
+  env_subdomain             = var.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  aws_region      = var.aws-region
-  aws_region_name = var.aws-region-name
+  aws_region      = var.aws_region
+  aws_region_name = var.aws_region_name
   vpc_id          = module.backend.backend-vpc-id
   instance_count  = 2
 
@@ -244,7 +244,7 @@ module "govwifi_admin" {
   rr_db_host = "rr.london.wifi.service.gov.uk"
   rr_db_name = "govwifi_wifi"
 
-  user_db_host = var.user-rr-hostname
+  user_db_host = var.user_rr_hostname
   user_db_name = "govwifi_production_users"
 
   critical_notifications_arn = module.critical-notifications.topic-arn
@@ -256,9 +256,9 @@ module "govwifi_admin" {
   london_radius_ip_addresses = var.london_radius_ip_addresses
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
   sentry_dsn                 = var.admin_sentry_dsn
-  public_google_api_key      = var.public-google-api-key
+  public_google_api_key      = var.public_google_api_key
 
-  logging_api_search_url = "https://api-elb.london.${var.Env-Subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
+  logging_api_search_url = "https://api-elb.london.${var.env_subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
 
   zendesk_api_endpoint = "https://govuk.zendesk.com/api/v2/"
   zendesk_api_user     = var.zendesk_api_user
@@ -275,15 +275,15 @@ module "api" {
 
   source                    = "../../govwifi-api"
   env                       = "production"
-  env_name                  = var.Env-Name
-  env_subdomain             = var.Env-Subdomain
+  env_name                  = var.env_name
+  env_subdomain             = var.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
   backend_elb_count      = 1
   backend_instance_count = 3
   aws_account_id         = local.aws_account_id
-  aws_region_name        = var.aws-region-name
-  aws_region             = var.aws-region
+  aws_region_name        = var.aws_region_name
+  aws_region             = var.aws_region
   route53_zone_id        = local.route53_zone_id
   vpc_id                 = module.backend.backend-vpc-id
 
@@ -300,7 +300,7 @@ module "api" {
   wordlist_file_path    = "../wordlist-short"
   ecr_repository_count  = 1
 
-  db_hostname               = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+  db_hostname               = "db.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk"
   rack_env                  = "production"
   sentry_current_env        = "production"
   radius_server_ips         = local.frontend_radius_ips
@@ -309,8 +309,8 @@ module "api" {
   user_signup_sentry_dsn    = var.user_signup_sentry_dsn
   logging_sentry_dsn        = var.logging_sentry_dsn
   subnet_ids                = module.backend.backend-subnet-ids
-  user_db_hostname          = var.user-db-hostname
-  user_rr_hostname          = var.user-rr-hostname
+  user_db_hostname          = var.user_db_hostname
+  user_rr_hostname          = var.user_rr_hostname
   user_signup_api_is_public = 1
 
   admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
@@ -393,7 +393,7 @@ module "govwifi_dashboard" {
   }
 
   source   = "../../govwifi-dashboard"
-  env_name = var.Env-Name
+  env_name = var.env_name
 }
 
 /*
@@ -408,10 +408,10 @@ module "govwifi_prometheus" {
   }
 
   source     = "../../govwifi-prometheus"
-  env_name   = var.Env-Name
-  aws_region = var.aws-region
+  env_name   = var.env_name
+  aws_region = var.aws_region
 
-  ssh_key_name = var.ssh-key-name
+  ssh_key_name = var.ssh_key_name
 
   frontend_vpc_id = module.frontend.frontend-vpc-id
 
@@ -433,13 +433,13 @@ module "govwifi_grafana" {
   }
 
   source                     = "../../govwifi-grafana"
-  env_name                   = var.Env-Name
-  env_subdomain              = var.Env-Subdomain
-  aws_region                 = var.aws-region
+  env_name                   = var.env_name
+  env_subdomain              = var.env_subdomain
+  aws_region                 = var.aws_region
   critical_notifications_arn = module.critical-notifications.topic-arn
   is_production_aws_account  = var.is_production_aws_account
 
-  ssh_key_name = var.ssh-key-name
+  ssh_key_name = var.ssh_key_name
 
   subnet_ids = module.backend.backend-subnet-ids
 
@@ -479,9 +479,9 @@ module "govwifi_elasticsearch" {
   }
 
   source         = "../../govwifi-elasticsearch"
-  domain_name    = "${var.Env-Name}-elasticsearch"
-  env_name       = var.Env-Name
-  aws_region     = var.aws-region
+  domain_name    = "${var.env_name}-elasticsearch"
+  env_name       = var.env_name
+  aws_region     = var.aws_region
   aws_account_id = local.aws_account_id
   vpc_id         = module.backend.backend-vpc-id
   vpc_cidr_block = module.backend.vpc-cidr-block
