@@ -263,56 +263,56 @@ module "api" {
 
   source                    = "../../govwifi-api"
   env                       = "staging"
-  Env-Name                  = "staging"
-  Env-Subdomain             = var.Env-Subdomain
+  env_name                  = "staging"
+  env_subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  backend-elb-count      = 1
-  backend-instance-count = 2
-  aws-account-id         = local.aws_account_id
-  aws-region-name        = var.aws-region-name
-  aws-region             = var.aws-region
-  route53-zone-id        = local.route53_zone_id
-  vpc-id                 = module.backend.backend-vpc-id
-  safe-restart-enabled   = 1
+  backend_elb_count      = 1
+  backend_instance_count = 2
+  aws_account_id         = local.aws_account_id
+  aws_region_name        = var.aws-region-name
+  aws_region             = var.aws-region
+  route53_zone_id        = local.route53_zone_id
+  vpc_id                 = module.backend.backend-vpc-id
+  safe_restart_enabled   = 1
 
-  devops-notifications-arn = module.notifications.topic-arn
+  devops_notifications_arn = module.notifications.topic-arn
   notification_arn         = module.notifications.topic-arn
 
-  auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
-  user-signup-docker-image      = format("%s/user-signup-api:staging", local.docker_image_path)
-  logging-docker-image          = format("%s/logging-api:staging", local.docker_image_path)
-  safe-restart-docker-image     = format("%s/safe-restarter:staging", local.docker_image_path)
-  backup-rds-to-s3-docker-image = format("%s/database-backup:staging", local.docker_image_path)
+  auth_docker_image             = format("%s/authorisation-api:staging", local.docker_image_path)
+  user_signup_docker_image      = format("%s/user-signup-api:staging", local.docker_image_path)
+  logging_docker_image          = format("%s/logging-api:staging", local.docker_image_path)
+  safe_restart_docker_image     = format("%s/safe-restarter:staging", local.docker_image_path)
+  backup_rds_to_s3_docker_image = format("%s/database-backup:staging", local.docker_image_path)
 
-  wordlist-bucket-count = 1
-  wordlist-file-path    = "../wordlist-short"
-  ecr-repository-count  = 1
+  wordlist_bucket_count = 1
+  wordlist_file_path    = "../wordlist-short"
+  ecr_repository_count  = 1
 
-  db-hostname = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+  db_hostname = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
 
-  user-db-hostname = var.user-db-hostname
+  user_db_hostname = var.user-db-hostname
 
-  user-rr-hostname = var.user-db-hostname
+  user_rr_hostname = var.user-db-hostname
 
-  rack-env                  = "staging"
-  sentry-current-env        = "secondary-staging"
-  radius-server-ips         = local.frontend_radius_ips
+  rack_env                  = "staging"
+  sentry_current_env        = "secondary-staging"
+  radius_server_ips         = local.frontend_radius_ips
   authentication_sentry_dsn = var.auth_sentry_dsn
   safe_restart_sentry_dsn   = var.safe_restart_sentry_dsn
   user_signup_sentry_dsn    = var.user_signup_sentry_dsn
   logging_sentry_dsn        = var.logging_sentry_dsn
-  subnet-ids                = module.backend.backend-subnet-ids
-  user-signup-api-is-public = 1
+  subnet_ids                = module.backend.backend-subnet-ids
+  user_signup_api_is_public = 1
 
   admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
 
-  backend-sg-list = [
+  backend_sg_list = [
     module.backend.be-admin-in,
   ]
 
-  metrics-bucket-name     = module.govwifi_dashboard.metrics-bucket-name
-  export-data-bucket-name = module.govwifi_dashboard.export-data-bucket-name
+  metrics_bucket_name     = module.govwifi_dashboard.metrics-bucket-name
+  export_data_bucket_name = module.govwifi_dashboard.export-data-bucket-name
 
   use_env_prefix          = var.use_env_prefix
   rds_mysql_backup_bucket = module.backend.rds_mysql_backup_bucket

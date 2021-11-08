@@ -1,8 +1,8 @@
 resource "aws_lb" "user_signup_api" {
-  count    = var.user-signup-enabled
-  name     = "user-signup-api-${var.Env-Name}"
+  count    = var.user_signup_enabled
+  name     = "user-signup-api-${var.env_name}"
   internal = false
-  subnets  = var.subnet-ids
+  subnets  = var.subnet_ids
 
   security_groups = concat(
     [aws_security_group.api_alb_in.id],
@@ -13,12 +13,12 @@ resource "aws_lb" "user_signup_api" {
   load_balancer_type = "application"
 
   tags = {
-    Name = "user-signup-api-${var.Env-Name}"
+    Name = "user-signup-api-${var.env_name}"
   }
 }
 
 resource "aws_lb_listener" "user_signup_api" {
-  count             = var.user-signup-enabled
+  count             = var.user_signup_enabled
   load_balancer_arn = aws_lb.user_signup_api[0].arn
   port              = "8443"
   protocol          = "HTTPS"
@@ -32,7 +32,7 @@ resource "aws_lb_listener" "user_signup_api" {
 }
 
 resource "aws_lb_listener_certificate" "user_signup_api_regional" {
-  count           = var.user-signup-enabled
+  count           = var.user_signup_enabled
   listener_arn    = aws_lb_listener.user_signup_api[0].arn
   certificate_arn = aws_acm_certificate.user_signup_api_regional[0].arn
 

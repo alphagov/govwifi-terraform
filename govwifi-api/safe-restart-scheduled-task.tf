@@ -1,26 +1,26 @@
 resource "aws_cloudwatch_event_rule" "daily_safe_restart" {
-  count               = var.safe-restart-enabled
-  name                = "${var.Env-Name}-daily-safe-restart"
+  count               = var.safe_restart_enabled
+  name                = "${var.env_name}-daily-safe-restart"
   description         = "Triggers at 1am Daily"
   schedule_expression = "cron(0 1 * * ? *)"
   is_enabled          = true
 }
 
 resource "aws_cloudwatch_log_group" "safe_restart_log_group" {
-  count = var.safe-restart-enabled
-  name  = "${var.Env-Name}-safe-restart-docker-log-group"
+  count = var.safe_restart_enabled
+  name  = "${var.env_name}-safe-restart-docker-log-group"
 
   retention_in_days = 90
 }
 
 resource "aws_ecr_repository" "safe_restarter_ecr" {
-  count = var.ecr-repository-count
+  count = var.ecr_repository_count
   name  = "govwifi/safe-restarter"
 }
 
 resource "aws_ecs_task_definition" "safe_restart_task_definition" {
-  count                    = var.safe-restart-enabled
-  family                   = "safe-restart-task-${var.Env-Name}"
+  count                    = var.safe_restart_enabled
+  family                   = "safe-restart-task-${var.env_name}"
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   task_role_arn            = aws_iam_role.safe_restart_task_role[0].arn
   requires_compatibilities = ["FARGATE"]
@@ -54,10 +54,10 @@ resource "aws_ecs_task_definition" "safe_restart_task_definition" {
       "environment": [
         {
           "name": "RACK_ENV",
-          "value": "${var.rack-env}"
+          "value": "${var.rack_env}"
         },{
           "name": "SENTRY_CURRENT_ENV",
-          "value": "${var.sentry-current-env}"
+          "value": "${var.sentry_current_env}"
         },{
           "name": "SENTRY_DSN",
           "value": "${var.safe_restart_sentry_dsn}"
@@ -66,7 +66,7 @@ resource "aws_ecs_task_definition" "safe_restart_task_definition" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.safe-restart-docker-image}",
+      "image": "${var.safe_restart_docker_image}",
       "command": null,
       "user": null,
       "dockerLabels": null,
@@ -74,8 +74,8 @@ resource "aws_ecs_task_definition" "safe_restart_task_definition" {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "${aws_cloudwatch_log_group.safe_restart_log_group[0].name}",
-          "awslogs-region": "${var.aws-region}",
-          "awslogs-stream-prefix": "${var.Env-Name}-safe-restart-docker-logs"
+          "awslogs-region": "${var.aws_region}",
+          "awslogs-stream-prefix": "${var.env_name}-safe-restart-docker-logs"
         }
       },
       "cpu": 0,
@@ -88,8 +88,8 @@ EOF
 }
 
 resource "aws_iam_role" "safe_restart_task_role" {
-  count = var.safe-restart-enabled
-  name  = "${var.Env-Name}-safe-restart-task-role"
+  count = var.safe_restart_enabled
+  name  = "${var.env_name}-safe-restart-task-role"
 
   assume_role_policy = <<EOF
 {
@@ -110,8 +110,8 @@ EOF
 }
 
 resource "aws_iam_role" "safe_restart_scheduled_task_role" {
-  count = var.safe-restart-enabled
-  name  = "${var.Env-Name}-safe-restart-scheduled-task-role"
+  count = var.safe_restart_enabled
+  name  = "${var.env_name}-safe-restart-scheduled-task-role"
 
   assume_role_policy = <<DOC
 {
@@ -132,8 +132,8 @@ DOC
 }
 
 resource "aws_iam_role_policy" "safe_restart_task_policy" {
-  count      = var.safe-restart-enabled
-  name       = "${var.Env-Name}-safe-restart-task-policy"
+  count      = var.safe_restart_enabled
+  name       = "${var.env_name}-safe-restart-task-policy"
   role       = aws_iam_role.safe_restart_task_role[0].id
   depends_on = [aws_iam_role.safe_restart_task_role]
 
@@ -159,8 +159,8 @@ EOF
 }
 
 resource "aws_iam_role_policy" "safe_restart_scheduled_task_policy" {
-  count = var.safe-restart-enabled
-  name  = "${var.Env-Name}-safe-restart-scheduled-task-policy"
+  count = var.safe_restart_enabled
+  name  = "${var.env_name}-safe-restart-scheduled-task-policy"
   role  = aws_iam_role.safe_restart_scheduled_task_role[0].id
 
   policy = <<DOC
@@ -195,8 +195,8 @@ DOC
 }
 
 resource "aws_cloudwatch_event_target" "daily_safe_restart" {
-  count     = var.safe-restart-enabled
-  target_id = "${var.Env-Name}-safe-restart"
+  count     = var.safe_restart_enabled
+  target_id = "${var.env_name}-safe-restart"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_safe_restart[0].name
   role_arn  = aws_iam_role.safe_restart_scheduled_task_role[0].arn
@@ -208,10 +208,10 @@ resource "aws_cloudwatch_event_target" "daily_safe_restart" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -225,7 +225,7 @@ resource "aws_cloudwatch_event_target" "daily_safe_restart" {
   "containerOverrides": [
     {
       "name": "safe-restart",
-      "command": ["bundle", "exec", "rake", "safe_restart[${var.rack-env}]"]
+      "command": ["bundle", "exec", "rake", "safe_restart[${var.rack_env}]"]
     }
   ]
 }

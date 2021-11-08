@@ -1,6 +1,6 @@
 resource "aws_iam_role" "logging_scheduled_task_role" {
-  count = var.logging-enabled
-  name  = "${var.Env-Name}-logging-scheduled-task-role"
+  count = var.logging_enabled
+  name  = "${var.env_name}-logging-scheduled-task-role"
 
   assume_role_policy = <<DOC
 {
@@ -21,8 +21,8 @@ DOC
 }
 
 resource "aws_iam_role_policy" "logging_scheduled_task_policy" {
-  count = var.logging-enabled
-  name  = "${var.Env-Name}-logging-scheduled-task-policy"
+  count = var.logging_enabled
+  name  = "${var.env_name}-logging-scheduled-task-policy"
   role  = aws_iam_role.logging_scheduled_task_role[0].id
 
   policy = <<DOC
@@ -57,8 +57,8 @@ DOC
 }
 
 resource "aws_cloudwatch_event_target" "logging_daily_session_deletion" {
-  count     = var.logging-enabled
-  target_id = "${var.Env-Name}-logging-daily-session-deletion"
+  count     = var.logging_enabled
+  target_id = "${var.env_name}-logging-daily-session-deletion"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_session_deletion_event[0].name
   role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
@@ -70,10 +70,10 @@ resource "aws_cloudwatch_event_target" "logging_daily_session_deletion" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -96,8 +96,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "gdpr_set_user_last_login" {
-  count     = var.logging-enabled
-  target_id = "${var.Env-Name}-gdpr-user-set-last-login"
+  count     = var.logging_enabled
+  target_id = "${var.env_name}-gdpr-user-set-last-login"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_gdpr_set_user_last_login[0].name
   role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
@@ -109,10 +109,10 @@ resource "aws_cloudwatch_event_target" "gdpr_set_user_last_login" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -135,8 +135,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "hourly_request_statistics" {
-  count     = var.logging-enabled
-  target_id = "${var.Env-Name}-publish-hourly-request-statistics"
+  count     = var.logging_enabled
+  target_id = "${var.env_name}-publish-hourly-request-statistics"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.hourly_request_statistics_event[0].name
   role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
@@ -148,10 +148,10 @@ resource "aws_cloudwatch_event_target" "hourly_request_statistics" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -175,8 +175,8 @@ EOF
 
 # new metrics
 resource "aws_cloudwatch_event_target" "publish_monthly_metrics_logging" {
-  count     = var.logging-enabled
-  target_id = "${var.Env-Name}-logging-monthly-metrics"
+  count     = var.logging_enabled
+  target_id = "${var.env_name}-logging-monthly-metrics"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.monthly_metrics_logging_event[0].name
   role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
@@ -188,10 +188,10 @@ resource "aws_cloudwatch_event_target" "publish_monthly_metrics_logging" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -214,8 +214,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "publish_weekly_metrics_logging" {
-  count     = var.logging-enabled
-  target_id = "${var.Env-Name}-logging-weekly-metrics"
+  count     = var.logging_enabled
+  target_id = "${var.env_name}-logging-weekly-metrics"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.weekly_metrics_logging_event[0].name
   role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
@@ -227,10 +227,10 @@ resource "aws_cloudwatch_event_target" "publish_weekly_metrics_logging" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -253,8 +253,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "publish_daily_metrics_logging" {
-  count     = var.logging-enabled
-  target_id = "${var.Env-Name}-logging-daily-metrics"
+  count     = var.logging_enabled
+  target_id = "${var.env_name}-logging-daily-metrics"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_metrics_logging_event[0].name
   role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
@@ -266,10 +266,10 @@ resource "aws_cloudwatch_event_target" "publish_daily_metrics_logging" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -292,8 +292,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "publish_monthly_metrics_to_elasticsearch" {
-  count     = var.logging-enabled
-  target_id = "${var.Env-Name}-logging-monthly-metrics-to-elasticsearch"
+  count     = var.logging_enabled
+  target_id = "${var.env_name}-logging-monthly-metrics-to-elasticsearch"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.monthly_metrics_logging_event[0].name
   role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
@@ -305,10 +305,10 @@ resource "aws_cloudwatch_event_target" "publish_monthly_metrics_to_elasticsearch
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -331,8 +331,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "publish_weekly_metrics_to_elasticsearch" {
-  count     = var.logging-enabled
-  target_id = "${var.Env-Name}-logging-weekly-metrics-to-elasticsearch"
+  count     = var.logging_enabled
+  target_id = "${var.env_name}-logging-weekly-metrics-to-elasticsearch"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.weekly_metrics_logging_event[0].name
   role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
@@ -344,10 +344,10 @@ resource "aws_cloudwatch_event_target" "publish_weekly_metrics_to_elasticsearch"
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -370,8 +370,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "publish_daily_metrics_to_elasticsearch" {
-  count     = var.logging-enabled
-  target_id = "${var.Env-Name}-logging-daily-metrics-to-elasticsearch"
+  count     = var.logging_enabled
+  target_id = "${var.env_name}-logging-daily-metrics-to-elasticsearch"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_metrics_logging_event[0].name
   role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
@@ -383,10 +383,10 @@ resource "aws_cloudwatch_event_target" "publish_daily_metrics_to_elasticsearch" 
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -409,8 +409,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "publish_metrics_to_data_bucket" {
-  count     = var.logging-enabled
-  target_id = "${var.Env-Name}-logging-publish-metrics-to-data-bucket"
+  count     = var.logging_enabled
+  target_id = "${var.env_name}-logging-publish-metrics-to-data-bucket"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.weekly_metrics_logging_event[0].name
   role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
@@ -422,10 +422,10 @@ resource "aws_cloudwatch_event_target" "publish_metrics_to_data_bucket" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -439,7 +439,7 @@ resource "aws_cloudwatch_event_target" "publish_metrics_to_data_bucket" {
   "containerOverrides": [
     {
       "name": "logging",
-      "command": ["bundle", "exec", "rake", "sync_s3_to_data_bucket[${var.metrics-bucket-name}, ${var.export-data-bucket-name}]"]
+      "command": ["bundle", "exec", "rake", "sync_s3_to_data_bucket[${var.metrics_bucket_name}, ${var.export_data_bucket_name}]"]
     }
   ]
 }
@@ -448,8 +448,8 @@ EOF
 }
 
 resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
-  count                    = var.logging-enabled
-  family                   = "logging-api-scheduled-task-${var.Env-Name}"
+  count                    = var.logging_enabled
+  family                   = "logging-api-scheduled-task-${var.env_name}"
   task_role_arn            = aws_iam_role.logging_api_task_role[0].arn
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   requires_compatibilities = ["FARGATE"]
@@ -483,28 +483,28 @@ resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
       "environment": [
         {
           "name": "DB_NAME",
-          "value": "govwifi_${var.Env-Name}"
+          "value": "govwifi_${var.env_name}"
         },{
           "name": "DB_HOSTNAME",
-          "value": "${var.db-hostname}"
+          "value": "${var.db_hostname}"
         },{
           "name": "USER_DB_NAME",
           "value": "govwifi_${var.env}_users"
         },{
           "name": "USER_DB_HOSTNAME",
-          "value": "${var.user-db-hostname}"
+          "value": "${var.user_db_hostname}"
         },{
           "name": "RACK_ENV",
-          "value": "${var.rack-env}"
+          "value": "${var.rack_env}"
         },{
           "name": "SENTRY_CURRENT_ENV",
-          "value": "${var.sentry-current-env}"
+          "value": "${var.sentry_current_env}"
         },{
           "name": "SENTRY_DSN",
           "value": "${var.logging_sentry_dsn}"
         },{
           "name": "ENVIRONMENT_NAME",
-          "value": "${var.Env-Name}"
+          "value": "${var.env_name}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
           "value": "${var.admin_app_data_s3_bucket_name}"
@@ -513,7 +513,7 @@ resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
           "value": "ips-and-locations.json"
         },{
           "name": "S3_METRICS_BUCKET",
-          "value": "${var.metrics-bucket-name}"
+          "value": "${var.metrics_bucket_name}"
         }
       ],
       "secrets": [
@@ -537,7 +537,7 @@ resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.logging-docker-image}",
+      "image": "${var.logging_docker_image}",
       "command": null,
       "user": null,
       "dockerLabels": null,
@@ -545,8 +545,8 @@ resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "${aws_cloudwatch_log_group.logging_api_log_group[0].name}",
-          "awslogs-region": "${var.aws-region}",
-          "awslogs-stream-prefix": "${var.Env-Name}-logging-api-docker-logs"
+          "awslogs-region": "${var.aws_region}",
+          "awslogs-stream-prefix": "${var.env_name}-logging-api-docker-logs"
         }
       },
       "cpu": 0,
@@ -559,8 +559,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "sync_s3_to_elasticsearch" {
-  count     = var.logging-enabled
-  target_id = "${var.Env-Name}-sync-s3-to-elasticsearch"
+  count     = var.logging_enabled
+  target_id = "${var.env_name}-sync-s3-to-elasticsearch"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.sync_s3_to_elasticsearch_event[0].name
   role_arn  = aws_iam_role.logging_api_task_role[0].arn
@@ -572,10 +572,10 @@ resource "aws_cloudwatch_event_target" "sync_s3_to_elasticsearch" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )

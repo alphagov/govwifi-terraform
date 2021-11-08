@@ -1,10 +1,10 @@
 resource "aws_security_group" "api_in" {
   name        = "api-in"
   description = "Allow Inbound Traffic To API"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} API Traffic In"
+    Name = "${title(var.env_name)} API Traffic In"
   }
 
   ingress {
@@ -18,10 +18,10 @@ resource "aws_security_group" "api_in" {
 resource "aws_security_group" "api_out" {
   name        = "api-out"
   description = "Allow Outbound Traffic From the API"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} API Traffic Out"
+    Name = "${title(var.env_name)} API Traffic Out"
   }
 
   egress {

@@ -1,51 +1,51 @@
 variable "env" {
 }
 
-variable "Env-Name" {
+variable "env_name" {
 }
 
-variable "Env-Subdomain" {
+variable "env_subdomain" {
 }
 
-variable "route53-zone-id" {
+variable "route53_zone_id" {
 }
 
-variable "aws-region" {
+variable "aws_region" {
 }
 
-variable "aws-region-name" {
+variable "aws_region_name" {
 }
 
-variable "alarm-count" {
+variable "alarm_count" {
   default = 1
 }
 
-variable "event-rule-count" {
+variable "event_rule_count" {
   default = 1
 }
 
-variable "backend-instance-count" {
+variable "backend_instance_count" {
 }
 
-variable "authorisation-api-count" {
+variable "authorisation_api_count" {
   default = 3
 }
 
-variable "backend-elb-count" {
+variable "backend_elb_count" {
 }
 
-variable "aws-account-id" {
+variable "aws_account_id" {
 }
 
-variable "user-signup-enabled" {
+variable "user_signup_enabled" {
   default = 1
 }
 
-variable "logging-enabled" {
+variable "logging_enabled" {
   default = 1
 }
 
-variable "safe-restart-enabled" {
+variable "safe_restart_enabled" {
   default = 1
 }
 
@@ -53,22 +53,22 @@ variable "safe_restart_sentry_dsn" {
   default = ""
 }
 
-variable "user-db-hostname" {
+variable "user_db_hostname" {
 }
 
-variable "user-rr-hostname" {
+variable "user_rr_hostname" {
 }
 
-variable "db-hostname" {
+variable "db_hostname" {
 }
 
-variable "rack-env" {
+variable "rack_env" {
 }
 
-variable "sentry-current-env" {
+variable "sentry_current_env" {
 }
 
-variable "radius-server-ips" {
+variable "radius_server_ips" {
   type = list(string)
 }
 
@@ -83,11 +83,11 @@ variable "logging_sentry_dsn" {
   default = ""
 }
 
-variable "backend-sg-list" {
+variable "backend_sg_list" {
   type = list(string)
 }
 
-variable "devops-notifications-arn" {
+variable "devops_notifications_arn" {
 }
 
 variable "notification_arn" {
@@ -95,41 +95,41 @@ variable "notification_arn" {
   type        = string
 }
 
-variable "subnet-ids" {
+variable "subnet_ids" {
   type = list(string)
 }
 
-variable "auth-docker-image" {
+variable "auth_docker_image" {
 }
 
-variable "user-signup-docker-image" {
+variable "user_signup_docker_image" {
 }
 
-variable "logging-docker-image" {
+variable "logging_docker_image" {
 }
 
-variable "safe-restart-docker-image" {
+variable "safe_restart_docker_image" {
 }
 
-variable "backup-rds-to-s3-docker-image" {
+variable "backup_rds_to_s3_docker_image" {
 }
 
-variable "ecr-repository-count" {
+variable "ecr_repository_count" {
   default     = 0
   description = "Whether or not to create ECR repository"
 }
 
-variable "wordlist-bucket-count" {
+variable "wordlist_bucket_count" {
   default     = 0
   description = "Whether or not to create wordlist bucket"
 }
 
-variable "wordlist-file-path" {
+variable "wordlist_file_path" {
   default     = ""
   description = "The local path of the wordlist which gets uploaded to S3"
 }
 
-variable "vpc-id" {
+variable "vpc_id" {
 }
 
 variable "admin_app_data_s3_bucket_name" {
@@ -138,22 +138,22 @@ variable "admin_app_data_s3_bucket_name" {
   description = "Name of the admin S3 bucket"
 }
 
-variable "firetext-token" {
+variable "firetext_token" {
   type    = string
   default = ""
 }
 
-variable "user-signup-api-is-public" {
+variable "user_signup_api_is_public" {
   default = 0
 }
 
-variable "metrics-bucket-name" {
+variable "metrics_bucket_name" {
   type        = string
   default     = ""
   description = "Name of the S3 bucket to write metrics into"
 }
 
-variable "export-data-bucket-name" {
+variable "export_data_bucket_name" {
   type        = string
   default     = ""
   description = "Name of the bucket we use to export data to data.gov.uk"

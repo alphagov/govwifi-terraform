@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_event_target" "retrieve_notifications" {
-  count     = var.user-signup-enabled
-  target_id = "${var.Env-Name}-retrieve-notifications"
+  count     = var.user_signup_enabled
+  target_id = "${var.env_name}-retrieve-notifications"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.retrieve_notifications_event[0].name
   role_arn  = aws_iam_role.user_signup_scheduled_task_role[0].arn
@@ -12,10 +12,10 @@ resource "aws_cloudwatch_event_target" "retrieve_notifications" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id],
       )
@@ -38,8 +38,8 @@ EOF
 }
 
 resource "aws_iam_role" "user_signup_scheduled_task_role" {
-  count = var.user-signup-enabled
-  name  = "${var.Env-Name}-user-signup-scheduled-task-role"
+  count = var.user_signup_enabled
+  name  = "${var.env_name}-user-signup-scheduled-task-role"
 
   assume_role_policy = <<DOC
 {
@@ -60,8 +60,8 @@ DOC
 }
 
 resource "aws_iam_role_policy" "user_signup_scheduled_task_policy" {
-  count = var.user-signup-enabled
-  name  = "${var.Env-Name}-user-signup-scheduled-task-policy"
+  count = var.user_signup_enabled
+  name  = "${var.env_name}-user-signup-scheduled-task-policy"
   role  = aws_iam_role.user_signup_scheduled_task_role[0].id
 
   policy = <<DOC
@@ -96,8 +96,8 @@ DOC
 }
 
 resource "aws_cloudwatch_event_target" "user_signup_daily_user_deletion" {
-  count     = var.user-signup-enabled
-  target_id = "${var.Env-Name}-user-signup-daily-user-deletion"
+  count     = var.user_signup_enabled
+  target_id = "${var.env_name}-user-signup-daily-user-deletion"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.daily_user_deletion_event[0].name
   role_arn  = aws_iam_role.user_signup_scheduled_task_role[0].arn
@@ -109,10 +109,10 @@ resource "aws_cloudwatch_event_target" "user_signup_daily_user_deletion" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -135,8 +135,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "smoke_test_user_deletion" {
-  count     = var.user-signup-enabled
-  target_id = "${var.Env-Name}-smoke-test-user-deletion"
+  count     = var.user_signup_enabled
+  target_id = "${var.env_name}-smoke-test-user-deletion"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.smoke_test_user_deletion_event[0].name
   role_arn  = aws_iam_role.user_signup_scheduled_task_role[0].arn
@@ -148,10 +148,10 @@ resource "aws_cloudwatch_event_target" "smoke_test_user_deletion" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -174,8 +174,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "trim_sessions_database_table" {
-  count     = var.user-signup-enabled
-  target_id = "${var.Env-Name}-trim-sessions-database-table"
+  count     = var.user_signup_enabled
+  target_id = "${var.env_name}-trim-sessions-database-table"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.trim_sessions_database_table_event[0].name
   role_arn  = aws_iam_role.user_signup_scheduled_task_role[0].arn
@@ -187,10 +187,10 @@ resource "aws_cloudwatch_event_target" "trim_sessions_database_table" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -213,8 +213,8 @@ EOF
 }
 
 resource "aws_ecs_task_definition" "user_signup_api_scheduled_task" {
-  count                    = var.user-signup-enabled
-  family                   = "user-signup-api-scheduled-task-${var.Env-Name}"
+  count                    = var.user_signup_enabled
+  family                   = "user-signup-api-scheduled-task-${var.env_name}"
   task_role_arn            = aws_iam_role.user_signup_api_task_role[0].arn
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   requires_compatibilities = ["FARGATE"]
@@ -250,25 +250,25 @@ resource "aws_ecs_task_definition" "user_signup_api_scheduled_task" {
           "value": "govwifi_${var.env}_users"
         },{
           "name": "DB_HOSTNAME",
-          "value": "${var.user-db-hostname}"
+          "value": "${var.user_db_hostname}"
         },{
           "name": "RACK_ENV",
-          "value": "${var.rack-env}"
+          "value": "${var.rack_env}"
         },{
           "name": "SENTRY_CURRENT_ENV",
-          "value": "${var.sentry-current-env}"
+          "value": "${var.sentry_current_env}"
         },{
           "name": "SENTRY_DSN",
           "value": "${var.user_signup_sentry_dsn}"
         },{
           "name": "ENVIRONMENT_NAME",
-          "value": "${var.Env-Name}"
+          "value": "${var.env_name}"
         },{
           "name": "FIRETEXT_TOKEN",
-          "value": "${var.firetext-token}"
+          "value": "${var.firetext_token}"
         },{
           "name": "S3_METRICS_BUCKET",
-          "value": "${var.metrics-bucket-name}"
+          "value": "${var.metrics_bucket_name}"
         }
       ],
       "secrets": [
@@ -289,7 +289,7 @@ resource "aws_ecs_task_definition" "user_signup_api_scheduled_task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.user-signup-docker-image}",
+      "image": "${var.user_signup_docker_image}",
       "command": null,
       "user": null,
       "dockerLabels": null,
@@ -297,8 +297,8 @@ resource "aws_ecs_task_definition" "user_signup_api_scheduled_task" {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "${aws_cloudwatch_log_group.user_signup_api_log_group[0].name}",
-          "awslogs-region": "${var.aws-region}",
-          "awslogs-stream-prefix": "${var.Env-Name}-user-signup-api-docker-logs"
+          "awslogs-region": "${var.aws_region}",
+          "awslogs-stream-prefix": "${var.env_name}-user-signup-api-docker-logs"
         }
       },
       "cpu": 0,
@@ -311,8 +311,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "active_users_signup_surveys" {
-  count     = var.user-signup-enabled
-  target_id = "${var.Env-Name}-active-users-signup-surveys"
+  count     = var.user_signup_enabled
+  target_id = "${var.env_name}-active-users-signup-surveys"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.active_users_signup_survey_event[0].name
   role_arn  = aws_iam_role.user_signup_scheduled_task_role[0].arn
@@ -324,10 +324,10 @@ resource "aws_cloudwatch_event_target" "active_users_signup_surveys" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -350,8 +350,8 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "inactive_users_signup_surveys" {
-  count     = var.user-signup-enabled
-  target_id = "${var.Env-Name}-inactive-users-signup-surveys"
+  count     = var.user_signup_enabled
+  target_id = "${var.env_name}-inactive-users-signup-surveys"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.inactive_users_signup_survey_event[0].name
   role_arn  = aws_iam_role.user_signup_scheduled_task_role[0].arn
@@ -363,10 +363,10 @@ resource "aws_cloudwatch_event_target" "inactive_users_signup_surveys" {
     platform_version    = "1.3.0"
 
     network_configuration {
-      subnets = var.subnet-ids
+      subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend-sg-list,
+        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )

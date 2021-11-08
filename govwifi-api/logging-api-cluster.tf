@@ -1,18 +1,18 @@
 resource "aws_cloudwatch_log_group" "logging_api_log_group" {
-  count = var.logging-enabled
-  name  = "${var.Env-Name}-logging-api-docker-log-group"
+  count = var.logging_enabled
+  name  = "${var.env_name}-logging-api-docker-log-group"
 
   retention_in_days = 90
 }
 
 resource "aws_ecr_repository" "logging_api_ecr" {
-  count = var.ecr-repository-count
+  count = var.ecr_repository_count
   name  = "govwifi/logging-api"
 }
 
 resource "aws_ecs_task_definition" "logging_api_task" {
-  count                    = var.logging-enabled
-  family                   = "logging-api-task-${var.Env-Name}"
+  count                    = var.logging_enabled
+  family                   = "logging-api-task-${var.env_name}"
   task_role_arn            = aws_iam_role.logging_api_task_role[0].arn
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
@@ -45,28 +45,28 @@ resource "aws_ecs_task_definition" "logging_api_task" {
       "environment": [
         {
           "name": "DB_NAME",
-          "value": "govwifi_${var.Env-Name}"
+          "value": "govwifi_${var.env_name}"
         },{
           "name": "DB_HOSTNAME",
-          "value": "${var.db-hostname}"
+          "value": "${var.db_hostname}"
         },{
           "name": "USER_DB_NAME",
           "value": "govwifi_${var.env}_users"
         },{
           "name": "USER_DB_HOSTNAME",
-          "value": "${var.user-db-hostname}"
+          "value": "${var.user_db_hostname}"
         },{
           "name": "RACK_ENV",
-          "value": "${var.rack-env}"
+          "value": "${var.rack_env}"
         },{
           "name": "SENTRY_CURRENT_ENV",
-          "value": "${var.sentry-current-env}"
+          "value": "${var.sentry_current_env}"
         },{
           "name": "SENTRY_DSN",
           "value": "${var.logging_sentry_dsn}"
         },{
           "name": "ENVIRONMENT_NAME",
-          "value": "${var.Env-Name}"
+          "value": "${var.env_name}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
           "value": "${var.admin_app_data_s3_bucket_name}"
@@ -96,7 +96,7 @@ resource "aws_ecs_task_definition" "logging_api_task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.logging-docker-image}",
+      "image": "${var.logging_docker_image}",
       "command": null,
       "user": null,
       "dockerLabels": null,
@@ -104,8 +104,8 @@ resource "aws_ecs_task_definition" "logging_api_task" {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "${aws_cloudwatch_log_group.logging_api_log_group[0].name}",
-          "awslogs-region": "${var.aws-region}",
-          "awslogs-stream-prefix": "${var.Env-Name}-logging-api-docker-logs"
+          "awslogs-region": "${var.aws_region}",
+          "awslogs-stream-prefix": "${var.env_name}-logging-api-docker-logs"
         }
       },
       "cpu": 0,
@@ -118,22 +118,22 @@ EOF
 }
 
 resource "aws_ecs_service" "logging_api_service" {
-  count            = var.logging-enabled
-  name             = "logging-api-service-${var.Env-Name}"
+  count            = var.logging_enabled
+  name             = "logging-api-service-${var.env_name}"
   cluster          = aws_ecs_cluster.api_cluster.id
   task_definition  = aws_ecs_task_definition.logging_api_task[0].arn
-  desired_count    = var.backend-instance-count
+  desired_count    = var.backend_instance_count
   launch_type      = "FARGATE"
   platform_version = "1.3.0"
 
   network_configuration {
     security_groups = concat(
-      var.backend-sg-list,
+      var.backend_sg_list,
       [aws_security_group.api_in.id],
       [aws_security_group.api_out.id]
     )
 
-    subnets          = var.subnet-ids
+    subnets          = var.subnet_ids
     assign_public_ip = true
   }
 
@@ -149,16 +149,16 @@ resource "aws_ecs_service" "logging_api_service" {
 }
 
 resource "aws_alb_target_group" "logging_api_tg" {
-  count       = var.logging-enabled
+  count       = var.logging_enabled
   depends_on  = [aws_lb.api_alb]
-  name        = "logging-api-${var.Env-Name}"
+  name        = "logging-api-${var.env_name}"
   port        = "8080"
   protocol    = "HTTP"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
   target_type = "ip"
 
   tags = {
-    Name = "logging-api-tg-${var.Env-Name}"
+    Name = "logging-api-tg-${var.env_name}"
   }
 
   health_check {
@@ -171,7 +171,7 @@ resource "aws_alb_target_group" "logging_api_tg" {
 }
 
 resource "aws_alb_listener_rule" "logging_api_lr" {
-  count        = var.logging-enabled
+  count        = var.logging_enabled
   depends_on   = [aws_alb_target_group.logging_api_tg]
   listener_arn = aws_alb_listener.alb_listener.arn
   priority     = 3
@@ -189,8 +189,8 @@ resource "aws_alb_listener_rule" "logging_api_lr" {
 }
 
 resource "aws_iam_role" "logging_api_task_role" {
-  count = var.logging-enabled
-  name  = "${var.Env-Name}-logging-api-task-role"
+  count = var.logging_enabled
+  name  = "${var.env_name}-logging-api-task-role"
 
   assume_role_policy = <<EOF
 {
@@ -211,8 +211,8 @@ EOF
 }
 
 resource "aws_iam_role_policy" "logging_api_task_policy" {
-  count      = var.logging-enabled
-  name       = "${var.Env-Name}-logging-api-task-policy"
+  count      = var.logging_enabled
+  name       = "${var.env_name}-logging-api-task-policy"
   role       = aws_iam_role.logging_api_task_role[0].id
   depends_on = [aws_iam_role.logging_api_task_role]
 
@@ -235,10 +235,10 @@ resource "aws_iam_role_policy" "logging_api_task_policy" {
         "s3:PutObject"
       ],
       "Resource": [
-        "arn:aws:s3:::${var.metrics-bucket-name}",
-        "arn:aws:s3:::${var.metrics-bucket-name}/*",
-        "arn:aws:s3:::${var.export-data-bucket-name}",
-        "arn:aws:s3:::${var.export-data-bucket-name}/*"
+        "arn:aws:s3:::${var.metrics_bucket_name}",
+        "arn:aws:s3:::${var.metrics_bucket_name}/*",
+        "arn:aws:s3:::${var.export_data_bucket_name}",
+        "arn:aws:s3:::${var.export_data_bucket_name}/*"
       ]
     }
   ]

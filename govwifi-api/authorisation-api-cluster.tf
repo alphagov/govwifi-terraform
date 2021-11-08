@@ -1,16 +1,16 @@
 resource "aws_cloudwatch_log_group" "authorisation_api_log_group" {
-  name = "${var.Env-Name}-authorisation-api-docker-log-group"
+  name = "${var.env_name}-authorisation-api-docker-log-group"
 
   retention_in_days = 90
 }
 
 resource "aws_ecr_repository" "authorisation_api_ecr" {
-  count = var.ecr-repository-count
+  count = var.ecr_repository_count
   name  = "govwifi/authorisation-api"
 }
 
 resource "aws_ecs_task_definition" "authorisation_api_task" {
-  family                   = "authorisation-api-task-${var.Env-Name}"
+  family                   = "authorisation-api-task-${var.env_name}"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
   memory                   = 512
@@ -45,19 +45,19 @@ resource "aws_ecs_task_definition" "authorisation_api_task" {
           "value": "govwifi_${var.env}_users"
         },{
           "name": "DB_HOSTNAME",
-          "value": "${var.user-rr-hostname}"
+          "value": "${var.user_rr_hostname}"
         },{
           "name": "RACK_ENV",
-          "value": "${var.rack-env}"
+          "value": "${var.rack_env}"
         },{
           "name": "SENTRY_CURRENT_ENV",
-          "value": "${var.sentry-current-env}"
+          "value": "${var.sentry_current_env}"
         },{
           "name": "SENTRY_DSN",
           "value": "${var.authentication_sentry_dsn}"
         },{
           "name": "ENVIRONMENT_NAME",
-          "value": "${var.Env-Name}"
+          "value": "${var.env_name}"
         }
       ],"secrets": [
         {
@@ -71,7 +71,7 @@ resource "aws_ecs_task_definition" "authorisation_api_task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.auth-docker-image}",
+      "image": "${var.auth_docker_image}",
       "command": null,
       "user": null,
       "dockerLabels": null,
@@ -79,8 +79,8 @@ resource "aws_ecs_task_definition" "authorisation_api_task" {
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "${aws_cloudwatch_log_group.authorisation_api_log_group.name}",
-          "awslogs-region": "${var.aws-region}",
-          "awslogs-stream-prefix": "${var.Env-Name}-authorisation-api-docker-logs"
+          "awslogs-region": "${var.aws_region}",
+          "awslogs-stream-prefix": "${var.env_name}-authorisation-api-docker-logs"
         }
       },
       "cpu": 0,
@@ -93,21 +93,21 @@ EOF
 }
 
 resource "aws_ecs_service" "authorisation_api_service" {
-  name             = "authorisation-api-service-${var.Env-Name}"
+  name             = "authorisation-api-service-${var.env_name}"
   cluster          = aws_ecs_cluster.api_cluster.id
   task_definition  = aws_ecs_task_definition.authorisation_api_task.arn
-  desired_count    = var.authorisation-api-count
+  desired_count    = var.authorisation_api_count
   launch_type      = "FARGATE"
   platform_version = "1.3.0"
 
   network_configuration {
     security_groups = concat(
-      var.backend-sg-list,
+      var.backend_sg_list,
       [aws_security_group.api_in.id],
       [aws_security_group.api_out.id],
     )
 
-    subnets          = var.subnet-ids
+    subnets          = var.subnet_ids
     assign_public_ip = true
   }
 
@@ -137,14 +137,14 @@ resource "aws_alb_listener_rule" "static" {
 
 resource "aws_alb_target_group" "alb_target_group" {
   depends_on  = [aws_lb.api_alb]
-  name        = "api-lb-tg-${var.Env-Name}"
+  name        = "api-lb-tg-${var.env_name}"
   port        = "8080"
   protocol    = "HTTP"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
   target_type = "ip"
 
   tags = {
-    Name = "api-alb-tg-${var.Env-Name}"
+    Name = "api-alb-tg-${var.env_name}"
   }
 
   health_check {

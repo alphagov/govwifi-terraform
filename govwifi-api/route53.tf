@@ -1,7 +1,7 @@
 resource "aws_route53_record" "elb" {
-  count   = var.backend-elb-count
-  zone_id = var.route53-zone-id
-  name    = "api-elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+  count   = var.backend_elb_count
+  zone_id = var.route53_zone_id
+  name    = "api-elb.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk"
   type    = "A"
 
   alias {
@@ -12,11 +12,11 @@ resource "aws_route53_record" "elb" {
 }
 
 resource "aws_route53_record" "elb_global" {
-  count          = var.backend-elb-count
-  zone_id        = var.route53-zone-id
-  name           = "api-elb.${var.Env-Subdomain}.service.gov.uk"
+  count          = var.backend_elb_count
+  zone_id        = var.route53_zone_id
+  name           = "api-elb.${var.env_subdomain}.service.gov.uk"
   type           = "A"
-  set_identifier = var.aws-region
+  set_identifier = var.aws_region
 
   alias {
     name                   = aws_route53_record.elb[0].name
@@ -25,24 +25,24 @@ resource "aws_route53_record" "elb_global" {
   }
 
   latency_routing_policy {
-    region = var.aws-region
+    region = var.aws_region
   }
 }
 
 resource "aws_route53_record" "elb_global_cert_validation" {
-  count   = var.backend-elb-count
+  count   = var.backend_elb_count
   name    = one(aws_acm_certificate.api_elb_global[0].domain_validation_options).resource_record_name
   type    = one(aws_acm_certificate.api_elb_global[0].domain_validation_options).resource_record_type
-  zone_id = var.route53-zone-id
+  zone_id = var.route53_zone_id
   records = [one(aws_acm_certificate.api_elb_global[0].domain_validation_options).resource_record_value]
   ttl     = 60
 }
 
 resource "aws_route53_record" "elb_regional_cert_validation" {
-  count   = var.backend-elb-count
+  count   = var.backend_elb_count
   name    = one(aws_acm_certificate.api_elb_regional[0].domain_validation_options).resource_record_name
   type    = one(aws_acm_certificate.api_elb_regional[0].domain_validation_options).resource_record_type
-  zone_id = var.route53-zone-id
+  zone_id = var.route53_zone_id
   records = [one(aws_acm_certificate.api_elb_regional[0].domain_validation_options).resource_record_value]
   ttl     = 60
 }

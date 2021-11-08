@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_metric_alarm" "logging_ecs_cpu_alarm_high" {
-  count               = var.alarm-count
-  alarm_name          = "${var.Env-Name}-logging-ecs-cpu-alarm-high"
+  count               = var.alarm_count
+  alarm_name          = "${var.env_name}-logging-ecs-cpu-alarm-high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
@@ -24,8 +24,8 @@ resource "aws_cloudwatch_metric_alarm" "logging_ecs_cpu_alarm_high" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "logging_ecs_cpu_alarm_low" {
-  count               = var.alarm-count
-  alarm_name          = "${var.Env-Name}-downscale-logging-ecs-cpu-low-alarm"
+  count               = var.alarm_count
+  alarm_name          = "${var.env_name}-downscale-logging-ecs-cpu-low-alarm"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "2"
   metric_name         = "CPUUtilization"

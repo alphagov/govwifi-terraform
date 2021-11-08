@@ -1,7 +1,7 @@
 resource "aws_route53_record" "user_signup_api_regional" {
-  count   = var.user-signup-enabled
-  zone_id = var.route53-zone-id
-  name    = "user-signup-api.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
+  count   = var.user_signup_enabled
+  zone_id = var.route53_zone_id
+  name    = "user-signup-api.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk"
   type    = "A"
 
   alias {
@@ -12,11 +12,11 @@ resource "aws_route53_record" "user_signup_api_regional" {
 }
 
 resource "aws_route53_record" "user_signup_api_global" {
-  count          = var.user-signup-enabled
-  zone_id        = var.route53-zone-id
-  name           = "user-signup-api.${var.Env-Subdomain}.service.gov.uk"
+  count          = var.user_signup_enabled
+  zone_id        = var.route53_zone_id
+  name           = "user-signup-api.${var.env_subdomain}.service.gov.uk"
   type           = "A"
-  set_identifier = var.aws-region
+  set_identifier = var.aws_region
 
   alias {
     name                   = aws_route53_record.user_signup_api_regional[0].name
@@ -25,24 +25,24 @@ resource "aws_route53_record" "user_signup_api_global" {
   }
 
   latency_routing_policy {
-    region = var.aws-region
+    region = var.aws_region
   }
 }
 
 resource "aws_route53_record" "user_signup_api_regional_verification" {
-  count   = var.user-signup-enabled
+  count   = var.user_signup_enabled
   name    = one(aws_acm_certificate.user_signup_api_regional[0].domain_validation_options).resource_record_name
   type    = one(aws_acm_certificate.user_signup_api_regional[0].domain_validation_options).resource_record_type
-  zone_id = var.route53-zone-id
+  zone_id = var.route53_zone_id
   records = [one(aws_acm_certificate.user_signup_api_regional[0].domain_validation_options).resource_record_value]
   ttl     = 60
 }
 
 resource "aws_route53_record" "user_signup_api_global_verification" {
-  count   = var.user-signup-enabled
+  count   = var.user_signup_enabled
   name    = one(aws_acm_certificate.user_signup_api_global[0].domain_validation_options).resource_record_name
   type    = one(aws_acm_certificate.user_signup_api_global[0].domain_validation_options).resource_record_type
-  zone_id = var.route53-zone-id
+  zone_id = var.route53_zone_id
   records = [one(aws_acm_certificate.user_signup_api_global[0].domain_validation_options).resource_record_value]
   ttl     = 60
 }

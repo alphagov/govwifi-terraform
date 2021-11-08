@@ -249,50 +249,50 @@ module "api" {
 
   source                    = "../../govwifi-api"
   env                       = "staging"
-  Env-Name                  = "staging"
-  Env-Subdomain             = var.Env-Subdomain
+  env_name                  = "staging"
+  env_subdomain             = var.Env-Subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  backend-elb-count      = 1
-  backend-instance-count = 2
-  aws-account-id         = local.aws_account_id
-  aws-region-name        = var.aws-region-name
-  aws-region             = var.aws-region
-  route53-zone-id        = local.route53_zone_id
-  vpc-id                 = module.backend.backend-vpc-id
+  backend_elb_count      = 1
+  backend_instance_count = 2
+  aws_account_id         = local.aws_account_id
+  aws_region_name        = var.aws-region-name
+  aws_region             = var.aws-region
+  route53_zone_id        = local.route53_zone_id
+  vpc_id                 = module.backend.backend-vpc-id
 
-  user-signup-enabled  = 0
-  logging-enabled      = 0
-  alarm-count          = 0
-  safe-restart-enabled = 0
-  event-rule-count     = 0
+  user_signup_enabled  = 0
+  logging_enabled      = 0
+  alarm_count          = 0
+  safe_restart_enabled = 0
+  event_rule_count     = 0
 
-  devops-notifications-arn = module.notifications.topic-arn
+  devops_notifications_arn = module.notifications.topic-arn
   notification_arn         = module.notifications.topic-arn
 
-  auth-docker-image             = format("%s/authorisation-api:staging", local.docker_image_path)
-  user-signup-docker-image      = ""
-  logging-docker-image          = ""
-  safe-restart-docker-image     = ""
-  backup-rds-to-s3-docker-image = ""
+  auth_docker_image             = format("%s/authorisation-api:staging", local.docker_image_path)
+  user_signup_docker_image      = ""
+  logging_docker_image          = ""
+  safe_restart_docker_image     = ""
+  backup_rds_to_s3_docker_image = ""
 
-  db-hostname = ""
+  db_hostname = ""
 
-  user-db-hostname = ""
-  user-rr-hostname = var.user-rr-hostname
+  user_db_hostname = ""
+  user_rr_hostname = var.user-rr-hostname
 
-  rack-env                  = "staging"
-  sentry-current-env        = "secondary-staging"
-  radius-server-ips         = local.frontend_radius_ips
+  rack_env                  = "staging"
+  sentry_current_env        = "secondary-staging"
+  radius_server_ips         = local.frontend_radius_ips
   authentication_sentry_dsn = var.auth_sentry_dsn
   safe_restart_sentry_dsn   = ""
-  subnet-ids                = module.backend.backend-subnet-ids
+  subnet_ids                = module.backend.backend-subnet-ids
   backup_mysql_rds          = false
   rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
 
   admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
 
-  backend-sg-list = [
+  backend_sg_list = [
     module.backend.be-admin-in,
   ]
 

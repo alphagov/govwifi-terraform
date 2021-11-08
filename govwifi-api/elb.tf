@@ -1,8 +1,8 @@
 resource "aws_lb" "api_alb" {
-  name     = "api-alb-${var.Env-Name}"
+  name     = "api-alb-${var.env_name}"
   internal = false
-  count    = var.backend-elb-count
-  subnets  = var.subnet-ids
+  count    = var.backend_elb_count
+  subnets  = var.subnet_ids
 
   security_groups = [
     aws_security_group.api_alb_in.id,
@@ -12,7 +12,7 @@ resource "aws_lb" "api_alb" {
   load_balancer_type = "application"
 
   tags = {
-    Name = "api-alb-${var.Env-Name}"
+    Name = "api-alb-${var.env_name}"
   }
 }
 
@@ -30,7 +30,7 @@ resource "aws_alb_listener" "alb_listener" {
 }
 
 resource "aws_lb_listener_certificate" "api_elb_global" {
-  count           = var.backend-elb-count
+  count           = var.backend_elb_count
   listener_arn    = aws_alb_listener.alb_listener.arn
   certificate_arn = aws_acm_certificate.api_elb_global[0].arn
 
@@ -40,27 +40,27 @@ resource "aws_lb_listener_certificate" "api_elb_global" {
 resource "aws_security_group" "api_alb_in" {
   name        = "loadbalancer-in"
   description = "Allow Inbound Traffic To The ALB"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} ALB Traffic In"
+    Name = "${title(var.env_name)} ALB Traffic In"
   }
 
   ingress {
     from_port   = 8443
     to_port     = 8443
     protocol    = "tcp"
-    cidr_blocks = [for ip in var.radius-server-ips : "${ip}/32"]
+    cidr_blocks = [for ip in var.radius_server_ips : "${ip}/32"]
   }
 }
 
 resource "aws_security_group" "api_alb_out" {
   name        = "loadbalancer-out"
   description = "Allow Outbound Traffic To The ALB"
-  vpc_id      = var.vpc-id
+  vpc_id      = var.vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} ALB Traffic Out"
+    Name = "${title(var.env_name)} ALB Traffic Out"
   }
 
   egress {
