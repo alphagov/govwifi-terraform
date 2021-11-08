@@ -440,6 +440,6 @@ module "govwifi_datasync" {
   }
   source = "../../govwifi-datasync"
 
-  aws-region = var.aws-region
-  rack-env   = "staging"
+  aws_region = var.aws-region
+  rack_env   = "staging"
 }
