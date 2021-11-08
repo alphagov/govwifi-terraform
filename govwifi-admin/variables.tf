@@ -1,53 +1,53 @@
-variable "Env-Name" {
+variable "env_name" {
   description = "E.g. staging"
 }
 
-variable "Env-Subdomain" {
+variable "env_subdomain" {
   description = "E.g. staging.wifi"
 }
 
-variable "aws-region" {
+variable "aws_region" {
   description = "E.g. eu-west-2"
 }
 
-variable "aws-region-name" {
+variable "aws_region_name" {
   description = "E.g. London"
 }
 
-variable "subnet-ids" {
+variable "subnet_ids" {
   description = "List of AWS subnet IDs to place the EC2 instances and ELB into"
   type        = list(string)
 }
 
-variable "ecr-repository-count" {
+variable "ecr_repository_count" {
   description = "Whether or not to create ECR repository"
   default     = 0
 }
 
-variable "rack-env" {
+variable "rack_env" {
   description = "E.g. staging"
 }
 
-variable "sentry-current-env" {
+variable "sentry_current_env" {
   description = "The environment that Sentry will log errors to: e.g. staging"
 }
 
-variable "vpc-id" {
+variable "vpc_id" {
   description = "VPC ID used for placing the ALB into"
 }
 
-variable "instance-count" {
+variable "instance_count" {
   description = "Number of EC2 hosts and ECS containers to be running"
 }
 
-variable "admin-docker-image" {
+variable "admin_docker_image" {
   description = "Docker image URL pointing to the admin platform application"
 }
 
-variable "critical-notifications-arn" {
+variable "critical_notifications_arn" {
 }
 
-variable "capacity-notifications-arn" {
+variable "capacity_notifications_arn" {
 }
 
 variable "notification_arn" {
@@ -55,28 +55,28 @@ variable "notification_arn" {
   type        = string
 }
 
-variable "db-backup-retention-days" {
+variable "db_backup_retention_days" {
 }
 
-variable "db-encrypt-at-rest" {
+variable "db_encrypt_at_rest" {
 }
 
-variable "db-instance-type" {
+variable "db_instance_type" {
 }
 
-variable "db-monitoring-interval" {
+variable "db_monitoring_interval" {
 }
 
-variable "db-storage-gb" {
+variable "db_storage_gb" {
 }
 
-variable "db-maintenance-window" {
+variable "db_maintenance_window" {
 }
 
-variable "db-backup-window" {
+variable "db_backup_window" {
 }
 
-variable "rds-monitoring-role" {
+variable "rds_monitoring_role" {
 }
 
 variable "london_radius_ip_addresses" {
@@ -87,31 +87,31 @@ variable "dublin_radius_ip_addresses" {
   type = list(string)
 }
 
-variable "sentry-dsn" {
+variable "sentry_dsn" {
 }
 
-variable "logging-api-search-url" {
+variable "logging_api_search_url" {
 }
 
-variable "rr-db-host" {
+variable "rr_db_host" {
 }
 
-variable "rr-db-name" {
+variable "rr_db_name" {
 }
 
-variable "user-db-host" {
+variable "user_db_host" {
 }
 
-variable "user-db-name" {
+variable "user_db_name" {
 }
 
-variable "zendesk-api-endpoint" {
+variable "zendesk_api_endpoint" {
 }
 
 variable "zendesk_api_user" {
 }
 
-variable "public-google-api-key" {
+variable "public_google_api_key" {
 }
 
 variable "bastion_server_ip" {

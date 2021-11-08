@@ -1,3 +1,3 @@
 locals {
-  frontend_metrics_namespace = "${var.Env-Name}-frontend"
+  frontend_metrics_namespace = "${var.env_name}-frontend"
 }

@@ -1,9 +1,9 @@
-variable "Env-Subdomain" {
+variable "env_subdomain" {
 }
 
-variable "route53-zone-id" {
+variable "route53_zone_id" {
 }
 
-variable "status-page-domain" {
+variable "status_page_domain" {
 }
 

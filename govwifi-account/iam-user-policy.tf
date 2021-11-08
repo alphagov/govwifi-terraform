@@ -78,7 +78,7 @@ resource "aws_iam_user_policy" "backup_s3_read_buckets_user_policy" {
         "kms:Decrypt"
       ],
       "Resource": [
-        "arn:aws:kms:eu-west-2:${var.aws-account-id}:key/*",
+        "arn:aws:kms:eu-west-2:${var.aws_account_id}:key/*",
         "arn:aws:s3:::govwifi-staging-london-mysql-backup-data/*",
         "arn:aws:s3:::govwifi-wifi-london-mysql-backup-data/*"
       ]

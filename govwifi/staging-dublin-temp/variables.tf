@@ -1,20 +1,20 @@
-variable "Env-Name" {
+variable "env_name" {
   type    = string
   default = "staging-temp"
 }
 
-variable "product-name" {
+variable "product_name" {
   type    = string
   default = "GovWifi"
 }
 
-variable "Env-Subdomain" {
+variable "env_subdomain" {
   type        = string
   default     = "staging-temp.wifi"
   description = "Environment-specific subdomain to use under the service domain."
 }
 
-variable "ssh-key-name" {
+variable "ssh_key_name" {
   type    = string
   default = "staging-temp-ec2-instances-20200717"
 }
@@ -22,28 +22,28 @@ variable "ssh-key-name" {
 # Entries below should probably stay as is for different environments
 #####################################################################
 
-variable "aws-region" {
+variable "aws_region" {
   type    = string
   default = "eu-west-1"
 }
 
-variable "aws-region-name" {
+variable "aws_region_name" {
   type    = string
   default = "Dublin"
 }
 
-variable "backup-region-name" {
+variable "backup_region_name" {
   type    = string
   default = "London"
 }
 
-variable "zone-count" {
+variable "zone_count" {
   type    = string
   default = "3"
 }
 
 # Zone names and subnets MUST be static, can not be constructed from vars.
-variable "zone-names" {
+variable "zone_names" {
   type = map(any)
 
   default = {
@@ -59,19 +59,19 @@ variable "ami" {
   description = "AMI id to launch, must be in the region specified by the region variable"
 }
 
-variable "london-api-base-url" {
+variable "london_api_base_url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
   default     = "https://api-elb.london.staging-temp.wifi.service.gov.uk:8443"
 }
 
-variable "dublin-api-base-url" {
+variable "dublin_api_base_url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
   default     = "https://api-elb.dublin.staging-temp.wifi.service.gov.uk:8443"
 }
 
-variable "user-rr-hostname" {
+variable "user_rr_hostname" {
   type        = string
   description = "User details read replica hostname"
   default     = "users-rr.dublin.staging-temp.wifi.service.gov.uk"

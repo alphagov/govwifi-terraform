@@ -1,48 +1,48 @@
-variable "Env-Name" {
+variable "env_name" {
   type    = string
   default = "staging-temp"
 }
 
-variable "product-name" {
+variable "product_name" {
   type    = string
   default = "GovWifi"
 }
 
-variable "Env-Subdomain" {
+variable "env_subdomain" {
   type        = string
   default     = "staging-temp.wifi"
   description = "Environment-specific subdomain to use under the service domain."
 }
 
-variable "ssh-key-name" {
+variable "ssh_key_name" {
   type    = string
   default = "staging-temp-ec2-instances-20200717"
 }
 
 # Entries below should probably stay as is for different environments
 #####################################################################
-variable "aws-region" {
+variable "aws_region" {
   type    = string
   default = "eu-west-2"
 }
 
-variable "aws-region-name" {
+variable "aws_region_name" {
   type    = string
   default = "London"
 }
 
-variable "backup-region-name" {
+variable "backup_region_name" {
   type    = string
   default = "Dublin"
 }
 
-variable "zone-count" {
+variable "zone_count" {
   type    = string
   default = "3"
 }
 
 # Zone names and subnets MUST be static, can not be constructed from vars.
-variable "zone-names" {
+variable "zone_names" {
   type = map(any)
 
   default = {
@@ -68,7 +68,7 @@ variable "safe_restart_sentry_dsn" {
   type = string
 }
 
-variable "public-google-api-key" {
+variable "public_google_api_key" {
   type    = string
   default = "xxxxxxxxxxxxxxxxxxxxx"
 }
@@ -85,13 +85,13 @@ variable "admin_sentry_dsn" {
   type = string
 }
 
-variable "user-db-hostname" {
+variable "user_db_hostname" {
   type        = string
   description = "User details database hostname"
   default     = "users-db.london.staging-temp.wifi.service.gov.uk"
 }
 
-variable "user-rr-hostname" {
+variable "user_rr_hostname" {
   type        = string
   description = "User details read replica hostname"
   default     = "users-rr.london.staging-temp.wifi.service.gov.uk"
@@ -112,7 +112,7 @@ variable "dublin_radius_ip_addresses" {
   description = "Frontend RADIUS server IP addresses - Dublin"
 }
 
-variable "london-api-base-url" {
+variable "london_api_base_url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
   default     = "https://api-elb.london.staging-temp.wifi.service.gov.uk:8443"

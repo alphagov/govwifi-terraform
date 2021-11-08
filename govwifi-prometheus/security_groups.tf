@@ -1,10 +1,10 @@
 resource "aws_security_group" "grafana_data_in" {
-  name        = "grafana-data-in-${var.Env-Name}"
+  name        = "grafana-data-in-${var.env_name}"
   description = "Allow Inbound Traffic from the Grafana instance to collect data"
-  vpc_id      = var.frontend-vpc-id
+  vpc_id      = var.frontend_vpc_id
 
   tags = {
-    Name = "${title(var.Env-Name)} Grafana Data Traffic In"
+    Name = "${title(var.env_name)} Grafana Data Traffic In"
   }
 
   ingress {

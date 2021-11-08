@@ -1,2 +1,2 @@
-variable "aws-account-id" {
+variable "aws_account_id" {
 }

@@ -1,10 +1,10 @@
 # The element() function used in subnets wraps around when the index is over the number of elements
 # eg. in the 4th iteration the value returned will be the 1st, if there are only 3 elements in the list.
 resource "aws_instance" "radius" {
-  count         = var.radius-instance-count
+  count         = var.radius_instance_count
   ami           = var.ami
   instance_type = "t2.medium"
-  key_name      = var.ssh-key-name
+  key_name      = var.ssh_key_name
   subnet_id     = element(aws_subnet.wifi_frontend_subnet.*.id, count.index)
 
   vpc_security_group_ids = [
@@ -16,7 +16,7 @@ resource "aws_instance" "radius" {
   ]
 
   iam_instance_profile = aws_iam_instance_profile.ecs_instance_profile.id
-  monitoring           = var.enable-detailed-monitoring
+  monitoring           = var.enable_detailed_monitoring
 
   user_data = <<DATA
 Content-Type: multipart/mixed; boundary="==BOUNDARY=="
@@ -165,8 +165,8 @@ DATA
 
 
   tags = {
-    Name = "${title(var.Env-Name)} Frontend Radius-${var.dns-numbering-base + count.index + 1}"
-    Env  = title(var.Env-Name)
+    Name = "${title(var.env_name)} Frontend Radius-${var.dns_numbering_base + count.index + 1}"
+    Env  = title(var.env_name)
   }
 
   lifecycle {
@@ -175,7 +175,7 @@ DATA
 }
 
 resource "aws_eip_association" "eip_assoc" {
-  count       = var.radius-instance-count
+  count       = var.radius_instance_count
   instance_id = element(aws_instance.radius.*.id, count.index)
-  public_ip   = element(var.elastic-ip-list, count.index)
+  public_ip   = element(var.elastic_ip_list, count.index)
 }

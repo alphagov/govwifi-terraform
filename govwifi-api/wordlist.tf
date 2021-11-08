@@ -1,10 +1,10 @@
 resource "aws_s3_bucket" "wordlist" {
-  bucket = var.is_production_aws_account ? "govwifi-wordlist" : "govwifi-${var.Env-Name}-wordlist"
-  count  = var.wordlist-bucket-count
+  bucket = var.is_production_aws_account ? "govwifi-wordlist" : "govwifi-${var.env_name}-wordlist"
+  count  = var.wordlist_bucket_count
   acl    = "private"
 
   tags = {
-    Name = var.is_production_aws_account ? "wordlist-bucket" : "wordlist-${var.Env-Name}-bucket"
+    Name = var.is_production_aws_account ? "wordlist-bucket" : "wordlist-${var.env_name}-bucket"
   }
 
   versioning {
@@ -14,8 +14,8 @@ resource "aws_s3_bucket" "wordlist" {
 
 resource "aws_s3_bucket_object" "wordlist" {
   bucket = aws_s3_bucket.wordlist[0].bucket
-  count  = var.wordlist-bucket-count
+  count  = var.wordlist_bucket_count
   key    = "wordlist-short"
-  source = var.wordlist-file-path
-  etag   = filemd5(var.wordlist-file-path)
+  source = var.wordlist_file_path
+  etag   = filemd5(var.wordlist_file_path)
 }

@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_metric_alarm" "auth_ecs_cpu_alarm_high" {
-  count               = var.alarm-count
-  alarm_name          = "${var.Env-Name}-auth-ecs-cpu-alarm-high"
+  count               = var.alarm_count
+  alarm_name          = "${var.env_name}-auth-ecs-cpu-alarm-high"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
@@ -18,15 +18,15 @@ resource "aws_cloudwatch_metric_alarm" "auth_ecs_cpu_alarm_high" {
 
   alarm_actions = [
     aws_appautoscaling_policy.ecs_policy_up.arn,
-    var.devops-notifications-arn,
+    var.devops_notifications_arn,
   ]
 
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "auth_ecs_cpu_alarm_low" {
-  count               = var.alarm-count
-  alarm_name          = "${var.Env-Name}-downscale-auth-ecs-cpu-low-alarm"
+  count               = var.alarm_count
+  alarm_name          = "${var.env_name}-downscale-auth-ecs-cpu-low-alarm"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "CPUUtilization"
@@ -51,7 +51,7 @@ resource "aws_cloudwatch_metric_alarm" "auth_ecs_cpu_alarm_low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "authentication_api_no_healthy_hosts" {
-  alarm_name          = "${var.Env-Name} authentication API no healthy hosts"
+  alarm_name          = "${var.env_name} authentication API no healthy hosts"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "HealthyHostCount"
@@ -73,9 +73,9 @@ resource "aws_cloudwatch_metric_alarm" "authentication_api_no_healthy_hosts" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_signup_api_no_healthy_hosts" {
-  count = var.user-signup-enabled
+  count = var.user_signup_enabled
 
-  alarm_name          = "${var.Env-Name} user signup API no healthy hosts"
+  alarm_name          = "${var.env_name} user signup API no healthy hosts"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "HealthyHostCount"

@@ -6,7 +6,7 @@ resource "aws_security_group" "fe_ecs_out" {
   vpc_id      = aws_vpc.wifi_frontend.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Frontend ECS out"
+    Name = "${title(var.env_name)} Frontend ECS out"
   }
 
   egress {
@@ -40,7 +40,7 @@ resource "aws_security_group" "fe_admin_in" {
   vpc_id      = aws_vpc.wifi_frontend.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Frontend Admin in"
+    Name = "${title(var.env_name)} Frontend Admin in"
   }
 
   ingress {
@@ -59,7 +59,7 @@ resource "aws_security_group" "fe_prometheus_in" {
   vpc_id      = aws_vpc.wifi_frontend.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Frontend Prometheus in"
+    Name = "${title(var.env_name)} Frontend Prometheus in"
   }
 
   ingress {
@@ -82,7 +82,7 @@ resource "aws_security_group" "fe_radius_out" {
   vpc_id      = aws_vpc.wifi_frontend.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Frontend RADIUS out"
+    Name = "${title(var.env_name)} Frontend RADIUS out"
   }
 
   # As the frontend servers need to talk across regions, we let this be open.
@@ -126,7 +126,7 @@ resource "aws_security_group" "fe_radius_in" {
   vpc_id      = aws_vpc.wifi_frontend.id
 
   tags = {
-    Name = "${title(var.Env-Name)} Frontend RADIUS in"
+    Name = "${title(var.env_name)} Frontend RADIUS in"
   }
 
   ingress {
@@ -167,7 +167,7 @@ resource "aws_security_group" "fe_radius_in" {
     to_port     = 9812
     protocol    = "tcp"
 
-    cidr_blocks = distinct(var.radius-CIDR-blocks)
+    cidr_blocks = distinct(var.radius_cidr_blocks)
   }
 }
 

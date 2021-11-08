@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_dashboard" "SLIs" {
-  dashboard_name = "SLIs-${var.Env-Name}"
+  dashboard_name = "SLIs-${var.env_name}"
 
   dashboard_body = <<EOF
 {
@@ -12,10 +12,10 @@ resource "aws_cloudwatch_dashboard" "SLIs" {
             "height": 3,
             "properties": {
                 "metrics": [
-                    [ "${var.Env-Name}-logging-api", "${var.Env-Name}-radius-access-accept-count", { "period": 300, "stat": "Sum", "label": "accept-count" } ],
-                    [ ".", "${var.Env-Name}-radius-access-reject-count", { "period": 300, "stat": "Sum", "label": "reject-count" } ],
-                    [ "${var.Env-Name}-authorisation-api", "${var.Env-Name}-response-status-ok-count", { "period": 300, "stat": "Sum", "label": "ok-count" } ],
-                    [ "${var.Env-Name}-logging-api", "${var.Env-Name}-response-status-no-content-count", { "period": 300, "stat": "Sum", "label": "no-content-count" } ]
+                    [ "${var.env_name}-logging-api", "${var.env_name}-radius-access-accept-count", { "period": 300, "stat": "Sum", "label": "accept-count" } ],
+                    [ ".", "${var.env_name}-radius-access-reject-count", { "period": 300, "stat": "Sum", "label": "reject-count" } ],
+                    [ "${var.env_name}-authorisation-api", "${var.env_name}-response-status-ok-count", { "period": 300, "stat": "Sum", "label": "ok-count" } ],
+                    [ "${var.env_name}-logging-api", "${var.env_name}-response-status-no-content-count", { "period": 300, "stat": "Sum", "label": "no-content-count" } ]
                 ],
                 "view": "timeSeries",
                 "stacked": false,
@@ -39,10 +39,10 @@ resource "aws_cloudwatch_dashboard" "SLIs" {
                     [ { "expression": "e1 / m3 * 100", "label": "access-ok", "id": "e2", "visible": false } ],
                     [ { "expression": "e1 / m4 * 100", "label": "access-no-content", "id": "e3", "visible": false } ],
                     [ { "expression": "AVG([(e1 / m3), (e1 / m4)]) * 100", "label": "percentile", "id": "e4" } ],
-                    [ "${var.Env-Name}-logging-api", "${var.Env-Name}-radius-access-accept-count", { "period": 604800, "stat": "Sum", "id": "m1", "label": "accept-count", "visible": false } ],
-                    [ ".", "${var.Env-Name}-radius-access-reject-count", { "period": 604800, "stat": "Sum", "id": "m2", "label": "reject-count", "visible": false } ],
-                    [ "${var.Env-Name}-authorisation-api", "${var.Env-Name}-response-status-ok-count", { "period": 604800, "stat": "Sum", "id": "m3", "label": "ok-count", "visible": false } ],
-                    [ "${var.Env-Name}-logging-api", "${var.Env-Name}-response-status-no-content-count", { "period": 604800, "stat": "Sum", "id": "m4", "label": "no-content-count", "visible": false } ]
+                    [ "${var.env_name}-logging-api", "${var.env_name}-radius-access-accept-count", { "period": 604800, "stat": "Sum", "id": "m1", "label": "accept-count", "visible": false } ],
+                    [ ".", "${var.env_name}-radius-access-reject-count", { "period": 604800, "stat": "Sum", "id": "m2", "label": "reject-count", "visible": false } ],
+                    [ "${var.env_name}-authorisation-api", "${var.env_name}-response-status-ok-count", { "period": 604800, "stat": "Sum", "id": "m3", "label": "ok-count", "visible": false } ],
+                    [ "${var.env_name}-logging-api", "${var.env_name}-response-status-no-content-count", { "period": 604800, "stat": "Sum", "id": "m4", "label": "no-content-count", "visible": false } ]
                 ],
                 "view": "singleValue",
                 "region": "eu-west-2",
@@ -58,8 +58,8 @@ resource "aws_cloudwatch_dashboard" "SLIs" {
             "height": 3,
             "properties": {
                 "metrics": [
-                    [ "${var.Env-Name}-user-signup-api", "${var.Env-Name}-notify-sms-success-count", { "id": "m1", "period": 300, "stat": "Sum", "label": "sms-success-count" } ],
-                    [ ".", "${var.Env-Name}-notify-sms-failed-count", { "id": "m2", "period": 300, "stat": "Sum", "label": "sms-failed-count" } ]
+                    [ "${var.env_name}-user-signup-api", "${var.env_name}-notify-sms-success-count", { "id": "m1", "period": 300, "stat": "Sum", "label": "sms-success-count" } ],
+                    [ ".", "${var.env_name}-notify-sms-failed-count", { "id": "m2", "period": 300, "stat": "Sum", "label": "sms-failed-count" } ]
                 ],
                 "view": "timeSeries",
                 "region": "eu-west-2",
@@ -81,8 +81,8 @@ resource "aws_cloudwatch_dashboard" "SLIs" {
                 "metrics": [
                     [ { "expression": "SUM(METRICS())", "label": "total", "id": "e1", "visible": false } ],
                     [ { "expression": "m1 / e1 * 100", "label": "percentile", "id": "e2" } ],
-                    [ "${var.Env-Name}-user-signup-api", "${var.Env-Name}-notify-sms-success-count", { "id": "m1", "visible": false, "period": 604800, "stat": "Sum", "label": "sms-success-count" } ],
-                    [ ".", "${var.Env-Name}-notify-sms-failed-count", { "id": "m2", "visible": false, "period": 604800, "stat": "Sum", "label": "sms-failed-count" } ]
+                    [ "${var.env_name}-user-signup-api", "${var.env_name}-notify-sms-success-count", { "id": "m1", "visible": false, "period": 604800, "stat": "Sum", "label": "sms-success-count" } ],
+                    [ ".", "${var.env_name}-notify-sms-failed-count", { "id": "m2", "visible": false, "period": 604800, "stat": "Sum", "label": "sms-failed-count" } ]
                 ],
                 "view": "singleValue",
                 "region": "eu-west-2",
@@ -98,8 +98,8 @@ resource "aws_cloudwatch_dashboard" "SLIs" {
             "height": 3,
             "properties": {
                 "metrics": [
-                    [ "${var.Env-Name}-user-signup-api", "${var.Env-Name}-notify-email-success-count", { "id": "m1", "period": 300, "stat": "Sum", "label": "email-success-count" } ],
-                    [ ".", "${var.Env-Name}-notify-email-failed-count", { "id": "m2", "period": 300, "stat": "Sum", "label": "email-failed-count" } ]
+                    [ "${var.env_name}-user-signup-api", "${var.env_name}-notify-email-success-count", { "id": "m1", "period": 300, "stat": "Sum", "label": "email-success-count" } ],
+                    [ ".", "${var.env_name}-notify-email-failed-count", { "id": "m2", "period": 300, "stat": "Sum", "label": "email-failed-count" } ]
                 ],
                 "view": "timeSeries",
                 "region": "eu-west-2",
@@ -121,8 +121,8 @@ resource "aws_cloudwatch_dashboard" "SLIs" {
                 "metrics": [
                     [ { "expression": "SUM(METRICS())", "label": "total", "id": "e1", "visible": false } ],
                     [ { "expression": "m1 / e1 * 100", "label": "percentile", "id": "e2" } ],
-                    [ "${var.Env-Name}-user-signup-api", "${var.Env-Name}-notify-email-success-count", { "id": "m1", "visible": false, "period": 604800, "stat": "Sum", "label": "email-success-count" } ],
-                    [ ".", "${var.Env-Name}-notify-email-failed-count", { "id": "m2", "visible": false, "period": 604800, "stat": "Sum", "label": "email-failed-count" } ]
+                    [ "${var.env_name}-user-signup-api", "${var.env_name}-notify-email-success-count", { "id": "m1", "visible": false, "period": 604800, "stat": "Sum", "label": "email-success-count" } ],
+                    [ ".", "${var.env_name}-notify-email-failed-count", { "id": "m2", "visible": false, "period": 604800, "stat": "Sum", "label": "email-failed-count" } ]
                 ],
                 "view": "singleValue",
                 "region": "eu-west-2",

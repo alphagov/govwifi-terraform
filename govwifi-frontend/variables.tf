@@ -1,77 +1,77 @@
-variable "Env-Name" {
+variable "env_name" {
 }
 
-variable "Env-Subdomain" {
+variable "env_subdomain" {
 }
 
-variable "route53-zone-id" {
+variable "route53_zone_id" {
 }
 
-variable "vpc-cidr-block" {
+variable "vpc_cidr_block" {
 }
 
-variable "aws-region" {
+variable "aws_region" {
 }
 
-variable "aws-region-name" {
+variable "aws_region_name" {
 }
 
-variable "zone-count" {
+variable "zone_count" {
 }
 
-variable "zone-names" {
+variable "zone_names" {
   type = map(string)
 }
 
-variable "zone-subnets" {
+variable "zone_subnets" {
   type = map(string)
 }
 
-variable "radius-instance-count" {
+variable "radius_instance_count" {
 }
 
-variable "frontend-docker-image" {
+variable "frontend_docker_image" {
 }
 
-variable "raddb-docker-image" {
+variable "raddb_docker_image" {
 }
 
 variable "ami" {
   description = "AMI id to launch, must be in the region specified by the region variable"
 }
 
-variable "ssh-key-name" {
+variable "ssh_key_name" {
 }
 
-variable "dns-numbering-base" {
+variable "dns_numbering_base" {
 }
 
-variable "logging-api-base-url" {
+variable "logging_api_base_url" {
 }
 
-variable "auth-api-base-url" {
+variable "auth_api_base_url" {
 }
 
-variable "elastic-ip-list" {
+variable "elastic_ip_list" {
   type = list(string)
 }
 
-variable "enable-detailed-monitoring" {
+variable "enable_detailed_monitoring" {
 }
 
-variable "radiusd-params" {
+variable "radiusd_params" {
   default = "-f"
 }
 
-variable "rack-env" {
+variable "rack_env" {
   default = ""
 }
 
-variable "sentry-current-env" {
+variable "sentry_current_env" {
   description = "The environment that Sentry will log errors to: e.g. staging"
 }
 
-variable "create-ecr" {
+variable "create_ecr" {
   description = "Whether or not to create ECR repository"
   default     = 0
 }
@@ -91,7 +91,7 @@ variable "admin_app_data_s3_bucket_name" {
   type = string
 }
 
-variable "radius-CIDR-blocks" {
+variable "radius_cidr_blocks" {
   description = "IP addresses for the London and Ireland Radius instances in CIDR block format"
   type        = list(string)
 }

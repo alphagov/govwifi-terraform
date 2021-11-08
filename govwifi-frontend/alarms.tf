@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
   provider = aws.us_east_1
-  count    = var.radius-instance-count
+  count    = var.radius_instance_count
   alarm_name = "${element(
     aws_route53_health_check.radius.*.reference_name,
     count.index,
@@ -34,7 +34,7 @@ resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
 #
 # resource "aws_cloudwatch_composite_alarm" "all_radius_servers_down" {
 #   provider = aws.us_east_1
-#   alarm_name = "${var.Env-Name} ${var.aws-region} All Radius servers down"
+#   alarm_name = "${var.env_name} ${var.aws_region} All Radius servers down"
 
 #   alarm_actions = [var.pagerduty_notification_arn]
 
@@ -43,7 +43,7 @@ resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
 
 resource "aws_cloudwatch_metric_alarm" "radius_latency" {
   provider = aws.us_east_1
-  count    = var.radius-instance-count
+  count    = var.radius_instance_count
   alarm_name = "${element(
     aws_route53_health_check.radius.*.reference_name,
     count.index,
@@ -68,7 +68,7 @@ resource "aws_cloudwatch_metric_alarm" "radius_latency" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "radius_cannot_connect_to_api" {
-  alarm_name          = "${var.Env-Name}-radius-cannot-connect-to-api"
+  alarm_name          = "${var.env_name}-radius-cannot-connect-to-api"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 0
   evaluation_periods  = 2

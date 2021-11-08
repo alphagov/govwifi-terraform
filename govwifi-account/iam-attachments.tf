@@ -1,11 +1,11 @@
 resource "aws_iam_group_policy_attachment" "GovWifi_Audit_policy_attachment_GovWifi_Audit" {
   group      = "GovWifi-Audit"
-  policy_arn = "arn:aws:iam::${var.aws-account-id}:policy/GovWifi-Audit"
+  policy_arn = "arn:aws:iam::${var.aws_account_id}:policy/GovWifi-Audit"
 }
 
 resource "aws_iam_group_policy_attachment" "LambdaUpdateFunctionCode_policy_attachment_GovWifi_Pipeline" {
   group      = "GovWifi-Pipeline"
-  policy_arn = "arn:aws:iam::${var.aws-account-id}:policy/LambdaUpdateFunctionCode"
+  policy_arn = "arn:aws:iam::${var.aws_account_id}:policy/LambdaUpdateFunctionCode"
 }
 
 resource "aws_iam_group_policy_attachment" "AmazonEC2ContainerServiceEventsRole_policy_attachment_GovWifi_Pipeline" {
@@ -20,11 +20,11 @@ resource "aws_iam_group_policy_attachment" "AmazonEC2ContainerRegistryPowerUser_
 
 resource "aws_iam_group_policy_attachment" "read_wordlist_policy_GovWifi_Pipeline" {
   group      = "GovWifi-Pipeline"
-  policy_arn = "arn:aws:iam::${var.aws-account-id}:policy/read-wordlist-policy"
+  policy_arn = "arn:aws:iam::${var.aws_account_id}:policy/read-wordlist-policy"
 }
 
 resource "aws_iam_group_policy_attachment" "can_restart_ecs_services_GovWifi_Pipeline" {
   group      = "GovWifi-Pipeline"
-  policy_arn = "arn:aws:iam::${var.aws-account-id}:policy/can-restart-ecs-services"
+  policy_arn = "arn:aws:iam::${var.aws_account_id}:policy/can-restart-ecs-services"
 }
 

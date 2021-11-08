@@ -1,7 +1,7 @@
-variable "rack-env" {
+variable "rack_env" {
   description = "E.g. staging"
 }
 
-variable "aws-region" {
+variable "aws_region" {
   description = "E.g. eu-west-2"
 }

@@ -4,11 +4,11 @@ module "tfstate" {
   }
 
   source             = "../../terraform-state"
-  product_name       = var.product-name
-  env_name           = var.Env-Name
+  product_name       = var.product_name
+  env_name           = var.env_name
   aws_account_id     = local.aws_account_id
-  aws_region_name    = var.aws-region-name
-  backup_region_name = var.backup-region-name
+  aws_region_name    = var.aws_region_name
+  backup_region_name = var.backup_region_name
 
   # TODO: separate module for accesslogs
   accesslogs_glacier_transition_days = 30
@@ -20,9 +20,9 @@ terraform {
 
   backend "s3" {
     # Interpolation is not allowed here.
-    #bucket = "${lower(var.product-name)}-${lower(var.Env-Name)}-${lower(var.aws-region-name)}-tfstate"
-    #key    = "${lower(var.aws-region-name)}-tfstate"
-    #region = "${var.aws-region}"
+    #bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate"
+    #key    = "${lower(var.aws_region_name)}-tfstate"
+    #region = "${var.aws_region}"
     bucket = "govwifi-wifi-dublin-tfstate"
 
     key    = "dublin-tfstate"
@@ -37,7 +37,7 @@ terraform {
 
 provider "aws" {
   alias  = "main"
-  region = var.aws-region
+  region = var.aws_region
 }
 
 provider "aws" {
@@ -64,11 +64,11 @@ module "govwifi_keys" {
 
   create_production_bastion_key = 1
 
-  govwifi-bastion-key-name = "govwifi-bastion-key-20210630"
-  govwifi-bastion-key-pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDY/Q676Tp5CTpKWVksMPztERDdjWOrYFgVckF9IHGI2wC38ckWFiqawsEZBILUyNZgL/lnOtheN1UZtuGmUUkPxgtPw+YD6gMDcebhSX4wh9GM3JjXAIy9+V/WagQ84Pz10yIp+PlyzcQMu+RVRVzWyTYZUdgMsDt0tFdcgMgUc7FkC252CgtSZHpLXhnukG5KG69CoTO+kuak/k3vX5jwWjIgfMGZwIAq+F9XSIMAwylCmmdE5MetKl0Wx4EI/fm8WqSZXj+yeFRv9mQTus906AnNieOgOrgt4D24/JuRU1JTlZ35iNbOKcwlOTDSlTQrm4FA1sCllphhD/RQVYpMp6EV3xape626xwkucCC2gYnakxTZFHUIeWfC5aHGrqMOMtXRfW0xs+D+vzo3MCWepdIebWR5KVhqkbNUKHBG9e8oJbTYUkoyBZjC7LtI4fgB3+blXyFVuQoAzjf+poPzdPBfCC9eiUJrEHoOljO9yMcdkBfyW3c/o8Sd9PgNufc= bastion@govwifi"
+  govwifi_bastion_key_name = "govwifi-bastion-key-20210630"
+  govwifi_bastion_key_pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDY/Q676Tp5CTpKWVksMPztERDdjWOrYFgVckF9IHGI2wC38ckWFiqawsEZBILUyNZgL/lnOtheN1UZtuGmUUkPxgtPw+YD6gMDcebhSX4wh9GM3JjXAIy9+V/WagQ84Pz10yIp+PlyzcQMu+RVRVzWyTYZUdgMsDt0tFdcgMgUc7FkC252CgtSZHpLXhnukG5KG69CoTO+kuak/k3vX5jwWjIgfMGZwIAq+F9XSIMAwylCmmdE5MetKl0Wx4EI/fm8WqSZXj+yeFRv9mQTus906AnNieOgOrgt4D24/JuRU1JTlZ35iNbOKcwlOTDSlTQrm4FA1sCllphhD/RQVYpMp6EV3xape626xwkucCC2gYnakxTZFHUIeWfC5aHGrqMOMtXRfW0xs+D+vzo3MCWepdIebWR5KVhqkbNUKHBG9e8oJbTYUkoyBZjC7LtI4fgB3+blXyFVuQoAzjf+poPzdPBfCC9eiUJrEHoOljO9yMcdkBfyW3c/o8Sd9PgNufc= bastion@govwifi"
 
-  govwifi-key-name     = var.ssh-key-name
-  govwifi-key-name-pub = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJmLa/tF941z6Dh/jiZCH6Mw/JoTXGkILim/bgDc3PSBKXFmBwkAFUVgnoOUWJDXvZWpuBJv+vUu+ZlmlszFM00BRXpb4ykRuJxWIjJiNzGlgXW69Satl2e9d37ZtLwlAdABgJyvj10QEiBtB1VS0DBRXK9J+CfwNPnwVnfppFGP86GoqE2Il86t+BB/VC//gKMTttIstyl2nqUwkK3Epq66+1ol3AelmUmBjPiyrmkwp+png9F4B86RqSNa/drfXmUGf1czE4+H+CXqOdje2bmnrwxLQ8GY3MYpz0zTVrB3T1IyXXF6dcdcF6ZId9B/10jMiTigvOeUvraFEf9fK7 govwifi@govwifi"
+  govwifi_key_name     = var.ssh_key_name
+  govwifi_key_name_pub = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJmLa/tF941z6Dh/jiZCH6Mw/JoTXGkILim/bgDc3PSBKXFmBwkAFUVgnoOUWJDXvZWpuBJv+vUu+ZlmlszFM00BRXpb4ykRuJxWIjJiNzGlgXW69Satl2e9d37ZtLwlAdABgJyvj10QEiBtB1VS0DBRXK9J+CfwNPnwVnfppFGP86GoqE2Il86t+BB/VC//gKMTttIstyl2nqUwkK3Epq66+1ol3AelmUmBjPiyrmkwp+png9F4B86RqSNa/drfXmUGf1czE4+H+CXqOdje2bmnrwxLQ8GY3MYpz0zTVrB3T1IyXXF6dcdcF6ZId9B/10jMiTigvOeUvraFEf9fK7 govwifi@govwifi"
 
 }
 
@@ -80,18 +80,18 @@ module "backend" {
 
   source                    = "../../govwifi-backend"
   env                       = "production"
-  env_name                  = var.Env-Name
-  env_subdomain             = var.Env-Subdomain
+  env_name                  = var.env_name
+  env_subdomain             = var.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
 
   # AWS VPC setup -----------------------------------------
-  aws_region      = var.aws-region
-  aws_region_name = var.aws-region-name
+  aws_region      = var.aws_region
+  aws_region_name = var.aws_region_name
   route53_zone_id = local.route53_zone_id
   vpc_cidr_block  = "10.42.0.0/16"
-  zone_count      = var.zone-count
-  zone_names      = var.zone-names
+  zone_count      = var.zone_count
+  zone_names      = var.zone_names
 
   zone_subnets = {
     zone0 = "10.42.1.0/24"
@@ -127,8 +127,8 @@ module "backend" {
   rr_instance_type      = "db.m3.medium"
   rr_storage_gb         = 1000
 
-  critical_notifications_arn = module.critical-notifications.topic-arn
-  capacity_notifications_arn = module.capacity-notifications.topic-arn
+  critical_notifications_arn = module.critical-notifications.topic_arn
+  capacity_notifications_arn = module.capacity-notifications.topic_arn
   user_replica_source_db     = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-production-user-db"
 
   # Seconds. Set to zero to disable monitoring
@@ -136,9 +136,9 @@ module "backend" {
 
   # Passed to application
   user_db_instance_type = "db.t2.medium"
-  user_db_hostname      = var.user-db-hostname
+  user_db_hostname      = var.user_db_hostname
   user_db_storage_gb    = 20
-  user_rr_hostname      = var.user-rr-hostname
+  user_rr_hostname      = var.user_rr_hostname
   prometheus_ip_london  = var.prometheus_ip_london
   prometheus_ip_ireland = var.prometheus_ip_ireland
   grafana_ip            = var.grafana_ip
@@ -157,19 +157,19 @@ module "emails" {
   source = "../../govwifi-emails"
 
   is_production_aws_account = var.is_production_aws_account
-  product_name              = var.product-name
-  env_name                  = var.Env-Name
-  env_subdomain             = var.Env-Subdomain
+  product_name              = var.product_name
+  env_name                  = var.env_name
+  env_subdomain             = var.env_subdomain
   aws_account_id            = local.aws_account_id
   route53_zone_id           = local.route53_zone_id
-  aws_region                = var.aws-region
-  aws_region_name           = var.aws-region-name
+  aws_region                = var.aws_region
+  aws_region_name           = var.aws_region_name
   mail_exchange_server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
-  devops_notifications_arn  = module.devops-notifications.topic-arn
+  devops_notifications_arn  = module.devops-notifications.topic_arn
 
-  #sns-endpoint             = "https://elb.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk/sns/"
-  sns_endpoint                       = "https://elb.london.${var.Env-Subdomain}.service.gov.uk/sns/"
-  user_signup_notifications_endpoint = "https://user-signup-api.${var.Env-Subdomain}.service.gov.uk:8443/user-signup/email-notification"
+  #sns-endpoint             = "https://elb.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk/sns/"
+  sns_endpoint                       = "https://elb.london.${var.env_subdomain}.service.gov.uk/sns/"
+  user_signup_notifications_endpoint = "https://user-signup-api.${var.env_subdomain}.service.gov.uk:8443/user-signup/email-notification"
 }
 
 # Global ====================================================================
@@ -189,9 +189,9 @@ module "dns" {
   }
 
   source             = "../../global-dns"
-  Env-Subdomain      = var.Env-Subdomain
-  route53-zone-id    = local.route53_zone_id
-  status-page-domain = "bl6klm1cjshh.stspg-customer.com"
+  env_subdomain      = var.env_subdomain
+  route53_zone_id    = local.route53_zone_id
+  status_page_domain = "bl6klm1cjshh.stspg-customer.com"
 }
 
 # Frontend ====================================================================
@@ -202,56 +202,56 @@ module "frontend" {
   }
 
   source                    = "../../govwifi-frontend"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
+  env_name                  = var.env_name
+  env_subdomain             = var.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
 
   # AWS VPC setup -----------------------------------------
-  aws-region         = var.aws-region
-  aws-region-name    = var.aws-region-name
-  route53-zone-id    = local.route53_zone_id
-  vpc-cidr-block     = "10.43.0.0/16"
-  zone-count         = var.zone-count
-  zone-names         = var.zone-names
-  rack-env           = "production"
-  sentry-current-env = "production"
+  aws_region         = var.aws_region
+  aws_region_name    = var.aws_region_name
+  route53_zone_id    = local.route53_zone_id
+  vpc_cidr_block     = "10.43.0.0/16"
+  zone_count         = var.zone_count
+  zone_names         = var.zone_names
+  rack_env           = "production"
+  sentry_current_env = "production"
 
 
-  zone-subnets = {
+  zone_subnets = {
     zone0 = "10.43.1.0/24"
     zone1 = "10.43.2.0/24"
     zone2 = "10.43.3.0/24"
   }
 
   # Instance-specific setup -------------------------------
-  radius-instance-count      = 3
-  enable-detailed-monitoring = true
+  radius_instance_count      = 3
+  enable_detailed_monitoring = true
 
   # eg. dns records are generated for radius(N).x.service.gov.uk
   # where N = this base + 1 + server#
-  dns-numbering-base = 0
+  dns_numbering_base = 0
 
-  elastic-ip-list       = local.frontend_region_ips
+  elastic_ip_list       = local.frontend_region_ips
   ami                   = var.ami
-  ssh-key-name          = var.ssh-key-name
-  frontend-docker-image = format("%s/frontend:production", local.docker_image_path)
-  raddb-docker-image    = format("%s/raddb:production", local.docker_image_path)
+  ssh_key_name          = var.ssh_key_name
+  frontend_docker_image = format("%s/frontend:production", local.docker_image_path)
+  raddb_docker_image    = format("%s/raddb:production", local.docker_image_path)
 
   admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
 
-  logging-api-base-url = var.london-api-base-url
-  auth-api-base-url    = var.dublin-api-base-url
+  logging_api_base_url = var.london_api_base_url
+  auth_api_base_url    = var.dublin_api_base_url
 
-  critical_notifications_arn           = module.critical-notifications.topic-arn
-  us_east_1_critical_notifications_arn = module.route53-critical-notifications.topic-arn
+  critical_notifications_arn           = module.critical-notifications.topic_arn
+  us_east_1_critical_notifications_arn = module.route53-critical-notifications.topic_arn
 
   bastion_server_ip = var.bastion_server_ip
 
   prometheus_ip_london  = var.prometheus_ip_london
   prometheus_ip_ireland = var.prometheus_ip_ireland
 
-  radius-CIDR-blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
+  radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 
   use_env_prefix = var.use_env_prefix
 }
@@ -263,48 +263,48 @@ module "api" {
 
   env                       = "production"
   source                    = "../../govwifi-api"
-  Env-Name                  = var.Env-Name
-  Env-Subdomain             = var.Env-Subdomain
+  env_name                  = var.env_name
+  env_subdomain             = var.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
-  backend-elb-count       = 1
-  backend-instance-count  = 2
-  authorisation-api-count = 3
-  aws-account-id          = local.aws_account_id
-  aws-region-name         = lower(var.aws-region-name)
-  aws-region              = var.aws-region
-  route53-zone-id         = local.route53_zone_id
-  vpc-id                  = module.backend.backend-vpc-id
+  backend_elb_count       = 1
+  backend_instance_count  = 2
+  authorisation_api_count = 3
+  aws_account_id          = local.aws_account_id
+  aws_region_name         = lower(var.aws_region_name)
+  aws_region              = var.aws_region
+  route53_zone_id         = local.route53_zone_id
+  vpc_id                  = module.backend.backend_vpc_id
 
-  user-signup-enabled  = 0
-  logging-enabled      = 0
-  alarm-count          = 0
-  safe-restart-enabled = 0
-  event-rule-count     = 0
+  user_signup_enabled  = 0
+  logging_enabled      = 0
+  alarm_count          = 0
+  safe_restart_enabled = 0
+  event_rule_count     = 0
 
-  devops-notifications-arn = module.devops-notifications.topic-arn
+  devops_notifications_arn = module.devops-notifications.topic_arn
   notification_arn         = module.region_pagerduty.topic_arn
 
-  auth-docker-image             = format("%s/authorisation-api:production", local.docker_image_path)
-  logging-docker-image          = format("%s/logging-api:production", local.docker_image_path)
-  safe-restart-docker-image     = format("%s/safe-restarter:production", local.docker_image_path)
-  backup-rds-to-s3-docker-image = ""
+  auth_docker_image             = format("%s/authorisation-api:production", local.docker_image_path)
+  logging_docker_image          = format("%s/logging-api:production", local.docker_image_path)
+  safe_restart_docker_image     = format("%s/safe-restarter:production", local.docker_image_path)
+  backup_rds_to_s3_docker_image = ""
 
-  db-hostname               = "db.${lower(var.aws-region-name)}.${var.Env-Subdomain}.service.gov.uk"
-  rack-env                  = "production"
-  sentry-current-env        = "production"
-  radius-server-ips         = local.frontend_radius_ips
+  db_hostname               = "db.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk"
+  rack_env                  = "production"
+  sentry_current_env        = "production"
+  radius_server_ips         = local.frontend_radius_ips
   authentication_sentry_dsn = var.auth_sentry_dsn
   safe_restart_sentry_dsn   = var.safe_restart_sentry_dsn
-  user-signup-docker-image  = ""
-  subnet-ids                = module.backend.backend-subnet-ids
-  user-db-hostname          = var.user-db-hostname
-  user-rr-hostname          = var.user-rr-hostname
+  user_signup_docker_image  = ""
+  subnet_ids                = module.backend.backend_subnet_ids
+  user_db_hostname          = var.user_db_hostname
+  user_rr_hostname          = var.user_rr_hostname
   backup_mysql_rds          = false
   rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
 
-  backend-sg-list = [
-    module.backend.be-admin-in,
+  backend_sg_list = [
+    module.backend.be_admin_in,
   ]
 
   use_env_prefix = var.use_env_prefix
@@ -384,17 +384,17 @@ module "govwifi_prometheus" {
   }
 
   source     = "../../govwifi-prometheus"
-  Env-Name   = var.Env-Name
-  aws-region = var.aws-region
+  env_name   = var.env_name
+  aws_region = var.aws_region
 
-  ssh-key-name = var.ssh-key-name
+  ssh_key_name = var.ssh_key_name
 
-  frontend-vpc-id = module.frontend.frontend-vpc-id
+  frontend_vpc_id = module.frontend.frontend_vpc_id
 
-  fe-admin-in   = module.frontend.fe-admin-in
-  fe-ecs-out    = module.frontend.fe-ecs-out
-  fe-radius-in  = module.frontend.fe-radius-in
-  fe-radius-out = module.frontend.fe-radius-out
+  fe_admin_in   = module.frontend.fe_admin_in
+  fe_ecs_out    = module.frontend.fe_ecs_out
+  fe_radius_in  = module.frontend.fe_radius_in
+  fe_radius_out = module.frontend.fe_radius_out
 
   london_radius_ip_addresses = var.london_radius_ip_addresses
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses

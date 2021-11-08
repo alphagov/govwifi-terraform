@@ -1,5 +1,5 @@
 resource "aws_iam_role" "ecsTaskExecutionRole" {
-  name               = "ecsTaskExecutionRole-${var.rack-env}-${var.aws-region-name}"
+  name               = "ecsTaskExecutionRole-${var.rack_env}-${var.aws_region_name}"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
@@ -20,7 +20,7 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
 }
 
 resource "aws_iam_role_policy" "secrets_manager_policy" {
-  name   = "${var.aws-region-name}-api-cluster-access-secrets-manager-${var.Env-Name}"
+  name   = "${var.aws_region_name}-api-cluster-access-secrets-manager-${var.env_name}"
   role   = aws_iam_role.ecsTaskExecutionRole.id
   policy = data.aws_iam_policy_document.secrets_manager_policy.json
 }
