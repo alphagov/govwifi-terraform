@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_dashboard" "SLIs" {
+resource "aws_cloudwatch_dashboard" "service_level_indicators" {
   dashboard_name = "SLIs-${var.env_name}"
 
   dashboard_body = <<EOF
