@@ -307,7 +307,7 @@ module "notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-staging-temp"
+  topic_name = "govwifi-staging"
   emails     = [var.notification_email]
 }
 
@@ -318,6 +318,6 @@ module "route53-notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-staging-dublin-temp"
+  topic_name = "govwifi-staging-dublin"
   emails     = [var.notification_email]
 }
