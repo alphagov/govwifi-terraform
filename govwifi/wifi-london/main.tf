@@ -413,12 +413,12 @@ module "govwifi_prometheus" {
 
   ssh_key_name = var.ssh_key_name
 
-  frontend_vpc_id = module.frontend.frontend-vpc-id
+  frontend_vpc_id = module.frontend.frontend_vpc_id
 
-  fe_admin_in   = module.frontend.fe-admin-in
-  fe_ecs_out    = module.frontend.fe-ecs-out
-  fe_radius_in  = module.frontend.fe-radius-in
-  fe_radius_out = module.frontend.fe-radius-out
+  fe_admin_in   = module.frontend.fe_admin_in
+  fe_ecs_out    = module.frontend.fe_ecs_out
+  fe_radius_in  = module.frontend.fe_radius_in
+  fe_radius_out = module.frontend.fe_radius_out
 
   london_radius_ip_addresses = var.london_radius_ip_addresses
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
