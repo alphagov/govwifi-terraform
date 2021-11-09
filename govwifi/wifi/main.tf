@@ -4,8 +4,8 @@ module "tfstate" {
   }
 
   source             = "../../terraform-state"
-  product_name       = var.product_name
-  env_name           = var.env_name
+  product_name       = local.product_name
+  env_name           = local.env_name
   aws_account_id     = local.aws_account_id
   aws_region_name    = var.aws_region_name
   backup_region_name = var.backup_region_name
@@ -20,7 +20,7 @@ terraform {
 
   backend "s3" {
     # Interpolation is not allowed here.
-    #bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate"
+    #bucket = "${lower(local.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate"
     #key    = "${lower(var.aws_region_name)}-tfstate"
     #region = "${var.aws_region}"
     bucket = "govwifi-wifi-dublin-tfstate"
@@ -80,8 +80,8 @@ module "backend" {
 
   source                    = "../../govwifi-backend"
   env                       = "production"
-  env_name                  = var.env_name
-  env_subdomain             = var.env_subdomain
+  env_name                  = local.env_name
+  env_subdomain             = local.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
 
@@ -157,9 +157,9 @@ module "emails" {
   source = "../../govwifi-emails"
 
   is_production_aws_account = var.is_production_aws_account
-  product_name              = var.product_name
-  env_name                  = var.env_name
-  env_subdomain             = var.env_subdomain
+  product_name              = local.product_name
+  env_name                  = local.env_name
+  env_subdomain             = local.env_subdomain
   aws_account_id            = local.aws_account_id
   route53_zone_id           = local.route53_zone_id
   aws_region                = var.aws_region
@@ -168,8 +168,8 @@ module "emails" {
   devops_notifications_arn  = module.devops-notifications.topic_arn
 
   #sns-endpoint             = "https://elb.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk/sns/"
-  sns_endpoint                       = "https://elb.london.${var.env_subdomain}.service.gov.uk/sns/"
-  user_signup_notifications_endpoint = "https://user-signup-api.${var.env_subdomain}.service.gov.uk:8443/user-signup/email-notification"
+  sns_endpoint                       = "https://elb.london.${local.env_subdomain}.service.gov.uk/sns/"
+  user_signup_notifications_endpoint = "https://user-signup-api.${local.env_subdomain}.service.gov.uk:8443/user-signup/email-notification"
 }
 
 # Global ====================================================================
@@ -189,7 +189,7 @@ module "dns" {
   }
 
   source             = "../../global-dns"
-  env_subdomain      = var.env_subdomain
+  env_subdomain      = local.env_subdomain
   route53_zone_id    = local.route53_zone_id
   status_page_domain = "bl6klm1cjshh.stspg-customer.com"
 }
@@ -202,8 +202,8 @@ module "frontend" {
   }
 
   source                    = "../../govwifi-frontend"
-  env_name                  = var.env_name
-  env_subdomain             = var.env_subdomain
+  env_name                  = local.env_name
+  env_subdomain             = local.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
 
@@ -263,8 +263,8 @@ module "api" {
 
   env                       = "production"
   source                    = "../../govwifi-api"
-  env_name                  = var.env_name
-  env_subdomain             = var.env_subdomain
+  env_name                  = local.env_name
+  env_subdomain             = local.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
   backend_elb_count       = 1
@@ -290,7 +290,7 @@ module "api" {
   safe_restart_docker_image     = format("%s/safe-restarter:production", local.docker_image_path)
   backup_rds_to_s3_docker_image = ""
 
-  db_hostname               = "db.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk"
+  db_hostname               = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
   rack_env                  = "production"
   sentry_current_env        = "production"
   radius_server_ips         = local.frontend_radius_ips
@@ -384,7 +384,7 @@ module "govwifi_prometheus" {
   }
 
   source   = "../../govwifi-prometheus"
-  env_name = var.env_name
+  env_name = local.env_name
 
   ssh_key_name = var.ssh_key_name
 
