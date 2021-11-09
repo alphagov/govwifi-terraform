@@ -229,7 +229,7 @@ module "govwifi_admin" {
   db_backup_window         = "03:42-04:42"
   db_monitoring_interval   = 60
 
-  rr_db_host = "db.london.staging-temp.wifi.service.gov.uk"
+  rr_db_host = "db.london.staging.wifi.service.gov.uk"
   rr_db_name = "govwifi_staging"
 
   user_db_host = var.user_db_hostname
@@ -329,7 +329,7 @@ module "notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-staging-temp"
+  topic_name = "govwifi-staging"
   emails     = [var.notification_email]
 }
 
@@ -340,7 +340,7 @@ module "route53-notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-staging-london-temp"
+  topic_name = "govwifi-staging-london"
   emails     = [var.notification_email]
 }
 
