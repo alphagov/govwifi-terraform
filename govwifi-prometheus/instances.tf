@@ -78,7 +78,7 @@ resource "aws_instance" "prometheus_instance" {
 resource "aws_ebs_volume" "prometheus_ebs" {
   size              = 40
   encrypted         = true
-  availability_zone = "${var.aws_region}a"
+  availability_zone = aws_instance.prometheus_instance.availability_zone
 
   tags = {
     Name = "${var.env_name} Prometheus volume"
