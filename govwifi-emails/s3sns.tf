@@ -1,6 +1,6 @@
 # S3 bucket to store the emails
 resource "aws_s3_bucket" "emailbucket" {
-  bucket        = var.is_production_aws_account ? "${var.env_name}-emailbucket" : "${var.env_subdomain}-emailbucket"
+  bucket        = "${var.env_name}-emailbucket"
   force_destroy = true
 
   policy = <<EOF
@@ -13,7 +13,7 @@ resource "aws_s3_bucket" "emailbucket" {
           "Service": "ses.amazonaws.com"
         },
         "Action": "s3:PutObject",
-        "Resource": "arn:aws:s3:::${var.is_production_aws_account ? var.env_name : var.env_subdomain}-emailbucket/*",
+        "Resource": "arn:aws:s3:::${var.env_name}-emailbucket/*",
         "Condition": {
           "StringEquals": {
             "aws:Referer": "${var.aws_account_id}"
@@ -26,14 +26,14 @@ resource "aws_s3_bucket" "emailbucket" {
                 "Service": "s3.amazonaws.com"
             },
             "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::${var.is_production_aws_account ? var.env_name : var.env_subdomain}-emailbucket/*",
+            "Resource": "arn:aws:s3:::${var.env_name}-emailbucket/*",
             "Condition": {
                 "StringEquals": {
                     "aws:SourceAccount": "${var.aws_account_id}",
                     "s3:x-amz-acl": "bucket-owner-full-control"
                 },
                 "ArnLike": {
-                    "aws:SourceArn": "arn:aws:s3:::${var.is_production_aws_account ? var.env_name : var.env_subdomain}-emailbucket"
+                    "aws:SourceArn": "arn:aws:s3:::${var.env_name}-emailbucket"
                 }
             }
     }]
