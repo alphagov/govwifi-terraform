@@ -387,6 +387,16 @@ module "region_pagerduty" {
   sns_topic_subscription_https_endpoint = local.pagerduty_https_endpoint
 }
 
+module "us_east_1_pagerduty" {
+  providers = {
+    aws = aws.us_east_1
+  }
+
+  source = "../../govwifi-pagerduty-integration"
+
+  sns_topic_subscription_https_endpoint = local.pagerduty_https_endpoint
+}
+
 module "govwifi_dashboard" {
   providers = {
     aws = aws.main
