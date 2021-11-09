@@ -1,6 +1,6 @@
 variable "env_name" {
   type    = string
-  default = "staging"
+  default = "staging-temp"
 }
 
 variable "product_name" {
@@ -10,7 +10,7 @@ variable "product_name" {
 
 variable "env_subdomain" {
   type        = string
-  default     = "staging.wifi"
+  default     = "staging-temp.wifi"
   description = "Environment-specific subdomain to use under the service domain."
 }
 
@@ -62,19 +62,19 @@ variable "ami" {
 variable "london_api_base_url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
-  default     = "https://api-elb.london.staging.wifi.service.gov.uk:8443"
+  default     = "https://api-elb.london.staging-temp.wifi.service.gov.uk:8443"
 }
 
 variable "dublin_api_base_url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
-  default     = "https://api-elb.dublin.staging.wifi.service.gov.uk:8443"
+  default     = "https://api-elb.dublin.staging-temp.wifi.service.gov.uk:8443"
 }
 
 variable "user_rr_hostname" {
   type        = string
   description = "User details read replica hostname"
-  default     = "users-rr.dublin.staging.wifi.service.gov.uk"
+  default     = "users-rr.dublin.staging-temp.wifi.service.gov.uk"
 }
 
 variable "auth_sentry_dsn" {
