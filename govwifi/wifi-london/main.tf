@@ -124,8 +124,8 @@ module "backend" {
   db_replica_count           = 1
   rr_instance_type           = "db.m4.xlarge"
   rr_storage_gb              = 1000
-  critical_notifications_arn = module.critical-notifications.topic_arn
-  capacity_notifications_arn = module.capacity-notifications.topic_arn
+  critical_notifications_arn = module.critical_notifications.topic_arn
+  capacity_notifications_arn = module.capacity_notifications.topic_arn
   user_replica_source_db     = "wifi-production-user-db"
 
   # Seconds. Set to zero to disable monitoring
@@ -198,8 +198,8 @@ module "frontend" {
   logging_api_base_url = var.london_api_base_url
   auth_api_base_url    = var.london_api_base_url
 
-  critical_notifications_arn            = module.critical-notifications.topic_arn
-  us_east_1_critical_notifications_arn  = module.route53-critical-notifications.topic_arn
+  critical_notifications_arn            = module.critical_notifications.topic_arn
+  us_east_1_critical_notifications_arn  = module.route53_critical_notifications.topic_arn
   us_east_1_pagerduty_notifications_arn = module.us_east_1_pagerduty.topic_arn
 
   bastion_server_ip = var.bastion_server_ip
@@ -248,8 +248,8 @@ module "govwifi_admin" {
   user_db_host = var.user_rr_hostname
   user_db_name = "govwifi_production_users"
 
-  critical_notifications_arn = module.critical-notifications.topic_arn
-  capacity_notifications_arn = module.capacity-notifications.topic_arn
+  critical_notifications_arn = module.critical_notifications.topic_arn
+  capacity_notifications_arn = module.capacity_notifications.topic_arn
   notification_arn           = module.region_pagerduty.topic_arn
 
   rds_monitoring_role = module.backend.rds_monitoring_role
@@ -288,7 +288,7 @@ module "api" {
   route53_zone_id        = local.route53_zone_id
   vpc_id                 = module.backend.backend_vpc_id
 
-  devops_notifications_arn = module.devops-notifications.topic_arn
+  devops_notifications_arn = module.devops_notifications.topic_arn
   notification_arn         = module.region_pagerduty.topic_arn
 
   auth_docker_image             = format("%s/authorisation-api:production", local.docker_image_path)
@@ -330,7 +330,7 @@ module "api" {
   low_cpu_threshold = 10
 }
 
-module "critical-notifications" {
+module "critical_notifications" {
   providers = {
     aws = aws.main
   }
@@ -341,7 +341,7 @@ module "critical-notifications" {
   emails     = [var.critical_notification_email]
 }
 
-module "capacity-notifications" {
+module "capacity_notifications" {
   providers = {
     aws = aws.main
   }
@@ -352,7 +352,7 @@ module "capacity-notifications" {
   emails     = [var.capacity_notification_email]
 }
 
-module "devops-notifications" {
+module "devops_notifications" {
   providers = {
     aws = aws.main
   }
@@ -363,7 +363,7 @@ module "devops-notifications" {
   emails     = [var.devops_notification_email]
 }
 
-module "route53-critical-notifications" {
+module "route53_critical_notifications" {
   providers = {
     aws = aws.us_east_1
   }
@@ -446,7 +446,7 @@ module "govwifi_grafana" {
   env_name                   = var.env_name
   env_subdomain              = var.env_subdomain
   aws_region                 = var.aws_region
-  critical_notifications_arn = module.critical-notifications.topic_arn
+  critical_notifications_arn = module.critical_notifications.topic_arn
   is_production_aws_account  = var.is_production_aws_account
 
   ssh_key_name = var.ssh_key_name
@@ -478,9 +478,9 @@ module "govwifi_slack_alerts" {
 
   source = "../../govwifi-slack-alerts"
 
-  critical_notifications_topic_arn         = module.critical-notifications.topic_arn
-  capacity_notifications_topic_arn         = module.capacity-notifications.topic_arn
-  route53_critical_notifications_topic_arn = module.route53-critical-notifications.topic_arn
+  critical_notifications_topic_arn         = module.critical_notifications.topic_arn
+  capacity_notifications_topic_arn         = module.capacity_notifications.topic_arn
+  route53_critical_notifications_topic_arn = module.route53_critical_notifications.topic_arn
 }
 
 module "govwifi_elasticsearch" {

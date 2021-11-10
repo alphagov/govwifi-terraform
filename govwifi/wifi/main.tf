@@ -127,8 +127,8 @@ module "backend" {
   rr_instance_type      = "db.m3.medium"
   rr_storage_gb         = 1000
 
-  critical_notifications_arn = module.critical-notifications.topic_arn
-  capacity_notifications_arn = module.capacity-notifications.topic_arn
+  critical_notifications_arn = module.critical_notifications.topic_arn
+  capacity_notifications_arn = module.capacity_notifications.topic_arn
   user_replica_source_db     = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-production-user-db"
 
   # Seconds. Set to zero to disable monitoring
@@ -165,7 +165,7 @@ module "emails" {
   aws_region                = var.aws_region
   aws_region_name           = var.aws_region_name
   mail_exchange_server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
-  devops_notifications_arn  = module.devops-notifications.topic_arn
+  devops_notifications_arn  = module.devops_notifications.topic_arn
 
   #sns-endpoint             = "https://elb.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk/sns/"
   sns_endpoint                       = "https://elb.london.${local.env_subdomain}.service.gov.uk/sns/"
@@ -243,8 +243,8 @@ module "frontend" {
   logging_api_base_url = var.london_api_base_url
   auth_api_base_url    = var.dublin_api_base_url
 
-  critical_notifications_arn            = module.critical-notifications.topic_arn
-  us_east_1_critical_notifications_arn  = module.route53-critical-notifications.topic_arn
+  critical_notifications_arn            = module.critical_notifications.topic_arn
+  us_east_1_critical_notifications_arn  = module.route53_critical_notifications.topic_arn
   us_east_1_pagerduty_notifications_arn = data.terraform_remote_state.london.outputs.us_east_1_pagerduty_topic_arn
 
   bastion_server_ip = var.bastion_server_ip
@@ -283,7 +283,7 @@ module "api" {
   safe_restart_enabled = 0
   event_rule_count     = 0
 
-  devops_notifications_arn = module.devops-notifications.topic_arn
+  devops_notifications_arn = module.devops_notifications.topic_arn
   notification_arn         = module.region_pagerduty.topic_arn
 
   auth_docker_image             = format("%s/authorisation-api:production", local.docker_image_path)
@@ -313,7 +313,7 @@ module "api" {
   low_cpu_threshold = 10
 }
 
-module "critical-notifications" {
+module "critical_notifications" {
   providers = {
     aws = aws.main
   }
@@ -324,7 +324,7 @@ module "critical-notifications" {
   emails     = [var.critical_notification_email]
 }
 
-module "capacity-notifications" {
+module "capacity_notifications" {
   providers = {
     aws = aws.main
   }
@@ -335,7 +335,7 @@ module "capacity-notifications" {
   emails     = [var.capacity_notification_email]
 }
 
-module "devops-notifications" {
+module "devops_notifications" {
   providers = {
     aws = aws.main
   }
@@ -346,7 +346,7 @@ module "devops-notifications" {
   emails     = [var.devops_notification_email]
 }
 
-module "route53-critical-notifications" {
+module "route53_critical_notifications" {
   providers = {
     aws = aws.us_east_1
   }
