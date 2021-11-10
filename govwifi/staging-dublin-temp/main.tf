@@ -227,8 +227,9 @@ module "frontend" {
   logging_api_base_url = var.london_api_base_url
   auth_api_base_url    = var.dublin_api_base_url
 
-  critical_notifications_arn           = module.notifications.topic_arn
-  us_east_1_critical_notifications_arn = module.route53-notifications.topic_arn
+  critical_notifications_arn            = module.notifications.topic_arn
+  us_east_1_critical_notifications_arn  = module.route53-notifications.topic_arn
+  us_east_1_pagerduty_notifications_arn = data.terraform_remote_state.london.outputs.us_east_1_notifications_topic_arn
 
   bastion_server_ip = var.bastion_server_ip
 
