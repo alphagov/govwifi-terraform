@@ -16,15 +16,16 @@ resource "aws_ecs_task_definition" "logging_api_task" {
   task_role_arn            = aws_iam_role.logging_api_task_role[0].arn
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  memory                   = 512
-  cpu                      = "256"
+  memory                   = 1024
+  cpu                      = "512"
   network_mode             = "awsvpc"
 
   container_definitions = <<EOF
 [
     {
       "volumesFrom": [],
-      "memory": 512,
+      "cpu": 512,
+      "memory": 1024,
       "extraHosts": null,
       "dnsServers": null,
       "disableNetworking": null,
@@ -108,7 +109,6 @@ resource "aws_ecs_task_definition" "logging_api_task" {
           "awslogs-stream-prefix": "${var.env_name}-logging-api-docker-logs"
         }
       },
-      "cpu": 0,
       "privileged": null,
       "expanded": true
     }
