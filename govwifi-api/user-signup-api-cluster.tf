@@ -53,7 +53,7 @@ resource "aws_iam_role_policy" "user_signup_api_task_policy" {
       "Action": [
         "s3:GetObject"
       ],
-      "Resource": ["${data.aws_s3_bucket.admin-bucket[0].arn}/signup-whitelist.conf"]
+      "Resource": ["${data.aws_s3_bucket.admin_bucket[0].arn}/signup-whitelist.conf"]
     },
     {
       "Effect": "Allow",
@@ -68,7 +68,7 @@ EOF
 
 }
 
-data "aws_s3_bucket" "admin-bucket" {
+data "aws_s3_bucket" "admin_bucket" {
   count  = var.user_signup_enabled
   bucket = var.admin_app_data_s3_bucket_name
 }
@@ -126,7 +126,7 @@ resource "aws_ecs_task_definition" "user_signup_api_task" {
           "value": "${var.env_name}"
         },{
           "name": "S3_SIGNUP_WHITELIST_BUCKET",
-          "value": "${data.aws_s3_bucket.admin-bucket[0].bucket}"
+          "value": "${data.aws_s3_bucket.admin_bucket[0].bucket}"
         },{
           "name": "S3_SIGNUP_WHITELIST_OBJECT_KEY",
           "value": "signup-whitelist.conf"
