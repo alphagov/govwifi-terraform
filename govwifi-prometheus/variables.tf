@@ -1,9 +1,6 @@
 variable "env_name" {
 }
 
-variable "aws_region" {
-}
-
 variable "prometheus_volume_size" {
   default = "40"
 }
