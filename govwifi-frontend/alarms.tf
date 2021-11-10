@@ -25,21 +25,14 @@ resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
   alarm_description = "Route53 healthcheck request failed to authenticate via FreeRADIUS and Authentication API. Investigate CloudWatch logs for root cause."
 }
 
-# TODO: This requires a more up to date version of the AWS provider to work
-# We will also need to feature toggle the alarm actions so the notification ARN points to PagerDuty for production
-# and an appropriate email group for staging. See implementation of `notification_arn` in govwifi/staging-london/main.tf
-# and govwifi/wifi-london/main.tf
+resource "aws_cloudwatch_composite_alarm" "all_radius_servers_down" {
+  provider   = aws.us_east_1
+  alarm_name = "${var.env_name} ${var.aws_region} All Radius servers down"
 
-# https://trello.com/c/Jsis2ZR1/1042-5-upgrade-the-terraform-aws-provider-to-a-more-recent-version
-#
-# resource "aws_cloudwatch_composite_alarm" "all_radius_servers_down" {
-#   provider = aws.us_east_1
-#   alarm_name = "${var.env_name} ${var.aws_region} All Radius servers down"
+  alarm_actions = [var.us_east_1_pagerduty_notifications_arn]
 
-#   alarm_actions = [var.pagerduty_notification_arn]
-
-#   alarm_rule = join(" AND ", formatlist("ALARM(\"%s\")", aws_cloudwatch_metric_alarm.radius-hc[*].alarm_name))
-# }
+  alarm_rule = join(" AND ", formatlist("ALARM(\"%s\")", aws_cloudwatch_metric_alarm.radius_healthcheck[*].alarm_name))
+}
 
 resource "aws_cloudwatch_metric_alarm" "radius_latency" {
   provider = aws.us_east_1

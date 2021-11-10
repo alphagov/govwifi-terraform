@@ -198,8 +198,9 @@ module "frontend" {
   logging_api_base_url = var.london_api_base_url
   auth_api_base_url    = var.london_api_base_url
 
-  critical_notifications_arn           = module.critical-notifications.topic_arn
-  us_east_1_critical_notifications_arn = module.route53-critical-notifications.topic_arn
+  critical_notifications_arn            = module.critical-notifications.topic_arn
+  us_east_1_critical_notifications_arn  = module.route53-critical-notifications.topic_arn
+  us_east_1_pagerduty_notifications_arn = module.us_east_1_pagerduty.topic_arn
 
   bastion_server_ip = var.bastion_server_ip
 
@@ -380,6 +381,16 @@ locals {
 module "region_pagerduty" {
   providers = {
     aws = aws.main
+  }
+
+  source = "../../govwifi-pagerduty-integration"
+
+  sns_topic_subscription_https_endpoint = local.pagerduty_https_endpoint
+}
+
+module "us_east_1_pagerduty" {
+  providers = {
+    aws = aws.us_east_1
   }
 
   source = "../../govwifi-pagerduty-integration"
