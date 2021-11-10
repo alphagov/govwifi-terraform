@@ -216,7 +216,7 @@ resource "aws_ecs_task_definition" "user_signup_api_scheduled_task" {
   count                    = var.user_signup_enabled
   family                   = "user-signup-api-scheduled-task-${var.env_name}"
   task_role_arn            = aws_iam_role.user_signup_api_task_role[0].arn
-  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
   cpu                      = 512
   memory                   = 1024

@@ -451,7 +451,7 @@ resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
   count                    = var.logging_enabled
   family                   = "logging-api-scheduled-task-${var.env_name}"
   task_role_arn            = aws_iam_role.logging_api_task_role[0].arn
-  execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   requires_compatibilities = ["FARGATE"]
   cpu                      = 512
   memory                   = 1024

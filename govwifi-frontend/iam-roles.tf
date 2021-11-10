@@ -165,7 +165,7 @@ data "aws_iam_policy_document" "admin_bucket_policy" {
   }
 }
 
-resource "aws_iam_role" "ecsTaskExecutionRole" {
+resource "aws_iam_role" "ecs_task_execution_role" {
   name               = "ecsTaskExecutionRole-${var.rack_env}-${var.aws_region_name}-SecretsManager"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
@@ -183,14 +183,14 @@ data "aws_iam_policy_document" "assume_role_policy" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole" {
-  role       = aws_iam_role.ecsTaskExecutionRole.name
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
+  role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 resource "aws_iam_role_policy" "secrets_manager_policy" {
   name   = "${var.aws_region_name}-radius-access-secrets-manager-${var.env_name}"
-  role   = aws_iam_role.ecsTaskExecutionRole.id
+  role   = aws_iam_role.ecs_task_execution_role.id
   policy = data.aws_iam_policy_document.secrets_manager_policy.json
 }
 
