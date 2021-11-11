@@ -228,7 +228,7 @@ module "frontend" {
   auth_api_base_url    = var.dublin_api_base_url
 
   critical_notifications_arn            = module.notifications.topic_arn
-  us_east_1_critical_notifications_arn  = module.route53-notifications.topic_arn
+  us_east_1_critical_notifications_arn  = module.route53_notifications.topic_arn
   us_east_1_pagerduty_notifications_arn = data.terraform_remote_state.london.outputs.us_east_1_notifications_topic_arn
 
   bastion_server_ip = var.bastion_server_ip
@@ -312,7 +312,7 @@ module "notifications" {
   emails     = [var.notification_email]
 }
 
-module "route53-notifications" {
+module "route53_notifications" {
   providers = {
     aws = aws.us_east_1
   }
