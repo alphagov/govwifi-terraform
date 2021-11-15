@@ -62,7 +62,7 @@ format: format-terraform
 .PHONY: lint-terraform
 lint-terraform:
 	terraform fmt -recursive -diff -check .
-	find . -maxdepth 2 -name "*.tf" -printf "%h\n" | uniq | xargs --verbose -i tflint {}
+	find . -maxdepth 2 -name "*.tf" -printf "%h\n" | grep -v govwifi-account | uniq | xargs --verbose -i tflint {}
 	find govwifi -maxdepth 2 -name "*.tf" -printf "%h\n" | uniq | xargs --verbose -i tflint {}
 
 .PHONY: format-terraform
