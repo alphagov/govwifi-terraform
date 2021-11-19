@@ -62,7 +62,7 @@ resource "aws_iam_policy" "govwifi_sync_cert_access" {
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "govwifi-sync-cert-access",
+            "Sid": "govwifiSyncCertAccess",
             "Effect": "Allow",
             "Action": "s3:PutObject",
             "Resource": [
@@ -86,7 +86,7 @@ resource "aws_iam_policy" "read_wordlist_policy" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "read_wordlist_policy_0",
+      "Sid": "readWordListPolicy0",
       "Effect": "Allow",
       "Action": [
         "s3:ListBucketVersions",
@@ -96,7 +96,7 @@ resource "aws_iam_policy" "read_wordlist_policy" {
       "Resource": "arn:aws:s3:::govwifi-${var.env_subdomain}-wordlist"
     },
     {
-      "Sid": "read_wordlist_policy_1",
+      "Sid": "readWordListPolicy1",
       "Effect": "Allow",
       "Action": [
         "s3:PutObject",
