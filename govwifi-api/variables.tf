@@ -120,7 +120,7 @@ variable "ecr_repository_count" {
 }
 
 variable "wordlist_bucket_count" {
-  default     = 0
+  default     = false
   description = "Whether or not to create wordlist bucket"
 }
 
