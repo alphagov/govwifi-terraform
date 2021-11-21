@@ -159,10 +159,6 @@ variable "export_data_bucket_name" {
   description = "Name of the bucket we use to export data to data.gov.uk"
 }
 
-variable "use_env_prefix" {
-
-}
-
 variable "backup_mysql_rds" {
   description = "Whether or not to create objects to and make backups of MySQL RDS data"
   default     = false

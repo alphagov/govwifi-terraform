@@ -143,8 +143,6 @@ module "backend" {
   prometheus_ip_ireland = var.prometheus_ip_ireland
   grafana_ip            = var.grafana_ip
 
-  use_env_prefix = var.use_env_prefix
-
   db_storage_alarm_threshold = 32212254720
 }
 
@@ -253,8 +251,6 @@ module "frontend" {
   prometheus_ip_ireland = var.prometheus_ip_ireland
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
-
-  use_env_prefix = var.use_env_prefix
 }
 
 module "api" {
@@ -307,8 +303,6 @@ module "api" {
   backend_sg_list = [
     module.backend.be_admin_in,
   ]
-
-  use_env_prefix = var.use_env_prefix
 
   low_cpu_threshold = 10
 }

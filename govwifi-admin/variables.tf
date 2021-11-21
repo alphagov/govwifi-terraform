@@ -117,8 +117,5 @@ variable "public_google_api_key" {
 variable "bastion_server_ip" {
 }
 
-variable "use_env_prefix" {
-}
-
 variable "is_production_aws_account" {
 }

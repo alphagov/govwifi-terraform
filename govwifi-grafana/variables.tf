@@ -72,8 +72,5 @@ variable "critical_notifications_arn" {
   type        = string
 }
 
-variable "use_env_prefix" {
-}
-
 variable "is_production_aws_account" {
 }

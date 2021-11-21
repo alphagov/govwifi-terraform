@@ -129,7 +129,6 @@ module "backend" {
   prometheus_ip_ireland = var.prometheus_ip_ireland
   grafana_ip            = var.grafana_ip
 
-  use_env_prefix   = var.use_env_prefix
   backup_mysql_rds = var.backup_mysql_rds
 
   db_storage_alarm_threshold = 19327342936
@@ -195,9 +194,6 @@ module "frontend" {
   prometheus_ip_ireland = var.prometheus_ip_ireland
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
-
-  use_env_prefix = var.use_env_prefix
-
 }
 
 module "govwifi_admin" {
@@ -251,8 +247,6 @@ module "govwifi_admin" {
   zendesk_api_user     = var.zendesk_api_user
 
   bastion_server_ip = var.bastion_server_ip
-
-  use_env_prefix = var.use_env_prefix
 
   notification_arn = module.notifications.topic_arn
 }
@@ -315,7 +309,6 @@ module "api" {
   metrics_bucket_name     = module.govwifi_dashboard.metrics_bucket_name
   export_data_bucket_name = module.govwifi_dashboard.export_data_bucket_name
 
-  use_env_prefix          = var.use_env_prefix
   rds_mysql_backup_bucket = module.backend.rds_mysql_backup_bucket
   backup_mysql_rds        = var.backup_mysql_rds
 
@@ -415,7 +408,6 @@ module "govwifi_grafana" {
     var.prometheus_ip_ireland
   ]
 
-  use_env_prefix = var.use_env_prefix
 }
 
 module "govwifi_elasticsearch" {
