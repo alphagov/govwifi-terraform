@@ -164,9 +164,9 @@ resource "aws_alb_target_group" "logging_api_tg" {
   }
 
   health_check {
-    healthy_threshold   = 3
-    unhealthy_threshold = 10
-    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 4
     interval            = 10
     path                = "/healthcheck"
   }
