@@ -60,7 +60,7 @@ make <ENV> apply
 
 ### Running terraform target
 
-Terraform allows for ["resource targeting"](https://www.terraform.io/docs/cli/commands/plan.html#resource-targeting), or running `plan`/`apply` on specific modules. 
+Terraform allows for ["resource targeting"](https://www.terraform.io/docs/cli/commands/plan.html#resource-targeting), or running `plan`/`apply` on specific modules.
 
 We've incorporated this functionality into our `make` commands. **Note**: this should only be done in exceptional circumstances.
 
@@ -112,22 +112,23 @@ module "backend" {
 For example, to derive the bastion instance module name:
 
 1. Find where the instance resource is declared (in this case `govwifi-backend/management.tf`).
-2. Note the resource type for that component (`aws_instance`) and the resource name (`management`) in `govwifi-backend/management.tf`. 
+2. Note the resource type for that component (`aws_instance`) and the resource name (`management`) in `govwifi-backend/management.tf`.
 3. Find where the module is declared in `govwifi/*/main.tf`; typically the module name matches the name of the directory where the resource is declared minus the `govwifi` prefix. So for `govwifi-backend`, there's a module declaration for `backend` in each of the `main.tf` files in `govwifi/*`.
 4. Build the `module` using the components: `module`, `backend`, `aws_instance`, `management`.
 
 It should look like this, `module.backend.aws_instance.management`:
 
-| AWS default | module declaration name | AWS resource type | AWS resource name | 
+| AWS default | module declaration name | AWS resource type | AWS resource name |
 | :----: | :----: | :----: | :----: |
 | module  | backend | aws_instance | management |
 
 ## Bootstrapping terraform
 
-Because we use remote state, but there is a chicken and egg problem of creating
-a state bucket in which to store the remote state, when you are first creating a
-new environment or migrating and environment not using remote state to use
-remote state, you will need to do the following
+### Setting Up Remote State
+We use remote state, but there is a chicken and egg problem of creating
+a state bucket in which to store the remote state. When you are first creating a
+new environment (or migrating an environment not using remote state to use
+remote state) you will need to do the following
 
 Comment out the section
 ```
@@ -135,7 +136,7 @@ terraform {
   backend          "s3"             {}
 }
 ```
-in the main.tf file of the new environment / environment to be migrated
+in the main.tf file of the environment to be migrated
 
 Run
 
@@ -165,6 +166,48 @@ make <ENV> apply
 
 This should then copy the state file to s3 and use this for all operations
 
+### Manual Steps Needed to Set Up a New Environment
+
+#### Create RADIUS EIPs
+We currently need to create the Radius EIPs manually and then import them into terraform using the following command:
+```
+make <environment-name> terraform terraform_cmd="import module.frontend.aws_eip.radius_eips[0] <ip_address>"
+```
+Create six new EIPs (see here for more information [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html#using-instance-addressing-eips-allocating)). Three in the eu-west-1 region (Ireland) and three in the eu-west-2 (London) region. These values then need to be added to the govwifi-build repo under the `non-encrypted` directory for your environment (see [here](https://github.com/alphagov/govwifi-build/blob/21bf25b34ed12995b3246016b0193cf46e2c8d2d/non-encrypted/secrets-to-copy/govwifi/wifi-london/variables.auto.tfvars#L33-L37) for an example).
+
+#### Create Prometheus & Grafana EIPs
+Follow the process outlined above to create the Prometheus & Grafana EIPs manually. Create three new EIPs, one in the eu-west-1 region, two in the eu-west-2 region. These values then need to be added to the govwifi-build repo under the non-encrypted variables directory for your environment (see [here](https://github.com/alphagov/govwifi-build/blob/21bf25b34ed12995b3246016b0193cf46e2c8d2d/non-encrypted/secrets-to-copy/govwifi/staging-london-temp/variables.auto.tfvars#L29-L33) for an example).
+
+After this is done import them into terraform using the following command:
+```
+make <environment-name> terraform terraform_cmd="import <name_of_terraform_resource> <ip_address>"
+```
+
+#### Confirm SNS subscriptions
+At present confirming SNS subscriptions needs to be done manually. To do this follow the steps below:
+1. Ensure you have fully created the infrastructure for the [Logging API](https://github.com/alphagov/govwifi-logging-api).
+1. Ensure the Logging API app has been deployed to the new environment via our [CI/CD pipeline](https://govwifi-dev-docs.cloudapps.digital/infrastructure/continuous-delivery.html#govwifi-concourse).
+1. Login to the AWS Console and navigate to the Cloudwatch section. Locate the Logging API logs group (this will be named <environment-name>-logging-api-docker-log-group).
+1. Search the logs for the word "SubscriptionConfirmation"
+1. The result will be a long string which begins similarly to:
+```
+{
+  "Type" : "SubscriptionConfirmation",
+  "MessageId" : "165545c9-2a5c-472c-8df2-7ff2be2b3b1b",
+  "Token" : "2336412f37...",
+```
+1. Copy the value for `Token`
+1. Go to SNS, select the subscription you need to confirm, select the "Confirm Subscription" button and paste the token into the input field.
+1. You can find detailed information about this process in [AWS's documentation](https://docs.aws.amazon.com/sns/latest/dg/sns-message-and-json-formats.html).
+
+#### Set up the SES Rulesets
+Terraform currently does not provide a way to do this for us. Instructions on setting up the rulesets can be found [here](https://docs.google.com/document/d/1mQihRdmNtKQ1TQFBSiZaN-u7O16g8drB4qIv50_PGDU/edit#heading=h.azpap7jdwyu0).
+
+#### Elastic Search
+The first time the code in the govwifi-elasticsearch module is run in a new environment it will generate an error. Terraform currently lacks the ability to create service linked roles. To solve the error you will need to run this AWS command manually in your new environment.
+```
+aws iam create-service-linked-role --aws-service-name es.amazonaws.com
+```
 
 ## Rotating ELB Certificates
 
