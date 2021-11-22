@@ -100,6 +100,8 @@ resource "aws_ecs_service" "authorisation_api_service" {
   launch_type      = "FARGATE"
   platform_version = "1.3.0"
 
+  health_check_grace_period_seconds = 20
+
   network_configuration {
     security_groups = concat(
       var.backend_sg_list,
