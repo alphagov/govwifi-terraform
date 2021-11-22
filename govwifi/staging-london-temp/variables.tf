@@ -130,12 +130,6 @@ variable "prometheus_ip_ireland" {
 variable "grafana_ip" {
 }
 
-variable "use_env_prefix" {
-  default     = false
-  type        = bool
-  description = "Conditional to indicate whether to retrieve a secret with a env prefix in its name. For the secondary account the value can be set to false. The 'staging' prefix is redundant since the secondary account will be used for staging"
-}
-
 variable "backup_mysql_rds" {
   description = "Conditional to indicate whether to make artifacts for and run RDS MySQL backups."
   default     = true

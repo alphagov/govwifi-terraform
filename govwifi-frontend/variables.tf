@@ -106,8 +106,5 @@ variable "prometheus_ip_london" {
 variable "prometheus_ip_ireland" {
 }
 
-variable "use_env_prefix" {
-}
-
 variable "is_production_aws_account" {
 }
