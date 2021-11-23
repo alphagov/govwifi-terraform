@@ -200,8 +200,14 @@ At present confirming SNS subscriptions needs to be done manually. To do this fo
 1. Go to SNS, select the subscription you need to confirm, select the "Confirm Subscription" button and paste the token into the input field.
 1. You can find detailed information about this process in [AWS's documentation](https://docs.aws.amazon.com/sns/latest/dg/sns-message-and-json-formats.html).
 
-#### Set up the SES Rulesets
-Terraform currently does not provide a way to do this for us. Instructions on setting up the rulesets can be found [here](https://docs.google.com/document/d/1mQihRdmNtKQ1TQFBSiZaN-u7O16g8drB4qIv50_PGDU/edit#heading=h.azpap7jdwyu0).
+#### Configure SES Rulesets
+Terraform currently does not provide a way to do this for us.
+1. Login to the AWS console and ensure you are in the eu-west-1 region (Ireland).
+1. Go to the SES section and select "Email receiving”.
+1. Select “Create rule set” and enter the name “GovWifiRuleSet”.
+
+#### Configure SES to Send Email
+Ensure you are in the eu-west-1 region (Ireland) and follow the instructions here(https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-authentication-dkim-easy-setup-domain.html) to verify your new subdomain (e.g. staging.wifi.service.gov.uk)
 
 #### Elastic Search
 The first time the code in the govwifi-elasticsearch module is run in a new environment it will generate an error. Terraform currently lacks the ability to create service linked roles. To solve the error you will need to run this AWS command manually in your new environment.
