@@ -4,8 +4,8 @@ module "tfstate" {
   }
 
   source             = "../../terraform-state"
-  product_name       = var.product_name
-  env_name           = var.env_name
+  product_name       = local.product_name
+  env_name           = local.env_name
   aws_account_id     = local.aws_account_id
   aws_region_name    = var.aws_region_name
   backup_region_name = var.backup_region_name
@@ -20,7 +20,7 @@ terraform {
 
   backend "s3" {
     # Interpolation is not allowed here.
-    #bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate"
+    #bucket = "${lower(local.product_name)}-${lower(local.env_name)}-${lower(var.aws_region_name)}-tfstate"
     #key    = "${lower(var.aws_region_name)}-tfstate"
     #region = "${var.aws_region}"
     bucket = "govwifi-staging-dublin-tfstate"
@@ -64,8 +64,8 @@ module "backend" {
 
   source                    = "../../govwifi-backend"
   env                       = "staging"
-  env_name                  = var.env_name
-  env_subdomain             = var.env_subdomain
+  env_name                  = local.env_name
+  env_subdomain             = local.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
 
@@ -144,9 +144,9 @@ module "emails" {
   source = "../../govwifi-emails"
 
   is_production_aws_account = var.is_production_aws_account
-  product_name              = var.product_name
-  env_name                  = var.env_name
-  env_subdomain             = var.env_subdomain
+  product_name              = local.product_name
+  env_name                  = local.env_name
+  env_subdomain             = local.env_subdomain
   aws_account_id            = local.aws_account_id
   route53_zone_id           = local.route53_zone_id
   aws_region                = var.aws_region
@@ -154,7 +154,7 @@ module "emails" {
   mail_exchange_server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
   devops_notifications_arn  = module.notifications.topic_arn
 
-  user_signup_notifications_endpoint = "https://user-signup-api.${var.env_subdomain}.service.gov.uk:8443/user-signup/email-notification"
+  user_signup_notifications_endpoint = "https://user-signup-api.${local.env_subdomain}.service.gov.uk:8443/user-signup/email-notification"
 
   // The SNS endpoint is disabled in the secondary AWS account
   // We will conduct an SNS inventory (see this card: https://trello.com/c/EMeet3tl/315-investigate-and-inventory-sns-topics)
@@ -186,8 +186,8 @@ module "frontend" {
   }
 
   source                    = "../../govwifi-frontend"
-  env_name                  = var.env_name
-  env_subdomain             = var.env_subdomain
+  env_name                  = local.env_name
+  env_subdomain             = local.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
   # AWS VPC setup -----------------------------------------
@@ -246,7 +246,7 @@ module "api" {
   source                    = "../../govwifi-api"
   env                       = "staging"
   env_name                  = "staging"
-  env_subdomain             = var.env_subdomain
+  env_subdomain             = local.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
   backend_elb_count      = 1

@@ -1,4 +1,11 @@
 locals {
+  env_name      = "staging"
+  env_subdomain = "staging.wifi" # Environment specific subdomain to use under the service domain
+
+  product_name = "GovWifi"
+}
+
+locals {
   aws_account_id = jsondecode(data.aws_secretsmanager_secret_version.aws_account_id.secret_string)["account-id"]
 }
 
