@@ -209,12 +209,6 @@ Terraform currently does not provide a way to do this for us.
 #### Configure SES to Send Email
 Ensure you are in the eu-west-1 region (Ireland) and follow the instructions here(https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-authentication-dkim-easy-setup-domain.html) to verify your new subdomain (e.g. staging.wifi.service.gov.uk)
 
-#### Elastic Search
-The first time the code in the govwifi-elasticsearch module is run in a new environment it will generate an error. Terraform currently lacks the ability to create service linked roles. To solve the error you will need to run this AWS command manually in your new environment.
-```
-aws iam create-service-linked-role --aws-service-name es.amazonaws.com
-```
-
 ## Rotating ELB Certificates
 
 To rotate the ELB ACM certificates, you need to create a new certificate in the
