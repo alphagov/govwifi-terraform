@@ -28,17 +28,18 @@ resource "aws_route" "internet_access" {
   gateway_id             = aws_internet_gateway.wifi_backend.id
 }
 
-# CREATE SUBNET IN EACH AZ
+data "aws_availability_zones" "zones" {}
 
 resource "aws_subnet" "wifi_backend_subnet" {
-  count                   = var.zone_count
+  for_each = toset(data.aws_availability_zones.zones.names)
+
   vpc_id                  = aws_vpc.wifi_backend.id
-  availability_zone       = var.zone_names[format("zone%d", count.index)]
-  cidr_block              = var.zone_subnets[format("zone%d", count.index)]
+  availability_zone       = each.key
+  cidr_block              = "${join(".", slice(split(".", var.vpc_cidr_block), 0, 2))}.${index(data.aws_availability_zones.zones.names, each.key) + 1}.0/24"
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${var.env_name} Backend - AZ: ${var.zone_names[format("zone%d", count.index)]} - GovWifi subnet"
+    Name = "${var.env_name} Backend - AZ: ${each.key} - GovWifi subnet"
   }
 }
 

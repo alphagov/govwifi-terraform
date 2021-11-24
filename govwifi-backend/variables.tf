@@ -28,17 +28,6 @@ variable "administrator_ips" {
 variable "frontend_radius_ips" {
 }
 
-variable "zone_count" {
-}
-
-variable "zone_names" {
-  type = map(string)
-}
-
-variable "zone_subnets" {
-  type = map(string)
-}
-
 variable "enable_bastion" {
   default = 1
 }
