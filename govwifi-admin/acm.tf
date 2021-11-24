@@ -6,7 +6,7 @@ resource "aws_acm_certificate" "admin_cert" {
 resource "aws_route53_record" "admin_cert_validation" {
   name    = one(aws_acm_certificate.admin_cert.domain_validation_options).resource_record_name
   type    = one(aws_acm_certificate.admin_cert.domain_validation_options).resource_record_type
-  zone_id = data.aws_route53_zone.zone.id
+  zone_id = var.route53_zone_id
   records = [one(aws_acm_certificate.admin_cert.domain_validation_options).resource_record_value]
   ttl     = 60
 }

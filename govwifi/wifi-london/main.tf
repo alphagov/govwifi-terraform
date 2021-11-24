@@ -90,7 +90,7 @@ module "backend" {
   # AWS VPC setup -----------------------------------------
   aws_region      = var.aws_region
   aws_region_name = var.aws_region_name
-  route53_zone_id = local.route53_zone_id
+  route53_zone_id = data.aws_route53_zone.main.zone_id
   vpc_cidr_block  = "10.84.0.0/16"
   zone_count      = var.zone_count
   zone_names      = var.zone_names
@@ -164,7 +164,7 @@ module "frontend" {
   aws_region = var.aws_region
 
   aws_region_name    = var.aws_region_name
-  route53_zone_id    = local.route53_zone_id
+  route53_zone_id    = data.aws_route53_zone.main.zone_id
   vpc_cidr_block     = "10.85.0.0/16"
   zone_count         = var.zone_count
   zone_names         = var.zone_names
@@ -224,6 +224,8 @@ module "govwifi_admin" {
   vpc_id          = module.backend.backend_vpc_id
   instance_count  = 2
 
+  route53_zone_id = data.aws_route53_zone.main.zone_id
+
   admin_docker_image   = format("%s/admin:production", local.docker_image_path)
   rack_env             = "production"
   sentry_current_env   = "production"
@@ -280,7 +282,7 @@ module "api" {
   aws_account_id         = local.aws_account_id
   aws_region_name        = var.aws_region_name
   aws_region             = var.aws_region
-  route53_zone_id        = local.route53_zone_id
+  route53_zone_id        = data.aws_route53_zone.main.zone_id
   vpc_id                 = module.backend.backend_vpc_id
 
   devops_notifications_arn = module.devops_notifications.topic_arn
@@ -441,7 +443,8 @@ module "govwifi_grafana" {
   env_subdomain              = var.env_subdomain
   aws_region                 = var.aws_region
   critical_notifications_arn = module.critical_notifications.topic_arn
-  is_production_aws_account  = var.is_production_aws_account
+
+  route53_zone_id = data.aws_route53_zone.main.zone_id
 
   ssh_key_name = var.ssh_key_name
 

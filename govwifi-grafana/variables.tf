@@ -35,6 +35,11 @@ variable "vpc_id" {
   type        = string
 }
 
+variable "route53_zone_id" {
+  description = "ID of the Route53 zone to use"
+  type        = string
+}
+
 variable "bastion_ip" {
   description = "The IP address of the bastion machine."
   type        = string
@@ -70,7 +75,4 @@ variable "grafana_docker_version" {
 variable "critical_notifications_arn" {
   description = "Arn of the critical-nofications sns topic"
   type        = string
-}
-
-variable "is_production_aws_account" {
 }
