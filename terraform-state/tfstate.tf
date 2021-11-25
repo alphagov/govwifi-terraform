@@ -120,7 +120,7 @@ EOF
   }
 
   logging {
-    target_bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-accesslogs"
+    target_bucket = aws_s3_bucket.accesslogs_bucket.bucket
     target_prefix = "${lower(var.aws_region_name)}-tfstate"
   }
 
