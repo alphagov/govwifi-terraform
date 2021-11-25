@@ -177,5 +177,5 @@ DATA
 resource "aws_eip_association" "eip_assoc" {
   count       = var.radius_instance_count
   instance_id = element(aws_instance.radius.*.id, count.index)
-  public_ip   = element(var.elastic_ip_list, count.index)
+  public_ip   = aws_eip.radius_eips[count.index].public_ip
 }

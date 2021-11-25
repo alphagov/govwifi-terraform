@@ -13,7 +13,3 @@ locals {
 locals {
   frontend_radius_ips = concat(var.london_radius_ip_addresses, var.dublin_radius_ip_addresses)
 }
-
-locals {
-  frontend_region_ips = var.london_radius_ip_addresses
-}
