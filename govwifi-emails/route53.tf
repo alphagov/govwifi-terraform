@@ -10,3 +10,15 @@ resource "aws_route53_record" "mx" {
   records = [var.mail_exchange_server]
 }
 
+resource "aws_ses_domain_identity" "main" {
+  domain = "${var.env_subdomain}.service.gov.uk"
+}
+
+resource "aws_route53_record" "verification_record" {
+  zone_id = var.route53_zone_id
+  name    = "_amazonses.${var.env_subdomain}.service.gov.uk"
+  type    = "TXT"
+  ttl     = "600"
+  records = [aws_ses_domain_identity.main.verification_token]
+}
+
