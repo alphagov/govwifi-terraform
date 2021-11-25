@@ -118,6 +118,10 @@ resource "aws_ecs_service" "authorisation_api_service" {
     container_name   = "authorisation"
     container_port   = "8080"
   }
+
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
 }
 
 resource "aws_alb_listener_rule" "static" {
