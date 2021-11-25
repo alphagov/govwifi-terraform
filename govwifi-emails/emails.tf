@@ -1,6 +1,10 @@
+resource "aws_ses_receipt_rule_set" "main" {
+  rule_set_name = "GovWifiRuleSet"
+}
+
 resource "aws_ses_receipt_rule" "user_signup_rule" {
   name          = "${var.env_name}-user-signup-rule"
-  rule_set_name = "GovWifiRuleSet"
+  rule_set_name = aws_ses_receipt_rule_set.main.rule_set_name
   enabled       = true
   scan_enabled  = true
 
@@ -30,7 +34,7 @@ resource "aws_ses_receipt_rule" "user_signup_rule" {
 
 resource "aws_ses_receipt_rule" "all_mail_rule" {
   name          = "${var.env_name}-all-mail-rule"
-  rule_set_name = "GovWifiRuleSet"
+  rule_set_name = aws_ses_receipt_rule_set.main.rule_set_name
   enabled       = true
   scan_enabled  = true
   after         = "${var.env_name}-user-signup-rule"
@@ -54,10 +58,10 @@ resource "aws_ses_receipt_rule" "all_mail_rule" {
 
 resource "aws_ses_receipt_rule" "newsite_mail_rule" {
   name          = "${var.env_name}-newsite-mail-rule"
-  rule_set_name = "GovWifiRuleSet"
+  rule_set_name = aws_ses_receipt_rule_set.main.rule_set_name
   enabled       = true
   scan_enabled  = true
-  after         = "${var.env_name}-all-mail-rule"
+  after         = aws_ses_receipt_rule.all_mail_rule.name
 
   depends_on = [
     aws_sns_topic.govwifi_email_notifications,
@@ -77,10 +81,10 @@ resource "aws_ses_receipt_rule" "newsite_mail_rule" {
 
 resource "aws_ses_receipt_rule" "admin_email_rule" {
   name          = "${var.env_name}-admin-email-rule"
-  rule_set_name = "GovWifiRuleSet"
+  rule_set_name = aws_ses_receipt_rule_set.main.rule_set_name
   enabled       = true
   scan_enabled  = true
-  after         = "${var.env_name}-newsite-mail-rule"
+  after         = aws_ses_receipt_rule.all_mail_rule.name
 
   depends_on = [
     aws_s3_bucket.admin_emailbucket,
@@ -99,10 +103,10 @@ resource "aws_ses_receipt_rule" "admin_email_rule" {
 
 resource "aws_ses_receipt_rule" "log_request_rule" {
   name          = "${var.env_name}-log-request-rule"
-  rule_set_name = "GovWifiRuleSet"
+  rule_set_name = aws_ses_receipt_rule_set.main.rule_set_name
   enabled       = true
   scan_enabled  = true
-  after         = "${var.env_name}-admin-email-rule"
+  after         = aws_ses_receipt_rule.all_mail_rule.name
 
   recipients = [
     "logrequest@${var.env_subdomain}.service.gov.uk",
