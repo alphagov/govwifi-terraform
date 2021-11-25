@@ -16,12 +16,12 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
 }
 
 resource "aws_iam_instance_profile" "grafana_instance_profile" {
-  name = "${var.aws_region}-${var.env_name}-grafana-instance-profile"
+  name = "${var.aws_region}-${var.env_name}-grafana-instance"
   role = aws_iam_role.grafana_instance_role.name
 }
 
 resource "aws_iam_role" "grafana_instance_role" {
-  name = "${var.aws_region}-${var.env_name}-grafana-instance-role"
+  name = "${var.aws_region}-${var.env_name}-grafana-instance"
   path = "/"
 
   assume_role_policy = <<EOF
