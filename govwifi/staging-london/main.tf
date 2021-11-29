@@ -181,10 +181,9 @@ module "govwifi_admin" {
     aws = aws.main
   }
 
-  source                    = "../../govwifi-admin"
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  is_production_aws_account = var.is_production_aws_account
+  source        = "../../govwifi-admin"
+  env_name      = local.env_name
+  env_subdomain = local.env_subdomain
 
   aws_region      = var.aws_region
   aws_region_name = var.aws_region_name
