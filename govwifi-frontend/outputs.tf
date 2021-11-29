@@ -25,8 +25,3 @@ output "fe_radius_out" {
 output "ecs_instance_profile" {
   value = aws_iam_instance_profile.ecs_instance_profile.id
 }
-
-output "wifi_frontend_subnet" {
-  value = aws_subnet.wifi_frontend_subnet.*.id
-}
-
