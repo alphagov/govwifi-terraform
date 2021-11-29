@@ -1,5 +1,5 @@
 resource "aws_route53_record" "grafana_route53_record" {
-  zone_id = data.aws_route53_zone.zone.id
+  zone_id = var.route53_zone_id
   name    = "grafana.${var.env_subdomain}.service.gov.uk"
   type    = "A"
 
@@ -8,9 +8,4 @@ resource "aws_route53_record" "grafana_route53_record" {
     zone_id                = aws_lb.grafana_alb.zone_id
     evaluate_target_health = true
   }
-}
-
-data "aws_route53_zone" "zone" {
-  name         = var.is_production_aws_account ? "wifi.service.gov.uk." : "${var.env_subdomain}.service.gov.uk."
-  private_zone = false
 }

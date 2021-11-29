@@ -1,5 +1,5 @@
 resource "aws_route53_record" "admin" {
-  zone_id = data.aws_route53_zone.zone.id
+  zone_id = var.route53_zone_id
   name    = "admin.${var.env_subdomain}.service.gov.uk"
   type    = "A"
 
@@ -11,14 +11,9 @@ resource "aws_route53_record" "admin" {
 }
 
 resource "aws_route53_record" "www" {
-  zone_id = data.aws_route53_zone.zone.id
+  zone_id = var.route53_zone_id
   name    = "www.${var.env_subdomain}.service.gov.uk"
   type    = "CNAME"
   ttl     = "300"
   records = ["d2j0ojhs7n2cwa.cloudfront.net"]
-}
-
-data "aws_route53_zone" "zone" {
-  name         = var.is_production_aws_account ? "wifi.service.gov.uk." : "${var.env_subdomain}.service.gov.uk."
-  private_zone = false
 }
