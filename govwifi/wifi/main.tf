@@ -378,7 +378,7 @@ module "govwifi_prometheus" {
   fe_radius_in  = module.frontend.fe_radius_in
   fe_radius_out = module.frontend.fe_radius_out
 
-  wifi-frontend-subnet       = module.frontend.wifi-frontend-subnet
+  wifi_frontend_subnet       = module.frontend.wifi_frontend_subnet
   london_radius_ip_addresses = var.london_radius_ip_addresses
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
 
