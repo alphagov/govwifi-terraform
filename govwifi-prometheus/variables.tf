@@ -33,6 +33,10 @@ variable "fe_radius_in" {
 variable "fe_radius_out" {
 }
 
+variable "wifi_frontend_subnet" {
+  type = list(string)
+}
+
 variable "london_radius_ip_addresses" {
   type    = list(string)
   default = []

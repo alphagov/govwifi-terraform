@@ -136,3 +136,9 @@ resource "aws_iam_user_policy_attachment" "govwifi_ecr_policy_attachment" {
   user       = aws_iam_user.govwifi_deploy_pipeline[0].name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
 }
+
+resource "aws_iam_user_policy_attachment" "govwifi_deploy_pipeline_policy_attachment" {
+  count      = !var.wordlist_bucket_count || var.is_production_aws_account ? 0 : 1
+  user       = aws_iam_user.govwifi_deploy_pipeline[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
+}
