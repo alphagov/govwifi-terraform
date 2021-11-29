@@ -145,16 +145,8 @@ module "frontend" {
   aws_region_name    = var.aws_region_name
   route53_zone_id    = data.aws_route53_zone.main.zone_id
   vpc_cidr_block     = "10.102.0.0/16"
-  zone_count         = var.zone_count
-  zone_names         = var.zone_names
   rack_env           = "staging"
   sentry_current_env = "secondary-staging"
-
-  zone_subnets = {
-    zone0 = "10.102.1.0/24"
-    zone1 = "10.102.2.0/24"
-    zone2 = "10.102.3.0/24"
-  }
 
   # Instance-specific setup -------------------------------
   radius_instance_count      = 3

@@ -3,7 +3,7 @@ output "frontend_vpc_id" {
 }
 
 output "frontend_subnet_id" {
-  value = aws_subnet.wifi_frontend_subnet.*.id
+  value = [for subnet in aws_subnet.wifi_frontend_subnet : subnet.id]
 }
 
 output "fe_admin_in" {

@@ -16,17 +16,6 @@ variable "aws_region" {
 variable "aws_region_name" {
 }
 
-variable "zone_count" {
-}
-
-variable "zone_names" {
-  type = map(string)
-}
-
-variable "zone_subnets" {
-  type = map(string)
-}
-
 variable "radius_instance_count" {
 }
 
