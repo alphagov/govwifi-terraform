@@ -96,9 +96,6 @@ module "backend" {
   administrator_ips   = var.administrator_ips
   frontend_radius_ips = local.frontend_radius_ips
 
-  # eu-west-2, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
-  #bastion-ami                = "ami-ae6d81c9"
-  # eu-west-2, CIS Ubuntu Linux 20.04 LTS
   bastion_ami                = "ami-096cb92bb3580c759"
   bastion_instance_type      = "t2.micro"
   bastion_server_ip          = var.bastion_server_ip
