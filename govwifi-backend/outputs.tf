@@ -3,7 +3,7 @@ output "backend_vpc_id" {
 }
 
 output "backend_subnet_ids" {
-  value = aws_subnet.wifi_backend_subnet.*.id
+  value = [for subnet in aws_subnet.wifi_backend_subnet : subnet.id]
 }
 
 output "ecs_instance_profile_id" {

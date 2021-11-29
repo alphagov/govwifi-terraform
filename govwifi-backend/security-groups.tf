@@ -32,14 +32,14 @@ resource "aws_security_group" "be_ecs_out" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = values(var.zone_subnets)
+    cidr_blocks = [for subnet in aws_subnet.wifi_backend_subnet : subnet.cidr_block]
   }
 
   egress {
     from_port   = 11211
     to_port     = 11211
     protocol    = "tcp"
-    cidr_blocks = values(var.zone_subnets)
+    cidr_blocks = [for subnet in aws_subnet.wifi_backend_subnet : subnet.cidr_block]
   }
 }
 
@@ -56,7 +56,7 @@ resource "aws_security_group" "be_db_in" {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = values(var.zone_subnets)
+    cidr_blocks = [for subnet in aws_subnet.wifi_backend_subnet : subnet.cidr_block]
   }
 }
 
@@ -70,10 +70,14 @@ resource "aws_security_group" "be_admin_in" {
   }
 
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = distinct(concat(["${var.bastion_server_ip}/32"], values(var.zone_subnets)))
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+
+    cidr_blocks = concat(
+      ["${var.bastion_server_ip}/32"],
+      [for subnet in aws_subnet.wifi_backend_subnet : subnet.cidr_block]
+    )
   }
 }
 
@@ -111,7 +115,7 @@ resource "aws_security_group" "be_vpn_out" {
     protocol  = "tcp"
 
     cidr_blocks = distinct(concat(
-      values(var.zone_subnets),
+      [for subnet in aws_subnet.wifi_backend_subnet : subnet.cidr_block],
       [for ip in var.frontend_radius_ips : "${ip}/32"],
       ["${var.prometheus_ip_ireland}/32"],
       ["${var.prometheus_ip_london}/32"],

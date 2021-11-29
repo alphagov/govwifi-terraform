@@ -4,7 +4,7 @@ resource "aws_instance" "management" {
   ami           = var.bastion_ami
   instance_type = var.bastion_instance_type
   key_name      = var.bastion_ssh_key_name
-  subnet_id     = aws_subnet.wifi_backend_subnet[0].id
+  subnet_id     = aws_subnet.wifi_backend_subnet[data.aws_availability_zones.zones.names[0]].id
 
   vpc_security_group_ids = [
     aws_security_group.be_vpn_in.id,

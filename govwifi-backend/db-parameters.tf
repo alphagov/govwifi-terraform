@@ -1,7 +1,7 @@
 resource "aws_db_subnet_group" "db_subnets" {
   name        = "wifi-${var.env_name}-subnets"
   description = "GovWifi ${var.env_name} backend subnets"
-  subnet_ids  = aws_subnet.wifi_backend_subnet.*.id
+  subnet_ids  = [for subnet in aws_subnet.wifi_backend_subnet : subnet.id]
 
   tags = {
     Name = "wifi-${var.env_name}-subnets"

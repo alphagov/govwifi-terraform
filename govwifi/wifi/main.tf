@@ -90,14 +90,6 @@ module "backend" {
   aws_region_name = var.aws_region_name
   route53_zone_id = data.aws_route53_zone.main.zone_id
   vpc_cidr_block  = "10.42.0.0/16"
-  zone_count      = var.zone_count
-  zone_names      = var.zone_names
-
-  zone_subnets = {
-    zone0 = "10.42.1.0/24"
-    zone1 = "10.42.2.0/24"
-    zone2 = "10.42.3.0/24"
-  }
 
   administrator_ips   = var.administrator_ips
   frontend_radius_ips = local.frontend_radius_ips
