@@ -11,5 +11,5 @@ jobs:
           brew install tfenv tflint findutils
           tfenv install $(cat .terraform-version)
           tfenv use $(cat .terraform-version)
-          tflint --init
+          GITHUB_TOKEN=${{ secrets.GH_TOKEN }} tflint --init
           PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH" make lint
