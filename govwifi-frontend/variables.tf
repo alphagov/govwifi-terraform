@@ -52,10 +52,6 @@ variable "logging_api_base_url" {
 variable "auth_api_base_url" {
 }
 
-variable "elastic_ip_list" {
-  type = list(string)
-}
-
 variable "enable_detailed_monitoring" {
 }
 

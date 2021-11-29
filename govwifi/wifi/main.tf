@@ -222,7 +222,6 @@ module "frontend" {
   # where N = this base + 1 + server#
   dns_numbering_base = 0
 
-  elastic_ip_list       = local.frontend_region_ips
   ami                   = var.ami
   ssh_key_name          = var.ssh_key_name
   frontend_docker_image = format("%s/frontend:production", local.docker_image_path)
