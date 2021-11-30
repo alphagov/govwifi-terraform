@@ -49,7 +49,7 @@ make <ENV> init-backend
 make <ENV> plan
 ```
 
-Example ENVs are: `wifi`, `wifi-london`, `staging-london-temp`, and `staging-dublin-temp`
+Example ENVs are: `wifi`, `wifi-london`, `staging-london`, and `staging-dublin`
 
 ## Running terraform
 
@@ -187,7 +187,7 @@ make <environment-name> terraform terraform_cmd="import <name_of_terraform_resou
 At present confirming SNS subscriptions needs to be done manually. To do this follow the steps below:
 1. Ensure you have fully created the infrastructure for the [Logging API](https://github.com/alphagov/govwifi-logging-api).
 1. Ensure the Logging API app has been deployed to the new environment via our [CI/CD pipeline](https://govwifi-dev-docs.cloudapps.digital/infrastructure/continuous-delivery.html#govwifi-concourse).
-1. Login to the AWS Console and navigate to the Cloudwatch section. Locate the Logging API logs group (this will be named <environment-name>-logging-api-docker-log-group).
+1. Login to the AWS Console and navigate to the Cloudwatch section. Locate the User API logs.
 1. Search the logs for the word "SubscriptionConfirmation"
 1. The result will be a long string which begins similarly to:
 ```
