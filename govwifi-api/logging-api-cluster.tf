@@ -74,6 +74,9 @@ resource "aws_ecs_task_definition" "logging_api_task" {
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
+        },{
+          "name": "VOLUMETRICS_ENDPOINT",
+          "valueFrom": "${var.elasticsearch_endpoint}"
         }
       ],
       "secrets": [
@@ -89,9 +92,6 @@ resource "aws_ecs_task_definition" "logging_api_task" {
         },{
           "name": "USER_DB_USER",
           "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:username::"
-        },{
-          "name": "VOLUMETRICS_ENDPOINT",
-          "valueFrom": "${data.aws_secretsmanager_secret_version.volumetrics_elasticsearch_endpoint.arn}:endpoint::"
         }
       ],
       "links": null,

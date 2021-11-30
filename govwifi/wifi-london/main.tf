@@ -304,6 +304,8 @@ module "api" {
   rds_mysql_backup_bucket = module.backend.rds_mysql_backup_bucket
 
   low_cpu_threshold = 10
+
+  elasticsearch_endpoint = module.govwifi_elasticsearch.endpoint
 }
 
 module "critical_notifications" {

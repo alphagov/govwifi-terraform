@@ -296,6 +296,7 @@ module "api" {
 
   low_cpu_threshold = 0.3
 
+  elasticsearch_endpoint = module.govwifi_elasticsearch.endpoint
 }
 
 module "notifications" {
