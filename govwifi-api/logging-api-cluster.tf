@@ -76,7 +76,7 @@ resource "aws_ecs_task_definition" "logging_api_task" {
           "value": "ips-and-locations.json"
         },{
           "name": "VOLUMETRICS_ENDPOINT",
-          "valueFrom": "${var.elasticsearch_endpoint}"
+          "value": "${var.elasticsearch_endpoint}"
         }
       ],
       "secrets": [
