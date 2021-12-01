@@ -20,22 +20,6 @@ variable "backup_region_name" {
   default = "Dublin"
 }
 
-variable "zone_count" {
-  type    = string
-  default = "3"
-}
-
-# Zone names and subnets MUST be static, can not be constructed from vars.
-variable "zone_names" {
-  type = map(any)
-
-  default = {
-    zone0 = "eu-west-2a"
-    zone1 = "eu-west-2b"
-    zone2 = "eu-west-2c"
-  }
-}
-
 variable "ami" {
   # eu-west-2, Amazon Linux AMI 2017.09.l x86_64 ECS HVM GP2
   default     = "ami-2218f945"

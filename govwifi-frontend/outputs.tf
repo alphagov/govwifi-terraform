@@ -3,7 +3,7 @@ output "frontend_vpc_id" {
 }
 
 output "frontend_subnet_id" {
-  value = aws_subnet.wifi_frontend_subnet.*.id
+  value = [for subnet in aws_subnet.wifi_frontend_subnet : subnet.id]
 }
 
 output "fe_admin_in" {
@@ -25,8 +25,3 @@ output "fe_radius_out" {
 output "ecs_instance_profile" {
   value = aws_iam_instance_profile.ecs_instance_profile.id
 }
-
-output "wifi_frontend_subnet" {
-  value = aws_subnet.wifi_frontend_subnet.*.id
-}
-
