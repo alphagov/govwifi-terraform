@@ -14,14 +14,6 @@ data "aws_secretsmanager_secret" "users_db" {
   name = "rds/users-db/credentials"
 }
 
-data "aws_secretsmanager_secret_version" "volumetrics_elasticsearch_endpoint" {
-  secret_id = data.aws_secretsmanager_secret.volumetrics_elasticsearch_endpoint.id
-}
-
-data "aws_secretsmanager_secret" "volumetrics_elasticsearch_endpoint" {
-  name = "logging-api/volumetrics-elasticsearch-endpoint"
-}
-
 data "aws_secretsmanager_secret_version" "notify_api_key" {
   secret_id = data.aws_secretsmanager_secret.notify_api_key.id
 }

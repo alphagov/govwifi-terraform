@@ -175,3 +175,8 @@ variable "is_production_aws_account" {
 
 variable "rds_mysql_backup_bucket" {
 }
+
+variable "elasticsearch_endpoint" {
+  type    = string
+  default = ""
+}
