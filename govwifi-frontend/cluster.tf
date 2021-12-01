@@ -2,6 +2,11 @@
 
 resource "aws_ecs_cluster" "frontend_cluster" {
   name = "${var.env_name}-frontend-cluster"
+
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
 }
 
 resource "aws_cloudwatch_log_group" "frontend_log_group" {
