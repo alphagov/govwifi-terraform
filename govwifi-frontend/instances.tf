@@ -5,7 +5,7 @@ resource "aws_instance" "radius" {
   ami           = var.ami
   instance_type = "t2.medium"
   key_name      = var.ssh_key_name
-  subnet_id     = aws_subnet.wifi_frontend_subnet[data.aws_availability_zones.zones.names[0]].id
+  subnet_id     = aws_subnet.wifi_frontend_subnet[data.aws_availability_zones.zones.names[count.index]].id
 
   vpc_security_group_ids = [
     aws_security_group.fe_ecs_out.id,
