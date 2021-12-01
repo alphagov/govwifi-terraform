@@ -1,19 +1,3 @@
-variable "env_name" {
-  type    = string
-  default = "wifi"
-}
-
-variable "product_name" {
-  type    = string
-  default = "GovWifi"
-}
-
-variable "env_subdomain" {
-  type        = string
-  default     = "wifi"
-  description = "Environment-specific subdomain to use under the service domain."
-}
-
 variable "ssh_key_name" {
   type    = string
   default = "govwifi-key-20180530"

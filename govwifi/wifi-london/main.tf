@@ -4,8 +4,8 @@ module "tfstate" {
   }
 
   source             = "../../terraform-state"
-  product_name       = var.product_name
-  env_name           = var.env_name
+  product_name       = local.product_name
+  env_name           = local.env_name
   aws_account_id     = local.aws_account_id
   aws_region_name    = var.aws_region_name
   backup_region_name = var.backup_region_name
@@ -20,7 +20,7 @@ terraform {
 
   backend "s3" {
     # Interpolation is not allowed here.
-    #bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate"
+    #bucket = "${lower(local.product_name)}-${lower(local.env_name)}-${lower(var.aws_region_name)}-tfstate"
     #key    = "${lower(var.aws_region_name)}-tfstate"
     #region = "${var.aws_region}"
     bucket = "govwifi-wifi-london-tfstate"
@@ -82,8 +82,8 @@ module "backend" {
 
   source                    = "../../govwifi-backend"
   env                       = "production"
-  env_name                  = var.env_name
-  env_subdomain             = var.env_subdomain
+  env_name                  = local.env_name
+  env_subdomain             = local.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
 
@@ -147,8 +147,8 @@ module "frontend" {
   }
 
   source                    = "../../govwifi-frontend"
-  env_name                  = var.env_name
-  env_subdomain             = var.env_subdomain
+  env_name                  = local.env_name
+  env_subdomain             = local.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
   # AWS VPC setup -----------------------------------------
@@ -206,8 +206,8 @@ module "govwifi_admin" {
   }
 
   source                    = "../../govwifi-admin"
-  env_name                  = var.env_name
-  env_subdomain             = var.env_subdomain
+  env_name                  = local.env_name
+  env_subdomain             = local.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
   aws_region      = var.aws_region
@@ -249,7 +249,7 @@ module "govwifi_admin" {
   sentry_dsn                 = var.admin_sentry_dsn
   public_google_api_key      = var.public_google_api_key
 
-  logging_api_search_url = "https://api-elb.london.${var.env_subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
+  logging_api_search_url = "https://api-elb.london.${local.env_subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
 
   zendesk_api_endpoint = "https://govuk.zendesk.com/api/v2/"
   zendesk_api_user     = var.zendesk_api_user
@@ -264,8 +264,8 @@ module "api" {
 
   source                    = "../../govwifi-api"
   env                       = "production"
-  env_name                  = var.env_name
-  env_subdomain             = var.env_subdomain
+  env_name                  = local.env_name
+  env_subdomain             = local.env_subdomain
   is_production_aws_account = var.is_production_aws_account
 
   backend_elb_count      = 1
@@ -289,7 +289,7 @@ module "api" {
   wordlist_file_path    = "../wordlist-short"
   ecr_repository_count  = 1
 
-  db_hostname               = "db.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk"
+  db_hostname               = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
   rack_env                  = "production"
   sentry_current_env        = "production"
   radius_server_ips         = local.frontend_radius_ips
@@ -391,7 +391,7 @@ module "govwifi_dashboard" {
   }
 
   source   = "../../govwifi-dashboard"
-  env_name = var.env_name
+  env_name = local.env_name
 }
 
 /*
@@ -406,7 +406,7 @@ module "govwifi_prometheus" {
   }
 
   source   = "../../govwifi-prometheus"
-  env_name = var.env_name
+  env_name = local.env_name
 
   ssh_key_name = var.ssh_key_name
 
@@ -431,8 +431,8 @@ module "govwifi_grafana" {
   }
 
   source                     = "../../govwifi-grafana"
-  env_name                   = var.env_name
-  env_subdomain              = var.env_subdomain
+  env_name                   = local.env_name
+  env_subdomain              = local.env_subdomain
   aws_region                 = var.aws_region
   critical_notifications_arn = module.critical_notifications.topic_arn
 
@@ -477,8 +477,8 @@ module "govwifi_elasticsearch" {
   }
 
   source         = "../../govwifi-elasticsearch"
-  domain_name    = "${var.env_name}-elasticsearch"
-  env_name       = var.env_name
+  domain_name    = "${local.env_name}-elasticsearch"
+  env_name       = local.env_name
   aws_region     = var.aws_region
   aws_account_id = local.aws_account_id
   vpc_id         = module.backend.backend_vpc_id
