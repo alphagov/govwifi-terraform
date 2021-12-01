@@ -163,15 +163,6 @@ module "emails" {
 }
 
 # Global ====================================================================
-#moved for wifi-london
-#module "govwifi_account" {
-#  providers = {
-#    "aws" = "aws.main"
-#  }
-#
-#  source     = "../../govwifi-account"
-#  account-id = "${var.aws-parent-account-id}"
-#}
 
 module "dns" {
   providers = {

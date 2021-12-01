@@ -42,9 +42,8 @@ EOF
 
 
   tags = {
-    Name   = "${title(var.env_name)} Email Bucket"
-    Region = title(var.aws_region_name)
-    #   Product     = "${var.product_name}"
+    Name        = "${title(var.env_name)} Email Bucket"
+    Region      = title(var.aws_region_name)
     Environment = title(var.env_name)
     Category    = "User emails"
   }
@@ -116,9 +115,8 @@ EOF
 
 
   tags = {
-    Name   = "${title(var.env_name)} Admin Email Bucket"
-    Region = title(var.aws_region_name)
-    #   Product     = "${var.product_name}"
+    Name        = "${title(var.env_name)} Admin Email Bucket"
+    Region      = title(var.aws_region_name)
     Environment = title(var.env_name)
     Category    = "Admin emails"
   }

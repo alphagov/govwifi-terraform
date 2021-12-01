@@ -134,8 +134,6 @@ resource "aws_db_parameter_group" "user_rr_parameters" {
 }
 
 resource "aws_db_option_group" "mariadb_audit" {
-  # No harm in keeping the parameter group even if there is DB instance currently
-  #count                    = "${var.db_instance_count}"
   name = "${var.env_name}-db-audit"
 
   option_group_description = "Mariadb audit configuration"
