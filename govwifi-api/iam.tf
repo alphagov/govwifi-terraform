@@ -44,14 +44,14 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
 
 
 resource "aws_iam_user" "govwifi_deploy_pipeline" {
-  count         = !var.wordlist_bucket_count ? 0 : 1
+  count         = var.wordlist_bucket_count ? 1 : 0
   name          = "govwifi-deploy-pipeline"
   path          = "/"
   force_destroy = false
 }
 
 resource "aws_iam_policy" "govwifi_sync_cert_access" {
-  count       = !var.wordlist_bucket_count ? 0 : 1
+  count       = var.wordlist_bucket_count ? 1 : 0
   name        = "govwifi-sync-cert-access"
   path        = "/"
   description = "Allows deploy pipeline to access S3 buckets containing SSL certificates"
@@ -75,7 +75,7 @@ POLICY
 }
 
 resource "aws_iam_policy" "read_wordlist_policy" {
-  count       = !var.wordlist_bucket_count ? 0 : 1
+  count       = var.wordlist_bucket_count ? 1 : 0
   name        = "read-wordlist-policy"
   path        = "/"
   description = "Allows deploy pipeline group to read wordlist"
@@ -113,31 +113,31 @@ POLICY
 }
 
 resource "aws_iam_user_policy_attachment" "govwifi_sync_cert_access_policy_attachment" {
-  count      = !var.wordlist_bucket_count ? 0 : 1
+  count      = var.wordlist_bucket_count ? 1 : 0
   user       = aws_iam_user.govwifi_deploy_pipeline[0].name
   policy_arn = aws_iam_policy.govwifi_sync_cert_access[0].arn
 }
 
 resource "aws_iam_user_policy_attachment" "govwifi_read_wordlist_policy_attachment" {
-  count      = !var.wordlist_bucket_count ? 0 : 1
+  count      = var.wordlist_bucket_count ? 1 : 0
   user       = aws_iam_user.govwifi_deploy_pipeline[0].name
   policy_arn = aws_iam_policy.read_wordlist_policy[0].arn
 }
 
 resource "aws_iam_user_policy_attachment" "govwifi_ecs_policy_attachment" {
-  count      = !var.wordlist_bucket_count ? 0 : 1
+  count      = var.wordlist_bucket_count ? 1 : 0
   user       = aws_iam_user.govwifi_deploy_pipeline[0].name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
 }
 
 resource "aws_iam_user_policy_attachment" "govwifi_ecr_policy_attachment" {
-  count      = !var.wordlist_bucket_count ? 0 : 1
+  count      = var.wordlist_bucket_count ? 1 : 0
   user       = aws_iam_user.govwifi_deploy_pipeline[0].name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
 }
 
 resource "aws_iam_user_policy_attachment" "govwifi_deploy_pipeline_policy_attachment" {
-  count      = !var.wordlist_bucket_count ? 0 : 1
+  count      = var.wordlist_bucket_count ? 1 : 0
   user       = aws_iam_user.govwifi_deploy_pipeline[0].name
   policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
 }
