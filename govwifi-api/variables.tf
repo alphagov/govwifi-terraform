@@ -119,9 +119,9 @@ variable "ecr_repository_count" {
   description = "Whether or not to create ECR repository"
 }
 
-variable "wordlist_bucket_count" {
-  default     = false
-  description = "Whether or not to create wordlist bucket"
+variable "create_wordlist_bucket" {
+  type    = bool
+  default = false
 }
 
 variable "wordlist_file_path" {

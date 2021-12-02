@@ -273,9 +273,9 @@ module "api" {
   safe_restart_docker_image     = format("%s/safe-restarter:production", local.docker_image_path)
   backup_rds_to_s3_docker_image = format("%s/database-backup:production", local.docker_image_path)
 
-  wordlist_bucket_count = true
-  wordlist_file_path    = "../wordlist-short"
-  ecr_repository_count  = 1
+  create_wordlist_bucket = true
+  wordlist_file_path     = "../wordlist-short"
+  ecr_repository_count   = 1
 
   db_hostname               = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
   rack_env                  = "production"
