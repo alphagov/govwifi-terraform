@@ -231,11 +231,10 @@ module "api" {
     aws = aws.main
   }
 
-  env                       = "production"
-  source                    = "../../govwifi-api"
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  is_production_aws_account = var.is_production_aws_account
+  env           = "production"
+  source        = "../../govwifi-api"
+  env_name      = local.env_name
+  env_subdomain = local.env_subdomain
 
   backend_elb_count       = 1
   backend_instance_count  = 2
