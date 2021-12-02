@@ -1,7 +1,7 @@
 # Bucket to store MySQL RDS backups
 resource "aws_s3_bucket" "rds_mysql_backup_bucket" {
   count         = var.backup_mysql_rds ? 1 : 0
-  bucket        = var.is_production_aws_account ? "govwifi-${var.env_name}-${lower(var.aws_region_name)}-mysql-backup-data" : "govwifi-${var.env_subdomain}-${lower(var.aws_region_name)}-mysql-backup-data"
+  bucket        = "govwifi-${var.env_name}-${lower(var.aws_region_name)}-mysql-backup-data"
   force_destroy = true
   acl           = "private"
 

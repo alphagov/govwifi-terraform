@@ -80,12 +80,10 @@ module "backend" {
     # Instance-specific setup -------------------------------
   }
 
-  source                    = "../../govwifi-backend"
-  env                       = "production"
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  is_production_aws_account = var.is_production_aws_account
-
+  source        = "../../govwifi-backend"
+  env           = "production"
+  env_name      = local.env_name
+  env_subdomain = local.env_subdomain
 
   # AWS VPC setup -----------------------------------------
   aws_region      = var.aws_region
