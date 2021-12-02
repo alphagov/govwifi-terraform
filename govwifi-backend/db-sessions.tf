@@ -9,7 +9,7 @@ resource "aws_db_instance" "db" {
   apply_immediately           = true
   instance_class              = var.session_db_instance_type
   identifier                  = "wifi-${var.env_name}-db"
-  name                        = var.is_production_aws_account ? "govwifi_${var.env_name}" : "govwifi_${var.env}"
+  name                        = "govwifi_${var.env_name}"
   username                    = local.session_db_username
   password                    = local.session_db_password
   backup_retention_period     = var.db_backup_retention_days
