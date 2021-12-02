@@ -144,16 +144,15 @@ module "emails" {
 
   source = "../../govwifi-emails"
 
-  is_production_aws_account = var.is_production_aws_account
-  product_name              = local.product_name
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  aws_account_id            = local.aws_account_id
-  route53_zone_id           = data.aws_route53_zone.main.zone_id
-  aws_region                = var.aws_region
-  aws_region_name           = var.aws_region_name
-  mail_exchange_server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
-  devops_notifications_arn  = module.devops_notifications.topic_arn
+  product_name             = local.product_name
+  env_name                 = local.env_name
+  env_subdomain            = local.env_subdomain
+  aws_account_id           = local.aws_account_id
+  route53_zone_id          = data.aws_route53_zone.main.zone_id
+  aws_region               = var.aws_region
+  aws_region_name          = var.aws_region_name
+  mail_exchange_server     = "10 inbound-smtp.eu-west-1.amazonaws.com"
+  devops_notifications_arn = module.devops_notifications.topic_arn
 
   #sns-endpoint             = "https://elb.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk/sns/"
   sns_endpoint                       = "https://elb.london.${local.env_subdomain}.service.gov.uk/sns/"

@@ -31,6 +31,3 @@ variable "user_signup_notifications_endpoint" {
 
 variable "devops_notifications_arn" {
 }
-
-variable "is_production_aws_account" {
-}
