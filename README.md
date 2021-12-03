@@ -123,12 +123,10 @@ It should look like this, `module.backend.aws_instance.management`:
 | module  | backend | aws_instance | management |
 
 ## Bootstrapping terraform
+You will need to run terraform in the **eu-west-2 (London) region** first. If you try to run terraform in the eu-west-1 region first, you will encounter errors because the Dublin Terraform looks up outputs from the London region statefile.
 
 ### Setting Up Remote State
-We use remote state, but there is a chicken and egg problem of creating
-a state bucket in which to store the remote state. When you are first creating a
-new environment (or migrating an environment not using remote state to use
-remote state) you will need to do the following
+We use remote state, but there is a chicken and egg problem of creating a state bucket in which to store the remote state. When you are first creating a new environment (or migrating an environment not using remote state to use remote state) you will need to do the following
 
 Comment out the section
 ```
@@ -136,9 +134,15 @@ terraform {
   backend          "s3"             {}
 }
 ```
-in the main.tf file of the environment to be migrated
+in the main.tf file of the environment to be migrated. Then comment out the lines related to replication configuration in govwifi-terraform/terraform-state/accesslogs.tf and govwifi-terraform/terraform-state/tfstate.tf.
+```
+replication_configuration{
+  ....
+}
+```
+The first time terraform is run in a new environment the replication configuration lines need to be commented out because the replication bucket in eu-west-1 will not yet exist. Leaving these lines uncommented will cause an error.
 
-Run
+Now run
 
 ```
 make <ENV> plan
@@ -152,7 +156,7 @@ make <ENV> apply
 This should create the remote state bucket for you if migrating, or create the
 entire infrastructure with a local state file if creating a new env
 
-Then uncomment the backend section and run
+Then uncomment the backend section in main.tf and run
 
 ```
 make <ENV> init-backend
@@ -164,7 +168,7 @@ Then run
 make <ENV> apply
 ```
 
-This should then copy the state file to s3 and use this for all operations
+This should then copy the state file to s3, which will be used for all operations. Once you have run terraform in both regions, and the S3 buckets used for the access log replication have been created, uncomment the replication configuration sections in govwifi-terraform/terraform-state/accesslogs.tf and govwifi-terraform/terraform-state/tfstate.tf.
 
 ### Manual Steps Needed to Set Up a New Environment
 
