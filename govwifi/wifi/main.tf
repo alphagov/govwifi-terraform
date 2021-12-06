@@ -179,11 +179,9 @@ module "frontend" {
     aws.us_east_1 = aws.us_east_1
   }
 
-  source                    = "../../govwifi-frontend"
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  is_production_aws_account = var.is_production_aws_account
-
+  source        = "../../govwifi-frontend"
+  env_name      = local.env_name
+  env_subdomain = local.env_subdomain
 
   # AWS VPC setup -----------------------------------------
   aws_region         = var.aws_region

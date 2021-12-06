@@ -174,7 +174,7 @@ module "frontend" {
   source                    = "../../govwifi-frontend"
   env_name                  = local.env_name
   env_subdomain             = local.env_subdomain
-  is_production_aws_account = var.is_production_aws_account
+  is_production_aws_account = false
 
   # AWS VPC setup -----------------------------------------
   aws_region         = var.aws_region

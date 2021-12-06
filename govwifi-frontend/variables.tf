@@ -92,4 +92,5 @@ variable "prometheus_ip_ireland" {
 }
 
 variable "is_production_aws_account" {
+  default = true
 }
