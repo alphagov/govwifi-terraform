@@ -75,9 +75,3 @@ resource "aws_iam_user" "monitoring_stats_user" {
   path          = "/"
   force_destroy = false
 }
-
-resource "aws_iam_user" "it_govwifi_backup_reader" {
-  name          = "it-govwifi-backup-reader"
-  path          = "/"
-  force_destroy = false
-}

@@ -1,18 +1,15 @@
 resource "aws_iam_user" "it_govwifi_backup_reader" {
-  # Don't create this policy in production or in environments where backups aren't
-  # enabled
-  count         = var.is_production_aws_account || var.backup_mysql_rds == false ? 0 : 1
-  name          = "it-govwifi-backup-reader"
-  path          = "/"
-  force_destroy = false
+  count = var.backup_mysql_rds ? 1 : 0
+
+  name = "it-govwifi-backup-reader"
+  path = "/"
 }
 
 resource "aws_iam_user_policy" "backup_s3_read_buckets_user_policy" {
-  # Don't create this policy in production or in environments where backups aren't
-  # enabled.
-  count = var.is_production_aws_account || var.backup_mysql_rds == false ? 0 : 1
-  name  = "backup-s3-read-buckets"
-  user  = "it-govwifi-backup-reader"
+  count = var.backup_mysql_rds ? 1 : 0
+
+  name = "backup-s3-read-buckets"
+  user = "it-govwifi-backup-reader"
 
   policy = <<POLICY
 {

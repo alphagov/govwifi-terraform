@@ -103,9 +103,3 @@ variable "backup_mysql_rds" {
   default     = true
   type        = bool
 }
-
-variable "is_production_aws_account" {
-  description = "Conditional to indicate if the environment is production or not."
-  default     = false
-  type        = bool
-}

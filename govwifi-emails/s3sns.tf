@@ -191,7 +191,6 @@ EOF
 
 # Subscription
 resource "aws_sns_topic_subscription" "email_notifications_target" {
-  count                           = var.is_production_aws_account ? 1 : 0
   topic_arn                       = aws_sns_topic.govwifi_email_notifications.arn
   protocol                        = "https"
   endpoint                        = var.sns_endpoint

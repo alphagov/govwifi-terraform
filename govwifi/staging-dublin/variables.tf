@@ -70,9 +70,3 @@ variable "dublin_radius_ip_addresses" {
 
 variable "grafana_ip" {
 }
-
-variable "is_production_aws_account" {
-  description = "Conditional to indicate if the enviroment is production or not."
-  default     = false
-  type        = bool
-}

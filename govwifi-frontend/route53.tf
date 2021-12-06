@@ -2,14 +2,10 @@
 resource "aws_route53_record" "radius" {
   count   = var.radius_instance_count
   zone_id = var.route53_zone_id
-  name = var.is_production_aws_account ? format(
+  name = format(
     "radius%d.%s.service.gov.uk",
     var.dns_numbering_base + count.index + 1,
     var.env_subdomain
-    ) : format(
-    "radius%d.%s.service.gov.uk",
-    var.dns_numbering_base + count.index + 1,
-    "staging"
   )
   type    = "CNAME"
   ttl     = "300"
@@ -22,11 +18,8 @@ resource "aws_route53_record" "radius" {
 
 resource "aws_route53_health_check" "radius" {
   count = var.radius_instance_count
-  reference_name = var.is_production_aws_account ? format(
+  reference_name = format(
     "${var.env_name}-${var.aws_region_name}-frontend-%d",
-    count.index + 1
-    ) : format(
-    "${var.rack_env}-${var.aws_region_name}-frontend-%d",
     count.index + 1
   )
   ip_address        = element(aws_eip_association.eip_assoc.*.public_ip, count.index)

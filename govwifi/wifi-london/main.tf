@@ -80,12 +80,10 @@ module "backend" {
     # Instance-specific setup -------------------------------
   }
 
-  source                    = "../../govwifi-backend"
-  env                       = "production"
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  is_production_aws_account = var.is_production_aws_account
-
+  source        = "../../govwifi-backend"
+  env           = "production"
+  env_name      = local.env_name
+  env_subdomain = local.env_subdomain
 
   # AWS VPC setup -----------------------------------------
   aws_region      = var.aws_region
@@ -143,10 +141,9 @@ module "frontend" {
     aws.us_east_1 = aws.us_east_1
   }
 
-  source                    = "../../govwifi-frontend"
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  is_production_aws_account = var.is_production_aws_account
+  source        = "../../govwifi-frontend"
+  env_name      = local.env_name
+  env_subdomain = local.env_subdomain
 
   # AWS VPC setup -----------------------------------------
   # LONDON
@@ -194,10 +191,9 @@ module "govwifi_admin" {
     aws = aws.main
   }
 
-  source                    = "../../govwifi-admin"
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  is_production_aws_account = var.is_production_aws_account
+  source        = "../../govwifi-admin"
+  env_name      = local.env_name
+  env_subdomain = local.env_subdomain
 
   aws_region      = var.aws_region
   aws_region_name = var.aws_region_name
@@ -251,11 +247,10 @@ module "api" {
     aws = aws.main
   }
 
-  source                    = "../../govwifi-api"
-  env                       = "production"
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  is_production_aws_account = var.is_production_aws_account
+  source        = "../../govwifi-api"
+  env           = "production"
+  env_name      = local.env_name
+  env_subdomain = local.env_subdomain
 
   backend_elb_count      = 1
   backend_instance_count = 3
@@ -274,9 +269,9 @@ module "api" {
   safe_restart_docker_image     = format("%s/safe-restarter:production", local.docker_image_path)
   backup_rds_to_s3_docker_image = format("%s/database-backup:production", local.docker_image_path)
 
-  wordlist_bucket_count = true
-  wordlist_file_path    = "../wordlist-short"
-  ecr_repository_count  = 1
+  create_wordlist_bucket = true
+  wordlist_file_path     = "../wordlist-short"
+  ecr_repository_count   = 1
 
   db_hostname               = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
   rack_env                  = "production"

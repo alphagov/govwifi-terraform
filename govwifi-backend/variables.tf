@@ -134,6 +134,3 @@ variable "db_storage_alarm_threshold" {
   description = "DB storage threshold used for alarms. Value varies based on environment and storage average."
   type        = number
 }
-
-variable "is_production_aws_account" {
-}

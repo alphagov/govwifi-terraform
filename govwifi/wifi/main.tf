@@ -78,12 +78,10 @@ module "backend" {
     aws = aws.main
   }
 
-  source                    = "../../govwifi-backend"
-  env                       = "production"
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  is_production_aws_account = var.is_production_aws_account
-
+  source        = "../../govwifi-backend"
+  env           = "production"
+  env_name      = local.env_name
+  env_subdomain = local.env_subdomain
 
   # AWS VPC setup -----------------------------------------
   aws_region      = var.aws_region
@@ -146,16 +144,15 @@ module "emails" {
 
   source = "../../govwifi-emails"
 
-  is_production_aws_account = var.is_production_aws_account
-  product_name              = local.product_name
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  aws_account_id            = local.aws_account_id
-  route53_zone_id           = data.aws_route53_zone.main.zone_id
-  aws_region                = var.aws_region
-  aws_region_name           = var.aws_region_name
-  mail_exchange_server      = "10 inbound-smtp.eu-west-1.amazonaws.com"
-  devops_notifications_arn  = module.devops_notifications.topic_arn
+  product_name             = local.product_name
+  env_name                 = local.env_name
+  env_subdomain            = local.env_subdomain
+  aws_account_id           = local.aws_account_id
+  route53_zone_id          = data.aws_route53_zone.main.zone_id
+  aws_region               = var.aws_region
+  aws_region_name          = var.aws_region_name
+  mail_exchange_server     = "10 inbound-smtp.eu-west-1.amazonaws.com"
+  devops_notifications_arn = module.devops_notifications.topic_arn
 
   #sns-endpoint             = "https://elb.${lower(var.aws_region_name)}.${var.env_subdomain}.service.gov.uk/sns/"
   sns_endpoint                       = "https://elb.london.${local.env_subdomain}.service.gov.uk/sns/"
@@ -182,11 +179,9 @@ module "frontend" {
     aws.us_east_1 = aws.us_east_1
   }
 
-  source                    = "../../govwifi-frontend"
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  is_production_aws_account = var.is_production_aws_account
-
+  source        = "../../govwifi-frontend"
+  env_name      = local.env_name
+  env_subdomain = local.env_subdomain
 
   # AWS VPC setup -----------------------------------------
   aws_region         = var.aws_region
@@ -231,11 +226,10 @@ module "api" {
     aws = aws.main
   }
 
-  env                       = "production"
-  source                    = "../../govwifi-api"
-  env_name                  = local.env_name
-  env_subdomain             = local.env_subdomain
-  is_production_aws_account = var.is_production_aws_account
+  env           = "production"
+  source        = "../../govwifi-api"
+  env_name      = local.env_name
+  env_subdomain = local.env_subdomain
 
   backend_elb_count       = 1
   backend_instance_count  = 2

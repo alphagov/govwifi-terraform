@@ -90,9 +90,3 @@ variable "prometheus_ip_ireland" {
 
 variable "grafana_ip" {
 }
-
-variable "is_production_aws_account" {
-  description = "Conditional to indicate if the enviroment is production or not."
-  default     = true
-  type        = bool
-}

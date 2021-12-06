@@ -173,5 +173,12 @@ resource "aws_security_group" "fe_radius_in" {
 
 data "aws_ip_ranges" "route53_healthcheck" {
   services = ["route53_healthchecks"]
-  regions  = var.is_production_aws_account ? ["eu-west-1", "us-east-1", "us-west-1"] : ["global"]
+
+  # Depending on AWS internals, healthchecks can come from region
+  # specific IP ranges, or a global range, and this can vary between
+  # AWS accounts.
+  #
+  # Since there isn't an obvious way of allowing the relevant set of
+  # IP ranges in each account, allow all of the potential ranges
+  regions = ["global", "eu-west-1", "us-east-1", "us-west-1"]
 }
