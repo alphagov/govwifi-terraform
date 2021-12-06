@@ -141,10 +141,6 @@ module "emails" {
   devops_notifications_arn = module.notifications.topic_arn
 
   user_signup_notifications_endpoint = "https://user-signup-api.${local.env_subdomain}.service.gov.uk:8443/user-signup/email-notification"
-
-  // The SNS endpoint is disabled in the secondary AWS account
-  // We will conduct an SNS inventory (see this card: https://trello.com/c/EMeet3tl/315-investigate-and-inventory-sns-topics)
-  sns_endpoint = ""
 }
 
 module "govwifi_keys" {
