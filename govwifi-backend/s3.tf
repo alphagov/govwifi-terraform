@@ -1,4 +1,6 @@
 # Bucket to store MySQL RDS backups
+# Please notify the CDIO IT team if the bucket name is changed.
+# The bucket is used in the GovWifi's offsite backup script.
 resource "aws_s3_bucket" "rds_mysql_backup_bucket" {
   count         = var.backup_mysql_rds ? 1 : 0
   bucket        = "govwifi-${var.env_name}-${lower(var.aws_region_name)}-mysql-backup-data"
