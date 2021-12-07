@@ -3,6 +3,8 @@ locals {
   env_subdomain = "wifi" # Environment specific subdomain to use under the service domain
 
   product_name = "GovWifi"
+
+  backup_mysql_rds = true
 }
 
 locals {

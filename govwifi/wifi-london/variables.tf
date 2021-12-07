@@ -106,9 +106,3 @@ variable "prometheus_ip_ireland" {
 
 variable "grafana_ip" {
 }
-
-variable "backup_mysql_rds" {
-  description = "Conditional to indicate whether to make artifacts for and run RDS MySQL backups."
-  default     = true
-  type        = bool
-}
