@@ -264,7 +264,6 @@ module "api" {
   subnet_ids                = module.backend.backend_subnet_ids
   user_db_hostname          = var.user_db_hostname
   user_rr_hostname          = var.user_rr_hostname
-  backup_mysql_rds          = false
   rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
 
   backend_sg_list = [
