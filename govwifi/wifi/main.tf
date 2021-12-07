@@ -231,7 +231,7 @@ module "api" {
 
   backend_elb_count       = 1
   backend_instance_count  = 2
-  authorisation_api_count = 3
+  authentication_api_count = 3
   aws_account_id          = local.aws_account_id
   aws_region_name         = lower(var.aws_region_name)
   aws_region              = var.aws_region
