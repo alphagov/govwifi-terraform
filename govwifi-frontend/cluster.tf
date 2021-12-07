@@ -83,6 +83,9 @@ resource "aws_ecs_task_definition" "radius_task" {
         "name": "AUTHORISATION_API_BASE_URL",
         "value": "${var.auth_api_base_url}"
       },{
+        "name": "AUTHENTICATION_API_BASE_URL",
+        "value": "${var.auth_api_base_url}"
+      },{
         "name": "LOGGING_API_BASE_URL",
         "value": "${var.logging_api_base_url}"
       },{
