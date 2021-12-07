@@ -263,7 +263,7 @@ module "api" {
   devops_notifications_arn = module.devops_notifications.topic_arn
   notification_arn         = module.region_pagerduty.topic_arn
 
-  auth_docker_image             = format("%s/authorisation-api:production", local.docker_image_path)
+  auth_docker_image             = format("%s/authentication-api:production", local.docker_image_path)
   user_signup_docker_image      = format("%s/user-signup-api:production", local.docker_image_path)
   logging_docker_image          = format("%s/logging-api:production", local.docker_image_path)
   safe_restart_docker_image     = format("%s/safe-restarter:production", local.docker_image_path)
