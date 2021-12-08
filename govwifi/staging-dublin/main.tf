@@ -256,7 +256,6 @@ module "api" {
   authentication_sentry_dsn = var.auth_sentry_dsn
   safe_restart_sentry_dsn   = ""
   subnet_ids                = module.backend.backend_subnet_ids
-  backup_mysql_rds          = false
   rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
 
   admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name

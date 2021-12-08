@@ -116,7 +116,7 @@ module "backend" {
   prometheus_ip_ireland = var.prometheus_ip_ireland
   grafana_ip            = var.grafana_ip
 
-  backup_mysql_rds = var.backup_mysql_rds
+  backup_mysql_rds = local.backup_mysql_rds
 
   db_storage_alarm_threshold = 19327342936
 }
@@ -289,7 +289,7 @@ module "api" {
   export_data_bucket_name = module.govwifi_dashboard.export_data_bucket_name
 
   rds_mysql_backup_bucket = module.backend.rds_mysql_backup_bucket
-  backup_mysql_rds        = var.backup_mysql_rds
+  backup_mysql_rds        = local.backup_mysql_rds
 
   low_cpu_threshold = 0.3
 

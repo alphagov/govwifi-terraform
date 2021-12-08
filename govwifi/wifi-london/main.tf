@@ -129,7 +129,7 @@ module "backend" {
   prometheus_ip_ireland = var.prometheus_ip_ireland
   grafana_ip            = var.grafana_ip
 
-  backup_mysql_rds = var.backup_mysql_rds
+  backup_mysql_rds = local.backup_mysql_rds
 
   db_storage_alarm_threshold = 32212254720
 }
