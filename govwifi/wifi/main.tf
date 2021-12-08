@@ -229,14 +229,14 @@ module "api" {
   env_name      = local.env_name
   env_subdomain = local.env_subdomain
 
-  backend_elb_count       = 1
-  backend_instance_count  = 2
+  backend_elb_count        = 1
+  backend_instance_count   = 2
   authentication_api_count = 3
-  aws_account_id          = local.aws_account_id
-  aws_region_name         = lower(var.aws_region_name)
-  aws_region              = var.aws_region
-  route53_zone_id         = data.aws_route53_zone.main.zone_id
-  vpc_id                  = module.backend.backend_vpc_id
+  aws_account_id           = local.aws_account_id
+  aws_region_name          = lower(var.aws_region_name)
+  aws_region               = var.aws_region
+  route53_zone_id          = data.aws_route53_zone.main.zone_id
+  vpc_id                   = module.backend.backend_vpc_id
 
   user_signup_enabled  = 0
   logging_enabled      = 0
