@@ -516,7 +516,7 @@ resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
           "value": "${var.metrics_bucket_name}"
         },{
           "name": "VOLUMETRICS_ENDPOINT",
-          "value": "${var.elasticsearch_endpoint}"
+          "value": "https://${var.elasticsearch_endpoint}"
         }
       ],
       "secrets": [
