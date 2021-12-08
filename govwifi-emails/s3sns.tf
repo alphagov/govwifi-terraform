@@ -189,16 +189,6 @@ EOF
 
 }
 
-# Subscription
-resource "aws_sns_topic_subscription" "email_notifications_target" {
-  topic_arn                       = aws_sns_topic.govwifi_email_notifications.arn
-  protocol                        = "https"
-  endpoint                        = var.sns_endpoint
-  endpoint_auto_confirms          = true
-  confirmation_timeout_in_minutes = 2
-  depends_on                      = [aws_sns_topic.govwifi_email_notifications]
-}
-
 # SNS topic to notify the new user-signup API when an email arrives
 resource "aws_sns_topic" "user_signup_notifications" {
   name         = "${var.env_name}-user-signup-notifications"
