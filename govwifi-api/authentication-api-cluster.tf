@@ -1,3 +1,9 @@
+resource "aws_cloudwatch_log_group" "authorisation_api_log_group" {
+  name = "${var.env_name}-authorisation-api-docker-log-group"
+
+  retention_in_days = 90
+}
+
 resource "aws_cloudwatch_log_group" "authentication_api_log_group" {
   name = "${var.env_name}-authentication-api-docker-log-group"
 
