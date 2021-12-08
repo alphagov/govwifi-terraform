@@ -295,7 +295,7 @@ module "api" {
   metrics_bucket_name     = module.govwifi_dashboard.metrics_bucket_name
   export_data_bucket_name = module.govwifi_dashboard.export_data_bucket_name
 
-  backup_mysql_rds        = var.backup_mysql_rds
+  backup_mysql_rds        = local.backup_mysql_rds
   rds_mysql_backup_bucket = module.backend.rds_mysql_backup_bucket
 
   low_cpu_threshold = 10
