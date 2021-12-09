@@ -4,12 +4,6 @@ resource "aws_iam_user" "govwifi_pipeline_deploy_prod" {
   force_destroy = false
 }
 
-resource "aws_iam_user" "govwifi_pipeline_deploy_admin" {
-  name          = "govwifi-pipeline-deploy-admin"
-  path          = "/"
-  force_destroy = false
-}
-
 resource "aws_iam_user" "govwifi_pipeline_deploy_smoketest" {
   name          = "govwifi-pipeline-deploy-smoketest"
   path          = "/"
@@ -42,14 +36,6 @@ resource "aws_iam_user_group_membership" "govwifi_pipeline_deploy_prod" {
 
 resource "aws_iam_user_group_membership" "govwifi_pipeline_deploy_smoketest" {
   user = "govwifi-pipeline-deploy-smoketest"
-
-  groups = [
-    "GovWifi-Pipeline",
-  ]
-}
-
-resource "aws_iam_user_group_membership" "govwifi_pipeline_deploy_admin" {
-  user = "govwifi-pipeline-deploy-admin"
 
   groups = [
     "GovWifi-Pipeline",
