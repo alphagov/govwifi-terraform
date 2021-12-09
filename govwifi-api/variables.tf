@@ -170,10 +170,6 @@ variable "low_cpu_threshold" {
   type        = number
 }
 
-variable "is_production_aws_account" {
-  default = true
-}
-
 variable "rds_mysql_backup_bucket" {
 }
 
