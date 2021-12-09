@@ -10,12 +10,6 @@ resource "aws_iam_user" "govwifi_pipeline_deploy_admin" {
   force_destroy = false
 }
 
-resource "aws_iam_user" "govwifi_pipeline_deploy_staging" {
-  name          = "govwifi-pipeline-deploy-staging"
-  path          = "/"
-  force_destroy = false
-}
-
 resource "aws_iam_user" "govwifi_pipeline_deploy_smoketest" {
   name          = "govwifi-pipeline-deploy-smoketest"
   path          = "/"
@@ -40,14 +34,6 @@ resource "aws_iam_user_group_membership" "govwifi_pipeline_terraform" {
 
 resource "aws_iam_user_group_membership" "govwifi_pipeline_deploy_prod" {
   user = "govwifi-pipeline-deploy-prod"
-
-  groups = [
-    "GovWifi-Pipeline",
-  ]
-}
-
-resource "aws_iam_user_group_membership" "govwifi_pipeline_deploy_staging" {
-  user = "govwifi-pipeline-deploy-staging"
 
   groups = [
     "GovWifi-Pipeline",
