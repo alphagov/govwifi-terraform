@@ -139,8 +139,8 @@ data "aws_iam_policy_document" "cert_bucket_policy" {
     ]
 
     resources = [
-      aws_s3_bucket.frontend_cert_bucket[0].arn,
-      "${aws_s3_bucket.frontend_cert_bucket[0].arn}/*",
+      aws_s3_bucket.frontend_cert_bucket.arn,
+      "${aws_s3_bucket.frontend_cert_bucket.arn}/*",
     ]
   }
 }
