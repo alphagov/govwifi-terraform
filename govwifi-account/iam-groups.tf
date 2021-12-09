@@ -33,11 +33,6 @@ resource "aws_iam_group" "GovWifi_Support" {
   path = "/"
 }
 
-resource "aws_iam_group" "GovWifi_Pipeline" {
-  name = "GovWifi-Pipeline"
-  path = "/"
-}
-
 resource "aws_iam_group" "ITHC_RO_SecAud_Group" {
   name = "ITHC-RO-SecAud-Group"
   path = "/"

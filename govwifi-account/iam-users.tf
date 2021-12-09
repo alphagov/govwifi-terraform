@@ -26,22 +26,6 @@ resource "aws_iam_user_group_membership" "govwifi_pipeline_terraform" {
   ]
 }
 
-resource "aws_iam_user_group_membership" "govwifi_pipeline_deploy_prod" {
-  user = "govwifi-pipeline-deploy-prod"
-
-  groups = [
-    "GovWifi-Pipeline",
-  ]
-}
-
-resource "aws_iam_user_group_membership" "govwifi_pipeline_deploy_smoketest" {
-  user = "govwifi-pipeline-deploy-smoketest"
-
-  groups = [
-    "GovWifi-Pipeline",
-  ]
-}
-
 resource "aws_iam_user" "monitoring_stats_user" {
   name          = "monitoring-stats-user"
   path          = "/"
