@@ -10,22 +10,6 @@ resource "aws_iam_user" "govwifi_pipeline_deploy_smoketest" {
   force_destroy = false
 }
 
-resource "aws_iam_user" "govwifi_pipeline_terraform" {
-  name          = "govwifi-pipeline-terraform"
-  path          = "/"
-  force_destroy = false
-}
-
-# Groups for the users
-
-resource "aws_iam_user_group_membership" "govwifi_pipeline_terraform" {
-  user = "govwifi-pipeline-terraform"
-
-  groups = [
-    "AWS-Admin",
-  ]
-}
-
 resource "aws_iam_user" "monitoring_stats_user" {
   name          = "monitoring-stats-user"
   path          = "/"
