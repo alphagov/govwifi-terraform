@@ -59,8 +59,3 @@ resource "aws_iam_user_policy_attachment" "deploy_smoketest_ec2_container_regist
   user       = aws_iam_user.govwifi_pipeline_deploy_smoketest.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
 }
-
-resource "aws_iam_user_policy_attachment" "deploy_smoketest_read_wordlist" {
-  user       = aws_iam_user.govwifi_pipeline_deploy_smoketest.name
-  policy_arn = "arn:aws:iam::${var.aws_account_id}:policy/read-wordlist-policy"
-}
