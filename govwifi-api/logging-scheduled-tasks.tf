@@ -563,7 +563,7 @@ resource "aws_cloudwatch_event_target" "sync_s3_to_elasticsearch" {
   target_id = "${var.env_name}-sync-s3-to-elasticsearch"
   arn       = aws_ecs_cluster.api_cluster.arn
   rule      = aws_cloudwatch_event_rule.sync_s3_to_elasticsearch_event[0].name
-  role_arn  = aws_iam_role.logging_api_task_role[0].arn
+  role_arn  = aws_iam_role.logging_scheduled_task_role[0].arn
 
   ecs_target {
     task_count          = 1
