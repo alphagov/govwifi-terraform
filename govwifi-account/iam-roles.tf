@@ -434,28 +434,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "Dublin_frontend_ecs_task_role_wifi" {
-  name = "Dublin-frontend-ecs-task-role-wifi"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "Dublin_wifi_backend_bastion_instance_role" {
   name = "Dublin-wifi-backend-bastion-instance-role"
   path = "/"
@@ -920,28 +898,6 @@ resource "aws_iam_role" "London_frontend_ecs_instance_role_wifi" {
       "Effect": "Allow",
       "Principal": {
         "Service": "ec2.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "London_frontend_ecs_task_role_wifi" {
-  name = "London-frontend-ecs-task-role-wifi"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     }
@@ -1546,80 +1502,6 @@ POLICY
 
 }
 
-resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_wifi_Dublin_frontend_admin_bucket_wifi" {
-  name = "Dublin-frontend-admin-bucket-wifi"
-  role = "Dublin-frontend-ecs-task-role-wifi"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": [
-        "s3:ListBucket",
-        "s3:GetObject"
-      ],
-      "Resource": [
-        "arn:aws:s3:::govwifi-production-admin/*",
-        "arn:aws:s3:::govwifi-production-admin"
-      ]
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_wifi_Dublin_frontend_cert_bucket_wifi" {
-  name = "Dublin-frontend-cert-bucket-wifi"
-  role = "Dublin-frontend-ecs-task-role-wifi"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": [
-        "s3:ListBucket",
-        "s3:GetObject"
-      ],
-      "Resource": [
-        "arn:aws:s3:::govwifi-production-dublin-frontend-cert/*",
-        "arn:aws:s3:::govwifi-production-dublin-frontend-cert"
-      ]
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "Dublin_frontend_ecs_task_role_wifi_Dublin_frontend_ecs_service_policy_wifi" {
-  name = "Dublin-frontend-ecs-service-policy-wifi"
-  role = "Dublin-frontend-ecs-task-role-wifi"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:AuthorizeSecurityGroupIngress",
-        "ec2:Describe*"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role_policy" "Dublin_wifi_backend_bastion_instance_role_Dublin_wifi_backend_bastion_instance_policy" {
   name = "Dublin-wifi-backend-bastion-instance-policy"
   role = "Dublin-wifi-backend-bastion-instance-role"
@@ -1951,80 +1833,6 @@ resource "aws_iam_role_policy" "London_frontend_ecs_instance_role_wifi_London_fr
         "cloudwatch:GetMetricStatistics",
         "cloudwatch:ListMetrics",
         "ec2:DescribeTags"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "London_frontend_ecs_task_role_wifi_London_frontend_admin_bucket_wifi" {
-  name = "London-frontend-admin-bucket-wifi"
-  role = "London-frontend-ecs-task-role-wifi"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": [
-        "s3:ListBucket",
-        "s3:GetObject"
-      ],
-      "Resource": [
-        "arn:aws:s3:::govwifi-production-admin/*",
-        "arn:aws:s3:::govwifi-production-admin"
-      ]
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "London_frontend_ecs_task_role_wifi_London_frontend_cert_bucket_wifi" {
-  name = "London-frontend-cert-bucket-wifi"
-  role = "London-frontend-ecs-task-role-wifi"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Action": [
-        "s3:ListBucket",
-        "s3:GetObject"
-      ],
-      "Resource": [
-        "arn:aws:s3:::govwifi-production-london-frontend-cert/*",
-        "arn:aws:s3:::govwifi-production-london-frontend-cert"
-      ]
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role_policy" "London_frontend_ecs_task_role_wifi_London_frontend_ecs_service_policy_wifi" {
-  name = "London-frontend-ecs-service-policy-wifi"
-  role = "London-frontend-ecs-task-role-wifi"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:AuthorizeSecurityGroupIngress",
-        "ec2:Describe*"
       ],
       "Resource": "*"
     }
