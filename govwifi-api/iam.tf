@@ -92,7 +92,7 @@ resource "aws_iam_policy" "read_wordlist_policy" {
         "s3:GetBucketVersioning",
         "s3:ListBucket"
       ],
-      "Resource": "arn:aws:s3:::govwifi-${var.env_subdomain}-wordlist"
+      "Resource": "${aws_s3_bucket.wordlist[0].arn}"
     },
     {
       "Sid": "readWordListPolicy1",
@@ -104,7 +104,7 @@ resource "aws_iam_policy" "read_wordlist_policy" {
         "s3:GetObjectVersion",
         "s3:PutObjectVersionAcl"
       ],
-      "Resource": "arn:aws:s3:::govwifi-${var.env_subdomain}-wordlist/*"
+      "Resource": "${aws_s3_bucket.wordlist[0].arn}/*"
     }
   ]
 }
