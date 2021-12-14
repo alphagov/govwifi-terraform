@@ -112,6 +112,32 @@ POLICY
 
 }
 
+
+resource "aws_iam_policy" "read_ssm_parameters" {
+  count = var.create_wordlist_bucket ? 1 : 0
+
+  name        = "read-parameters"
+  path        = "/"
+  description = "Allows deploy pipeline user to read parameters"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "readSSMParameters",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:GetParameter"
+      ],
+      "Resource": "arn:aws:ssm:*:${var.aws_account_id}:parameter/govwifi-terraform/*"
+    }
+  ]
+}
+POLICY
+
+}
+
 resource "aws_iam_user_policy_attachment" "govwifi_sync_cert_access_policy_attachment" {
   count      = var.create_wordlist_bucket ? 1 : 0
   user       = aws_iam_user.govwifi_deploy_pipeline[0].name
@@ -122,6 +148,12 @@ resource "aws_iam_user_policy_attachment" "govwifi_read_wordlist_policy_attachme
   count      = var.create_wordlist_bucket ? 1 : 0
   user       = aws_iam_user.govwifi_deploy_pipeline[0].name
   policy_arn = aws_iam_policy.read_wordlist_policy[0].arn
+}
+
+resource "aws_iam_user_policy_attachment" "govwifi_read_ssm_parameters_policy_attachment" {
+  count      = var.create_wordlist_bucket ? 1 : 0
+  user       = aws_iam_user.govwifi_deploy_pipeline[0].name
+  policy_arn = aws_iam_policy.read_ssm_parameters[0].arn
 }
 
 resource "aws_iam_user_policy_attachment" "govwifi_ecs_policy_attachment" {
