@@ -20,27 +20,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "AggregateStagingMetrics_role_gej26flk" {
-  name = "AggregateStagingMetrics-role-gej26flk"
-  path = "/service-role/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "AWSServiceRoleForAmazonGuardDuty" {
   name = "AWSServiceRoleForAmazonGuardDuty"
   path = "/aws-service-role/guardduty.amazonaws.com/"
@@ -774,27 +753,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "GovWifiMetricsAggregationPrototype_role_ayhlh17x" {
-  name = "GovWifiMetricsAggregationPrototype-role-ayhlh17x"
-  path = "/service-role/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "London_ecs_admin_instance_role_wifi" {
   name = "London-ecs-admin-instance-role-wifi"
   path = "/"
@@ -918,27 +876,6 @@ resource "aws_iam_role" "London_wifi_rds_monitoring_role" {
       "Effect": "Allow",
       "Principal": {
         "Service": "monitoring.rds.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "NewsiteRedirect_SESEmailForwardRole_1BAO15HN9AO0C" {
-  name = "NewsiteRedirect-SESEmailForwardRole-1BAO15HN9AO0C"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     }
@@ -1087,27 +1024,6 @@ resource "aws_iam_role" "SNSSuccessFeedback" {
       "Effect": "Allow",
       "Principal": {
         "Service": "sns.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
-resource "aws_iam_role" "StagingMetricsAggregator_prototype_role_saci182v" {
-  name = "StagingMetricsAggregator-prototype-role-saci182v"
-  path = "/service-role/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
     }
