@@ -954,24 +954,3 @@ resource "aws_iam_policy" "GovWifi_Support" {
 POLICY
 
 }
-
-resource "aws_iam_policy" "can_restart_ecs_services" {
-  name        = "can-restart-ecs-services"
-  path        = "/"
-  description = "Allows deploy pipeline group to restart elasticsearch services"
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "VisualEditor0",
-      "Effect": "Allow",
-      "Action": "ecs:*",
-      "Resource": "*"
-    }
-  ]
-}
-POLICY
-
-}
