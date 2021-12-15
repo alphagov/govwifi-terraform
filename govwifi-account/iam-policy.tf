@@ -123,31 +123,6 @@ POLICY
 
 }
 
-resource "aws_iam_policy" "ITHC_Access_Key_Policy" {
-  name        = "ITHC-Access-Key-Policy"
-  path        = "/"
-  description = "Grant ITHC pentester permission to create an Access Key. Delete once ITHC is complete. This is a one-time-only access policy."
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "CreateOwnAccessKeys",
-      "Effect": "Allow",
-      "Action": [
-        "iam:CreateAccessKey",
-        "iam:GetUser",
-        "iam:ListAccessKeys"
-      ],
-      "Resource": "arn:aws:iam::*:user/$aws:username"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_policy" "AWS_Events_Invoke_ECS_961488249" {
   name        = "AWS_Events_Invoke_ECS_961488249"
   path        = "/service-role/"

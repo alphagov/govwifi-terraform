@@ -795,30 +795,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "ITHC_RO_SecAud_Access" {
-  name                 = "ITHC-RO-SecAud-Access"
-  path                 = "/"
-  permissions_boundary = "arn:aws:iam::aws:policy/ReadOnlyAccess"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::${var.aws_account_id}:root"
-      },
-      "Action": "sts:AssumeRole",
-      "Condition": {
-      }
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role" "London_ecs_admin_instance_role_wifi" {
   name = "London-ecs-admin-instance-role-wifi"
   path = "/"
