@@ -22,7 +22,7 @@ resource "aws_s3_bucket" "frontend_cert_bucket" {
 }
 
 resource "aws_ssm_parameter" "frontend_cert_bucket" {
-  name        = "/govwifi-terraform/frontend-certs-${var.aws_region_name}-bucket"
+  name        = "/govwifi-terraform/frontend-certs-bucket"
   description = "Name of the frontend-certs bucket for ${var.aws_region_name}"
   type        = "String"
   value       = aws_s3_bucket.frontend_cert_bucket.bucket
