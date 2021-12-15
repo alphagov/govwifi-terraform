@@ -95,7 +95,6 @@ resource "aws_security_group" "be_vpn_in" {
     to_port   = 22
     protocol  = "tcp"
 
-    # Temporarily add ITHC IPs. Remove when ITHC complete.
     cidr_blocks = [for ip in var.administrator_ips : "${ip}/32"]
   }
 }
