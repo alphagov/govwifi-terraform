@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "frontend_cert_bucket" {
-  bucket = var.is_production_aws_account ? "govwifi-${var.rack_env}-${lower(var.aws_region_name)}-frontend-cert" : "govwifi-${var.env_subdomain}-${lower(var.aws_region_name)}-frontend-cert"
-  acl    = "private"
+  bucket_prefix = "frontend-cert-${lower(var.aws_region_name)}-"
+  acl           = "private"
 
   tags = {
     Name        = "${title(var.env_name)} Frontend certs"
