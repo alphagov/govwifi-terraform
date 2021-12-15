@@ -50,30 +50,6 @@ resource "aws_iam_user" "govwifi_deploy_pipeline" {
   force_destroy = false
 }
 
-resource "aws_iam_policy" "govwifi_sync_cert_access" {
-  count       = var.create_wordlist_bucket ? 1 : 0
-  name        = "govwifi-sync-cert-access"
-  path        = "/"
-  description = "Allows deploy pipeline to access S3 buckets containing SSL certificates"
-
-  policy = <<POLICY
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "govwifiSyncCertAccess",
-            "Effect": "Allow",
-            "Action": "s3:PutObject",
-            "Resource": [
-                "arn:aws:s3:::govwifi-${var.env_subdomain}-london-frontend-cert/*",
-                "arn:aws:s3:::govwifi-${var.env_subdomain}-dublin-frontend-cert/*"
-            ]
-        }
-    ]
-}
-POLICY
-}
-
 resource "aws_iam_policy" "read_wordlist_policy" {
   count       = var.create_wordlist_bucket ? 1 : 0
   name        = "read-wordlist-policy"
@@ -136,12 +112,6 @@ resource "aws_iam_policy" "read_ssm_parameters" {
 }
 POLICY
 
-}
-
-resource "aws_iam_user_policy_attachment" "govwifi_sync_cert_access_policy_attachment" {
-  count      = var.create_wordlist_bucket ? 1 : 0
-  user       = aws_iam_user.govwifi_deploy_pipeline[0].name
-  policy_arn = aws_iam_policy.govwifi_sync_cert_access[0].arn
 }
 
 resource "aws_iam_user_policy_attachment" "govwifi_read_wordlist_policy_attachment" {
