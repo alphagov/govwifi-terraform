@@ -73,39 +73,3 @@ resource "aws_iam_policy" "AWS_Events_Invoke_ECS_961488249" {
 POLICY
 
 }
-
-resource "aws_iam_policy" "s3crr_for_test_wifi_mfadelete_to_test_wifi_mfadelete_replica" {
-  name        = "s3crr_for_test-wifi-mfadelete_to_test-wifi-mfadelete-replica"
-  path        = "/service-role/"
-  description = ""
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:Get*",
-        "s3:ListBucket"
-      ],
-      "Effect": "Allow",
-      "Resource": [
-        "arn:aws:s3:::test-wifi-mfadelete",
-        "arn:aws:s3:::test-wifi-mfadelete/*"
-      ]
-    },
-    {
-      "Action": [
-        "s3:ReplicateObject",
-        "s3:ReplicateDelete",
-        "s3:ReplicateTags",
-        "s3:GetObjectVersionTagging"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::test-wifi-mfadelete-replica/*"
-    }
-  ]
-}
-POLICY
-
-}
