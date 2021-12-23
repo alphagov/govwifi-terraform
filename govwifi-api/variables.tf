@@ -177,3 +177,8 @@ variable "elasticsearch_endpoint" {
   type    = string
   default = ""
 }
+
+variable "user_api_notification_arn" {
+  type    = string
+  default = ""
+}

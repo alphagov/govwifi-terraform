@@ -1,4 +1,5 @@
 resource "aws_iam_role" "iam_for_lambda" {
+  count = var.user_signup_enabled
   name = "user-signup-api-sns-lambda"
 
   assume_role_policy = <<EOF
@@ -19,6 +20,7 @@ EOF
 }
 
 resource "aws_lambda_function" "usersignup_sns_lambda" {
+  count = var.user_signup_enabled
   filename      = "lambda_function_payload.zip"
   function_name = "govwifi_sns_to_usersignup"
   role          = aws_iam_role.iam_for_lambda.arn
@@ -31,6 +33,19 @@ resource "aws_lambda_function" "usersignup_sns_lambda" {
 
   runtime = "python3.8"
 
+  environment {
+  variables = {
+      env_name = "${var.env_name}"
+    }
+  }
+
+  # vpc_config {
+  # variables = {
+  #     subnet_ids
+  #     security_group_ids
+  #   }
+  # }
+
   tags = {
     Environment = "${var.env_name}"
   }
@@ -38,7 +53,8 @@ resource "aws_lambda_function" "usersignup_sns_lambda" {
 }
 
 resource "aws_sns_topic_subscription" "user_updates_lampda_target" {
-  topic_arn = "sns topic arn"
+  count = var.user_signup_enabled
+  topic_arn = "${var.user_api_notification_arn}"
   protocol  = "lambda"
-  endpoint  = "lambda arn here"
+  endpoint  = aws_sns_topic_subscription.user_updates_lampda_target.arn
 }
