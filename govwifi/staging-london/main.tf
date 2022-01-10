@@ -88,7 +88,6 @@ module "backend" {
   bastion_server_ip          = var.bastion_server_ip
   bastion_ssh_key_name       = "staging-bastion-20200717"
   enable_bastion_monitoring  = false
-  users                      = var.users
   aws_account_id             = local.aws_account_id
   db_instance_count          = 1
   session_db_instance_type   = "db.t2.small"
