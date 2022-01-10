@@ -28,29 +28,9 @@ variable "ami" {
 
 # Secrets
 
-variable "auth_sentry_dsn" {
-  type = string
-}
-
-variable "safe_restart_sentry_dsn" {
-  type = string
-}
-
 variable "public_google_api_key" {
   type    = string
   default = "AIzaSyCz1cPYKamsA_ZJCygL9EY0Zq6stkazTco"
-}
-
-variable "user_signup_sentry_dsn" {
-  type = string
-}
-
-variable "logging_sentry_dsn" {
-  type = string
-}
-
-variable "admin_sentry_dsn" {
-  type = string
 }
 
 variable "user_db_hostname" {

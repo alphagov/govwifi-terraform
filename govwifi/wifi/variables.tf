@@ -38,14 +38,6 @@ variable "dublin_radius_ip_addresses" {
   description = "Frontend RADIUS server IP addresses - Dublin"
 }
 
-variable "auth_sentry_dsn" {
-  type = string
-}
-
-variable "safe_restart_sentry_dsn" {
-  type = string
-}
-
 variable "london_api_base_url" {
   type        = string
   description = "Base URL for authentication, user signup and logging APIs"
