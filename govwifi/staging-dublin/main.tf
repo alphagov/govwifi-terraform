@@ -16,7 +16,7 @@ module "tfstate" {
 }
 
 terraform {
-  required_version = "~> 0.15.5"
+  required_version = "~> 1.0.11"
 
   backend "s3" {
     # Interpolation is not allowed here.
