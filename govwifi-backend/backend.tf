@@ -43,6 +43,92 @@ resource "aws_subnet" "wifi_backend_subnet" {
   }
 }
 
+resource "aws_subnet" "wifi_backend_private_subnets" {
+  # User api only exists in eu-west-2 so for the moment this resource
+  # should only be created in the London region. The for_each statement
+  # accomplishes this.
+  for_each = {
+    for key, value in data.aws_availability_zones.zones.names : value => value
+    if var.aws_region == "eu-west-2"
+  }
+
+  vpc_id            = aws_vpc.wifi_backend.id
+  availability_zone = each.value
+  # Give private subnets their own distinct CIDR blocks
+  cidr_block = "${join(".", slice(split(".", var.vpc_cidr_block), 0, 2))}.${index(data.aws_availability_zones.zones.names, each.value) + 6}.0/24"
+
+  tags = {
+    Name = "${var.env_name} Private Backend - AZ: ${each.value} - GovWifi subnet for user-api lambda"
+  }
+}
+
+resource "aws_nat_gateway" "for_private_backend_subnets" {
+  # User api only exists in eu-west-2 so for the moment this resource
+  # should only be created in the London region. The for_each statement
+  # accomplishes this.
+  for_each = {
+    for key, value in data.aws_availability_zones.zones.names : value => value
+    if var.aws_region == "eu-west-2"
+  }
+
+  connectivity_type = "public"
+  subnet_id         = aws_subnet.wifi_backend_subnet[each.value].id
+  allocation_id     = aws_eip.for_nat_gateway_for_private_subnets[each.value].id
+
+  tags = {
+    Name        = "Lambda Nat Gateway -AZ- ${each.value}"
+    Description = "Used to allow traffic out of lambda to reach the internet and connect with our User signup API"
+  }
+}
+
+resource "aws_eip" "for_nat_gateway_for_private_subnets" {
+  # User api only exists in eu-west-2 so for the moment this resource
+  # should only be created in the London region. The for_each statement
+  # accomplishes this.
+  for_each = {
+    for key, value in data.aws_availability_zones.zones.names : value => value
+    if var.aws_region == "eu-west-2"
+  }
+
+  tags = {
+    Name = "Nat Gateway for subnet in AZ ${each.value}"
+  }
+
+}
+
+resource "aws_route_table" "user_api_lambda" {
+  # User api only exists in eu-west-2 so for the moment this resource
+  # should only be created in the London region. The for_each statement
+  # accomplishes this.
+  for_each = {
+    for key, value in data.aws_availability_zones.zones.names : value => value
+    if var.aws_region == "eu-west-2"
+  }
+
+  vpc_id = aws_vpc.wifi_backend.id
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.for_private_backend_subnets[each.value].id
+  }
+
+  tags = {
+    Name = "Backend private subnets route table  - AZ: ${each.key}"
+  }
+}
+
+resource "aws_route_table_association" "backend_private_subnets_route_tables" {
+  # User api only exists in eu-west-2 so for the moment this resource
+  # should only be created in the London region. The for_each statement
+  # accomplishes this.
+  for_each = {
+    for key, value in data.aws_availability_zones.zones.names : value => value
+    if var.aws_region == "eu-west-2"
+  }
+  subnet_id      = aws_subnet.wifi_backend_private_subnets[each.value].id
+  route_table_id = aws_route_table.user_api_lambda[each.value].id
+}
+
 # log group for db backup
 resource "aws_cloudwatch_log_group" "database_backup_log_group" {
   count             = var.backup_mysql_rds ? 1 : 0
