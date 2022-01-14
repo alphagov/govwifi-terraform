@@ -152,8 +152,6 @@ module "emails" {
   aws_region_name          = var.aws_region_name
   mail_exchange_server     = "10 inbound-smtp.eu-west-1.amazonaws.com"
   devops_notifications_arn = module.devops_notifications.topic_arn
-
-  user_signup_notifications_endpoint = "https://user-signup-api.${local.env_subdomain}.service.gov.uk:8443/user-signup/email-notification"
 }
 
 # Global ====================================================================
@@ -259,6 +257,8 @@ module "api" {
   safe_restart_sentry_dsn   = local.safe_restarter_sentry_dsn
   user_signup_docker_image  = ""
   subnet_ids                = module.backend.backend_subnet_ids
+  private_subnet_ids        = module.backend.backend_private_subnet_ids
+  nat_gateway_elastic_ips   = module.backend.nat_gateway_elastic_ips
   user_db_hostname          = var.user_db_hostname
   user_rr_hostname          = var.user_rr_hostname
   rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
