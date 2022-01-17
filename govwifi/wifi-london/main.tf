@@ -99,7 +99,6 @@ module "backend" {
   bastion_server_ip          = var.bastion_server_ip
   bastion_ssh_key_name       = "govwifi-bastion-key-20210630"
   enable_bastion_monitoring  = true
-  users                      = var.users
   aws_account_id             = local.aws_account_id
   db_instance_count          = 1
   session_db_instance_type   = "db.m4.xlarge"

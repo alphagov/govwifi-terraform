@@ -106,10 +106,6 @@ variable "capacity_notifications_arn" {
 variable "enable_bastion_monitoring" {
 }
 
-variable "users" {
-  type = list(string)
-}
-
 variable "user_replica_source_db" {
   type    = string
   default = ""

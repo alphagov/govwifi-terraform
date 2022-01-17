@@ -74,31 +74,7 @@ sudo cp ./periodic-updates-setup /etc/apt/apt.conf.d/10periodic
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
-# Add extra users
 
-oldIFS=$IFS
-IFS='|' read -r -a userlist <<< "${join("|", var.users)}"
-allowedUsers="ubuntu"
-
-for credentials in "$${userlist[@]}"; do
-  IFS=';' read -r -a credsarray <<< $credentials
-  username="$${credsarray[0]}"
-  sshkey="$${credsarray[1]}"
-
-  sudo adduser "$username" --disabled-password --quiet --gecos ""
-  sudo mkdir "/home/$username/.ssh"
-  sudo chown "$username:$username" "/home/$username/.ssh"
-  echo "$sshkey" > ./tempkey
-  sudo mv ./tempkey "/home/$username/.ssh/authorized_keys"
-  sudo chown "$username:$username" "/home/$username/.ssh/authorized_keys"
-  sudo chmod 600 "/home/$username/.ssh/authorized_keys"
-
-  allowedUsers="$allowedUsers $username"
-done
-
-IFS=$oldIFS
-
-sudo sed -i -e "s/AllowUsers ubuntu/AllowUsers $allowedUsers/g" /etc/ssh/sshd_config
 sudo sed -i -e "\$a Ciphers\ aes128-ctr,aes192-ctr,aes256-ctr" /etc/ssh/sshd_config
 sudo /etc/init.d/ssh reload
 
