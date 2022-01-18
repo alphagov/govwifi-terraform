@@ -16,7 +16,7 @@ locals {
 }
 
 locals {
-  aws_account_id = jsondecode(data.aws_secretsmanager_secret_version.aws_account_id.secret_string)["account-id"]
+  aws_account_id = data.aws_caller_identity.current.account_id
 }
 
 locals {
