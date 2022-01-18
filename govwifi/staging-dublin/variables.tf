@@ -45,10 +45,6 @@ variable "user_rr_hostname" {
   default     = "users-rr.dublin.staging.wifi.service.gov.uk"
 }
 
-variable "auth_sentry_dsn" {
-  type = string
-}
-
 variable "notification_email" {
 }
 
