@@ -99,6 +99,10 @@ variable "subnet_ids" {
   type = list(string)
 }
 
+variable "private_subnet_ids" {
+  type = list(string)
+}
+
 variable "auth_docker_image" {
 }
 
@@ -176,4 +180,14 @@ variable "rds_mysql_backup_bucket" {
 variable "elasticsearch_endpoint" {
   type    = string
   default = ""
+}
+
+variable "nat_gateway_elastic_ips" {
+  type    = list(string)
+  default = []
+}
+
+variable "notify_ips" {
+  type    = list(string)
+  default = []
 }

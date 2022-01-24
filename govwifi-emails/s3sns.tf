@@ -195,10 +195,11 @@ resource "aws_sns_topic" "user_signup_notifications" {
   display_name = "${title(var.env_name)} user signup email notifications"
 }
 
-resource "aws_sns_topic_subscription" "user_signup_notifications_target" {
+# Subcription for lambda trigger
+resource "aws_sns_topic_subscription" "user_updates_lambda_target" {
   topic_arn              = aws_sns_topic.user_signup_notifications.arn
-  protocol               = "https"
-  endpoint               = var.user_signup_notifications_endpoint
+  protocol               = "lambda"
+  endpoint               = "arn:aws:lambda:eu-west-2:${var.aws_account_id}:function:user-api-sns-lambda"
   endpoint_auto_confirms = true
   depends_on             = [aws_sns_topic.user_signup_notifications]
 }

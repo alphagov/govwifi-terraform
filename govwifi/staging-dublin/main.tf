@@ -138,8 +138,6 @@ module "emails" {
   aws_region_name          = var.aws_region_name
   mail_exchange_server     = "10 inbound-smtp.eu-west-1.amazonaws.com"
   devops_notifications_arn = module.notifications.topic_arn
-
-  user_signup_notifications_endpoint = "https://user-signup-api.${local.env_subdomain}.service.gov.uk:8443/user-signup/email-notification"
 }
 
 module "govwifi_keys" {
@@ -253,6 +251,8 @@ module "api" {
   authentication_sentry_dsn = local.authentication_api_sentry_dsn
   safe_restart_sentry_dsn   = local.safe_restarter_sentry_dsn
   subnet_ids                = module.backend.backend_subnet_ids
+  private_subnet_ids        = module.backend.backend_private_subnet_ids
+  nat_gateway_elastic_ips   = module.backend.nat_gateway_elastic_ips
   rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
 
   admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
