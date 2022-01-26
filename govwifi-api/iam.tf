@@ -143,30 +143,3 @@ resource "aws_iam_user_policy_attachment" "govwifi_deploy_pipeline_policy_attach
   user       = aws_iam_user.govwifi_deploy_pipeline[0].name
   policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
 }
-
-resource "aws_iam_role" "iam_for_user_api_sns_lambda" {
-  count = var.user_signup_enabled
-  name  = "iam_for_user_api_sns_lambda"
-
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_service_role" {
-  count      = var.user_signup_enabled
-  role       = aws_iam_role.iam_for_user_api_sns_lambda[0].name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
-}
