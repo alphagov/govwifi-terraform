@@ -199,10 +199,10 @@ resource "aws_ecs_service" "user_signup_api_service" {
     type = "CODE_DEPLOY"
   }
 
-  deployment_circuit_breaker {
-    enable   = true
-    rollback = true
-  }
+  # deployment_circuit_breaker {
+  #   enable   = true
+  #   rollback = true
+  # }
 
   network_configuration {
     security_groups = concat(
