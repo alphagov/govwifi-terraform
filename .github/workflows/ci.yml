@@ -13,3 +13,21 @@ jobs:
           tfenv use $(cat .terraform-version)
           GITHUB_TOKEN=${{ secrets.GH_TOKEN }} tflint --init
           PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH" make lint
+  validate:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: validate
+        run: |
+          brew install tfenv
+          tfenv install $(cat .terraform-version)
+          tfenv use $(cat .terraform-version)
+          for dir in govwifi/*;
+          do
+            cd $dir
+            terraform init -backend=false
+            echo "Validating $dir"
+            terraform validate
+            cd -
+          done
