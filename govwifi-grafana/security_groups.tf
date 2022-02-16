@@ -12,7 +12,7 @@ resource "aws_security_group" "grafana_alb_in" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = [for ip in var.administrator_ips : "${ip}/32"]
+    cidr_blocks = var.administrator_cidrs
   }
 }
 

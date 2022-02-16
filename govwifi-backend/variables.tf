@@ -22,7 +22,7 @@ variable "aws_region" {
 variable "aws_region_name" {
 }
 
-variable "administrator_ips" {
+variable "administrator_cidrs" {
 }
 
 variable "frontend_radius_ips" {

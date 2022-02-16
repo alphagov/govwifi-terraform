@@ -91,7 +91,7 @@ module "backend" {
   route53_zone_id = data.aws_route53_zone.main.zone_id
   vpc_cidr_block  = "10.84.0.0/16"
 
-  administrator_ips   = var.administrator_ips
+  administrator_cidrs = var.administrator_cidrs
   frontend_radius_ips = local.frontend_radius_ips
 
   bastion_ami                = "ami-096cb92bb3580c759"
@@ -435,7 +435,7 @@ module "govwifi_grafana" {
 
   bastion_ip = var.bastion_server_ip
 
-  administrator_ips = var.administrator_ips
+  administrator_cidrs = var.administrator_cidrs
 
   prometheus_ips = [
     var.prometheus_ip_london,
