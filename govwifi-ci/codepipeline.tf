@@ -1,6 +1,6 @@
 resource "aws_codepipeline" "govwifi_codepipeline" {
   name     = "govwifi-pipeline"
-  role_arn = aws_iam_role.codepipeline_role.arn
+  role_arn = aws_iam_role.govwifi_codepipeline_role.arn
 
   artifact_store {
     location = aws_s3_bucket.govwifi_codepipeline_bucket.bucket

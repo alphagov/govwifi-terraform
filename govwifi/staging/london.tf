@@ -370,3 +370,19 @@ module "datasync" {
   aws_region = local.london_aws_region
   rack_env   = "staging"
 }
+
+module "ci" {
+  providers = {
+    aws = aws.main
+  }
+
+  source        = "../../govwifi-ci"
+  env           = "staging"
+  env_name      = "staging"
+  env_subdomain = local.env_subdomain
+
+  aws_account_id         = local.aws_account_id
+  aws_region_name        = var.aws_region_name
+  aws_region             = var.aws_region
+
+}

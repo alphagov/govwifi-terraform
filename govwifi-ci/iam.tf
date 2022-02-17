@@ -222,7 +222,7 @@ resource "aws_iam_policy" "govwifi_codebuild_additional_perms" {
   name        = "GovwifiCodebuildAdditionalPerms"
   path        = "/"
 
-  assume_role_policy = <<EOF
+  policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -300,14 +300,14 @@ EOF
 resource "aws_iam_policy_attachment" "govwifi_codebuild_additional_perms" {
   name       = "govwifi-codebuild-additional-perms"
   roles      = [aws_iam_role.govwifi_codebuild.name]
-  policy_arn = aws_iam_policy_attachment.govwifi_codebuild_role_policy.arn
+  policy_arn = aws_iam_policy.govwifi_codebuild_role_policy.arn
 }
 
 resource "aws_iam_policy" "govwifi_codebuild_role_policy" {
   name        = "GovwifiCodeBuildServiceRolePolicy"
   path        = "/"
 
-  assume_role_policy = <<EOF
+  policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -382,7 +382,7 @@ EOF
 resource "aws_iam_policy_attachment" "govwifi_codebuild_role_policy" {
   name       = "govwifi-codebuild-role-policy"
   roles      = [aws_iam_role.govwifi_codebuild.name]
-  policy_arn = aws_iam_policy_attachment.govwifi_codebuild_role_policy.arn
+  policy_arn = aws_iam_policy.govwifi_codebuild_role_policy.arn
 }
 
 
