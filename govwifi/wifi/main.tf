@@ -89,7 +89,7 @@ module "backend" {
   route53_zone_id = data.aws_route53_zone.main.zone_id
   vpc_cidr_block  = "10.42.0.0/16"
 
-  administrator_ips   = var.administrator_ips
+  administrator_cidrs = var.administrator_cidrs
   frontend_radius_ips = local.frontend_radius_ips
 
   # Instance-specific setup -------------------------------

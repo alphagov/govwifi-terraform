@@ -73,7 +73,7 @@ module "backend" {
   aws_region_name = var.aws_region_name
   vpc_cidr_block  = "10.104.0.0/16"
 
-  administrator_ips   = var.administrator_ips
+  administrator_cidrs = var.administrator_cidrs
   frontend_radius_ips = local.frontend_radius_ips
 
   # Instance-specific setup -------------------------------

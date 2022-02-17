@@ -56,7 +56,7 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
-variable "administrator_ips" {
+variable "administrator_cidrs" {
   description = "IPs associated with the GDS/CDIO VPN to allow access"
 }
 
