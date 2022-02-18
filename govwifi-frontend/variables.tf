@@ -90,3 +90,6 @@ variable "prometheus_ip_london" {
 
 variable "prometheus_ip_ireland" {
 }
+
+variable "cyber_account_id" {
+}

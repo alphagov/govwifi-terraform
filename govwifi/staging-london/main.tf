@@ -118,6 +118,7 @@ module "backend" {
   backup_mysql_rds = local.backup_mysql_rds
 
   db_storage_alarm_threshold = 19327342936
+  cyber_account_id           = local.cyber_account_id
 }
 
 # London Frontend ==================================================================
@@ -170,6 +171,7 @@ module "frontend" {
   prometheus_ip_ireland = var.prometheus_ip_ireland
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
+  cyber_account_id   = local.cyber_account_id
 }
 
 module "govwifi_admin" {
@@ -226,6 +228,8 @@ module "govwifi_admin" {
   bastion_server_ip = var.bastion_server_ip
 
   notification_arn = module.notifications.topic_arn
+
+  cyber_account_id = local.cyber_account_id
 }
 
 module "api" {
@@ -291,6 +295,7 @@ module "api" {
   low_cpu_threshold = 0.3
 
   elasticsearch_endpoint = module.govwifi_elasticsearch.endpoint
+  cyber_account_id       = local.cyber_account_id
 }
 
 module "notifications" {

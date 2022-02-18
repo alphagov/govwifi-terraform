@@ -120,3 +120,6 @@ variable "public_google_api_key" {
 
 variable "bastion_server_ip" {
 }
+
+variable "cyber_account_id" {
+}

@@ -47,3 +47,11 @@ data "aws_secretsmanager_secret" "admin_sentry_dsn" {
 data "aws_secretsmanager_secret_version" "admin_sentry_dsn" {
   secret_id = data.aws_secretsmanager_secret.admin_sentry_dsn.id
 }
+
+data "aws_secretsmanager_secret" "cyber_account_id" {
+  name = "cyber/account-id"
+}
+
+data "aws_secretsmanager_secret_version" "cyber_account_id" {
+  secret_id = data.aws_secretsmanager_secret.cyber_account_id.id
+}

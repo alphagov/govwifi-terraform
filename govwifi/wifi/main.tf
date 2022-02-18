@@ -133,6 +133,7 @@ module "backend" {
   grafana_ip            = var.grafana_ip
 
   db_storage_alarm_threshold = 32212254720
+  cyber_account_id           = ""
 }
 
 # Emails ======================================================================
@@ -216,6 +217,7 @@ module "frontend" {
   prometheus_ip_ireland = var.prometheus_ip_ireland
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
+  cyber_account_id   = ""
 }
 
 module "api" {
@@ -268,6 +270,7 @@ module "api" {
   ]
 
   low_cpu_threshold = 10
+  cyber_account_id  = ""
 }
 
 module "critical_notifications" {

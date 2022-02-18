@@ -177,3 +177,6 @@ variable "elasticsearch_endpoint" {
   type    = string
   default = ""
 }
+
+variable "cyber_account_id" {
+}
