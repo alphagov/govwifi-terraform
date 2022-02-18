@@ -39,7 +39,7 @@ resource "aws_codepipeline" "govwifi_codepipeline" {
       version          = "1"
 
       configuration = {
-        ProjectName = "aws_codebuild_project.govwifi_codebuild_project.name"
+        ProjectName = aws_codebuild_project.govwifi_codebuild_project.name
       }
     }
   }
