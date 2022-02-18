@@ -192,9 +192,13 @@ resource "aws_iam_role_policy" "govwifi_codepipeline_codepipeline_policy" {
                 "appconfig:GetDeployment"
             ],
             "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "codestar-connections:UseConnection",
+            "Resource": "${aws_codestarconnections_connection.govwifi_codestar_connection.arn}"
         }
-    ],
-    "Version": "2012-10-17"
+    ]
 }
 EOF
 }
@@ -255,43 +259,48 @@ resource "aws_iam_policy" "govwifi_codebuild_additional_perms" {
           ]
         },
         {
-    "Effect": "Allow",
-    "Resource": [
-        "arn:aws:logs:eu-west-2:${var.aws_account_id}:log-group:/aws/codebuild/govwifi-codepipeline-test-project",
-        "arn:aws:logs:eu-west-2:${var.aws_account_id}:log-group:/aws/codebuild/govwifi-codepipeline-test-project:*"
-    ],
-    "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents"
-    ]
-},
-{
-    "Effect": "Allow",
-    "Resource": [
-        "arn:aws:s3:::codepipeline-eu-west-2-*"
-    ],
-    "Action": [
-        "s3:PutObject",
-        "s3:GetObject",
-        "s3:GetObjectVersion",
-        "s3:GetBucketAcl",
-        "s3:GetBucketLocation"
-    ]
-  },
-  {
-    "Effect": "Allow",
-    "Action": [
-        "codebuild:CreateReportGroup",
-        "codebuild:CreateReport",
-        "codebuild:UpdateReport",
-        "codebuild:BatchPutTestCases",
-        "codebuild:BatchPutCodeCoverages"
-    ],
-    "Resource": [
-        "arn:aws:codebuild:eu-west-2:${var.aws_account_id}:report-group/govwifi-codepipeline-test-project-*"
-    ]
-  }
+          "Effect": "Allow",
+          "Resource": [
+              "arn:aws:logs:eu-west-2:${var.aws_account_id}:log-group:/aws/codebuild/govwifi-codepipeline-test-project",
+              "arn:aws:logs:eu-west-2:${var.aws_account_id}:log-group:/aws/codebuild/govwifi-codepipeline-test-project:*"
+          ],
+          "Action": [
+              "logs:CreateLogGroup",
+              "logs:CreateLogStream",
+              "logs:PutLogEvents"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Resource": [
+              "arn:aws:s3:::codepipeline-eu-west-2-*"
+          ],
+          "Action": [
+              "s3:PutObject",
+              "s3:GetObject",
+              "s3:GetObjectVersion",
+              "s3:GetBucketAcl",
+              "s3:GetBucketLocation"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+              "codebuild:CreateReportGroup",
+              "codebuild:CreateReport",
+              "codebuild:UpdateReport",
+              "codebuild:BatchPutTestCases",
+              "codebuild:BatchPutCodeCoverages"
+          ],
+          "Resource": [
+              "arn:aws:codebuild:eu-west-2:${var.aws_account_id}:report-group/govwifi-codepipeline-test-project-*"
+          ]
+        },
+        {
+          "Effect": "Allow",
+          "Action": "ecs:*",
+          "Resource": "*"
+        }
     ]
 }
 EOF

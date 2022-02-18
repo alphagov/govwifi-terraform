@@ -7,7 +7,9 @@ resource "aws_s3_bucket" "govwifi_codepipeline_bucket" {
   }
 }
 
-resource "aws_s3_bucket_acl" "govwifi_codepipeline_bucket_acl" {
+resource "aws_s3_bucket_public_access_block" "govwifi_codepipeline_bucket_public_block" {
   bucket = aws_s3_bucket.govwifi_codepipeline_bucket.id
-  acl    = "private"
+
+  block_public_acls   = true
+  block_public_policy = true
 }
