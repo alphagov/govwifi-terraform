@@ -167,19 +167,3 @@ resource "aws_cloudwatch_metric_alarm" "production-user-rr-storage-alarm" {
         DBInstanceIdentifier = "wifi-production-user-rr"
     }
 }
-
-resource "aws_cloudwatch_metric_alarm" "wifi-bastion-status-alarm" {
-    alarm_name          = "wifi-bastion-status-alarm"
-    comparison_operator = "GreaterThanOrEqualToThreshold"
-    evaluation_periods  = "2"
-    metric_name         = "StatusCheckFailed"
-    namespace           = "AWS/EC2"
-    period              = "60"
-    statistic           = "Maximum"
-    threshold           = "1.0"
-    alarm_description   = "This metric monitors the status of the bastion server."
-    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
-    dimensions {
-        InstanceId = "i-0f7385468ffb08b85"
-    }
-}
