@@ -1,32 +1,6 @@
 # These alerts were created in the console and will need to be imported using Terraform.
 # A few will also need descriptions
 
-resource "aws_cloudwatch_metric_alarm" "EAP-Outer-and-inner-identities-are-the-same" {
-    alarm_name          = "EAP Outer and inner identities are the same"
-    comparison_operator = "GreaterThanOrEqualToThreshold"
-    evaluation_periods  = "1"
-    metric_name         = "EAP_Credentials_the_same"
-    namespace           = "LogMetrics"
-    period              = "86400"
-    statistic           = "Maximum"
-    threshold           = "1.0"
-    alarm_description   = "WLC using the real identity for the anonymous identity"
-    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-newsite-config"]
-}
-
-resource "aws_cloudwatch_metric_alarm" "Shared-secret-is-incorrect" {
-    alarm_name          = "Shared-secret-is-incorrect"
-    comparison_operator = "GreaterThanOrEqualToThreshold"
-    evaluation_periods  = "1"
-    metric_name         = "Shared-secret-is-incorrect"
-    namespace           = "LogMetrics"
-    period              = "86400"
-    statistic           = "Sum"
-    threshold           = "1.0"
-    alarm_description   = "Newsite - RADIUS Shared secret entered incorrectly"
-    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:Newsite_Config"]
-}
-
 resource "aws_cloudwatch_metric_alarm" "Wifi-Cant-connect-to-MySQL" {
     alarm_name          = "Wifi-Cant-connect-to-MySQL"
     comparison_operator = "GreaterThanThreshold"

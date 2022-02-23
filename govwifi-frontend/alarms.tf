@@ -77,3 +77,31 @@ resource "aws_cloudwatch_metric_alarm" "radius_cannot_connect_to_api" {
 
   alarm_description = "FreeRADIUS cannot connect to the Logging and/or Authentication API. Investigate CloudWatch logs for root cause."
 }
+
+resource "aws_cloudwatch_metric_alarm" "eap_outer_and_inner_identities_are_the_same" {
+  alarm_name          = "EAP Outer and inner identities are the same"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = aws_cloudwatch_log_metric_filter.outer_and_inner_identities_same.name
+  namespace           = "LogMetrics"
+  period              = "86400"
+  statistic           = "Maximum"
+  threshold           = "1.0"
+  alarm_description   = "WLC using the real identity for the anonymous identity"
+
+  alarm_actions = [var.critical_notifications_arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "shared_secret_is_incorrect" {
+  alarm_name          = "Shared-secret-is-incorrect"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "Shared-secret-is-incorrect"
+  namespace           = "LogMetrics"
+  period              = "86400"
+  statistic           = "Sum"
+  threshold           = "1.0"
+  alarm_description   = "Newsite - RADIUS Shared secret entered incorrectly"
+
+  alarm_actions = [var.critical_notifications_arn]
+}
