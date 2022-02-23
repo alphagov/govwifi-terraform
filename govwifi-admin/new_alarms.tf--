@@ -14,23 +14,6 @@ resource "aws_cloudwatch_metric_alarm" "EAP-Outer-and-inner-identities-are-the-s
     alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-newsite-config"]
 }
 
-resource "aws_cloudwatch_metric_alarm" "GovWifi---Production---admin-alb-wifi-Node-Unhealthy" {
-    alarm_name          = "GovWifi - Production - admin-alb-wifi Node Unhealthy"
-    comparison_operator = "GreaterThanThreshold"
-    evaluation_periods  = "1"
-    metric_name         = "UnHealthyHostCount"
-    namespace           = "AWS/ApplicationELB"
-    period              = "300"
-    statistic           = "Minimum"
-    threshold           = "0.0"
-    alarm_description   = "Failure of any ALB Node in \"admin-alb-wifi\" consistently for a 5 minute period\n\nCheck the end points of the ALB to see if there is an issue"
-    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:GovWifi-Capacity-Alert"]
-    dimensions {
-        TargetGroup = "targetgroup/admin-wifi-fg-tg/9148436d35702539"
-        LoadBalancer = "app/admin-alb-wifi/848c7a78a08a03c4"
-    }
-}
-
 resource "aws_cloudwatch_metric_alarm" "GovWifi---Production---api-alb-wifi-Node-Unhealthy" {
     alarm_name          = "GovWifi - Production - api-alb-wifi Node Unhealthy"
     comparison_operator = "GreaterThanThreshold"
