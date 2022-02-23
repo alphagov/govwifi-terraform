@@ -43,38 +43,6 @@ resource "aws_cloudwatch_metric_alarm" "Shared-secret-is-incorrect" {
     alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:Newsite_Config"]
 }
 
-resource "aws_cloudwatch_metric_alarm" "Wifi-Burst-balance-below-45-" {
-    alarm_name          = "Wifi Burst balance below 45%"
-    comparison_operator = "LessThanOrEqualToThreshold"
-    evaluation_periods  = "1"
-    metric_name         = "BurstBalance"
-    namespace           = "AWS/RDS"
-    period              = "300"
-    statistic           = "Sum"
-    threshold           = "45.0"
-    alarm_description   = ""
-    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-live-critical"]
-    dimensions {
-        DBInstanceIdentifier = "wifi-wifi-db"
-    }
-}
-
-resource "aws_cloudwatch_metric_alarm" "Wifi-RR-Burst-balance-is-below-45-" {
-    alarm_name          = "Wifi RR Burst balance is below 45%"
-    comparison_operator = "LessThanOrEqualToThreshold"
-    evaluation_periods  = "1"
-    metric_name         = "BurstBalance"
-    namespace           = "AWS/RDS"
-    period              = "300"
-    statistic           = "Average"
-    threshold           = "45.0"
-    alarm_description   = ""
-    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-live-critical"]
-    dimensions {
-        DBInstanceIdentifier = "wifi-db-rr"
-    }
-}
-
 resource "aws_cloudwatch_metric_alarm" "Wifi-Cant-connect-to-MySQL" {
     alarm_name          = "Wifi-Cant-connect-to-MySQL"
     comparison_operator = "GreaterThanThreshold"

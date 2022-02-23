@@ -78,6 +78,25 @@ resource "aws_cloudwatch_metric_alarm" "sessions_db_burst_balance" {
   treat_missing_data = "missing"
 }
 
+resource "aws_cloudwatch_metric_alarm" "wifi_burst_balance_below_45" {
+  count               = var.db_instance_count
+  alarm_name          = "Wifi Burst balance below 45%"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "BurstBalance"
+  namespace           = "AWS/RDS"
+  period              = "300"
+  statistic           = "Sum"
+  threshold           = "45.0"
+  alarm_description   = ""
+
+  alarm_actions = [var.critical_notifications_arn]
+
+  dimensions = {
+    DBInstanceIdentifier = aws_db_instance.db[0].identifier
+  }
+}
+
 resource "aws_cloudwatch_metric_alarm" "sessions_rr_burst_balance" {
   count               = var.db_replica_count
   alarm_name          = "${var.env_name}-sessions-rr-burstbalanace-alarm"
@@ -96,6 +115,25 @@ resource "aws_cloudwatch_metric_alarm" "sessions_rr_burst_balance" {
   alarm_description  = "Read replica database's available IOPS burst balance is running low. Investigate disk usage on the RDS instance."
   alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "missing"
+}
+
+resource "aws_cloudwatch_metric_alarm" "wifi_rr_burst_balance_is_below_45" {
+  count               = var.db_replica_count
+  alarm_name          = "Wifi RR Burst balance is below 45%"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "BurstBalance"
+  namespace           = "AWS/RDS"
+  period              = "300"
+  statistic           = "Average"
+  threshold           = "45.0"
+  alarm_description   = ""
+
+  alarm_actions = [var.critical_notifications_arn]
+
+  dimensions = {
+    DBInstanceIdentifier = aws_db_instance.read_replica[0].identifier
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "sessions_rr_lagging" {
