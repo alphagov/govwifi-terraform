@@ -87,6 +87,9 @@ variable "backend_sg_list" {
   type = list(string)
 }
 
+variable "capacity_notifications_arn" {
+}
+
 variable "devops_notifications_arn" {
 }
 

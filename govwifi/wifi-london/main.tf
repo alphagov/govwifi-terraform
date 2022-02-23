@@ -259,8 +259,9 @@ module "api" {
   route53_zone_id        = data.aws_route53_zone.main.zone_id
   vpc_id                 = module.backend.backend_vpc_id
 
-  devops_notifications_arn = module.devops_notifications.topic_arn
-  notification_arn         = module.region_pagerduty.topic_arn
+  capacity_notifications_arn = module.capacity_notifications.topic_arn
+  devops_notifications_arn   = module.devops_notifications.topic_arn
+  notification_arn           = module.region_pagerduty.topic_arn
 
   auth_docker_image             = format("%s/authorisation-api:production", local.docker_image_path)
   user_signup_docker_image      = format("%s/user-signup-api:production", local.docker_image_path)

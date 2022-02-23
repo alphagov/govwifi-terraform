@@ -72,6 +72,25 @@ resource "aws_cloudwatch_metric_alarm" "authentication_api_no_healthy_hosts" {
   ])
 }
 
+resource "aws_cloudwatch_metric_alarm" "api_alb_node_unhealthy" {
+  alarm_name          = "GovWifi - Production - api-alb-wifi Node Unhealthy"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "UnHealthyHostCount"
+  namespace           = "AWS/ApplicationELB"
+  period              = "300"
+  statistic           = "Minimum"
+  threshold           = "0.0"
+  alarm_description   = "Failure of any ALB Node in \"api-alb-wifi\" consistently for a 5 minute period\n\nCheck the end points of the ALB to see if there is an issue"
+
+  alarm_actions = [var.capacity_notifications_arn]
+
+  dimensions = {
+    TargetGroup  = aws_alb_target_group.alb_target_group.arn_suffix
+    LoadBalancer = aws_lb.api_alb[0].arn_suffix
+  }
+}
+
 resource "aws_cloudwatch_metric_alarm" "user_signup_api_no_healthy_hosts" {
   count = var.user_signup_enabled
 
