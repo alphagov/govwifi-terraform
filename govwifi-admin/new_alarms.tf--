@@ -14,22 +14,6 @@ resource "aws_cloudwatch_metric_alarm" "EAP-Outer-and-inner-identities-are-the-s
     alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-newsite-config"]
 }
 
-resource "aws_cloudwatch_metric_alarm" "Read-Replica-lag-is-over-5-minutes" {
-    alarm_name          = "Read Replica lag is over 5 minutes"
-    comparison_operator = "GreaterThanOrEqualToThreshold"
-    evaluation_periods  = "1"
-    metric_name         = "ReplicaLag"
-    namespace           = "AWS/RDS"
-    period              = "300"
-    statistic           = "Average"
-    threshold           = "300.0"
-    alarm_description   = ""
-    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-live-critical"]
-    dimensions {
-        DBInstanceIdentifier = "wifi-db-rr"
-    }
-}
-
 resource "aws_cloudwatch_metric_alarm" "Shared-secret-is-incorrect" {
     alarm_name          = "Shared-secret-is-incorrect"
     comparison_operator = "GreaterThanOrEqualToThreshold"

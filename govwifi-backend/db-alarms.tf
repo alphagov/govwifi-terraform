@@ -156,6 +156,25 @@ resource "aws_cloudwatch_metric_alarm" "sessions_rr_lagging" {
   treat_missing_data = "breaching"
 }
 
+resource "aws_cloudwatch_metric_alarm" "read_replica_lag_is_over_5_minutes" {
+  count               = var.db_replica_count
+  alarm_name          = "Read Replica lag is over 5 minutes"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "ReplicaLag"
+  namespace           = "AWS/RDS"
+  period              = "300"
+  statistic           = "Average"
+  threshold           = "300.0"
+  alarm_description   = ""
+
+  alarm_actions = [var.critical_notifications_arn]
+
+  dimensions = {
+    DBInstanceIdentifier = aws_db_instance.read_replica[0].identifier
+  }
+}
+
 resource "aws_cloudwatch_metric_alarm" "sessions_rr_cpu" {
   count               = var.db_replica_count
   alarm_name          = "${var.env_name}-sessions-rr-cpu-alarm"
