@@ -14,23 +14,6 @@ resource "aws_cloudwatch_metric_alarm" "EAP-Outer-and-inner-identities-are-the-s
     alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-newsite-config"]
 }
 
-resource "aws_cloudwatch_metric_alarm" "GovWifi---Production---user-signup-api-wifi-Node-Unhealthy" {
-    alarm_name          = "GovWifi - Production - user-signup-api-wifi Node Unhealthy"
-    comparison_operator = "GreaterThanThreshold"
-    evaluation_periods  = "1"
-    metric_name         = "UnHealthyHostCount"
-    namespace           = "AWS/ApplicationELB"
-    period              = "300"
-    statistic           = "Minimum"
-    threshold           = "0.0"
-    alarm_description   = "Failure of any ALB Node in \"user-signup-api-wifi\" consistently for a 5 minute period\n\nCheck the end points of the ALB to see if there is an issue\nCheck the end points to see if there is an issue"
-    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:GovWifi-Capacity-Alert"]
-    dimensions {
-        TargetGroup = "targetgroup/user-signup-api-wifi/f598f58edcbd2fcf"
-        LoadBalancer = "app/user-signup-api-wifi/66c01add80658024"
-    }
-}
-
 resource "aws_cloudwatch_metric_alarm" "Read-Replica-lag-is-over-5-minutes" {
     alarm_name          = "Read Replica lag is over 5 minutes"
     comparison_operator = "GreaterThanOrEqualToThreshold"
@@ -230,23 +213,6 @@ resource "aws_cloudwatch_metric_alarm" "production-user-rr-storage-alarm" {
     alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-wifi-capacity"]
     dimensions {
         DBInstanceIdentifier = "wifi-production-user-rr"
-    }
-}
-
-resource "aws_cloudwatch_metric_alarm" "user-signup-CPU-usage-high--snowflake-" {
-    alarm_name          = "user signup CPU usage high (snowflake)"
-    comparison_operator = "GreaterThanOrEqualToThreshold"
-    evaluation_periods  = "3"
-    metric_name         = "CPUUtilization"
-    namespace           = "AWS/ECS"
-    period              = "60"
-    statistic           = "Average"
-    threshold           = "5.0"
-    alarm_description   = "user signup CPU high"
-    alarm_actions       = ["arn:aws:sns:eu-west-2:788375279931:govwifi-live-capacity"]
-    dimensions {
-        ClusterName = "wifi-api-cluster"
-        ServiceName = "user-signup-api-service-wifi"
     }
 }
 
