@@ -384,5 +384,6 @@ module "ci" {
   aws_account_id         = local.aws_account_id
   aws_region_name        = var.aws_region_name
   aws_region             = var.aws_region
+  app_names              = ["user-api-signup","admin","authentication-api"]
 
 }

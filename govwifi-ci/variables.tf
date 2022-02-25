@@ -15,3 +15,6 @@ variable "aws_region_name" {
 
 variable "aws_account_id" {
 }
+
+variable "app_names" {
+}
