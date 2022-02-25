@@ -1,11 +1,10 @@
 ## Codebuild project one
-## set up github token
 ## specify build file
 
-resource "aws_codebuild_project" "govwifi_codebuild_project" {
-  count  = length(var.app_names)
-  name          = "govwifi-codebuild_${count.index}_part_one"
-  description   = "Test codebuild project for the ${count.index}"
+resource "aws_codebuild_project" "govwifi_codebuild_project_step_one" {
+  for_each = toset(var.app_names)
+  name          = "govwifi-codebuild-${each.key}-step-one"
+  description   = "Test codebuild project for the ${each.key}"
   build_timeout = "5"
   service_role  = aws_iam_role.govwifi_codebuild.arn
 
@@ -20,9 +19,10 @@ resource "aws_codebuild_project" "govwifi_codebuild_project" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/standard:1.0"
+    image                       = "aws/codebuild/standard:5.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
+    privileged_mode = true
 
     environment_variable {
       name  = "AWS_ACCOUNT_ID"
@@ -66,21 +66,41 @@ resource "aws_codebuild_project" "govwifi_codebuild_project" {
   }
 
   source {
-    # location        = "https://github.com/szd55gds/govwifi-user-signup-api.git"
-    # git_clone_depth = 1
-    #
-    # git_submodules_config {
-    #   fetch_submodules = true
-    # }
+    type = "GITHUB"
+    location        = "https://github.com/alphagov/govwifi-user-signup-api.git"
+    git_clone_depth = 1
+    buildspec = "buildspec-build.yml"
   }
 
   # source_version = "codebuild-test"
   #
-  #
-  #
   # tags = {
   #   Environment = "Test"
   # }
+}
+
+resource "aws_codebuild_source_credential" "govwifi_github_token" {
+  auth_type   = "PERSONAL_ACCESS_TOKEN"
+  server_type = "GITHUB"
+  token       = data.aws_secretsmanager_secret_version.github_token.secret_string
+}
+
+resource "aws_codebuild_webhook" "govwifi_app_webhook" {
+  # count  = length(var.app_names)
+  for_each = toset(var.app_names)
+  project_name = aws_codebuild_project.govwifi_codebuild_project_step_one[each.key].name
+  build_type   = "BUILD"
+  filter_group {
+    filter {
+      type    = "EVENT"
+      pattern = "PUSH"
+    }
+
+    filter {
+      type    = "HEAD_REF"
+      pattern = "^refs/heads/codebuild-test$"
+    }
+  }
 }
 
 
