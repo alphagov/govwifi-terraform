@@ -243,8 +243,9 @@ module "api" {
   safe_restart_enabled = 0
   event_rule_count     = 0
 
-  devops_notifications_arn = module.devops_notifications.topic_arn
-  notification_arn         = module.region_pagerduty.topic_arn
+  capacity_notifications_arn = module.capacity_notifications.topic_arn
+  devops_notifications_arn   = module.devops_notifications.topic_arn
+  notification_arn           = module.region_pagerduty.topic_arn
 
   auth_docker_image             = format("%s/authorisation-api:production", local.docker_image_path)
   logging_docker_image          = format("%s/logging-api:production", local.docker_image_path)

@@ -19,3 +19,22 @@ resource "aws_cloudwatch_metric_alarm" "admin_no_healthy_hosts" {
     var.notification_arn,
   ])
 }
+
+resource "aws_cloudwatch_metric_alarm" "admin_node_unhealthy" {
+  alarm_name          = "GovWifi - Production - admin-alb-wifi Node Unhealthy"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "UnHealthyHostCount"
+  namespace           = "AWS/ApplicationELB"
+  period              = "300"
+  statistic           = "Minimum"
+  threshold           = "0.0"
+  alarm_description   = "Failure of any ALB Node in \"admin-alb-wifi\" consistently for a 5 minute period\n\nCheck the end points of the ALB to see if there is an issue"
+
+  alarm_actions = [var.capacity_notifications_arn]
+
+  dimensions = {
+    TargetGroup  = aws_alb_target_group.admin_tg.arn_suffix
+    LoadBalancer = aws_lb.admin_alb.arn_suffix
+  }
+}

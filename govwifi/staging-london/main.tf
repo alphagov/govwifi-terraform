@@ -247,8 +247,9 @@ module "api" {
   vpc_id                 = module.backend.backend_vpc_id
   safe_restart_enabled   = 1
 
-  devops_notifications_arn = module.notifications.topic_arn
-  notification_arn         = module.notifications.topic_arn
+  capacity_notifications_arn = module.notifications.topic_arn
+  devops_notifications_arn   = module.notifications.topic_arn
+  notification_arn           = module.notifications.topic_arn
 
   auth_docker_image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user_signup_docker_image      = format("%s/user-signup-api:staging", local.docker_image_path)

@@ -233,8 +233,9 @@ module "api" {
   safe_restart_enabled = 0
   event_rule_count     = 0
 
-  devops_notifications_arn = module.notifications.topic_arn
-  notification_arn         = module.notifications.topic_arn
+  capacity_notifications_arn = module.notifications.topic_arn
+  devops_notifications_arn   = module.notifications.topic_arn
+  notification_arn           = module.notifications.topic_arn
 
   auth_docker_image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user_signup_docker_image      = ""
