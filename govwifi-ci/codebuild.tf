@@ -65,7 +65,7 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_step_one" {
     }
   }
 
-  # source_version = "codebuild-test"
+  source_version = "codebuild-test"
 
   source {
     type = "GITHUB"
@@ -155,6 +155,7 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_step_two" {
     }
   }
 
+  source_version = "codebuild-test"
   source {
     type = "GITHUB"
     location        = "https://github.com/alphagov/govwifi-user-signup-api.git"
@@ -162,7 +163,8 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_step_two" {
     buildspec = "buildspec-deploy.yml"
   }
 
-  source_version = "refs/heads/codebuild-test"
+
+  # source_version = "refs/heads/codebuild-test"
   #
   #
   #
