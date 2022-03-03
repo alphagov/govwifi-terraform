@@ -91,17 +91,3 @@ resource "aws_cloudwatch_metric_alarm" "eap_outer_and_inner_identities_are_the_s
 
   alarm_actions = [var.critical_notifications_arn]
 }
-
-resource "aws_cloudwatch_metric_alarm" "shared_secret_is_incorrect" {
-  alarm_name          = "Shared-secret-is-incorrect"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "1"
-  metric_name         = "Shared-secret-is-incorrect"
-  namespace           = "LogMetrics"
-  period              = "86400"
-  statistic           = "Sum"
-  threshold           = "1.0"
-  alarm_description   = "Newsite - RADIUS Shared secret entered incorrectly"
-
-  alarm_actions = [var.critical_notifications_arn]
-}
