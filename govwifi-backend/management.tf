@@ -273,22 +273,3 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
   alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "breaching"
 }
-
-resource "aws_cloudwatch_metric_alarm" "wifi_bastion_status_alarm" {
-  count               = var.enable_bastion
-  alarm_name          = "wifi-bastion-status-alarm"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "StatusCheckFailed"
-  namespace           = "AWS/EC2"
-  period              = "60"
-  statistic           = "Maximum"
-  threshold           = "1.0"
-  alarm_description   = "This metric monitors the status of the bastion server."
-
-  alarm_actions = [var.capacity_notifications_arn]
-
-  dimensions = {
-    InstanceId = aws_instance.management[0].id
-  }
-}
