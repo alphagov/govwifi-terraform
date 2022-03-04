@@ -1,6 +1,3 @@
-## Codebuild project one
-## specify build file
-
 resource "aws_codebuild_project" "govwifi_codebuild_project_step_one" {
   for_each = toset(var.app_names)
   name          = "govwifi-codebuild-${each.key}-step-one"
