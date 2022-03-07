@@ -78,25 +78,6 @@ resource "aws_cloudwatch_metric_alarm" "sessions_db_burst_balance" {
   treat_missing_data = "missing"
 }
 
-resource "aws_cloudwatch_metric_alarm" "wifi_burst_balance_below_45" {
-  count               = var.db_instance_count
-  alarm_name          = "Wifi Burst balance below 45%"
-  comparison_operator = "LessThanOrEqualToThreshold"
-  evaluation_periods  = "1"
-  metric_name         = "BurstBalance"
-  namespace           = "AWS/RDS"
-  period              = "300"
-  statistic           = "Sum"
-  threshold           = "45.0"
-  alarm_description   = ""
-
-  alarm_actions = [var.critical_notifications_arn]
-
-  dimensions = {
-    DBInstanceIdentifier = aws_db_instance.db[0].identifier
-  }
-}
-
 resource "aws_cloudwatch_metric_alarm" "sessions_rr_burst_balance" {
   count               = var.db_replica_count
   alarm_name          = "${var.env_name}-sessions-rr-burstbalanace-alarm"
@@ -117,25 +98,6 @@ resource "aws_cloudwatch_metric_alarm" "sessions_rr_burst_balance" {
   treat_missing_data = "missing"
 }
 
-resource "aws_cloudwatch_metric_alarm" "wifi_rr_burst_balance_is_below_45" {
-  count               = var.db_replica_count
-  alarm_name          = "Wifi RR Burst balance is below 45%"
-  comparison_operator = "LessThanOrEqualToThreshold"
-  evaluation_periods  = "1"
-  metric_name         = "BurstBalance"
-  namespace           = "AWS/RDS"
-  period              = "300"
-  statistic           = "Average"
-  threshold           = "45.0"
-  alarm_description   = ""
-
-  alarm_actions = [var.critical_notifications_arn]
-
-  dimensions = {
-    DBInstanceIdentifier = aws_db_instance.read_replica[0].identifier
-  }
-}
-
 resource "aws_cloudwatch_metric_alarm" "sessions_rr_lagging" {
   count               = var.db_replica_count
   alarm_name          = "${var.env_name}-sessions-rr-lagging-alarm"
@@ -154,25 +116,6 @@ resource "aws_cloudwatch_metric_alarm" "sessions_rr_lagging" {
   alarm_description  = "Read replica database replication lag exceeding threshold. Investigate connections to the primary database."
   alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "breaching"
-}
-
-resource "aws_cloudwatch_metric_alarm" "read_replica_lag_is_over_5_minutes" {
-  count               = var.db_replica_count
-  alarm_name          = "Read Replica lag is over 5 minutes"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "1"
-  metric_name         = "ReplicaLag"
-  namespace           = "AWS/RDS"
-  period              = "300"
-  statistic           = "Average"
-  threshold           = "300.0"
-  alarm_description   = ""
-
-  alarm_actions = [var.critical_notifications_arn]
-
-  dimensions = {
-    DBInstanceIdentifier = aws_db_instance.read_replica[0].identifier
-  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "sessions_rr_cpu" {
