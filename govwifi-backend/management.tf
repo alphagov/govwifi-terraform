@@ -275,6 +275,7 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "wifi_bastion_status_alarm" {
+  count               = var.enable_bastion
   alarm_name          = "wifi-bastion-status-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "2"
