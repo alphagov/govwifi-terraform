@@ -37,3 +37,7 @@ output "rds_mysql_backup_bucket" {
 output "nat_gateway_elastic_ips" {
   value = [for eip in aws_eip.for_nat_gateway_for_private_subnets : eip.public_ip]
 }
+
+output "bastion_public_ip" {
+  value = var.enable_bastion == 1 ? aws_eip.bastion_eip[0].public_ip : null
+}

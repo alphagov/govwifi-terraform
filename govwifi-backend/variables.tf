@@ -39,6 +39,7 @@ variable "bastion_instance_type" {
 }
 
 variable "bastion_server_ip" {
+  default = null
 }
 
 variable "bastion_ssh_key_name" {
