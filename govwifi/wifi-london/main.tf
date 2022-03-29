@@ -282,6 +282,9 @@ module "api" {
   user_signup_sentry_dsn    = local.user_signup_api_sentry_dsn
   logging_sentry_dsn        = local.logging_api_sentry_dsn
   subnet_ids                = module.backend.backend_subnet_ids
+  private_subnet_ids        = module.backend.backend_private_subnet_ids
+  nat_gateway_elastic_ips   = module.backend.nat_gateway_elastic_ips
+  notify_ips                = var.notify_ips
   user_db_hostname          = var.user_db_hostname
   user_rr_hostname          = var.user_rr_hostname
   user_signup_api_is_public = 1
