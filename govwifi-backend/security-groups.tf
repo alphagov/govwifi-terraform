@@ -75,7 +75,7 @@ resource "aws_security_group" "be_admin_in" {
     protocol  = "tcp"
 
     cidr_blocks = concat(
-      ["${var.bastion_server_ip}/32"],
+      ["${var.bastion_server_ip == null ? aws_eip.bastion_eip[0].public_ip : var.bastion_server_ip}/32"],
       [for subnet in aws_subnet.wifi_backend_subnet : subnet.cidr_block]
     )
   }

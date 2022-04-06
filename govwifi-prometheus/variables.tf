@@ -5,11 +5,6 @@ variable "prometheus_volume_size" {
   default = "40"
 }
 
-variable "prometheus_ip" {
-  description = "The EIP of the EC2 instance"
-  type        = string
-}
-
 variable "grafana_ip" {
   description = "The grafana IP allowed into prometheus servers to connect to the EC2 instances on 9090."
   type        = string

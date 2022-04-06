@@ -247,10 +247,20 @@ resource "aws_iam_instance_profile" "bastion_instance_profile" {
   depends_on = [aws_iam_role.bastion_instance_role]
 }
 
+resource "aws_eip" "bastion_eip" {
+  count = var.enable_bastion
+  vpc   = true
+
+  tags = {
+    Name = "bastion"
+    Env  = title(var.env_name)
+  }
+}
+
 resource "aws_eip_association" "eip_assoc" {
-  count       = var.enable_bastion
-  instance_id = aws_instance.management[0].id
-  public_ip   = var.bastion_server_ip
+  count         = var.enable_bastion
+  instance_id   = aws_instance.management[0].id
+  allocation_id = aws_eip.bastion_eip[0].id
 }
 
 resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {

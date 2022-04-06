@@ -25,3 +25,7 @@ output "fe_radius_out" {
 output "ecs_instance_profile" {
   value = aws_iam_instance_profile.ecs_instance_profile.id
 }
+
+output "eip_public_ips" {
+  value = [for eip in aws_eip.radius_eips : eip.public_ip]
+}
