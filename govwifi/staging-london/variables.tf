@@ -80,3 +80,7 @@ variable "grafana_ip" {
 
 variable "notify_ips" {
 }
+
+variable "bastion_user_keys" {
+
+}

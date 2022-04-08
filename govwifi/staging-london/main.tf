@@ -86,6 +86,7 @@ module "backend" {
   bastion_ami                = "ami-096cb92bb3580c759"
   bastion_instance_type      = "t2.micro"
   bastion_ssh_key_name       = "staging-bastion-20200717"
+  bastion_user_keys          = var.bastion_user_keys
   enable_bastion_monitoring  = false
   aws_account_id             = local.aws_account_id
   db_instance_count          = 1
