@@ -82,5 +82,4 @@ variable "notify_ips" {
 }
 
 variable "bastion_user_keys" {
-
 }

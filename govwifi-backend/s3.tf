@@ -92,7 +92,7 @@ resource "aws_s3_bucket_public_access_block" "bastion_ssh_keys" {
 }
 
 resource "aws_s3_bucket_object" "ssh_pub_key" {
-  for_each = bastion_user_keys
+  for_each = var.bastion_user_keys
   key     = each.key
   bucket  = aws_s3_bucket.bastion_ssh_keys.id
   content = each.value

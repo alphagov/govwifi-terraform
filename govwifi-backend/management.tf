@@ -150,6 +150,8 @@ cd /
 run-until-success sudo curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
 sudo python$PYTHON_MAIN_VERSION ./awslogs-agent-setup.py -n -r ${var.aws_region} -c ./initial-awslogs.conf
 
+
+
 --==BOUNDARY==--
 DATA
 
@@ -203,6 +205,15 @@ resource "aws_iam_role_policy" "bastion_instance_policy" {
       "Resource": [
         "arn:aws:logs:*:*:*"
       ]
+    },
+    {
+        "Sid": "bastionGetPubKeysFromS3Bucket",
+        "Effect": "Allow",
+        "Action": [
+            "s3:List*",
+            "s3:Get*"
+        ],
+        "Resource": "arn:aws:s3:::${aws_s3_bucket.bastion_ssh_keys.id}/*"
     }
   ]
 }

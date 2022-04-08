@@ -193,4 +193,3 @@ resource "aws_iam_role_policy" "rds_monitoring_policy" {
 EOF
 
 }
-
