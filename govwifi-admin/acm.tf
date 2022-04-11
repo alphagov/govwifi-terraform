@@ -1,6 +1,10 @@
 resource "aws_acm_certificate" "admin_cert" {
   domain_name       = aws_route53_record.admin.name
   validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_route53_record" "admin_cert_validation" {

@@ -2,6 +2,9 @@ resource "aws_acm_certificate" "grafana_cert" {
   domain_name       = aws_route53_record.grafana_route53_record.name
   validation_method = "DNS"
 
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_route53_record" "grafana_cert_validation" {
