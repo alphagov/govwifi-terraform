@@ -16,5 +16,8 @@ locals {
 }
 
 locals {
-  frontend_radius_ips = concat(var.london_radius_ip_addresses, var.dublin_radius_ip_addresses)
+  frontend_radius_ips = concat(
+    module.london_frontend.eip_public_ips,
+    module.dublin_frontend.eip_public_ips
+  )
 }

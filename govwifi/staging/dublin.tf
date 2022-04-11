@@ -1,65 +1,17 @@
-module "tfstate" {
-  providers = {
-    aws = aws.main
-  }
-
-  source             = "../../terraform-state"
-  product_name       = local.product_name
-  env_name           = local.env_name
-  aws_account_id     = local.aws_account_id
-  aws_region_name    = var.aws_region_name
-  backup_region_name = var.backup_region_name
-
-  # TODO: separate module for accesslogs
-  accesslogs_glacier_transition_days = 7
-  accesslogs_expiration_days         = 30
-}
-
-terraform {
-  required_version = "~> 1.0.11"
-
-  backend "s3" {
-    # Interpolation is not allowed here.
-    #bucket = "${lower(local.product_name)}-${lower(local.env_name)}-${lower(var.aws_region_name)}-tfstate"
-    #key    = "${lower(var.aws_region_name)}-tfstate"
-    #region = "${var.aws_region}"
-    bucket = "govwifi-staging-dublin-tfstate"
-
-    key     = "dublin-tfstate"
-    encrypt = true
-    region  = "eu-west-1"
-  }
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-    }
-  }
+locals {
+  dublin_aws_region      = "eu-west-1"
+  dublin_aws_region_name = "Dublin"
 }
 
 provider "aws" {
-  alias  = "main"
-  region = var.aws_region
-}
-
-provider "aws" {
-  alias  = "us_east_1"
-  region = "us-east-1"
-}
-
-data "terraform_remote_state" "london" {
-  backend = "s3"
-
-  config = {
-    bucket = "govwifi-staging-london-tfstate"
-    key    = "staging-london-tfstate"
-    region = "eu-west-2"
-  }
+  alias  = "dublin"
+  region = local.dublin_aws_region
 }
 
 # Backend ==================================================================
-module "backend" {
+module "dublin_backend" {
   providers = {
-    aws = aws.main
+    aws = aws.dublin
   }
 
   source        = "../../govwifi-backend"
@@ -68,9 +20,9 @@ module "backend" {
   env_subdomain = local.env_subdomain
 
   # AWS VPC setup -----------------------------------------
-  aws_region      = var.aws_region
+  aws_region      = local.dublin_aws_region
   route53_zone_id = data.aws_route53_zone.main.zone_id
-  aws_region_name = var.aws_region_name
+  aws_region_name = local.dublin_aws_region_name
   vpc_cidr_block  = "10.104.0.0/16"
 
   administrator_cidrs = var.administrator_cidrs
@@ -81,7 +33,7 @@ module "backend" {
   bastion_ami    = "ami-08bac620dc84221eb"
 
   bastion_instance_type     = "t2.micro"
-  bastion_server_ip         = var.bastion_server_ip
+  bastion_server_ip         = module.london_backend.bastion_public_ip
   bastion_ssh_key_name      = "staging-bastion-20200717"
   enable_bastion_monitoring = false
   aws_account_id            = local.aws_account_id
@@ -103,9 +55,10 @@ module "backend" {
   user_replica_source_db = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-staging-user-db"
   user_rr_instance_type  = "db.t2.small"
 
-  user_rr_hostname           = var.user_rr_hostname
-  critical_notifications_arn = module.notifications.topic_arn
-  capacity_notifications_arn = module.notifications.topic_arn
+  # TODO This should happen inside the module
+  user_rr_hostname           = "users-rr.${lower(local.dublin_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
+  critical_notifications_arn = module.dublin_notifications.topic_arn
+  capacity_notifications_arn = module.dublin_notifications.topic_arn
 
   # Seconds. Set to zero to disable monitoring
   db_monitoring_interval = 60
@@ -114,9 +67,9 @@ module "backend" {
   user_db_hostname      = ""
   user_db_instance_type = ""
   user_db_storage_gb    = 0
-  prometheus_ip_london  = var.prometheus_ip_london
-  prometheus_ip_ireland = var.prometheus_ip_ireland
-  grafana_ip            = var.grafana_ip
+  prometheus_ip_london  = module.london_prometheus.eip_public_ip
+  prometheus_ip_ireland = module.london_prometheus.eip_public_ip
+  grafana_ip            = module.london_grafana.eip_public_ip
 
   db_storage_alarm_threshold = 19327342936
 }
@@ -124,7 +77,7 @@ module "backend" {
 # Emails ======================================================================
 module "emails" {
   providers = {
-    aws = aws.main
+    aws = aws.dublin
   }
 
   source = "../../govwifi-emails"
@@ -134,15 +87,15 @@ module "emails" {
   env_subdomain            = local.env_subdomain
   aws_account_id           = local.aws_account_id
   route53_zone_id          = data.aws_route53_zone.main.zone_id
-  aws_region               = var.aws_region
-  aws_region_name          = var.aws_region_name
+  aws_region               = local.dublin_aws_region
+  aws_region_name          = local.dublin_aws_region_name
   mail_exchange_server     = "10 inbound-smtp.eu-west-1.amazonaws.com"
-  devops_notifications_arn = module.notifications.topic_arn
+  devops_notifications_arn = module.dublin_notifications.topic_arn
 }
 
-module "govwifi_keys" {
+module "dublin_keys" {
   providers = {
-    aws = aws.main
+    aws = aws.dublin
   }
 
   source = "../../govwifi-keys"
@@ -158,9 +111,9 @@ module "govwifi_keys" {
 }
 
 # Frontend ====================================================================
-module "frontend" {
+module "dublin_frontend" {
   providers = {
-    aws           = aws.main
+    aws           = aws.dublin
     aws.us_east_1 = aws.us_east_1
   }
 
@@ -169,8 +122,8 @@ module "frontend" {
   env_subdomain = local.env_subdomain
 
   # AWS VPC setup -----------------------------------------
-  aws_region         = var.aws_region
-  aws_region_name    = var.aws_region_name
+  aws_region         = local.dublin_aws_region
+  aws_region_name    = local.dublin_aws_region_name
   route53_zone_id    = data.aws_route53_zone.main.zone_id
   vpc_cidr_block     = "10.105.0.0/16"
   rack_env           = "staging"
@@ -184,32 +137,32 @@ module "frontend" {
   # where N = this base + 1 + server#
   dns_numbering_base = 0
 
-  ami                   = var.ami
+  ami                   = "ami-2d386654"
   ssh_key_name          = var.ssh_key_name
   frontend_docker_image = format("%s/frontend:staging", local.docker_image_path)
   raddb_docker_image    = format("%s/raddb:staging", local.docker_image_path)
 
-  admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
+  admin_app_data_s3_bucket_name = module.london_admin.app_data_s3_bucket_name
 
-  logging_api_base_url = var.london_api_base_url
-  auth_api_base_url    = var.dublin_api_base_url
+  logging_api_base_url = module.london_api.api_base_url
+  auth_api_base_url    = module.dublin_api.api_base_url
 
-  critical_notifications_arn            = module.notifications.topic_arn
-  us_east_1_critical_notifications_arn  = module.route53_notifications.topic_arn
-  us_east_1_pagerduty_notifications_arn = data.terraform_remote_state.london.outputs.us_east_1_notifications_topic_arn
+  critical_notifications_arn            = module.dublin_notifications.topic_arn
+  us_east_1_critical_notifications_arn  = module.dublin_route53_notifications.topic_arn
+  us_east_1_pagerduty_notifications_arn = module.london_route53_notifications.topic_arn
 
-  bastion_server_ip = var.bastion_server_ip
+  bastion_server_ip = module.london_backend.bastion_public_ip
 
-  prometheus_ip_london  = var.prometheus_ip_london
-  prometheus_ip_ireland = var.prometheus_ip_ireland
+  prometheus_ip_london  = module.london_prometheus.eip_public_ip
+  prometheus_ip_ireland = module.london_prometheus.eip_public_ip
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 
 }
 
-module "api" {
+module "dublin_api" {
   providers = {
-    aws = aws.main
+    aws = aws.dublin
   }
 
   source        = "../../govwifi-api"
@@ -220,10 +173,10 @@ module "api" {
   backend_elb_count      = 1
   backend_instance_count = 2
   aws_account_id         = local.aws_account_id
-  aws_region_name        = var.aws_region_name
-  aws_region             = var.aws_region
+  aws_region_name        = local.dublin_aws_region_name
+  aws_region             = local.dublin_aws_region
   route53_zone_id        = data.aws_route53_zone.main.zone_id
-  vpc_id                 = module.backend.backend_vpc_id
+  vpc_id                 = module.dublin_backend.backend_vpc_id
 
   user_signup_enabled  = 0
   logging_enabled      = 0
@@ -231,9 +184,9 @@ module "api" {
   safe_restart_enabled = 0
   event_rule_count     = 0
 
-  capacity_notifications_arn = module.notifications.topic_arn
-  devops_notifications_arn   = module.notifications.topic_arn
-  notification_arn           = module.notifications.topic_arn
+  capacity_notifications_arn = module.dublin_notifications.topic_arn
+  devops_notifications_arn   = module.dublin_notifications.topic_arn
+  notification_arn           = module.dublin_notifications.topic_arn
 
   auth_docker_image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user_signup_docker_image      = ""
@@ -244,37 +197,27 @@ module "api" {
   db_hostname = ""
 
   user_db_hostname = ""
-  user_rr_hostname = var.user_rr_hostname
+  ## TODO This should depend on the resource
+  user_rr_hostname = "users-rr.${lower(local.dublin_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
 
   rack_env                = "staging"
   sentry_current_env      = "secondary-staging"
   radius_server_ips       = local.frontend_radius_ips
-  subnet_ids              = module.backend.backend_subnet_ids
-  private_subnet_ids      = module.backend.backend_private_subnet_ids
-  nat_gateway_elastic_ips = module.backend.nat_gateway_elastic_ips
-  rds_mysql_backup_bucket = module.backend.rds_mysql_backup_bucket
+  subnet_ids              = module.dublin_backend.backend_subnet_ids
+  private_subnet_ids      = module.dublin_backend.backend_private_subnet_ids
+  nat_gateway_elastic_ips = module.dublin_backend.nat_gateway_elastic_ips
+  rds_mysql_backup_bucket = module.dublin_backend.rds_mysql_backup_bucket
 
-  admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
+  admin_app_data_s3_bucket_name = module.london_admin.app_data_s3_bucket_name
 
   backend_sg_list = [
-    module.backend.be_admin_in,
+    module.dublin_backend.be_admin_in,
   ]
 
   low_cpu_threshold = 0.3
 }
 
-module "notifications" {
-  providers = {
-    aws = aws.main
-  }
-
-  source = "../../sns-notification"
-
-  topic_name = "govwifi-staging"
-  emails     = [var.notification_email]
-}
-
-module "route53_notifications" {
+module "dublin_route53_notifications" {
   providers = {
     aws = aws.us_east_1
   }
@@ -282,5 +225,16 @@ module "route53_notifications" {
   source = "../../sns-notification"
 
   topic_name = "govwifi-staging-dublin"
+  emails     = [var.notification_email]
+}
+
+module "dublin_notifications" {
+  providers = {
+    aws = aws.dublin
+  }
+
+  source = "../../sns-notification"
+
+  topic_name = "govwifi-staging"
   emails     = [var.notification_email]
 }
