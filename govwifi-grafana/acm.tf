@@ -2,7 +2,6 @@ resource "aws_acm_certificate" "grafana_cert" {
   domain_name       = aws_route53_record.grafana_route53_record.name
   validation_method = "DNS"
 
-  depends_on = [aws_route53_record.grafana_route53_record]
 }
 
 resource "aws_route53_record" "grafana_cert_validation" {
