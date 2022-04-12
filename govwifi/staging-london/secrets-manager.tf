@@ -8,14 +8,6 @@ data "aws_secretsmanager_secret" "docker_image_path" {
 
 # Sentry
 
-data "aws_secretsmanager_secret" "user_signup_api_sentry_dsn" {
-  name = "sentry/user_signup_api_dsn"
-}
-
-data "aws_secretsmanager_secret_version" "user_signup_api_sentry_dsn" {
-  secret_id = data.aws_secretsmanager_secret.user_signup_api_sentry_dsn.id
-}
-
 data "aws_secretsmanager_secret" "logging_api_sentry_dsn" {
   name = "sentry/logging_api_dsn"
 }
