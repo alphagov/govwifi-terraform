@@ -249,18 +249,17 @@ module "api" {
   safe_restart_docker_image     = format("%s/safe-restarter:production", local.docker_image_path)
   backup_rds_to_s3_docker_image = ""
 
-  db_hostname               = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
-  rack_env                  = "production"
-  sentry_current_env        = "production"
-  radius_server_ips         = local.frontend_radius_ips
-  authentication_sentry_dsn = local.authentication_api_sentry_dsn
-  user_signup_docker_image  = ""
-  subnet_ids                = module.backend.backend_subnet_ids
-  private_subnet_ids        = module.backend.backend_private_subnet_ids
-  nat_gateway_elastic_ips   = module.backend.nat_gateway_elastic_ips
-  user_db_hostname          = var.user_db_hostname
-  user_rr_hostname          = var.user_rr_hostname
-  rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
+  db_hostname              = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
+  rack_env                 = "production"
+  sentry_current_env       = "production"
+  radius_server_ips        = local.frontend_radius_ips
+  user_signup_docker_image = ""
+  subnet_ids               = module.backend.backend_subnet_ids
+  private_subnet_ids       = module.backend.backend_private_subnet_ids
+  nat_gateway_elastic_ips  = module.backend.nat_gateway_elastic_ips
+  user_db_hostname         = var.user_db_hostname
+  user_rr_hostname         = var.user_rr_hostname
+  rds_mysql_backup_bucket  = module.backend.rds_mysql_backup_bucket
 
   backend_sg_list = [
     module.backend.be_admin_in,

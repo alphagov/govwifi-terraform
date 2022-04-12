@@ -16,14 +16,6 @@ data "aws_secretsmanager_secret_version" "pagerduty_config" {
 
 # Sentry
 
-data "aws_secretsmanager_secret" "authentication_api_sentry_dsn" {
-  name = "sentry/authentication_api_dsn"
-}
-
-data "aws_secretsmanager_secret_version" "authentication_api_sentry_dsn" {
-  secret_id = data.aws_secretsmanager_secret.authentication_api_sentry_dsn.id
-}
-
 data "aws_secretsmanager_secret" "user_signup_api_sentry_dsn" {
   name = "sentry/user_signup_api_dsn"
 }

@@ -68,9 +68,6 @@ variable "radius_server_ips" {
   type = list(string)
 }
 
-variable "authentication_sentry_dsn" {
-}
-
 variable "user_signup_sentry_dsn" {
   default = ""
 }

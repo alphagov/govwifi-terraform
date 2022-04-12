@@ -53,9 +53,6 @@ resource "aws_ecs_task_definition" "authorisation_api_task" {
           "name": "SENTRY_CURRENT_ENV",
           "value": "${var.sentry_current_env}"
         },{
-          "name": "SENTRY_DSN",
-          "value": "${var.authentication_sentry_dsn}"
-        },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.env_name}"
         }
@@ -66,6 +63,9 @@ resource "aws_ecs_task_definition" "authorisation_api_task" {
         },{
           "name": "DB_USER",
           "valueFrom": "${data.aws_secretsmanager_secret_version.users_db.arn}:username::"
+        },{
+          "name": "SENTRY_DSN",
+          "valueFrom": "${data.aws_secretsmanager_secret.authentication_api_sentry_dsn.arn}"
         }
       ],
       "links": null,

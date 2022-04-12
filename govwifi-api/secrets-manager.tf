@@ -49,3 +49,7 @@ data "aws_secretsmanager_secret" "database_s3_encryption" {
 data "aws_secretsmanager_secret" "safe_restarter_sentry_dsn" {
   name = "sentry/safe_restarter_dsn"
 }
+
+data "aws_secretsmanager_secret" "authentication_api_sentry_dsn" {
+  name = "sentry/authentication_api_dsn"
+}
