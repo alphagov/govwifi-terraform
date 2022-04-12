@@ -276,7 +276,6 @@ module "api" {
   rack_env                  = "production"
   sentry_current_env        = "production"
   radius_server_ips         = local.frontend_radius_ips
-  logging_sentry_dsn        = local.logging_api_sentry_dsn
   subnet_ids                = module.backend.backend_subnet_ids
   private_subnet_ids        = module.backend.backend_private_subnet_ids
   nat_gateway_elastic_ips   = module.backend.nat_gateway_elastic_ips

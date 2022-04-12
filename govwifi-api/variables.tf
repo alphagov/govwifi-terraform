@@ -68,10 +68,6 @@ variable "radius_server_ips" {
   type = list(string)
 }
 
-variable "logging_sentry_dsn" {
-  default = ""
-}
-
 variable "backend_sg_list" {
   type = list(string)
 }

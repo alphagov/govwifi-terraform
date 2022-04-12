@@ -8,8 +8,7 @@ locals {
 }
 
 locals {
-  logging_api_sentry_dsn = data.aws_secretsmanager_secret_version.logging_api_sentry_dsn.secret_string
-  admin_sentry_dsn       = data.aws_secretsmanager_secret_version.admin_sentry_dsn.secret_string
+  admin_sentry_dsn = data.aws_secretsmanager_secret_version.admin_sentry_dsn.secret_string
 }
 
 locals {
