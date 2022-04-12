@@ -60,9 +60,6 @@ resource "aws_ecs_task_definition" "admin_task" {
           "name": "DUBLIN_RADIUS_IPS",
           "value": "${join(",", var.dublin_radius_ip_addresses)}"
         },{
-          "name": "SENTRY_DSN",
-          "value": "${var.sentry_dsn}"
-        },{
           "name": "S3_MOU_BUCKET",
           "value": "${aws_s3_bucket.admin_mou_bucket[0].id}"
         },{
@@ -152,6 +149,9 @@ resource "aws_ecs_task_definition" "admin_task" {
         },{
           "name": "ZENDESK_API_TOKEN",
           "valueFrom": "${data.aws_secretsmanager_secret_version.zendesk_api_token.arn}:zendesk-api-token::"
+        },{
+          "name": "SENTRY_DSN",
+          "valueFrom": "${data.aws_secretsmanager_secret.sentry_dsn.arn}"
         }
       ],
       "image": "${var.admin_docker_image}",

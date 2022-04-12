@@ -8,10 +8,6 @@ locals {
 }
 
 locals {
-  admin_sentry_dsn = data.aws_secretsmanager_secret_version.admin_sentry_dsn.secret_string
-}
-
-locals {
   aws_account_id = data.aws_caller_identity.current.account_id
 }
 

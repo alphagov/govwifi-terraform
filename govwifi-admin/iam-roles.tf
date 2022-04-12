@@ -139,6 +139,7 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
       data.aws_secretsmanager_secret_version.users_db.arn,
       data.aws_secretsmanager_secret_version.admin_db.arn,
       data.aws_secretsmanager_secret_version.google_service_account_backup_credentials.arn,
+      data.aws_secretsmanager_secret.sentry_dsn.arn,
     ]
   }
 }

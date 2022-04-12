@@ -13,13 +13,3 @@ data "aws_secretsmanager_secret" "pagerduty_config" {
 data "aws_secretsmanager_secret_version" "pagerduty_config" {
   secret_id = data.aws_secretsmanager_secret.pagerduty_config.id
 }
-
-# Sentry
-
-data "aws_secretsmanager_secret" "admin_sentry_dsn" {
-  name = "sentry/admin_dsn"
-}
-
-data "aws_secretsmanager_secret_version" "admin_sentry_dsn" {
-  secret_id = data.aws_secretsmanager_secret.admin_sentry_dsn.id
-}
