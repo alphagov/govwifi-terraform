@@ -254,7 +254,6 @@ module "api" {
   sentry_current_env        = "production"
   radius_server_ips         = local.frontend_radius_ips
   authentication_sentry_dsn = local.authentication_api_sentry_dsn
-  safe_restart_sentry_dsn   = local.safe_restarter_sentry_dsn
   user_signup_docker_image  = ""
   subnet_ids                = module.backend.backend_subnet_ids
   private_subnet_ids        = module.backend.backend_private_subnet_ids

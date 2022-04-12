@@ -270,7 +270,6 @@ module "api" {
   sentry_current_env        = "secondary-staging"
   radius_server_ips         = local.frontend_radius_ips
   authentication_sentry_dsn = local.authentication_api_sentry_dsn
-  safe_restart_sentry_dsn   = local.safe_restarter_sentry_dsn
   user_signup_sentry_dsn    = local.user_signup_api_sentry_dsn
   logging_sentry_dsn        = local.logging_api_sentry_dsn
   subnet_ids                = module.backend.backend_subnet_ids

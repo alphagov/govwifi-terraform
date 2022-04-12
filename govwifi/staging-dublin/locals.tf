@@ -7,7 +7,6 @@ locals {
 
 locals {
   authentication_api_sentry_dsn = data.aws_secretsmanager_secret_version.authentication_api_sentry_dsn.secret_string
-  safe_restarter_sentry_dsn     = data.aws_secretsmanager_secret_version.safe_restarter_sentry_dsn.secret_string
 }
 
 locals {

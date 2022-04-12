@@ -49,10 +49,6 @@ variable "safe_restart_enabled" {
   default = 1
 }
 
-variable "safe_restart_sentry_dsn" {
-  default = ""
-}
-
 variable "user_db_hostname" {
 }
 

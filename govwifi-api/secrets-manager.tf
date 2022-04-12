@@ -45,3 +45,7 @@ data "aws_secretsmanager_secret_version" "database_s3_encryption" {
 data "aws_secretsmanager_secret" "database_s3_encryption" {
   name = "rds/database-s3-encryption"
 }
+
+data "aws_secretsmanager_secret" "safe_restarter_sentry_dsn" {
+  name = "sentry/safe_restarter_dsn"
+}

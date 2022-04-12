@@ -37,7 +37,8 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
       data.aws_secretsmanager_secret.admin_db.arn,
       data.aws_secretsmanager_secret.notify_api_key.arn,
       data.aws_secretsmanager_secret.notify_bearer_token.arn,
-      data.aws_secretsmanager_secret.database_s3_encryption.arn
+      data.aws_secretsmanager_secret.database_s3_encryption.arn,
+      data.aws_secretsmanager_secret.safe_restarter_sentry_dsn.arn
     ]
   }
 }
