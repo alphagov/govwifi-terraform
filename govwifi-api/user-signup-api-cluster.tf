@@ -119,9 +119,6 @@ resource "aws_ecs_task_definition" "user_signup_api_task" {
           "name": "SENTRY_CURRENT_ENV",
           "value": "${var.sentry_current_env}"
         },{
-          "name": "SENTRY_DSN",
-          "value": "${var.user_signup_sentry_dsn}"
-        },{
           "name": "ENVIRONMENT_NAME",
           "value": "${var.env_name}"
         },{
@@ -148,6 +145,9 @@ resource "aws_ecs_task_definition" "user_signup_api_task" {
         },{
           "name": "GOVNOTIFY_BEARER_TOKEN",
           "valueFrom": "${data.aws_secretsmanager_secret_version.notify_bearer_token.arn}:token::"
+        },{
+          "name": "SENTRY_DSN",
+          "valueFrom": "${data.aws_secretsmanager_secret.user_signup_api_sentry_dsn.arn}"
         }
       ],
       "links": null,

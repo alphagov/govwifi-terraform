@@ -49,10 +49,6 @@ variable "safe_restart_enabled" {
   default = 1
 }
 
-variable "safe_restart_sentry_dsn" {
-  default = ""
-}
-
 variable "user_db_hostname" {
 }
 
@@ -70,17 +66,6 @@ variable "sentry_current_env" {
 
 variable "radius_server_ips" {
   type = list(string)
-}
-
-variable "authentication_sentry_dsn" {
-}
-
-variable "user_signup_sentry_dsn" {
-  default = ""
-}
-
-variable "logging_sentry_dsn" {
-  default = ""
 }
 
 variable "backend_sg_list" {

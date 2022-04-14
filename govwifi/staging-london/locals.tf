@@ -8,14 +8,6 @@ locals {
 }
 
 locals {
-  authentication_api_sentry_dsn = data.aws_secretsmanager_secret_version.authentication_api_sentry_dsn.secret_string
-  safe_restarter_sentry_dsn     = data.aws_secretsmanager_secret_version.safe_restarter_sentry_dsn.secret_string
-  user_signup_api_sentry_dsn    = data.aws_secretsmanager_secret_version.user_signup_api_sentry_dsn.secret_string
-  logging_api_sentry_dsn        = data.aws_secretsmanager_secret_version.logging_api_sentry_dsn.secret_string
-  admin_sentry_dsn              = data.aws_secretsmanager_secret_version.admin_sentry_dsn.secret_string
-}
-
-locals {
   aws_account_id = data.aws_caller_identity.current.account_id
 }
 

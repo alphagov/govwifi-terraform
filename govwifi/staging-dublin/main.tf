@@ -246,15 +246,13 @@ module "api" {
   user_db_hostname = ""
   user_rr_hostname = var.user_rr_hostname
 
-  rack_env                  = "staging"
-  sentry_current_env        = "secondary-staging"
-  radius_server_ips         = local.frontend_radius_ips
-  authentication_sentry_dsn = local.authentication_api_sentry_dsn
-  safe_restart_sentry_dsn   = local.safe_restarter_sentry_dsn
-  subnet_ids                = module.backend.backend_subnet_ids
-  private_subnet_ids        = module.backend.backend_private_subnet_ids
-  nat_gateway_elastic_ips   = module.backend.nat_gateway_elastic_ips
-  rds_mysql_backup_bucket   = module.backend.rds_mysql_backup_bucket
+  rack_env                = "staging"
+  sentry_current_env      = "secondary-staging"
+  radius_server_ips       = local.frontend_radius_ips
+  subnet_ids              = module.backend.backend_subnet_ids
+  private_subnet_ids      = module.backend.backend_private_subnet_ids
+  nat_gateway_elastic_ips = module.backend.nat_gateway_elastic_ips
+  rds_mysql_backup_bucket = module.backend.rds_mysql_backup_bucket
 
   admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
 

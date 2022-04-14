@@ -45,3 +45,19 @@ data "aws_secretsmanager_secret_version" "database_s3_encryption" {
 data "aws_secretsmanager_secret" "database_s3_encryption" {
   name = "rds/database-s3-encryption"
 }
+
+data "aws_secretsmanager_secret" "safe_restarter_sentry_dsn" {
+  name = "sentry/safe_restarter_dsn"
+}
+
+data "aws_secretsmanager_secret" "authentication_api_sentry_dsn" {
+  name = "sentry/authentication_api_dsn"
+}
+
+data "aws_secretsmanager_secret" "user_signup_api_sentry_dsn" {
+  name = "sentry/user_signup_api_dsn"
+}
+
+data "aws_secretsmanager_secret" "logging_api_sentry_dsn" {
+  name = "sentry/logging_api_dsn"
+}

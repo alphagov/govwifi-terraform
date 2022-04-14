@@ -91,9 +91,6 @@ variable "dublin_radius_ip_addresses" {
   type = list(string)
 }
 
-variable "sentry_dsn" {
-}
-
 variable "logging_api_search_url" {
 }
 

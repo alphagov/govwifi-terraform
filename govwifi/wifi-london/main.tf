@@ -229,7 +229,6 @@ module "govwifi_admin" {
 
   london_radius_ip_addresses = var.london_radius_ip_addresses
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
-  sentry_dsn                 = local.admin_sentry_dsn
   public_google_api_key      = var.public_google_api_key
 
   logging_api_search_url = "https://api-elb.london.${local.env_subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
@@ -276,10 +275,6 @@ module "api" {
   rack_env                  = "production"
   sentry_current_env        = "production"
   radius_server_ips         = local.frontend_radius_ips
-  authentication_sentry_dsn = local.authentication_api_sentry_dsn
-  safe_restart_sentry_dsn   = local.safe_restarter_sentry_dsn
-  user_signup_sentry_dsn    = local.user_signup_api_sentry_dsn
-  logging_sentry_dsn        = local.logging_api_sentry_dsn
   subnet_ids                = module.backend.backend_subnet_ids
   private_subnet_ids        = module.backend.backend_private_subnet_ids
   nat_gateway_elastic_ips   = module.backend.nat_gateway_elastic_ips
