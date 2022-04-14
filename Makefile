@@ -3,6 +3,11 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 check-env:
 	$(if ${DEPLOY_ENV},,$(error Must pass DEPLOY_ENV=<name>))
+
+govwifi-tools: #The name "tools" would be the obvious choice here, but this is a reserved word in Makefiles and will cause an error
+	$(eval export DEPLOY_ENV=tools)
+	$(eval export REPO=tools)
+	$(eval export AWS_REGION=eu-west-2)
 staging:
 	$(eval export DEPLOY_ENV=staging)
 	$(eval export REPO=staging)

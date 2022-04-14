@@ -1,0 +1,2 @@
+variable "app_names" {
+}
