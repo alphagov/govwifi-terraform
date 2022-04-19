@@ -1,53 +1,16 @@
-module "tfstate" {
-  providers = {
-    aws = aws.main
-  }
-
-  source             = "../../terraform-state"
-  product_name       = local.product_name
-  env_name           = local.env_name
-  aws_account_id     = local.aws_account_id
-  aws_region_name    = var.aws_region_name
-  backup_region_name = var.backup_region_name
-
-  # TODO: separate module for accesslogs
-  accesslogs_glacier_transition_days = 7
-  accesslogs_expiration_days         = 30
-}
-
-terraform {
-  required_version = "~> 1.0.11"
-
-  backend "s3" {
-    # Interpolation is not allowed here.
-    #bucket = "${lower(local.product_name)}-${lower(local.env_name)}-${lower(var.aws_region_name)}-tfstate"
-    #key    = "${lower(var.aws_region_name)}-tfstate"
-    #region = "${var.aws_region}"
-    bucket = "govwifi-staging-london-tfstate"
-
-    key    = "staging-london-tfstate"
-    region = "eu-west-2"
-  }
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-    }
-  }
+locals {
+  london_aws_region      = "eu-west-2"
+  london_aws_region_name = "London"
 }
 
 provider "aws" {
-  alias  = "main"
-  region = var.aws_region
+  alias  = "london"
+  region = local.london_aws_region
 }
 
-provider "aws" {
-  alias  = "us_east_1"
-  region = "us-east-1"
-}
-
-module "govwifi_keys" {
+module "london_keys" {
   providers = {
-    aws = aws.main
+    aws = aws.london
   }
 
   source = "../../govwifi-keys"
@@ -62,11 +25,9 @@ module "govwifi_keys" {
 
 }
 
-# London Backend ==================================================================
-module "backend" {
+module "london_backend" {
   providers = {
-    aws = aws.main
-    # Instance-specific setup -------------------------------
+    aws = aws.london
   }
 
   source        = "../../govwifi-backend"
@@ -75,54 +36,55 @@ module "backend" {
   env_subdomain = local.env_subdomain
 
   # AWS VPC setup -----------------------------------------
-  aws_region      = var.aws_region
+  aws_region      = local.london_aws_region
   route53_zone_id = data.aws_route53_zone.main.zone_id
-  aws_region_name = var.aws_region_name
+  aws_region_name = local.london_aws_region_name
   vpc_cidr_block  = "10.106.0.0/16"
 
   administrator_cidrs = var.administrator_cidrs
   frontend_radius_ips = local.frontend_radius_ips
 
-  bastion_ami                = "ami-096cb92bb3580c759"
-  bastion_instance_type      = "t2.micro"
-  bastion_ssh_key_name       = "staging-bastion-20200717"
-  enable_bastion_monitoring  = false
-  aws_account_id             = local.aws_account_id
-  db_instance_count          = 1
-  session_db_instance_type   = "db.t2.small"
-  session_db_storage_gb      = 20
-  db_backup_retention_days   = 1
-  db_encrypt_at_rest         = true
-  db_maintenance_window      = "sat:01:42-sat:02:12"
-  db_backup_window           = "04:42-05:42"
-  db_replica_count           = 0
-  rr_instance_type           = "db.t2.large"
-  rr_storage_gb              = 200
-  user_rr_hostname           = var.user_rr_hostname
-  critical_notifications_arn = module.notifications.topic_arn
-  capacity_notifications_arn = module.notifications.topic_arn
+  bastion_ami               = "ami-096cb92bb3580c759"
+  bastion_instance_type     = "t2.micro"
+  bastion_ssh_key_name      = "staging-bastion-20200717"
+  enable_bastion_monitoring = false
+  aws_account_id            = local.aws_account_id
+  db_instance_count         = 1
+  session_db_instance_type  = "db.t2.small"
+  session_db_storage_gb     = 20
+  db_backup_retention_days  = 1
+  db_encrypt_at_rest        = true
+  db_maintenance_window     = "sat:01:42-sat:02:12"
+  db_backup_window          = "04:42-05:42"
+  db_replica_count          = 0
+  rr_instance_type          = "db.t2.large"
+  rr_storage_gb             = 200
+  # TODO This should happen inside the module
+  user_rr_hostname           = "users-rr.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
+  critical_notifications_arn = module.london_notifications.topic_arn
+  capacity_notifications_arn = module.london_notifications.topic_arn
 
   # Seconds. Set to zero to disable monitoring
   db_monitoring_interval = 60
 
   # Passed to application
-  user_db_hostname      = var.user_db_hostname
+  # TODO This should happen inside the module
+  user_db_hostname      = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
   user_db_instance_type = "db.t2.small"
   user_db_storage_gb    = 20
 
-  prometheus_ip_london  = var.prometheus_ip_london
-  prometheus_ip_ireland = var.prometheus_ip_ireland
-  grafana_ip            = var.grafana_ip
+  prometheus_ip_london  = module.london_prometheus.eip_public_ip
+  prometheus_ip_ireland = module.london_prometheus.eip_public_ip
+  grafana_ip            = module.london_grafana.eip_public_ip
 
   backup_mysql_rds = local.backup_mysql_rds
 
   db_storage_alarm_threshold = 19327342936
 }
 
-# London Frontend ==================================================================
-module "frontend" {
+module "london_frontend" {
   providers = {
-    aws           = aws.main
+    aws           = aws.london
     aws.us_east_1 = aws.us_east_1
   }
 
@@ -132,9 +94,9 @@ module "frontend" {
 
   # AWS VPC setup -----------------------------------------
   # LONDON
-  aws_region = var.aws_region
+  aws_region = local.london_aws_region
 
-  aws_region_name    = var.aws_region_name
+  aws_region_name    = local.london_aws_region_name
   route53_zone_id    = data.aws_route53_zone.main.zone_id
   vpc_cidr_block     = "10.102.0.0/16"
   rack_env           = "staging"
@@ -148,41 +110,41 @@ module "frontend" {
   # where N = this base + 1 + server#
   dns_numbering_base = 3
 
-  ami                   = var.ami
+  ami                   = "ami-2218f945"
   ssh_key_name          = var.ssh_key_name
   frontend_docker_image = format("%s/frontend:staging", local.docker_image_path)
   raddb_docker_image    = format("%s/raddb:staging", local.docker_image_path)
   create_ecr            = 1
 
-  admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
+  admin_app_data_s3_bucket_name = module.london_admin.app_data_s3_bucket_name
 
-  logging_api_base_url = var.london_api_base_url
-  auth_api_base_url    = var.london_api_base_url
+  logging_api_base_url = module.london_api.api_base_url
+  auth_api_base_url    = module.london_api.api_base_url
 
-  critical_notifications_arn            = module.notifications.topic_arn
-  us_east_1_critical_notifications_arn  = module.route53_notifications.topic_arn
-  us_east_1_pagerduty_notifications_arn = module.route53_notifications.topic_arn
+  critical_notifications_arn            = module.london_notifications.topic_arn
+  us_east_1_critical_notifications_arn  = module.london_route53_notifications.topic_arn
+  us_east_1_pagerduty_notifications_arn = module.london_route53_notifications.topic_arn
 
-  bastion_server_ip = var.bastion_server_ip
+  bastion_server_ip = module.london_backend.bastion_public_ip
 
-  prometheus_ip_london  = var.prometheus_ip_london
-  prometheus_ip_ireland = var.prometheus_ip_ireland
+  prometheus_ip_london  = module.london_prometheus.eip_public_ip
+  prometheus_ip_ireland = module.london_prometheus.eip_public_ip
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 }
 
-module "govwifi_admin" {
+module "london_admin" {
   providers = {
-    aws = aws.main
+    aws = aws.london
   }
 
   source        = "../../govwifi-admin"
   env_name      = local.env_name
   env_subdomain = local.env_subdomain
 
-  aws_region      = var.aws_region
-  aws_region_name = var.aws_region_name
-  vpc_id          = module.backend.backend_vpc_id
+  aws_region      = local.london_aws_region
+  aws_region_name = local.london_aws_region_name
+  vpc_id          = module.london_backend.backend_vpc_id
   instance_count  = 1
 
   route53_zone_id = data.aws_route53_zone.main.zone_id
@@ -192,7 +154,7 @@ module "govwifi_admin" {
   sentry_current_env   = "secondary-staging"
   ecr_repository_count = 1
 
-  subnet_ids = module.backend.backend_subnet_ids
+  subnet_ids = module.london_backend.backend_subnet_ids
 
   db_instance_type         = "db.t2.medium"
   db_storage_gb            = 120
@@ -205,30 +167,30 @@ module "govwifi_admin" {
   rr_db_host = "db.london.staging.wifi.service.gov.uk"
   rr_db_name = "govwifi_staging"
 
-  user_db_host = var.user_db_hostname
+  user_db_host = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
   user_db_name = "govwifi_staging_users"
 
-  critical_notifications_arn = module.notifications.topic_arn
-  capacity_notifications_arn = module.notifications.topic_arn
+  critical_notifications_arn = module.london_notifications.topic_arn
+  capacity_notifications_arn = module.london_notifications.topic_arn
 
-  rds_monitoring_role = module.backend.rds_monitoring_role
+  rds_monitoring_role = module.london_backend.rds_monitoring_role
 
-  london_radius_ip_addresses = var.london_radius_ip_addresses
-  dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
+  london_radius_ip_addresses = module.london_frontend.eip_public_ips
+  dublin_radius_ip_addresses = module.dublin_frontend.eip_public_ips
   logging_api_search_url     = "https://api-elb.london.${local.env_subdomain}.service.gov.uk:8443/logging/authentication/events/search/"
   public_google_api_key      = var.public_google_api_key
 
   zendesk_api_endpoint = "https://govuk.zendesk.com/api/v2/"
   zendesk_api_user     = var.zendesk_api_user
 
-  bastion_server_ip = var.bastion_server_ip
+  bastion_server_ip = module.london_backend.bastion_public_ip
 
-  notification_arn = module.notifications.topic_arn
+  notification_arn = module.london_notifications.topic_arn
 }
 
-module "api" {
+module "london_api" {
   providers = {
-    aws = aws.main
+    aws = aws.london
   }
 
   source        = "../../govwifi-api"
@@ -239,15 +201,15 @@ module "api" {
   backend_elb_count      = 1
   backend_instance_count = 2
   aws_account_id         = local.aws_account_id
-  aws_region_name        = var.aws_region_name
-  aws_region             = var.aws_region
+  aws_region_name        = local.london_aws_region_name
+  aws_region             = local.london_aws_region
   route53_zone_id        = data.aws_route53_zone.main.zone_id
-  vpc_id                 = module.backend.backend_vpc_id
+  vpc_id                 = module.london_backend.backend_vpc_id
   safe_restart_enabled   = 1
 
-  capacity_notifications_arn = module.notifications.topic_arn
-  devops_notifications_arn   = module.notifications.topic_arn
-  notification_arn           = module.notifications.topic_arn
+  capacity_notifications_arn = module.london_notifications.topic_arn
+  devops_notifications_arn   = module.london_notifications.topic_arn
+  notification_arn           = module.london_notifications.topic_arn
 
   auth_docker_image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user_signup_docker_image      = format("%s/user-signup-api:staging", local.docker_image_path)
@@ -259,50 +221,38 @@ module "api" {
   wordlist_file_path     = "../wordlist-short"
   ecr_repository_count   = 1
 
-  db_hostname = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
+  db_hostname = "db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
 
-  user_db_hostname = var.user_db_hostname
-
-  user_rr_hostname = var.user_db_hostname
+  user_db_hostname = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
+  user_rr_hostname = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
 
   rack_env                  = "staging"
   sentry_current_env        = "secondary-staging"
   radius_server_ips         = local.frontend_radius_ips
-  subnet_ids                = module.backend.backend_subnet_ids
-  private_subnet_ids        = module.backend.backend_private_subnet_ids
-  nat_gateway_elastic_ips   = module.backend.nat_gateway_elastic_ips
+  subnet_ids                = module.london_backend.backend_subnet_ids
+  private_subnet_ids        = module.london_backend.backend_private_subnet_ids
+  nat_gateway_elastic_ips   = module.london_backend.nat_gateway_elastic_ips
   notify_ips                = var.notify_ips
   user_signup_api_is_public = 1
 
-  admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
+  admin_app_data_s3_bucket_name = module.london_admin.app_data_s3_bucket_name
 
   backend_sg_list = [
-    module.backend.be_admin_in,
+    module.london_backend.be_admin_in,
   ]
 
-  metrics_bucket_name     = module.govwifi_dashboard.metrics_bucket_name
-  export_data_bucket_name = module.govwifi_dashboard.export_data_bucket_name
+  metrics_bucket_name     = module.london_dashboard.metrics_bucket_name
+  export_data_bucket_name = module.london_dashboard.export_data_bucket_name
 
-  rds_mysql_backup_bucket = module.backend.rds_mysql_backup_bucket
+  rds_mysql_backup_bucket = module.london_backend.rds_mysql_backup_bucket
   backup_mysql_rds        = local.backup_mysql_rds
 
   low_cpu_threshold = 0.3
 
-  elasticsearch_endpoint = module.govwifi_elasticsearch.endpoint
+  elasticsearch_endpoint = module.london_elasticsearch.endpoint
 }
 
-module "notifications" {
-  providers = {
-    aws = aws.main
-  }
-
-  source = "../../sns-notification"
-
-  topic_name = "govwifi-staging"
-  emails     = [var.notification_email]
-}
-
-module "route53_notifications" {
+module "london_route53_notifications" {
   providers = {
     aws = aws.us_east_1
   }
@@ -313,9 +263,20 @@ module "route53_notifications" {
   emails     = [var.notification_email]
 }
 
-module "govwifi_dashboard" {
+module "london_notifications" {
   providers = {
-    aws = aws.main
+    aws = aws.london
+  }
+
+  source = "../../sns-notification"
+
+  topic_name = "govwifi-staging"
+  emails     = [var.notification_email]
+}
+
+module "london_dashboard" {
+  providers = {
+    aws = aws.london
   }
 
   source   = "../../govwifi-dashboard"
@@ -330,9 +291,9 @@ There are some problems with the Staging Bastion instance that is preventing
 us from mirroring the setup in Production in Staging. This will be rectified
 when we create a separate staging environment.
 */
-module "govwifi_prometheus" {
+module "london_prometheus" {
   providers = {
-    aws = aws.main
+    aws = aws.london
   }
 
   source   = "../../govwifi-prometheus"
@@ -340,73 +301,72 @@ module "govwifi_prometheus" {
 
   ssh_key_name = var.ssh_key_name
 
-  frontend_vpc_id = module.frontend.frontend_vpc_id
+  frontend_vpc_id = module.london_frontend.frontend_vpc_id
 
-  fe_admin_in   = module.frontend.fe_admin_in
-  fe_ecs_out    = module.frontend.fe_ecs_out
-  fe_radius_in  = module.frontend.fe_radius_in
-  fe_radius_out = module.frontend.fe_radius_out
+  fe_admin_in   = module.london_frontend.fe_admin_in
+  fe_ecs_out    = module.london_frontend.fe_ecs_out
+  fe_radius_in  = module.london_frontend.fe_radius_in
+  fe_radius_out = module.london_frontend.fe_radius_out
 
-  wifi_frontend_subnet       = module.frontend.frontend_subnet_id
-  london_radius_ip_addresses = var.london_radius_ip_addresses
-  dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
+  wifi_frontend_subnet       = module.london_frontend.frontend_subnet_id
+  london_radius_ip_addresses = module.london_frontend.eip_public_ips
+  dublin_radius_ip_addresses = module.dublin_frontend.eip_public_ips
 
-  grafana_ip = var.grafana_ip
+  grafana_ip = module.london_grafana.eip_public_ip
 }
 
-module "govwifi_grafana" {
+module "london_grafana" {
   providers = {
-    aws = aws.main
+    aws = aws.london
   }
 
   source                     = "../../govwifi-grafana"
   env_name                   = local.env_name
   env_subdomain              = local.env_subdomain
-  aws_region                 = var.aws_region
-  critical_notifications_arn = module.notifications.topic_arn
+  aws_region                 = local.london_aws_region
+  critical_notifications_arn = module.london_notifications.topic_arn
 
   route53_zone_id = data.aws_route53_zone.main.zone_id
 
   ssh_key_name = var.ssh_key_name
 
-  subnet_ids         = module.backend.backend_subnet_ids
-  backend_subnet_ids = module.backend.backend_subnet_ids
-  be_admin_in        = module.backend.be_admin_in
+  subnet_ids         = module.london_backend.backend_subnet_ids
+  backend_subnet_ids = module.london_backend.backend_subnet_ids
+  be_admin_in        = module.london_backend.be_admin_in
 
-  vpc_id = module.backend.backend_vpc_id
+  vpc_id = module.london_backend.backend_vpc_id
 
-  bastion_ip = var.bastion_server_ip
+  bastion_ip = module.london_backend.bastion_public_ip
 
   administrator_cidrs = var.administrator_cidrs
   prometheus_ips = [
-    var.prometheus_ip_london,
-    var.prometheus_ip_ireland
+    module.london_prometheus.eip_public_ip
   ]
 
 }
 
-module "govwifi_elasticsearch" {
+module "london_elasticsearch" {
   providers = {
-    aws = aws.main
+    aws = aws.london
   }
 
   source         = "../../govwifi-elasticsearch"
   domain_name    = "${local.env_name}-elasticsearch"
   env_name       = local.env_name
-  aws_region     = var.aws_region
+  aws_region     = local.london_aws_region
   aws_account_id = local.aws_account_id
-  vpc_id         = module.backend.backend_vpc_id
-  vpc_cidr_block = module.backend.vpc_cidr_block
+  vpc_id         = module.london_backend.backend_vpc_id
+  vpc_cidr_block = module.london_backend.vpc_cidr_block
 
-  backend_subnet_id = module.backend.backend_subnet_ids[0]
+  backend_subnet_id = module.london_backend.backend_subnet_ids[0]
 }
 
-module "govwifi_datasync" {
+module "datasync" {
   providers = {
     aws = aws.us_east_1
   }
   source = "../../govwifi-datasync"
 
-  aws_region = var.aws_region
+  aws_region = local.london_aws_region
   rack_env   = "staging"
 }

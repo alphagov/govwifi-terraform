@@ -3,14 +3,9 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 check-env:
 	$(if ${DEPLOY_ENV},,$(error Must pass DEPLOY_ENV=<name>))
-staging-london:
-	$(eval export DEPLOY_ENV=staging-london)
+staging:
+	$(eval export DEPLOY_ENV=staging)
 	$(eval export REPO=staging)
-	$(eval export AWS_REGION=eu-west-2)
-staging-dublin:
-	$(eval export DEPLOY_ENV=staging-dublin)
-	$(eval export REPO=staging)
-	$(eval export AWS_REGION=eu-west-1)
 wifi-london:
 	$(eval export DEPLOY_ENV=wifi-london)
 	$(eval export REPO=latest)

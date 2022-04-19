@@ -49,7 +49,7 @@ make <ENV> init-backend
 make <ENV> plan
 ```
 
-Example ENVs are: `wifi`, `wifi-london`, `staging-london`, and `staging-dublin`
+Example ENVs are: `wifi`, `wifi-london` and `staging`.
 
 ## Running terraform
 
