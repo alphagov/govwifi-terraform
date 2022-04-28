@@ -98,7 +98,7 @@ resource "aws_iam_role" "ecs_admin_instance_role" {
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "admin-ecsTaskExecutionRole-${var.rack_env}-${var.aws_region_name}"
+  name               = "admin-ecsTaskExecutionRole-${var.rails_env}-${var.aws_region_name}"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 

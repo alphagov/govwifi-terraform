@@ -37,13 +37,13 @@ resource "aws_ecs_task_definition" "admin_task" {
       "environment": [
         {
           "name": "DB_NAME",
-          "value": "govwifi_admin_${var.rack_env}"
+          "value": "govwifi_admin_${var.rails_env}"
         },{
           "name": "DB_HOST",
           "value": "${aws_db_instance.admin_db.address}"
         },{
-          "name": "RACK_ENV",
-          "value": "${var.rack_env}"
+          "name": "RAILS_ENV",
+          "value": "staging"
         },{
           "name": "SENTRY_CURRENT_ENV",
           "value": "${var.sentry_current_env}"
