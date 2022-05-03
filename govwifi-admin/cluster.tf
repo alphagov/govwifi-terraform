@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "admin_task" {
           "value": "${aws_db_instance.admin_db.address}"
         },{
           "name": "RAILS_ENV",
-          "value": "staging"
+          "value": "${var.rails_env}"
         },{
           "name": "SENTRY_CURRENT_ENV",
           "value": "${var.sentry_current_env}"
