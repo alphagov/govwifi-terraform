@@ -24,7 +24,7 @@ variable "ecr_repository_count" {
   default     = 0
 }
 
-variable "rack_env" {
+variable "rails_env" {
   description = "E.g. staging"
 }
 

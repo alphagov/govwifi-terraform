@@ -1,13 +1,13 @@
 resource "aws_s3_bucket" "admin_bucket" {
   count         = 1
-  bucket        = "govwifi-${var.rack_env}-admin"
+  bucket        = "govwifi-${var.rails_env}-admin"
   force_destroy = true
   acl           = "private"
 
   tags = {
     Name        = "${title(var.env_name)} Admin data"
     Region      = title(var.aws_region_name)
-    Environment = title(var.rack_env)
+    Environment = title(var.rails_env)
   }
 
   versioning {
@@ -17,14 +17,14 @@ resource "aws_s3_bucket" "admin_bucket" {
 
 resource "aws_s3_bucket" "product_page_data_bucket" {
   count         = 1
-  bucket        = "govwifi-${var.rack_env}-product-page-data"
+  bucket        = "govwifi-${var.rails_env}-product-page-data"
   force_destroy = true
   acl           = "public-read"
 
   tags = {
-    Name        = "${title(var.rack_env)} Product page data"
+    Name        = "${title(var.rails_env)} Product page data"
     Region      = title(var.aws_region_name)
-    Environment = title(var.rack_env)
+    Environment = title(var.rails_env)
   }
 
   versioning {
@@ -34,14 +34,14 @@ resource "aws_s3_bucket" "product_page_data_bucket" {
 
 resource "aws_s3_bucket" "admin_mou_bucket" {
   count         = 1
-  bucket        = "govwifi-${var.rack_env}-admin-mou"
+  bucket        = "govwifi-${var.rails_env}-admin-mou"
   force_destroy = true
   acl           = "private"
 
   tags = {
     Name        = "${title(var.env_name)} MOU documents from Admin"
     Region      = title(var.aws_region_name)
-    Environment = title(var.rack_env)
+    Environment = title(var.rails_env)
   }
 
   versioning {

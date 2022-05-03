@@ -201,7 +201,7 @@ module "govwifi_admin" {
   route53_zone_id = data.aws_route53_zone.main.zone_id
 
   admin_docker_image   = format("%s/admin:production", local.docker_image_path)
-  rack_env             = "production"
+  rails_env            = "production"
   sentry_current_env   = "production"
   ecr_repository_count = 1
 
