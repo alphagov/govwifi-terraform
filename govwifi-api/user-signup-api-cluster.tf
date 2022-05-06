@@ -201,6 +201,13 @@ resource "aws_ecs_service" "user_signup_api_service" {
     container_name   = "user-signup"
     container_port   = "8080"
   }
+
+	load_balancer {
+		target_group_arn = aws_alb_target_group.user_signup_api_tg_two[0].arn
+		container_name   = "user-signup"
+		container_port   = "8080"
+	}
+
 }
 
 resource "aws_alb_target_group" "user_signup_api_tg" {
@@ -214,6 +221,28 @@ resource "aws_alb_target_group" "user_signup_api_tg" {
 
   tags = {
     Name = "user-signup-api-tg-${var.env_name}"
+  }
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 4
+    interval            = 10
+    path                = "/healthcheck"
+  }
+}
+
+resource "aws_alb_target_group" "user_signup_api_tg_two" {
+  count       = var.user_signup_enabled
+  depends_on  = [aws_lb.api_alb]
+  name        = "user-signup-api-${var.env_name}-two"
+  port        = "8080"
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+
+  tags = {
+    Name = "user-signup-api-tg-${var.env_name}-two"
   }
 
   health_check {
