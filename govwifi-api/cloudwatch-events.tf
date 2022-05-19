@@ -50,8 +50,8 @@ resource "aws_cloudwatch_event_rule" "hourly_request_statistics_event" {
 resource "aws_cloudwatch_event_rule" "daily_metrics_logging_event" {
   count               = var.event_rule_count
   name                = "${var.env_name}-daily-metrics-logging"
-  description         = "Triggers daily 02:00 UTC"
-  schedule_expression = "cron(0 2 * * ? *)"
+  description         = "Triggers daily 05:00 UTC"
+  schedule_expression = "cron(0 5 * * ? *)"
   is_enabled          = true
 }
 
