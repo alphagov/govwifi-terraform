@@ -218,7 +218,7 @@ module "govwifi_admin" {
   rr_db_host = "rr.london.wifi.service.gov.uk"
   rr_db_name = "govwifi_wifi"
 
-  user_db_host = var.user_rr_hostname
+  user_db_host = var.user_db_hostname
   user_db_name = "govwifi_production_users"
 
   critical_notifications_arn = module.critical_notifications.topic_arn
