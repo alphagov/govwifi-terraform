@@ -61,3 +61,11 @@ data "aws_secretsmanager_secret" "user_signup_api_sentry_dsn" {
 data "aws_secretsmanager_secret" "logging_api_sentry_dsn" {
   name = "sentry/logging_api_dsn"
 }
+
+data "aws_secretsmanager_secret_version" "tools_account" {
+  secret_id = data.aws_secretsmanager_secret.tools_account.id
+}
+
+data "aws_secretsmanager_secret" "tools_account" {
+  name = "tools/AccountID"
+}
