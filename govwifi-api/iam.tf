@@ -174,3 +174,89 @@ resource "aws_iam_role_policy_attachment" "lambda_service_role" {
   role       = aws_iam_role.iam_for_user_api_sns_lambda[0].name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
+
+resource "aws_iam_role" "crossaccount_tools" {
+  count              = var.create_wordlist_bucket ? 1 : 0
+  name               = "govwifi-crossaccount-tools-deploy"
+  assume_role_policy = <<POLICY
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "arn:aws:iam::${data.aws_secretsmanager_secret_version.tools_account.secret_string}:role/govwifi-codepipeline-${var.env}-role"
+                ]
+            },
+            "Action": "sts:AssumeRole",
+            "Condition": {}
+        }
+    ]
+}
+POLICY
+}
+
+resource "aws_iam_role_policy_attachment" "crossaccount_tools" {
+  count      = var.create_wordlist_bucket ? 1 : 0
+  role       = aws_iam_role.crossaccount_tools[0].name
+  policy_arn = aws_iam_policy.crossaccount_tools[0].arn
+}
+
+resource "aws_iam_policy" "crossaccount_tools" {
+  count       = var.create_wordlist_bucket ? 1 : 0
+  name        = "govwifi-crossaccount-tools-deploy"
+  path        = "/"
+  description = "Allows AWS Tools account to deploy new ECS tasks"
+
+  policy = <<POLICY
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:Get*",
+                "s3:List*",
+                "s3:PutObject",
+                "s3:PutObjectAcl"
+            ],
+            "Resource": [
+                "arn:aws:s3:::govwifi-codepipeline-bucket",
+                "arn:aws:s3:::govwifi-codepipeline-bucket/*"
+            ]
+        },
+        {
+            "Sid": "AllowUseOfKeyInAccountTools",
+            "Effect": "Allow",
+            "Action": [
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:DescribeKey"
+            ],
+            "Resource": [
+                "arn:aws:kms:eu-west-2:${data.aws_secretsmanager_secret_version.tools_account.secret_string}:key/${data.aws_secretsmanager_secret_version.tools_kms_key.secret_string}"
+            ]
+        },
+        {
+            "Sid": "ECRRepositoryPolicy",
+            "Effect": "Allow",
+            "Action": [
+                "ecr:DescribeImages",
+                "ecr:DescribeRepositories"
+            ],
+            "Resource": "arn:aws:ecr:eu-west-2:${data.aws_secretsmanager_secret_version.tools_account.secret_string}:govwifi/*"
+        }
+    ]
+}
+POLICY
+
+}
+
+resource "aws_iam_role_policy_attachment" "crossaccount_tools_ecs_access" {
+  count      = var.create_wordlist_bucket ? 1 : 0
+  role       = aws_iam_role.crossaccount_tools[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
+}
