@@ -28,7 +28,7 @@ resource "aws_cloudwatch_event_target" "retrieve_notifications" {
 {
   "containerOverrides": [
     {
-      "name": "user-signup",
+      "name": "user-signup-api",
       "command": ["bundle", "exec", "rake", "retrieve_notifications"]
     }
   ]
@@ -125,7 +125,7 @@ resource "aws_cloudwatch_event_target" "user_signup_daily_user_deletion" {
 {
   "containerOverrides": [
     {
-      "name": "user-signup",
+      "name": "user-signup-api",
       "command": ["bundle", "exec", "rake", "delete_inactive_users"]
     }
   ]
@@ -164,7 +164,7 @@ resource "aws_cloudwatch_event_target" "smoke_test_user_deletion" {
 {
   "containerOverrides": [
     {
-      "name": "user-signup",
+      "name": "user-signup-api",
       "command": ["bundle", "exec", "rake", "delete_smoke_test_users"]
     }
   ]
@@ -241,7 +241,7 @@ resource "aws_ecs_task_definition" "user_signup_api_scheduled_task" {
       "essential": true,
       "entryPoint": null,
       "mountPoints": [],
-      "name": "user-signup",
+      "name": "user-signup-api",
       "ulimits": null,
       "dockerSecurityOptions": null,
       "environment": [
@@ -340,7 +340,7 @@ resource "aws_cloudwatch_event_target" "active_users_signup_surveys" {
 {
   "containerOverrides": [
     {
-      "name": "user-signup",
+      "name": "user-signup-api",
       "command": ["bundle", "exec", "rake", "users_signup_survey:send_active"]
     }
   ]

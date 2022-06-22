@@ -102,7 +102,7 @@ resource "aws_ecs_task_definition" "user_signup_api_task" {
       "essential": true,
       "entryPoint": null,
       "mountPoints": [],
-      "name": "user-signup",
+      "name": "user-signup-api",
       "ulimits": null,
       "dockerSecurityOptions": null,
       "environment": [
@@ -198,7 +198,7 @@ resource "aws_ecs_service" "user_signup_api_service" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.user_signup_api_tg[0].arn
-    container_name   = "user-signup"
+    container_name   = "user-signup-api"
     container_port   = "8080"
   }
 }
