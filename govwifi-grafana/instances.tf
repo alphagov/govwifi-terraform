@@ -17,11 +17,22 @@ data "aws_ami" "ubuntu" {
 # The element() function used in subnets wraps around when the index is over the number of elements
 # eg. in the 4th iteration the value returned will be the 1st, if there are only 3 elements in the list.
 resource "aws_instance" "grafana_instance" {
-  ami                     = data.aws_ami.ubuntu.id
-  instance_type           = "t2.small"
-  key_name                = var.ssh_key_name
-  subnet_id               = var.backend_subnet_ids[0]
-  user_data               = data.template_file.grafana_user_data.rendered
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.small"
+  key_name      = var.ssh_key_name
+  subnet_id     = var.backend_subnet_ids[0]
+  user_data = templatefile("${path.module}/user_data.sh",
+    {
+      grafana-log-group       = "${var.env_name}-grafana-log-group",
+      grafana_admin           = local.grafana_admin,
+      google_client_secret    = local.google_client_secret,
+      google_client_id        = local.google_client_id,
+      grafana_server_root_url = local.grafana_server_root_url,
+      grafana_device_name     = var.grafana_device_name,
+      grafana_docker_version  = var.grafana_docker_version
+    }
+  )
+
   disable_api_termination = false
   ebs_optimized           = false
 
@@ -61,18 +72,3 @@ resource "aws_volume_attachment" "grafana_ebs_attach" {
   volume_id   = aws_ebs_volume.grafana_ebs.id
   instance_id = aws_instance.grafana_instance.id
 }
-
-data "template_file" "grafana_user_data" {
-  template = file("${path.module}/user_data.sh")
-
-  vars = {
-    grafana-log-group       = "${var.env_name}-grafana-log-group"
-    grafana_admin           = local.grafana_admin
-    google_client_secret    = local.google_client_secret
-    google_client_id        = local.google_client_id
-    grafana_server_root_url = local.grafana_server_root_url
-    grafana_device_name     = var.grafana_device_name
-    grafana_docker_version  = var.grafana_docker_version
-  }
-}
-
