@@ -86,7 +86,7 @@ resource "aws_cloudwatch_event_target" "logging_daily_session_deletion" {
 {
   "containerOverrides": [
     {
-      "name": "logging",
+      "name": "logging-api",
       "command": ["bundle", "exec", "rake", "daily_session_deletion"]
     }
   ]
@@ -125,7 +125,7 @@ resource "aws_cloudwatch_event_target" "gdpr_set_user_last_login" {
 {
   "containerOverrides": [
     {
-      "name": "logging",
+      "name": "logging-api",
       "command": ["bundle", "exec", "rake", "update_yesterdays_last_login"]
     }
   ]
@@ -164,7 +164,7 @@ resource "aws_cloudwatch_event_target" "hourly_request_statistics" {
 {
   "containerOverrides": [
     {
-      "name": "logging",
+      "name": "logging-api",
       "command": ["bundle", "exec", "rake", "send_request_statistics"]
     }
   ]
@@ -204,7 +204,7 @@ resource "aws_cloudwatch_event_target" "publish_monthly_metrics_logging" {
 {
   "containerOverrides": [
     {
-      "name": "logging",
+      "name": "logging-api",
       "command": ["bundle", "exec", "rake", "publish_monthly_metrics"]
     }
   ]
@@ -243,7 +243,7 @@ resource "aws_cloudwatch_event_target" "publish_weekly_metrics_logging" {
 {
   "containerOverrides": [
     {
-      "name": "logging",
+      "name": "logging-api",
       "command": ["bundle", "exec", "rake", "publish_weekly_metrics"]
     }
   ]
@@ -282,7 +282,7 @@ resource "aws_cloudwatch_event_target" "publish_daily_metrics_logging" {
 {
   "containerOverrides": [
     {
-      "name": "logging",
+      "name": "logging-api",
       "command": ["bundle", "exec", "rake", "publish_daily_metrics"]
     }
   ]
@@ -321,7 +321,7 @@ resource "aws_cloudwatch_event_target" "publish_monthly_metrics_to_elasticsearch
 {
   "containerOverrides": [
     {
-      "name": "logging",
+      "name": "logging-api",
       "command": ["bundle", "exec", "rake", "publish_monthly_metrics_to_elasticsearch"]
     }
   ]
@@ -360,7 +360,7 @@ resource "aws_cloudwatch_event_target" "publish_weekly_metrics_to_elasticsearch"
 {
   "containerOverrides": [
     {
-      "name": "logging",
+      "name": "logging-api",
       "command": ["bundle", "exec", "rake", "publish_weekly_metrics_to_elasticsearch"]
     }
   ]
@@ -399,7 +399,7 @@ resource "aws_cloudwatch_event_target" "publish_daily_metrics_to_elasticsearch" 
 {
   "containerOverrides": [
     {
-      "name": "logging",
+      "name": "logging-api",
       "command": ["bundle", "exec", "rake", "publish_daily_metrics_to_elasticsearch"]
     }
   ]
@@ -438,7 +438,7 @@ resource "aws_cloudwatch_event_target" "publish_metrics_to_data_bucket" {
 {
   "containerOverrides": [
     {
-      "name": "logging",
+      "name": "logging-api",
       "command": ["bundle", "exec", "rake", "sync_s3_to_data_bucket[${var.metrics_bucket_name}, ${var.export_data_bucket_name}]"]
     }
   ]
@@ -477,7 +477,7 @@ resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
       "essential": true,
       "entryPoint": null,
       "mountPoints": [],
-      "name": "logging",
+      "name": "logging-api",
       "ulimits": null,
       "dockerSecurityOptions": null,
       "environment": [
@@ -588,7 +588,7 @@ resource "aws_cloudwatch_event_target" "sync_s3_to_elasticsearch" {
 {
   "containerOverrides": [
     {
-      "name": "logging",
+      "name": "logging-api",
       "command": ["bundle", "exec", "rake", "sync_s3_volumetrics"]
     }
   ]
