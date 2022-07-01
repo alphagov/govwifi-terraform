@@ -1,0 +1,14 @@
+version: 0.2
+phases:
+    build:
+        commands:
+            - ContainerName=$CONTAINER_APP_NAME
+            - ImageURI=$(cat imageDetail.json | jq -r '.ImageURI')
+            - printf '[{"name":"CONTAINER_NAME","imageUri":"IMAGE_URI"}]' > imagedefinitions.json
+            - sed -i -e "s|CONTAINER_NAME|$ContainerName|g" imagedefinitions.json
+            - sed -i -e "s|IMAGE_URI|$ImageURI|g" imagedefinitions.json
+            - cat imagedefinitions.json
+
+artifacts:
+    files:
+        - imagedefinitions.json
