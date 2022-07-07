@@ -72,10 +72,19 @@ resource "aws_ecs_task_definition" "admin_task" {
           "name": "S3_SIGNUP_WHITELIST_BUCKET",
           "value": "${aws_s3_bucket.admin_bucket[0].id}"
         },{
+          "name": "S3_SIGNUP_ALLOWLIST_BUCKET",
+          "value": "${aws_s3_bucket.admin_bucket[0].id}"
+        },{
           "name": "S3_SIGNUP_WHITELIST_OBJECT_KEY",
           "value": "signup-whitelist.conf"
         },{
+          "name": "S3_SIGNUP_ALLOWLIST_OBJECT_KEY",
+          "value": "signup-whitelist.conf"
+        },{
           "name": "S3_WHITELIST_OBJECT_KEY",
+          "value": "clients.conf"
+        },{
+          "name": "S3_ALLOWLIST_OBJECT_KEY",
           "value": "clients.conf"
         },{
           "name": "S3_PRODUCT_PAGE_DATA_BUCKET",
