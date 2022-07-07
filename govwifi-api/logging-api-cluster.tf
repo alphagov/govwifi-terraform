@@ -40,7 +40,7 @@ resource "aws_ecs_task_definition" "logging_api_task" {
       "essential": true,
       "entryPoint": null,
       "mountPoints": [],
-      "name": "logging",
+      "name": "logging-api",
       "ulimits": null,
       "dockerSecurityOptions": null,
       "environment": [
@@ -141,7 +141,7 @@ resource "aws_ecs_service" "logging_api_service" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.logging_api_tg[0].arn
-    container_name   = "logging"
+    container_name   = "logging-api"
     container_port   = "8080"
   }
 
