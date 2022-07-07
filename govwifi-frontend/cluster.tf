@@ -149,6 +149,9 @@ resource "aws_ecs_task_definition" "radius_task" {
         "name": "WHITELIST_BUCKET",
         "value": "s3://${var.admin_app_data_s3_bucket_name}"
       },{
+        "name": "ALLOWLIST_BUCKET",
+        "value": "s3://${var.admin_app_data_s3_bucket_name}"
+      },{
         "name": "CERT_STORE_BUCKET",
         "value": "s3://${aws_s3_bucket.frontend_cert_bucket.bucket}"
       }
