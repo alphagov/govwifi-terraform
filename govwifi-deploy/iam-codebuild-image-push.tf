@@ -106,3 +106,9 @@ resource "aws_iam_policy_attachment" "codepipeline_ssm_readonly" {
   roles      = [aws_iam_role.govwifi_codebuild.name]
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
 }
+
+resource "aws_iam_policy_attachment" "codebuild_start_build_perm" {
+  name       = "codebuild-startbuild-perm"
+  roles      = [aws_iam_role.govwifi_codebuild.name]
+  policy_arn = "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
+}
