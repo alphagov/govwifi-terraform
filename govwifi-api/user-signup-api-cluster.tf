@@ -125,7 +125,13 @@ resource "aws_ecs_task_definition" "user_signup_api_task" {
           "name": "S3_SIGNUP_WHITELIST_BUCKET",
           "value": "${data.aws_s3_bucket.admin_bucket[0].bucket}"
         },{
+          "name": "S3_SIGNUP_ALLOWLIST_BUCKET",
+          "value": "${data.aws_s3_bucket.admin_bucket[0].bucket}"
+        },{
           "name": "S3_SIGNUP_WHITELIST_OBJECT_KEY",
+          "value": "signup-whitelist.conf"
+        },{
+          "name": "S3_SIGNUP_ALLOWLIST_OBJECT_KEY",
           "value": "signup-whitelist.conf"
         },{
           "name": "FIRETEXT_TOKEN",
