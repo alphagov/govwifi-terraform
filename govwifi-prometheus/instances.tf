@@ -14,42 +14,30 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-data "template_file" "prometheus_user_data" {
-  template = file("${path.module}/user_data.sh")
-
-  vars = {
-    data_volume_size     = var.prometheus_volume_size
-    prometheus-log-group = "${var.env_name}-prometheus-log-group"
-    prometheus_config    = data.template_file.prometheus_config.rendered
-    prometheus_startup   = data.template_file.prometheus_startup.rendered
-  }
-}
-
-data "template_file" "prometheus_config" {
-  template = file("${path.module}/prometheus.yml")
-
-  vars = {
-    london-radius-ip-addresses-one   = element(var.london_radius_ip_addresses, 0)
-    london-radius-ip-addresses-two   = element(var.london_radius_ip_addresses, 1)
-    london-radius-ip-addresses-three = element(var.london_radius_ip_addresses, 2)
-    dublin-radius-ip-addresses-one   = element(var.dublin_radius_ip_addresses, 0)
-    dublin-radius-ip-addresses-two   = element(var.dublin_radius_ip_addresses, 1)
-    dublin-radius-ip-addresses-three = element(var.dublin_radius_ip_addresses, 2)
-  }
-}
-
-data "template_file" "prometheus_startup" {
-  template = file("${path.module}/prometheus-govwifi")
-}
-
 # The element() function used in subnets wraps around when the index is over the number of elements
 # eg. in the 4th iteration the value returned will be the 1st, if there are only 3 elements in the list.
 resource "aws_instance" "prometheus_instance" {
-  ami                     = data.aws_ami.ubuntu.id
-  instance_type           = "t2.small"
-  key_name                = var.ssh_key_name
-  subnet_id               = var.wifi_frontend_subnet[0]
-  user_data               = data.template_file.prometheus_user_data.rendered
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.small"
+  key_name      = var.ssh_key_name
+  subnet_id     = var.wifi_frontend_subnet[0]
+  user_data = templatefile("${path.module}/user_data.sh",
+    {
+      data_volume_size     = var.prometheus_volume_size,
+      prometheus-log-group = "${var.env_name}-prometheus-log-group",
+      prometheus_config = templatefile("${path.module}/prometheus.yml",
+        {
+          london-radius-ip-addresses-one   = element(var.london_radius_ip_addresses, 0),
+          london-radius-ip-addresses-two   = element(var.london_radius_ip_addresses, 1),
+          london-radius-ip-addresses-three = element(var.london_radius_ip_addresses, 2),
+          dublin-radius-ip-addresses-one   = element(var.dublin_radius_ip_addresses, 0),
+          dublin-radius-ip-addresses-two   = element(var.dublin_radius_ip_addresses, 1),
+          dublin-radius-ip-addresses-three = element(var.dublin_radius_ip_addresses, 2)
+        }
+      ),
+      prometheus_startup = templatefile("${path.module}/prometheus-govwifi", {})
+    }
+  )
   disable_api_termination = false
   ebs_optimized           = false
   monitoring              = false
