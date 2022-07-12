@@ -2,7 +2,7 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr" {
   for_each      = toset(var.app_names)
   name          = "govwifi-codebuild-${each.key}-push-image-to-ecr"
   description   = "Test codebuild project for the ${each.key}"
-  build_timeout = "5"
+  build_timeout = "12"
   service_role  = aws_iam_role.govwifi_codebuild.arn
 
   artifacts {
@@ -52,6 +52,11 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr" {
       name  = "WORDLIST_BUCKET_NAME"
       value = "/govwifi-cd/pipelines/main/wordlist_bucket_name"
       type  = "PARAMETER_STORE"
+    }
+
+    environment_variable {
+      name  = "ACCEPTANCE_TESTS_PROJECT_NAME"
+      value = "govwifi-codebuild-acceptance-tests"
     }
 
   }
@@ -143,6 +148,57 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_convert_image_format
     s3_logs {
       status   = "ENABLED"
       location = "${aws_s3_bucket.codepipeline_bucket.id}/image-convert-log"
+    }
+  }
+
+}
+
+
+resource "aws_codebuild_project" "govwifi_codebuild_acceptance_tests" {
+  name           = "govwifi-codebuild-acceptance-tests"
+  description    = "This project runs the frontend acceptance tests"
+  build_timeout  = "5"
+  service_role   = aws_iam_role.govwifi_codebuild.arn
+  encryption_key = aws_kms_key.codepipeline_key.arn
+
+  artifacts {
+    type = "NO_ARTIFACTS"
+  }
+
+  environment {
+    compute_type                = "BUILD_GENERAL1_SMALL"
+    image                       = "aws/codebuild/standard:5.0"
+    type                        = "LINUX_CONTAINER"
+    image_pull_credentials_type = "CODEBUILD"
+    privileged_mode             = true
+
+    environment_variable {
+      name  = "DOCKER_HUB_AUTHTOKEN_ENV"
+      value = data.aws_secretsmanager_secret_version.docker_hub_authtoken.secret_string
+    }
+
+    environment_variable {
+      name  = "DOCKER_HUB_USERNAME_ENV"
+      value = data.aws_secretsmanager_secret_version.docker_hub_username.secret_string
+    }
+
+  }
+
+  source {
+    type      = "NO_SOURCE"
+    buildspec = file("${path.module}/buildspec_acceptance_tests.yml")
+
+  }
+
+  logs_config {
+    cloudwatch_logs {
+      group_name  = "govwifi-acceptance-tests-group"
+      stream_name = "govwifi-acceptance-tests-stream"
+    }
+
+    s3_logs {
+      status   = "ENABLED"
+      location = "${aws_s3_bucket.codepipeline_bucket.id}/acceptance-tests-log"
     }
   }
 
