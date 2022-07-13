@@ -45,7 +45,8 @@ module "govwifi_deploy" {
     aws = aws.main
   }
 
-  source    = "../../govwifi-deploy"
-  app_names = ["user-signup-api", "logging-api", "admin"]
+  source = "../../govwifi-deploy"
 
+  app_names              = ["user-signup-api", "logging-api", "admin"]
+  frontend_docker_images = ["raddb", "frontend"]
 }
