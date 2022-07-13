@@ -182,3 +182,87 @@ data "aws_ip_ranges" "route53_healthcheck" {
   # IP ranges in each account, allow all of the potential ranges
   regions = ["global", "eu-west-1", "us-east-1", "us-west-1"]
 }
+
+resource "aws_security_group" "load_balanced_frontend_service" {
+  name        = "load-balanced-frontend-service"
+  description = "Security group for the load balanced frontend service"
+  vpc_id      = aws_vpc.wifi_frontend.id
+
+  tags = {
+    Name = "${title(var.env_name)} Frontend service"
+  }
+
+  egress {
+    description = "Permit traffic to AWS services"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # TODO This could probably be the subnet ranges
+  }
+
+  ingress {
+    description = "RADIUS traffic from load balancer"
+    from_port   = 1812
+    to_port     = 1812
+    protocol    = "udp"
+    cidr_blocks = [for ip in aws_eip.test_radius_eips.*.public_ip : "${ip}/32"]
+  }
+
+  egress {
+    description = "RADIUS traffic to load balancer"
+    from_port   = 1812
+    to_port     = 1812
+    protocol    = "udp"
+    cidr_blocks = [for ip in aws_eip.test_radius_eips.*.public_ip : "${ip}/32"]
+  }
+
+  ingress {
+    description = "Healthcheck requests from load balancer"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+
+    # TODO This could be more explicit, but I don't know where the
+    # health check requests come from
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow scraping Prometheus metrics"
+
+    from_port = 9812
+    to_port   = 9812
+    protocol  = "tcp"
+
+    cidr_blocks = distinct([
+      "${var.prometheus_ip_ireland}/32",
+      "${var.prometheus_ip_london}/32"
+    ])
+  }
+
+  egress {
+    from_port   = 9812
+    to_port     = 9812
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow outbound data to Prometheus server"
+  }
+}
+
+resource "aws_security_group" "vpc_endpoints" {
+  name        = "frontend_vpc_endpoints"
+  description = "Permit traffic to the frontend VPC endpoints"
+  vpc_id      = aws_vpc.wifi_frontend.id
+
+  tags = {
+    Name = "${title(var.env_name)} Frontend VPC Endpoints"
+  }
+
+  ingress {
+    description     = "ECS Cluster"
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.load_balanced_frontend_service.id]
+  }
+}
