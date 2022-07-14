@@ -259,10 +259,14 @@ resource "aws_security_group" "vpc_endpoints" {
   }
 
   ingress {
-    description     = "ECS Cluster"
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    security_groups = [aws_security_group.load_balanced_frontend_service.id]
+    description = "ECS Cluster"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+
+    security_groups = [
+      aws_security_group.load_balanced_frontend_service.id,
+      aws_security_group.fe_ecs_out.id
+    ]
   }
 }
