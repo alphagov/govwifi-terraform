@@ -73,7 +73,7 @@ resource "aws_ecs_task_definition" "admin_task" {
           "value": "${aws_s3_bucket.admin_bucket[0].id}"
         },{
           "name": "S3_SIGNUP_ALLOWLIST_OBJECT_KEY",
-          "value": "signup-whitelist.conf"
+          "value": "signup-allowlist.conf"
         },{
           "name": "S3_ALLOWLIST_OBJECT_KEY",
           "value": "clients.conf"

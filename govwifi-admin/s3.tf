@@ -55,10 +55,10 @@ resource "aws_s3_bucket_policy" "admin_bucket_policy" {
   policy = <<POLICY
 {
   "Version": "2012-10-17",
-  "Id": "WhitelistFetch",
+  "Id": "AllowlistFetch",
   "Statement": [
     {
-      "Sid": "Get Frontend Whitelist",
+      "Sid": "Get Frontend Allowlist",
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
