@@ -27,7 +27,7 @@ variable "event_rule_count" {
 variable "backend_instance_count" {
 }
 
-variable "authorisation_api_count" {
+variable "authentication_api_count" {
   default = 3
 }
 

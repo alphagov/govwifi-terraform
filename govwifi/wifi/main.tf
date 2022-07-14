@@ -227,7 +227,7 @@ module "api" {
 
   backend_elb_count       = 1
   backend_instance_count  = 2
-  authorisation_api_count = 3
+  authentication_api_count = 3
   aws_account_id          = local.aws_account_id
   aws_region_name         = lower(var.aws_region_name)
   aws_region              = var.aws_region
@@ -244,7 +244,7 @@ module "api" {
   devops_notifications_arn   = module.devops_notifications.topic_arn
   notification_arn           = module.region_pagerduty.topic_arn
 
-  auth_docker_image             = format("%s/authorisation-api:production", local.docker_image_path)
+  auth_docker_image             = format("%s/authentication-api:production", local.docker_image_path)
   logging_docker_image          = format("%s/logging-api:production", local.docker_image_path)
   safe_restart_docker_image     = format("%s/safe-restarter:production", local.docker_image_path)
   backup_rds_to_s3_docker_image = ""

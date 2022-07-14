@@ -188,7 +188,7 @@ module "dublin_api" {
   devops_notifications_arn   = module.dublin_notifications.topic_arn
   notification_arn           = module.dublin_notifications.topic_arn
 
-  auth_docker_image             = format("%s/authorisation-api:staging", local.docker_image_path)
+  auth_docker_image             = format("%s/authentication-api:staging", local.docker_image_path)
   user_signup_docker_image      = ""
   logging_docker_image          = ""
   safe_restart_docker_image     = ""

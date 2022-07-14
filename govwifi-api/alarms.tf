@@ -11,7 +11,7 @@ resource "aws_cloudwatch_metric_alarm" "auth_ecs_cpu_alarm_high" {
 
   dimensions = {
     ClusterName = aws_ecs_cluster.api_cluster.name
-    ServiceName = aws_ecs_service.authorisation_api_service.name
+    ServiceName = aws_ecs_service.authentication_api_service.name
   }
 
   alarm_description = "ECS cluster CPU is high, scaling up number of tasks. Investigate api cluster and CloudWatch logs for root cause."
@@ -38,7 +38,7 @@ resource "aws_cloudwatch_metric_alarm" "auth_ecs_cpu_alarm_low" {
 
   dimensions = {
     ClusterName = aws_ecs_cluster.api_cluster.name
-    ServiceName = aws_ecs_service.authorisation_api_service.name
+    ServiceName = aws_ecs_service.authentication_api_service.name
   }
 
   alarm_description = "ECS cluster CPU is low, scaling down number of ECS tasks to save on cost."

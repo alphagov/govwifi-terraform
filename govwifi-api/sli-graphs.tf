@@ -14,7 +14,7 @@ resource "aws_cloudwatch_dashboard" "service_level_indicators" {
                 "metrics": [
                     [ "${var.env_name}-logging-api", "${var.env_name}-radius-access-accept-count", { "period": 300, "stat": "Sum", "label": "accept-count" } ],
                     [ ".", "${var.env_name}-radius-access-reject-count", { "period": 300, "stat": "Sum", "label": "reject-count" } ],
-                    [ "${var.env_name}-authorisation-api", "${var.env_name}-response-status-ok-count", { "period": 300, "stat": "Sum", "label": "ok-count" } ],
+                    [ "${var.env_name}-authentication-api", "${var.env_name}-response-status-ok-count", { "period": 300, "stat": "Sum", "label": "ok-count" } ],
                     [ "${var.env_name}-logging-api", "${var.env_name}-response-status-no-content-count", { "period": 300, "stat": "Sum", "label": "no-content-count" } ]
                 ],
                 "view": "timeSeries",
@@ -41,7 +41,7 @@ resource "aws_cloudwatch_dashboard" "service_level_indicators" {
                     [ { "expression": "AVG([(e1 / m3), (e1 / m4)]) * 100", "label": "percentile", "id": "e4" } ],
                     [ "${var.env_name}-logging-api", "${var.env_name}-radius-access-accept-count", { "period": 604800, "stat": "Sum", "id": "m1", "label": "accept-count", "visible": false } ],
                     [ ".", "${var.env_name}-radius-access-reject-count", { "period": 604800, "stat": "Sum", "id": "m2", "label": "reject-count", "visible": false } ],
-                    [ "${var.env_name}-authorisation-api", "${var.env_name}-response-status-ok-count", { "period": 604800, "stat": "Sum", "id": "m3", "label": "ok-count", "visible": false } ],
+                    [ "${var.env_name}-authentication-api", "${var.env_name}-response-status-ok-count", { "period": 604800, "stat": "Sum", "id": "m3", "label": "ok-count", "visible": false } ],
                     [ "${var.env_name}-logging-api", "${var.env_name}-response-status-no-content-count", { "period": 604800, "stat": "Sum", "id": "m4", "label": "no-content-count", "visible": false } ]
                 ],
                 "view": "singleValue",
