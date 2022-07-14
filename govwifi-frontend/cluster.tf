@@ -157,9 +157,6 @@ resource "aws_ecs_task_definition" "radius_task" {
     "name": "populate-radius-certs",
     "environment": [
       {
-        "name": "WHITELIST_BUCKET",
-        "value": "s3://${var.admin_app_data_s3_bucket_name}"
-      },{
         "name": "ALLOWLIST_BUCKET",
         "value": "s3://${var.admin_app_data_s3_bucket_name}"
       },{
