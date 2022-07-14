@@ -30,6 +30,11 @@ resource "aws_lb_target_group" "main" {
   protocol    = "UDP"
   vpc_id      = aws_vpc.wifi_frontend.id
   target_type = "ip"
+
+  health_check {
+    protocol = "TCP"
+    port     = 3000
+  }
 }
 
 # TODO These EIPs are being used to test the network load balancer,
