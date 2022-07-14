@@ -36,7 +36,7 @@ resource "aws_ecs_task_definition" "authorisation_api_task" {
       "essential": true,
       "entryPoint": null,
       "mountPoints": [],
-      "name": "authorisation",
+      "name": "authentication-api",
       "ulimits": null,
       "dockerSecurityOptions": null,
       "environment": [
@@ -115,7 +115,7 @@ resource "aws_ecs_service" "authorisation_api_service" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.alb_target_group.arn
-    container_name   = "authorisation"
+    container_name   = "authentication-api"
     container_port   = "8080"
   }
 
