@@ -91,7 +91,7 @@ resource "aws_ecs_task_definition" "radius_task" {
     "name": "frontend-radius",
     "environment": [
       {
-        "name": "AUTHENTICATION_API_BASE_URL",
+        "name": "AUTHORISATION_API_BASE_URL",
         "value": "${var.auth_api_base_url}"
       },{
         "name": "LOGGING_API_BASE_URL",
@@ -231,7 +231,7 @@ resource "aws_ecs_task_definition" "frontend_fargate" {
     "name": "frontend-radius",
     "environment": [
       {
-        "name": "AUTHENTICATION_API_BASE_URL",
+        "name": "AUTHORISATION_API_BASE_URL",
         "value": "${var.auth_api_base_url}"
       },{
         "name": "LOGGING_API_BASE_URL",
