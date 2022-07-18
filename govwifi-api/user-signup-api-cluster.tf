@@ -53,7 +53,7 @@ resource "aws_iam_role_policy" "user_signup_api_task_policy" {
       "Action": [
         "s3:GetObject"
       ],
-      "Resource": ["${data.aws_s3_bucket.admin_bucket[0].arn}/signup-whitelist.conf"]
+      "Resource": ["${data.aws_s3_bucket.admin_bucket[0].arn}/signup-allowlist.conf"]
     },
     {
       "Effect": "Allow",
@@ -126,7 +126,7 @@ resource "aws_ecs_task_definition" "user_signup_api_task" {
           "value": "${data.aws_s3_bucket.admin_bucket[0].bucket}"
         },{
           "name": "S3_SIGNUP_ALLOWLIST_OBJECT_KEY",
-          "value": "signup-whitelist.conf"
+          "value": "signup-allowlist.conf"
         },{
           "name": "FIRETEXT_TOKEN",
           "value": "${var.firetext_token}"
