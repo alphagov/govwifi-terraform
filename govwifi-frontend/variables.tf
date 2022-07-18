@@ -10,6 +10,9 @@ variable "route53_zone_id" {
 variable "vpc_cidr_block" {
 }
 
+variable "backend_vpc_id" {
+}
+
 variable "aws_region" {
 }
 

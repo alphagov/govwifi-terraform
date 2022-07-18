@@ -102,6 +102,8 @@ module "london_frontend" {
   rack_env           = "staging"
   sentry_current_env = "secondary-staging"
 
+  backend_vpc_id = module.london_backend.backend_vpc_id
+
   # Instance-specific setup -------------------------------
   radius_instance_count      = 3
   enable_detailed_monitoring = false

@@ -29,3 +29,7 @@ output "ecs_instance_profile" {
 output "eip_public_ips" {
   value = [for eip in aws_eip.radius_eips : eip.public_ip]
 }
+
+output "load_balanced_frontend_service_security_group_id" {
+  value = aws_security_group.load_balanced_frontend_service.id
+}

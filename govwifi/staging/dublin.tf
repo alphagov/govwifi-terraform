@@ -8,6 +8,66 @@ provider "aws" {
   region = local.dublin_aws_region
 }
 
+# Cross region peering
+
+resource "aws_vpc_peering_connection" "dublin_frontend_to_london_backend" {
+  provider = aws.dublin
+
+  vpc_id      = module.dublin_frontend.frontend_vpc_id
+  peer_vpc_id = module.london_backend.backend_vpc_id
+  peer_region = local.london_aws_region
+
+  # Because this is a cross region peering, accepting this happens below
+  auto_accept = false
+}
+
+resource "aws_vpc_peering_connection_options" "dublin_frontend_to_london_backend" {
+  vpc_peering_connection_id = aws_vpc_peering_connection.dublin_frontend_to_london_backend.id
+
+  accepter {
+    allow_remote_vpc_dns_resolution = true
+  }
+
+  depends_on = [
+    aws_vpc_peering_connection_accepter.dublin_frontend_to_london_backend
+  ]
+}
+
+resource "aws_vpc_peering_connection_accepter" "dublin_frontend_to_london_backend" {
+  provider = aws.london
+
+  vpc_peering_connection_id = aws_vpc_peering_connection.dublin_frontend_to_london_backend.id
+  auto_accept               = true
+}
+
+data "aws_vpc" "dublin_frontend" {
+  provider = aws.dublin
+
+  id = module.dublin_frontend.frontend_vpc_id
+}
+
+data "aws_vpc" "london_backend" {
+  provider = aws.london
+
+  id = module.london_backend.backend_vpc_id
+}
+
+resource "aws_route" "frontend_to_backend_route" {
+  provider = aws.dublin
+
+  route_table_id            = data.aws_vpc.dublin_frontend.main_route_table_id
+  destination_cidr_block    = one(data.aws_vpc.london_backend.cidr_block_associations).cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.dublin_frontend_to_london_backend.id
+}
+
+resource "aws_route" "backend_to_frontend_route" {
+  provider = aws.london
+
+  route_table_id            = data.aws_vpc.london_backend.main_route_table_id
+  destination_cidr_block    = one(data.aws_vpc.dublin_frontend.cidr_block_associations).cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.dublin_frontend_to_london_backend.id
+}
+
 # Backend ==================================================================
 module "dublin_backend" {
   providers = {
@@ -128,6 +188,8 @@ module "dublin_frontend" {
   vpc_cidr_block     = "10.105.0.0/16"
   rack_env           = "staging"
   sentry_current_env = "secondary-staging"
+
+  backend_vpc_id = module.dublin_backend.backend_vpc_id
 
   # Instance-specific setup -------------------------------
   radius_instance_count      = 3
