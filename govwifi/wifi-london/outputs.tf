@@ -9,3 +9,7 @@ output "us_east_1_pagerduty_topic_arn" {
 output "backend_vpc_id" {
   value = module.backend.backend_vpc_id
 }
+
+output "logging_api_internal_dns_name" {
+  value = module.api.logging_api_internal_dns_name
+}

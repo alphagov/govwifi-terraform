@@ -1,6 +1,8 @@
 locals {
   dublin_aws_region      = "eu-west-1"
   dublin_aws_region_name = "Dublin"
+
+  dublin_frontend_vpc_cidr_block = "10.105.0.0/16"
 }
 
 provider "aws" {
@@ -185,7 +187,7 @@ module "dublin_frontend" {
   aws_region         = local.dublin_aws_region
   aws_region_name    = local.dublin_aws_region_name
   route53_zone_id    = data.aws_route53_zone.main.zone_id
-  vpc_cidr_block     = "10.105.0.0/16"
+  vpc_cidr_block     = local.dublin_frontend_vpc_cidr_block
   rack_env           = "staging"
   sentry_current_env = "secondary-staging"
 
@@ -208,6 +210,9 @@ module "dublin_frontend" {
 
   logging_api_base_url = module.london_api.api_base_url
   auth_api_base_url    = module.dublin_api.api_base_url
+
+  authentication_api_internal_dns_name = module.dublin_api.authentication_api_internal_dns_name
+  logging_api_internal_dns_name        = one(module.london_api.logging_api_internal_dns_name)
 
   critical_notifications_arn            = module.dublin_notifications.topic_arn
   us_east_1_critical_notifications_arn  = module.dublin_route53_notifications.topic_arn
@@ -274,6 +279,10 @@ module "dublin_api" {
 
   backend_sg_list = [
     module.dublin_backend.be_admin_in,
+  ]
+
+  alb_permitted_security_groups = [
+    module.dublin_frontend.load_balanced_frontend_service_security_group_id
   ]
 
   low_cpu_threshold = 0.3

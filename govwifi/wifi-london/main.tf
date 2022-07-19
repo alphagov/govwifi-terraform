@@ -153,6 +153,8 @@ module "frontend" {
   rack_env           = "production"
   sentry_current_env = "production"
 
+  backend_vpc_id = module.backend.backend_vpc_id
+
   # Instance-specific setup -------------------------------
   radius_instance_count      = 3
   enable_detailed_monitoring = true
@@ -171,6 +173,9 @@ module "frontend" {
 
   logging_api_base_url = var.london_api_base_url
   auth_api_base_url    = var.london_api_base_url
+
+  authentication_api_internal_dns_name = module.api.authentication_api_internal_dns_name
+  logging_api_internal_dns_name        = one(module.api.logging_api_internal_dns_name)
 
   critical_notifications_arn            = module.critical_notifications.topic_arn
   us_east_1_critical_notifications_arn  = module.route53_critical_notifications.topic_arn
@@ -287,6 +292,15 @@ module "api" {
 
   backend_sg_list = [
     module.backend.be_admin_in,
+  ]
+
+  alb_permitted_security_groups = [
+    module.frontend.load_balanced_frontend_service_security_group_id,
+  ]
+
+  # Dublin frontend VPC CIDR block
+  alb_permitted_cidr_blocks = [
+    "10.43.0.0/16"
   ]
 
   metrics_bucket_name     = module.govwifi_dashboard.metrics_bucket_name

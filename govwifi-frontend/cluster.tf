@@ -232,10 +232,10 @@ resource "aws_ecs_task_definition" "frontend_fargate" {
     "environment": [
       {
         "name": "AUTHORISATION_API_BASE_URL",
-        "value": "${var.auth_api_base_url}"
+        "value": "http://${var.authentication_api_internal_dns_name}"
       },{
         "name": "LOGGING_API_BASE_URL",
-        "value": "${var.logging_api_base_url}"
+        "value": "http://${var.logging_api_internal_dns_name}"
       },{
         "name": "RADIUSD_PARAMS",
         "value": "${var.radiusd_params}"

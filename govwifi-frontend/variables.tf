@@ -44,6 +44,12 @@ variable "logging_api_base_url" {
 variable "auth_api_base_url" {
 }
 
+variable "authentication_api_internal_dns_name" {
+}
+
+variable "logging_api_internal_dns_name" {
+}
+
 variable "enable_detailed_monitoring" {
 }
 

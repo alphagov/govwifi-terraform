@@ -179,3 +179,12 @@ variable "notify_ips" {
   type    = list(string)
   default = []
 }
+
+variable "alb_permitted_security_groups" {
+  type = list(string)
+}
+
+variable "alb_permitted_cidr_blocks" {
+  type    = list(string)
+  default = []
+}

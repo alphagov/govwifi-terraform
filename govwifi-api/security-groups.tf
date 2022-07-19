@@ -50,3 +50,103 @@ resource "aws_security_group" "lambda_user_api_out" {
     description = "Allow traffic out over internet so we can send messages to the user-sign-up api"
   }
 }
+
+resource "aws_security_group" "authentication_api_service" {
+  name        = "authentication-api-service"
+  description = "Authentication API service"
+  vpc_id      = var.vpc_id
+
+  # Ingress rule defined below to avoid a cycle.
+}
+
+resource "aws_security_group_rule" "authentication_api_service_ingress" {
+  type                     = "ingress"
+  from_port                = 8080
+  to_port                  = 8080
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.authentication_api_alb.id
+
+  security_group_id = aws_security_group.authentication_api_service.id
+}
+
+resource "aws_security_group" "logging_api_service" {
+  name        = "logging-api-service"
+  description = "Logging API service"
+  vpc_id      = var.vpc_id
+
+  # Ingress rule defined below to avoid a cycle.
+}
+
+resource "aws_security_group_rule" "logging_api_service_ingress" {
+  type                     = "ingress"
+  from_port                = 8080
+  to_port                  = 8080
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.logging_api_alb.id
+
+  security_group_id = aws_security_group.logging_api_service.id
+}
+
+resource "aws_security_group" "authentication_api_alb" {
+  name        = "authentication_api_alb"
+  description = "Security group associated with the authentication API ALB"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+
+    security_groups = var.alb_permitted_security_groups
+  }
+
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+
+    cidr_blocks = var.alb_permitted_cidr_blocks
+  }
+
+  egress {
+    from_port = 8080
+    to_port   = 8080
+    protocol  = "tcp"
+
+    security_groups = [
+      aws_security_group.authentication_api_service.id
+    ]
+  }
+}
+
+resource "aws_security_group" "logging_api_alb" {
+  name        = "logging_api_alb"
+  description = "Security group associated with the logging API ALB"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+
+    security_groups = var.alb_permitted_security_groups
+  }
+
+  ingress {
+    from_port = 80
+    to_port   = 80
+    protocol  = "tcp"
+
+    cidr_blocks = var.alb_permitted_cidr_blocks
+  }
+
+  egress {
+    from_port = 8080
+    to_port   = 8080
+    protocol  = "tcp"
+
+    security_groups = [
+      aws_security_group.logging_api_service.id
+    ]
+  }
+}
