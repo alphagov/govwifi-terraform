@@ -120,12 +120,6 @@ resource "aws_ecs_service" "authorisation_api_service" {
     container_port   = "8080"
   }
 
-  load_balancer {
-    target_group_arn = aws_alb_target_group.authentication_api.arn
-    container_name   = "authentication-api"
-    container_port   = "8080"
-  }
-
   lifecycle {
     ignore_changes = [desired_count]
   }
