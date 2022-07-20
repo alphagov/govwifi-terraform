@@ -16,9 +16,12 @@ resource "aws_s3_bucket" "govwifi_datasync" {
     Region      = title(var.aws_region)
     Environment = title(var.rack_env)
   }
+}
 
-  versioning {
-    enabled = false
+resource "aws_s3_bucket_versioning" "govwifi_datasync" {
+  bucket = aws_s3_bucket.govwifi_datasync.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
-
 }

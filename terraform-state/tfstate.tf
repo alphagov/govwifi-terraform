@@ -115,10 +115,6 @@ EOF
     Category    = "TFstate"
   }
 
-  versioning {
-    enabled = true
-  }
-
   logging {
     target_bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-accesslogs"
     target_prefix = "${lower(var.aws_region_name)}-tfstate"
@@ -150,3 +146,10 @@ EOF
   }
 }
 
+resource "aws_s3_bucket_versioning" "state_bucket" {
+  bucket = aws_s3_bucket.state_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}

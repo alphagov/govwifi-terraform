@@ -6,9 +6,13 @@ resource "aws_s3_bucket" "metrics_bucket" {
     Name        = "${title(var.env_name)} Metrics data"
     Environment = title(var.env_name)
   }
+}
 
-  versioning {
-    enabled = true
+resource "aws_s3_bucket_versioning" "metrics_bucket" {
+  bucket = aws_s3_bucket.metrics_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 
@@ -20,9 +24,13 @@ resource "aws_s3_bucket" "export_data_bucket" {
     Name        = "${title(var.env_name)} Exported metrics data"
     Environment = title(var.env_name)
   }
+}
 
-  versioning {
-    enabled = false
+resource "aws_s3_bucket_versioning" "export_data_bucket" {
+  bucket = aws_s3_bucket.export_data_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 

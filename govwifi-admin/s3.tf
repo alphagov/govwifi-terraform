@@ -9,9 +9,13 @@ resource "aws_s3_bucket" "admin_bucket" {
     Region      = title(var.aws_region_name)
     Environment = title(var.rails_env)
   }
+}
 
-  versioning {
-    enabled = true
+resource "aws_s3_bucket_versioning" "admin_bucket" {
+  bucket = aws_s3_bucket.admin_bucket[0].id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 
@@ -26,9 +30,13 @@ resource "aws_s3_bucket" "product_page_data_bucket" {
     Region      = title(var.aws_region_name)
     Environment = title(var.rails_env)
   }
+}
 
-  versioning {
-    enabled = true
+resource "aws_s3_bucket_versioning" "product_page_data_bucket" {
+  bucket = aws_s3_bucket.product_page_data_bucket[0].id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 
@@ -43,9 +51,13 @@ resource "aws_s3_bucket" "admin_mou_bucket" {
     Region      = title(var.aws_region_name)
     Environment = title(var.rails_env)
   }
+}
 
-  versioning {
-    enabled = true
+resource "aws_s3_bucket_versioning" "admin_mou_bucket" {
+  bucket = aws_s3_bucket.admin_mou_bucket[0].id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 
