@@ -41,6 +41,11 @@ provider "aws" {
 }
 
 provider "aws" {
+  alias  = "london"
+  region = "eu-west-2"
+}
+
+provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"
 }
@@ -185,6 +190,8 @@ module "frontend" {
   rack_env           = "production"
   sentry_current_env = "production"
 
+  backend_vpc_id = module.backend.backend_vpc_id
+
   # Instance-specific setup -------------------------------
   radius_instance_count      = 3
   enable_detailed_monitoring = true
@@ -202,6 +209,9 @@ module "frontend" {
 
   logging_api_base_url = var.london_api_base_url
   auth_api_base_url    = var.dublin_api_base_url
+
+  authentication_api_internal_dns_name = module.api.authentication_api_internal_dns_name
+  logging_api_internal_dns_name        = one(data.terraform_remote_state.london.outputs.logging_api_internal_dns_name)
 
   critical_notifications_arn            = module.critical_notifications.topic_arn
   us_east_1_critical_notifications_arn  = module.route53_critical_notifications.topic_arn
@@ -263,6 +273,10 @@ module "api" {
 
   backend_sg_list = [
     module.backend.be_admin_in,
+  ]
+
+  alb_permitted_security_groups = [
+    module.frontend.load_balanced_frontend_service_security_group_id
   ]
 
   low_cpu_threshold = 10
@@ -344,4 +358,57 @@ module "govwifi_prometheus" {
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
 
   grafana_ip = var.grafana_ip
+}
+
+# Cross region VPC peering
+
+resource "aws_vpc_peering_connection" "dublin_frontend_to_london_backend" {
+  vpc_id      = module.frontend.frontend_vpc_id
+  peer_vpc_id = data.terraform_remote_state.london.outputs.backend_vpc_id
+
+  # Because this is a cross region peering, accepting this happens below
+  auto_accept = false
+}
+
+resource "aws_vpc_peering_connection_options" "dublin_frontend_to_london_backend" {
+  vpc_peering_connection_id = aws_vpc_peering_connection.dublin_frontend_to_london_backend.id
+
+  accepter {
+    allow_remote_vpc_dns_resolution = true
+  }
+
+  depends_on = [
+    aws_vpc_peering_connection_accepter.dublin_frontend_to_london_backend
+  ]
+}
+
+resource "aws_vpc_peering_connection_accepter" "dublin_frontend_to_london_backend" {
+  provider = aws.london
+
+  vpc_peering_connection_id = aws_vpc_peering_connection.dublin_frontend_to_london_backend.id
+  auto_accept               = true
+}
+
+data "aws_vpc" "dublin_frontend" {
+  id = module.frontend.frontend_vpc_id
+}
+
+data "aws_vpc" "london_backend" {
+  provider = aws.london
+
+  id = data.terraform_remote_state.london.outputs.backend_vpc_id
+}
+
+resource "aws_route" "frontend_to_backend_route" {
+  route_table_id            = data.aws_vpc.dublin_frontend.main_route_table_id
+  destination_cidr_block    = one(data.aws_vpc.london_backend.cidr_block_associations).cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.dublin_frontend_to_london_backend.id
+}
+
+resource "aws_route" "backend_to_frontend_route" {
+  provider = aws.london
+
+  route_table_id            = data.aws_vpc.london_backend.main_route_table_id
+  destination_cidr_block    = one(data.aws_vpc.dublin_frontend.cidr_block_associations).cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.dublin_frontend_to_london_backend.id
 }

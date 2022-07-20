@@ -200,6 +200,16 @@ resource "aws_security_group" "load_balanced_frontend_service" {
     cidr_blocks = ["0.0.0.0/0"] # TODO This could probably be the subnet ranges
   }
 
+  egress {
+    description = "Permit traffic to the authentication and logging APIs"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+
+    # TODO This could be replaced by the relevant security groups
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   ingress {
     description = "RADIUS traffic from load balancer"
     from_port   = 1812

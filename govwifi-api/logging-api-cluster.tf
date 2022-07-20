@@ -132,7 +132,8 @@ resource "aws_ecs_service" "logging_api_service" {
     security_groups = concat(
       var.backend_sg_list,
       [aws_security_group.api_in.id],
-      [aws_security_group.api_out.id]
+      [aws_security_group.api_out.id],
+      [aws_security_group.logging_api_service.id]
     )
 
     subnets          = var.subnet_ids
@@ -247,4 +248,50 @@ resource "aws_iam_role_policy" "logging_api_task_policy" {
 }
 EOF
 
+}
+
+resource "aws_lb" "logging_api" {
+  count = var.logging_enabled
+
+  name     = "logging-api"
+  internal = true
+
+  subnets = var.subnet_ids
+
+  security_groups = [
+    aws_security_group.logging_api_alb.id,
+  ]
+
+  load_balancer_type = "application"
+}
+
+resource "aws_alb_target_group" "logging_api" {
+  count = var.logging_enabled
+
+  name        = "logging-api"
+  port        = "8080"
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 4
+    interval            = 10
+    path                = "/healthcheck"
+  }
+}
+
+resource "aws_alb_listener" "logging_api" {
+  count = var.logging_enabled
+
+  load_balancer_arn = aws_lb.logging_api[0].arn
+  protocol          = "HTTP"
+  port              = 80
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.logging_api[0].id
+  }
 }

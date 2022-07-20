@@ -102,6 +102,8 @@ module "london_frontend" {
   rack_env           = "staging"
   sentry_current_env = "secondary-staging"
 
+  backend_vpc_id = module.london_backend.backend_vpc_id
+
   # Instance-specific setup -------------------------------
   radius_instance_count      = 3
   enable_detailed_monitoring = false
@@ -120,6 +122,9 @@ module "london_frontend" {
 
   logging_api_base_url = module.london_api.api_base_url
   auth_api_base_url    = module.london_api.api_base_url
+
+  authentication_api_internal_dns_name = module.london_api.authentication_api_internal_dns_name
+  logging_api_internal_dns_name        = one(module.london_api.logging_api_internal_dns_name)
 
   critical_notifications_arn            = module.london_notifications.topic_arn
   us_east_1_critical_notifications_arn  = module.london_route53_notifications.topic_arn
@@ -246,6 +251,14 @@ module "london_api" {
 
   rds_mysql_backup_bucket = module.london_backend.rds_mysql_backup_bucket
   backup_mysql_rds        = local.backup_mysql_rds
+
+  alb_permitted_security_groups = [
+    module.london_frontend.load_balanced_frontend_service_security_group_id
+  ]
+
+  alb_permitted_cidr_blocks = [
+    local.dublin_frontend_vpc_cidr_block
+  ]
 
   low_cpu_threshold = 0.3
 

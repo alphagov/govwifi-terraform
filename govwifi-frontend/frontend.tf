@@ -40,3 +40,30 @@ resource "aws_subnet" "wifi_frontend_subnet" {
     Name = "${var.env_name} Frontend - AZ: ${each.key} - GovWifi subnet"
   }
 }
+
+resource "aws_vpc_peering_connection" "frontend_to_backend" {
+  vpc_id      = aws_vpc.wifi_frontend.id
+  peer_vpc_id = var.backend_vpc_id
+
+  auto_accept = true
+
+  accepter {
+    allow_remote_vpc_dns_resolution = true
+  }
+}
+
+data "aws_vpc" "backend" {
+  id = var.backend_vpc_id
+}
+
+resource "aws_route" "frontend_to_backend_route" {
+  route_table_id            = aws_vpc.wifi_frontend.main_route_table_id
+  destination_cidr_block    = one(data.aws_vpc.backend.cidr_block_associations).cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.frontend_to_backend.id
+}
+
+resource "aws_route" "backend_to_frontend_route" {
+  route_table_id            = data.aws_vpc.backend.main_route_table_id
+  destination_cidr_block    = var.vpc_cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.frontend_to_backend.id
+}

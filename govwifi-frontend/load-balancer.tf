@@ -32,7 +32,8 @@ resource "aws_lb_target_group" "main" {
   target_type = "ip"
 
   health_check {
-    protocol = "TCP"
+    protocol = "HTTP"
+    path     = "/"
     port     = 3000
   }
 }
