@@ -326,6 +326,9 @@ resource "aws_ecs_task_definition" "frontend_fargate" {
       },{
         "name": "CERT_STORE_BUCKET",
         "value": "s3://${aws_s3_bucket.frontend_cert_bucket.bucket}"
+      },{
+        "name": "AWS_REGION",
+        "value": "${var.aws_region}"
       }
     ],
     "image": "${var.raddb_docker_image}",
