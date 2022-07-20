@@ -365,12 +365,15 @@ module "govwifi_prometheus" {
 resource "aws_vpc_peering_connection" "dublin_frontend_to_london_backend" {
   vpc_id      = module.frontend.frontend_vpc_id
   peer_vpc_id = data.terraform_remote_state.london.outputs.backend_vpc_id
+  peer_region = "eu-west-2"
 
   # Because this is a cross region peering, accepting this happens below
   auto_accept = false
 }
 
 resource "aws_vpc_peering_connection_options" "dublin_frontend_to_london_backend" {
+  provider = aws.london
+
   vpc_peering_connection_id = aws_vpc_peering_connection.dublin_frontend_to_london_backend.id
 
   accepter {
