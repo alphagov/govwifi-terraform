@@ -54,7 +54,7 @@ resource "aws_db_instance" "admin_db" {
   apply_immediately           = true
   instance_class              = var.db_instance_type
   identifier                  = "wifi-admin-${var.env_name}-db"
-  name                        = "govwifi_admin_${var.rails_env}"
+  db_name                     = "govwifi_admin_${var.rails_env}"
   username                    = local.admin_db_username
   password                    = local.admin_db_password
   backup_retention_period     = var.db_backup_retention_days

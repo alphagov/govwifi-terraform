@@ -9,7 +9,7 @@ resource "aws_db_instance" "users_db" {
   apply_immediately           = true
   instance_class              = var.user_db_instance_type
   identifier                  = "wifi-${var.env}-user-db"
-  name                        = "govwifi_${var.env}_users"
+  db_name                     = "govwifi_${var.env}_users"
   username                    = local.users_db_username
   password                    = local.users_db_password
   backup_retention_period     = var.db_backup_retention_days
