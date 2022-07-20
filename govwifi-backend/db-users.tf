@@ -40,13 +40,11 @@ resource "aws_db_instance" "users_read_replica" {
   kms_key_id                  = data.aws_kms_key.rds_kms_key.arn
   storage_encrypted           = var.db_encrypt_at_rest
   storage_type                = "gp2"
-  engine_version              = "8.0"
   auto_minor_version_upgrade  = true
   allow_major_version_upgrade = false
   apply_immediately           = true
   instance_class              = var.user_rr_instance_type
   identifier                  = "wifi-${var.env}-user-rr"
-  username                    = local.users_db_username
   password                    = local.users_db_password
   backup_retention_period     = 0
   multi_az                    = true

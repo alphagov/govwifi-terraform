@@ -39,14 +39,11 @@ resource "aws_db_instance" "read_replica" {
   allocated_storage           = var.rr_storage_gb
   replicate_source_db         = aws_db_instance.db[0].identifier
   storage_type                = "gp2"
-  engine                      = "mysql"
-  engine_version              = "5.7"
   auto_minor_version_upgrade  = true
   allow_major_version_upgrade = false
   apply_immediately           = true
   instance_class              = var.rr_instance_type
   identifier                  = "${var.env_name}-db-rr"
-  username                    = local.session_db_username
   password                    = local.session_db_password
   backup_retention_period     = 0
   multi_az                    = false
