@@ -98,10 +98,6 @@ EOF
     Category    = "TFstate"
   }
 
-  versioning {
-    enabled = true
-  }
-
   logging {
     target_bucket = aws_s3_bucket.accesslogs_bucket.id
     target_prefix = "${var.env_name}-tfstate"
@@ -129,5 +125,13 @@ EOF
         sse_algorithm = "aws:kms"
       }
     }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "state_bucket" {
+  bucket = aws_s3_bucket.state_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }

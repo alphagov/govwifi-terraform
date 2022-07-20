@@ -40,10 +40,6 @@ resource "aws_s3_bucket" "rds_mysql_backup_bucket" {
       }
     }
   }
-
-  versioning {
-    enabled = false
-  }
 }
 
 resource "aws_s3_bucket_public_access_block" "rds_mysql_backup_bucket" {

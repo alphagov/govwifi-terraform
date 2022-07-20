@@ -8,10 +8,6 @@ resource "aws_s3_bucket" "replication_accesslogs_bucket" {
     Category    = "Accesslogs"
   }
 
-  versioning {
-    enabled = true
-  }
-
   lifecycle_rule {
     id      = "accesslogs-lifecycle"
     enabled = true
@@ -24,5 +20,13 @@ resource "aws_s3_bucket" "replication_accesslogs_bucket" {
     expiration {
       days = var.accesslogs_expiration_days
     }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "replication_accesslogs_bucket" {
+  bucket = aws_s3_bucket.replication_accesslogs_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }

@@ -53,10 +53,6 @@ EOF
     target_prefix = "user-emails"
   }
 
-  versioning {
-    enabled = true
-  }
-
   lifecycle_rule {
     enabled = true
 
@@ -67,6 +63,14 @@ EOF
     noncurrent_version_expiration {
       days = 1
     }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "emailbucket" {
+  bucket = aws_s3_bucket.emailbucket.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 
@@ -121,13 +125,17 @@ EOF
     Category    = "Admin emails"
   }
 
-  versioning {
-    enabled = true
-  }
-
   logging {
     target_bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
     target_prefix = "admin-emails"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "admin_emailbucket" {
+  bucket = aws_s3_bucket.admin_emailbucket.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 

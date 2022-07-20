@@ -8,9 +8,14 @@ resource "aws_s3_bucket" "wordlist" {
     Name = "wordlist"
     Env  = title(var.env_name)
   }
+}
 
-  versioning {
-    enabled = true
+resource "aws_s3_bucket_versioning" "wordlist" {
+  count  = var.create_wordlist_bucket ? 1 : 0
+  bucket = aws_s3_bucket.wordlist[0].id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 

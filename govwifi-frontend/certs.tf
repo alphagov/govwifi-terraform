@@ -15,9 +15,13 @@ resource "aws_s3_bucket" "frontend_cert_bucket" {
       }
     }
   }
+}
 
-  versioning {
-    enabled = true
+resource "aws_s3_bucket_versioning" "frontend_cert_bucket" {
+  bucket = aws_s3_bucket.frontend_cert_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 

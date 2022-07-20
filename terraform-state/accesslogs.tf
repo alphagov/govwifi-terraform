@@ -81,10 +81,6 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
     Category    = "Accesslogs"
   }
 
-  versioning {
-    enabled = true
-  }
-
   lifecycle_rule {
     id      = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-accesslogs-lifecycle"
     enabled = true
@@ -116,3 +112,10 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
   }
 }
 
+resource "aws_s3_bucket_versioning" "accesslogs_bucket" {
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
