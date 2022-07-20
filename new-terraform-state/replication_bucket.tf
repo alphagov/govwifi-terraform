@@ -43,6 +43,8 @@ EOF
 }
 
 resource "aws_s3_bucket_versioning" "replication_state_bucket" {
+  provider = aws.replication
+
   bucket = aws_s3_bucket.replication_state_bucket.id
 
   versioning_configuration {
