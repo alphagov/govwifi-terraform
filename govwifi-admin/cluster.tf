@@ -61,16 +61,16 @@ resource "aws_ecs_task_definition" "admin_task" {
           "value": "${join(",", var.dublin_radius_ip_addresses)}"
         },{
           "name": "S3_MOU_BUCKET",
-          "value": "${aws_s3_bucket.admin_mou_bucket[0].id}"
+          "value": "${aws_s3_bucket.admin_mou_bucket.id}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_BUCKET",
-          "value": "${aws_s3_bucket.admin_bucket[0].id}"
+          "value": "${aws_s3_bucket.admin_bucket.id}"
         },{
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
         },{
           "name": "S3_SIGNUP_ALLOWLIST_BUCKET",
-          "value": "${aws_s3_bucket.admin_bucket[0].id}"
+          "value": "${aws_s3_bucket.admin_bucket.id}"
         },{
           "name": "S3_SIGNUP_ALLOWLIST_OBJECT_KEY",
           "value": "signup-allowlist.conf"
@@ -79,7 +79,7 @@ resource "aws_ecs_task_definition" "admin_task" {
           "value": "clients.conf"
         },{
           "name": "S3_PRODUCT_PAGE_DATA_BUCKET",
-          "value": "${aws_s3_bucket.product_page_data_bucket[0].id}"
+          "value": "${aws_s3_bucket.product_page_data_bucket.id}"
         },{
           "name": "S3_ORGANISATION_NAMES_OBJECT_KEY",
           "value": "organisations.yml"

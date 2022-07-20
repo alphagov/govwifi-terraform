@@ -58,7 +58,7 @@ resource "aws_iam_role_policy" "ecs_admin_instance_policy" {
         "s3:PutObject",
         "s3:GetObject"
       ],
-      "Resource": ["${aws_s3_bucket.admin_bucket[0].arn}/*"]
+      "Resource": ["${aws_s3_bucket.admin_bucket.arn}/*"]
     },{
       "Effect": "Allow",
       "Action": [
@@ -68,13 +68,13 @@ resource "aws_iam_role_policy" "ecs_admin_instance_policy" {
         "s3:GetObjectAcl",
         "s3:DeleteObject"
       ],
-      "Resource": ["${aws_s3_bucket.admin_mou_bucket[0].arn}/*"]
+      "Resource": ["${aws_s3_bucket.admin_mou_bucket.arn}/*"]
     },{
       "Effect": "Allow",
       "Action": [
         "s3:ListBucket"
       ],
-      "Resource": ["${aws_s3_bucket.admin_mou_bucket[0].arn}"]
+      "Resource": ["${aws_s3_bucket.admin_mou_bucket.arn}"]
     },
     {
       "Effect": "Allow",
@@ -83,7 +83,7 @@ resource "aws_iam_role_policy" "ecs_admin_instance_policy" {
         "s3:PutObjectAcl",
         "s3:PutObjectVersionAcl"
       ],
-      "Resource": ["${aws_s3_bucket.product_page_data_bucket[0].arn}/*"]
+      "Resource": ["${aws_s3_bucket.product_page_data_bucket.arn}/*"]
     }
   ]
 }

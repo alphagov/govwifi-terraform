@@ -1,5 +1,4 @@
 resource "aws_s3_bucket" "admin_bucket" {
-  count         = 1
   bucket        = "govwifi-${var.rails_env}-admin"
   force_destroy = true
   acl           = "private"
@@ -12,7 +11,7 @@ resource "aws_s3_bucket" "admin_bucket" {
 }
 
 resource "aws_s3_bucket_versioning" "admin_bucket" {
-  bucket = aws_s3_bucket.admin_bucket[0].id
+  bucket = aws_s3_bucket.admin_bucket.id
 
   versioning_configuration {
     status = "Enabled"
@@ -20,7 +19,6 @@ resource "aws_s3_bucket_versioning" "admin_bucket" {
 }
 
 resource "aws_s3_bucket" "product_page_data_bucket" {
-  count         = 1
   bucket        = "govwifi-${var.rails_env}-product-page-data"
   force_destroy = true
   acl           = "public-read"
@@ -33,7 +31,7 @@ resource "aws_s3_bucket" "product_page_data_bucket" {
 }
 
 resource "aws_s3_bucket_versioning" "product_page_data_bucket" {
-  bucket = aws_s3_bucket.product_page_data_bucket[0].id
+  bucket = aws_s3_bucket.product_page_data_bucket.id
 
   versioning_configuration {
     status = "Enabled"
@@ -41,7 +39,6 @@ resource "aws_s3_bucket_versioning" "product_page_data_bucket" {
 }
 
 resource "aws_s3_bucket" "admin_mou_bucket" {
-  count         = 1
   bucket        = "govwifi-${var.rails_env}-admin-mou"
   force_destroy = true
   acl           = "private"
@@ -54,7 +51,7 @@ resource "aws_s3_bucket" "admin_mou_bucket" {
 }
 
 resource "aws_s3_bucket_versioning" "admin_mou_bucket" {
-  bucket = aws_s3_bucket.admin_mou_bucket[0].id
+  bucket = aws_s3_bucket.admin_mou_bucket.id
 
   versioning_configuration {
     status = "Enabled"
@@ -62,7 +59,7 @@ resource "aws_s3_bucket_versioning" "admin_mou_bucket" {
 }
 
 resource "aws_s3_bucket_policy" "admin_bucket_policy" {
-  bucket = aws_s3_bucket.admin_bucket[0].id
+  bucket = aws_s3_bucket.admin_bucket.id
 
   policy = <<POLICY
 {
@@ -74,7 +71,7 @@ resource "aws_s3_bucket_policy" "admin_bucket_policy" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::${aws_s3_bucket.admin_bucket[0].id}/clients.conf",
+      "Resource": "arn:aws:s3:::${aws_s3_bucket.admin_bucket.id}/clients.conf",
       "Condition": {
         "IpAddress": {
           "aws:SourceIp": [
@@ -99,7 +96,7 @@ POLICY
 }
 
 resource "aws_s3_bucket_policy" "product_page_data_bucket_policy" {
-  bucket = aws_s3_bucket.product_page_data_bucket[0].id
+  bucket = aws_s3_bucket.product_page_data_bucket.id
 
   policy = <<POLICY
 {
@@ -114,7 +111,7 @@ resource "aws_s3_bucket_policy" "product_page_data_bucket_policy" {
                 "s3:GetObject",
                 "s3:GetObjectVersion"
             ],
-            "Resource": "arn:aws:s3:::${aws_s3_bucket.product_page_data_bucket[0].id}/*"
+            "Resource": "arn:aws:s3:::${aws_s3_bucket.product_page_data_bucket.id}/*"
         },
         {
             "Sid": "Get Product Page Data For Bucket",
@@ -125,7 +122,7 @@ resource "aws_s3_bucket_policy" "product_page_data_bucket_policy" {
                 "s3:ListBucket",
                 "s3:ListBucketVersions"
             ],
-            "Resource": "arn:aws:s3:::${aws_s3_bucket.product_page_data_bucket[0].id}"
+            "Resource": "arn:aws:s3:::${aws_s3_bucket.product_page_data_bucket.id}"
         }
     ]
 }
