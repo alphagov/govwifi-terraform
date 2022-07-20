@@ -140,7 +140,8 @@ module "london_frontend" {
 
 module "london_admin" {
   providers = {
-    aws = aws.london
+    aws             = aws.london
+    aws.replication = aws.dublin
   }
 
   source        = "../../govwifi-admin"

@@ -129,3 +129,123 @@ resource "aws_s3_bucket_policy" "product_page_data_bucket_policy" {
 POLICY
 
 }
+
+# admin_bucket replication
+
+resource "aws_iam_role" "admin_bucket_replication" {
+  name = "admin-bucket-replication-role"
+
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "s3.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_policy" "admin_bucket_replication" {
+  name = "admin-bucket-replication-role-policy"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:GetReplicationConfiguration",
+        "s3:ListBucket"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "${aws_s3_bucket.admin_bucket.arn}"
+      ]
+    },
+    {
+      "Action": [
+        "s3:GetObjectVersionForReplication",
+        "s3:GetObjectVersionAcl",
+         "s3:GetObjectVersionTagging"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "${aws_s3_bucket.admin_bucket.arn}/*"
+      ]
+    },
+    {
+      "Action": [
+        "s3:ReplicateObject",
+        "s3:ReplicateDelete",
+        "s3:ReplicateTags"
+      ],
+      "Effect": "Allow",
+      "Resource": "${aws_s3_bucket.replication_admin_bucket.arn}/*"
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_role_policy_attachment" "admin_bucket_replication" {
+  role       = aws_iam_role.admin_bucket_replication.name
+  policy_arn = aws_iam_policy.admin_bucket_replication.arn
+}
+
+data "aws_region" "replication" {
+  provider = aws.replication
+}
+
+resource "aws_s3_bucket" "replication_admin_bucket" {
+  provider = aws.replication
+
+  bucket_prefix = "govwifi-admin-${var.env_name}-${data.aws_region.replication.name}-"
+
+  force_destroy = true
+}
+
+resource "aws_s3_bucket_versioning" "replication_admin_bucket" {
+  provider = aws.replication
+
+  bucket = aws_s3_bucket.replication_admin_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_replication_configuration" "replication_admin_bucket" {
+  depends_on = [
+    aws_s3_bucket_versioning.admin_bucket,
+    aws_s3_bucket_versioning.replication_admin_bucket
+  ]
+
+  role   = aws_iam_role.admin_bucket_replication.arn
+  bucket = aws_s3_bucket.admin_bucket.id
+
+  rule {
+    id = "clients.conf"
+
+    filter {
+      prefix = "clients.conf"
+    }
+
+    status = "Enabled"
+
+    destination {
+      bucket        = aws_s3_bucket.replication_admin_bucket.arn
+      storage_class = "STANDARD"
+    }
+
+    delete_marker_replication {
+      status = "Enabled"
+    }
+  }
+}
