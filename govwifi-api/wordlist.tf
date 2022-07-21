@@ -18,7 +18,7 @@ resource "aws_s3_bucket_versioning" "wordlist" {
   }
 }
 
-resource "aws_s3_bucket_object" "wordlist" {
+resource "aws_s3_object" "wordlist" {
   bucket = aws_s3_bucket.wordlist[0].bucket
   count  = var.create_wordlist_bucket ? 1 : 0
   key    = "wordlist-short"
