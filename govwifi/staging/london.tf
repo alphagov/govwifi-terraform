@@ -297,14 +297,6 @@ module "london_dashboard" {
   env_name = local.env_name
 }
 
-/*
-We are only configuring a Prometheus server in Staging London for now, although
-in production the instance is available in both regions.
-The server will scrape metrics from the agents configured in both regions.
-There are some problems with the Staging Bastion instance that is preventing
-us from mirroring the setup in Production in Staging. This will be rectified
-when we create a separate staging environment.
-*/
 module "london_prometheus" {
   providers = {
     aws = aws.london

@@ -296,6 +296,30 @@ module "dublin_api" {
   low_cpu_threshold = 0.3
 }
 
+module "dublin_prometheus" {
+  providers = {
+    aws = aws.dublin
+  }
+
+  source   = "../../govwifi-prometheus"
+  env_name = local.env_name
+
+  ssh_key_name = var.ssh_key_name
+
+  frontend_vpc_id = module.dublin_frontend.frontend_vpc_id
+
+  fe_admin_in   = module.dublin_frontend.fe_admin_in
+  fe_ecs_out    = module.dublin_frontend.fe_ecs_out
+  fe_radius_in  = module.dublin_frontend.fe_radius_in
+  fe_radius_out = module.dublin_frontend.fe_radius_out
+
+  wifi_frontend_subnet       = module.dublin_frontend.frontend_subnet_id
+  london_radius_ip_addresses = module.london_frontend.eip_public_ips
+  dublin_radius_ip_addresses = module.dublin_frontend.eip_public_ips
+
+  grafana_ip = module.london_grafana.eip_public_ip
+}
+
 module "dublin_route53_notifications" {
   providers = {
     aws = aws.us_east_1
