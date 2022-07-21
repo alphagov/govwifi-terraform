@@ -72,7 +72,6 @@ resource "aws_iam_policy_attachment" "accesslogs_replication" {
 
 resource "aws_s3_bucket" "accesslogs_bucket" {
   bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
-  acl    = "log-delivery-write"
 
   tags = {
     Region      = title(var.aws_region_name)
@@ -110,6 +109,11 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
       }
     }
   }
+}
+
+resource "aws_s3_bucket_acl" "accesslogs_bucket" {
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+  acl    = "log-delivery-write"
 }
 
 resource "aws_s3_bucket_versioning" "accesslogs_bucket" {
