@@ -378,6 +378,11 @@ resource "aws_ecs_service" "load_balanced_frontend_service" {
       aws_security_group.load_balanced_frontend_service.id,
     ]
   }
+
+  service_registries {
+    registry_arn = aws_service_discovery_service.main.arn
+    port         = 9812
+  }
 }
 
 resource "aws_vpc_endpoint" "ecr_dkr" {
@@ -442,4 +447,29 @@ resource "aws_vpc_endpoint" "logs" {
   subnet_ids = [for subnet in aws_subnet.wifi_frontend_subnet : subnet.id]
 
   private_dns_enabled = true
+}
+
+resource "aws_service_discovery_private_dns_namespace" "main" {
+  name        = "frontend.internal"
+  description = "Frontend namespace"
+  vpc         = aws_vpc.wifi_frontend.id
+}
+
+resource "aws_service_discovery_service" "main" {
+  name = "metrics"
+
+  dns_config {
+    namespace_id = aws_service_discovery_private_dns_namespace.main.id
+
+    dns_records {
+      ttl  = 15
+      type = "SRV"
+    }
+
+    routing_policy = "MULTIVALUE"
+  }
+
+  health_check_custom_config {
+    failure_threshold = 10
+  }
 }

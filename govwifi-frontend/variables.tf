@@ -99,3 +99,7 @@ variable "prometheus_ip_london" {
 
 variable "prometheus_ip_ireland" {
 }
+
+variable "prometheus_security_group_id" {
+  type = string
+}

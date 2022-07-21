@@ -135,6 +135,8 @@ module "london_frontend" {
   prometheus_ip_london  = module.london_prometheus.eip_public_ip
   prometheus_ip_ireland = module.london_prometheus.eip_public_ip
 
+  prometheus_security_group_id = module.london_prometheus.prometheus_security_group_id
+
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 }
 
@@ -309,10 +311,7 @@ module "london_prometheus" {
 
   frontend_vpc_id = module.london_frontend.frontend_vpc_id
 
-  fe_admin_in   = module.london_frontend.fe_admin_in
-  fe_ecs_out    = module.london_frontend.fe_ecs_out
-  fe_radius_in  = module.london_frontend.fe_radius_in
-  fe_radius_out = module.london_frontend.fe_radius_out
+  fe_admin_in = module.london_frontend.fe_admin_in
 
   wifi_frontend_subnet       = module.london_frontend.frontend_subnet_id
   london_radius_ip_addresses = module.london_frontend.eip_public_ips
