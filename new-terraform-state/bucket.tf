@@ -97,21 +97,30 @@ EOF
     Environment = title(var.env_name)
     Category    = "TFstate"
   }
+}
 
-  replication_configuration {
-    role = aws_iam_role.tfstate_replication.arn
+resource "aws_s3_bucket_replication_configuration" "state_bucket" {
+  depends_on = [
+    aws_s3_bucket_versioning.state_bucket,
+    aws_s3_bucket_versioning.replication_state_bucket
+  ]
 
-    rules {
-      # ID is necessary to prevent continuous change issue
-      id     = "${lower(data.aws_region.main.name)}-to-${lower(data.aws_region.replication.name)}-tfstate-backup"
+  bucket = aws_s3_bucket.state_bucket.id
+  role   = aws_iam_role.tfstate_replication.arn
+
+  rule {
+    id = "${lower(data.aws_region.main.name)}-to-${lower(data.aws_region.replication.name)}-tfstate-backup"
+
+    filter {
       prefix = "${lower(data.aws_region.main.name)}-tfstate"
-      status = "Enabled"
-
-      destination {
-        bucket        = aws_s3_bucket.replication_state_bucket.arn
-        storage_class = "STANDARD_IA"
-      }
     }
+
+    destination {
+      bucket        = aws_s3_bucket.replication_state_bucket.arn
+      storage_class = "STANDARD_IA"
+    }
+
+    status = "Enabled"
   }
 }
 

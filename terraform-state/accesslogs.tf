@@ -79,21 +79,29 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
     Environment = title(var.env_name)
     Category    = "Accesslogs"
   }
+}
 
-  replication_configuration {
-    role = aws_iam_role.accesslogs_replication.arn
+resource "aws_s3_bucket_replication_configuration" "accesslogs_bucket" {
+  depends_on = [
+    aws_s3_bucket_versioning.accesslogs_bucket
+  ]
 
-    rules {
-      # ID is necessary to prevent continuous change issue
-      id     = "${lower(var.aws_region_name)}-to-${lower(var.backup_region_name)}-accesslogs-backup"
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+  role   = aws_iam_role.accesslogs_replication.arn
+
+  rule {
+    id = "${lower(var.aws_region_name)}-to-${lower(var.backup_region_name)}-accesslogs-backup"
+
+    filter {
       prefix = "${lower(var.aws_region_name)}-accesslogs-backup"
-      status = "Enabled"
-
-      destination {
-        bucket        = "arn:aws:s3:::${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.backup_region_name)}-accesslogs"
-        storage_class = "STANDARD"
-      }
     }
+
+    destination {
+      bucket        = "arn:aws:s3:::${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.backup_region_name)}-accesslogs"
+      storage_class = "STANDARD"
+    }
+
+    status = "Enabled"
   }
 }
 
