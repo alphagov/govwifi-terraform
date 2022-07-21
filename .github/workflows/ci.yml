@@ -8,7 +8,7 @@ jobs:
 
       - name: lint
         run: |
-          brew install tfenv tflint findutils
+          brew install tfenv tflint grep findutils
           tfenv install $(cat .terraform-version)
           tfenv use $(cat .terraform-version)
           GITHUB_TOKEN=${{ secrets.GH_TOKEN }} tflint --init
