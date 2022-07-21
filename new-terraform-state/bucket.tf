@@ -98,11 +98,6 @@ EOF
     Category    = "TFstate"
   }
 
-  logging {
-    target_bucket = aws_s3_bucket.accesslogs_bucket.id
-    target_prefix = "${var.env_name}-tfstate"
-  }
-
   replication_configuration {
     role = aws_iam_role.tfstate_replication.arn
 
@@ -118,6 +113,13 @@ EOF
       }
     }
   }
+}
+
+resource "aws_s3_bucket_logging" "state_bucket" {
+  bucket = aws_s3_bucket.state_bucket.id
+
+  target_bucket = aws_s3_bucket.accesslogs_bucket.id
+  target_prefix = "${var.env_name}-tfstate"
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "state_bucket" {
