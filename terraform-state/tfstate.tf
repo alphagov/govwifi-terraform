@@ -88,6 +88,17 @@ resource "aws_kms_alias" "tfstate_key_alias" {
 resource "aws_s3_bucket" "state_bucket" {
   bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate"
 
+  tags = {
+    Region      = title(var.aws_region_name)
+    Product     = var.product_name
+    Environment = title(var.env_name)
+    Category    = "TFstate"
+  }
+}
+
+resource "aws_s3_bucket_policy" "state_bucket" {
+  bucket = aws_s3_bucket.state_bucket.id
+
   policy = <<EOF
 {
     "Version": "2008-10-17",
@@ -106,14 +117,6 @@ resource "aws_s3_bucket" "state_bucket" {
     }]
 }
 EOF
-
-
-  tags = {
-    Region      = title(var.aws_region_name)
-    Product     = var.product_name
-    Environment = title(var.env_name)
-    Category    = "TFstate"
-  }
 }
 
 resource "aws_s3_bucket_replication_configuration" "state_bucket" {

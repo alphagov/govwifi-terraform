@@ -3,6 +3,17 @@ resource "aws_s3_bucket" "emailbucket" {
   bucket        = "${var.env_name}-emailbucket"
   force_destroy = true
 
+  tags = {
+    Name        = "${title(var.env_name)} Email Bucket"
+    Region      = title(var.aws_region_name)
+    Environment = title(var.env_name)
+    Category    = "User emails"
+  }
+}
+
+resource "aws_s3_bucket_policy" "emailbucket" {
+  bucket = aws_s3_bucket.emailbucket.id
+
   policy = <<EOF
 {
     "Version": "2008-10-17",
@@ -39,14 +50,6 @@ resource "aws_s3_bucket" "emailbucket" {
     }]
 }
 EOF
-
-
-  tags = {
-    Name        = "${title(var.env_name)} Email Bucket"
-    Region      = title(var.aws_region_name)
-    Environment = title(var.env_name)
-    Category    = "User emails"
-  }
 }
 
 resource "aws_s3_bucket_logging" "emailbucket" {
@@ -90,6 +93,17 @@ resource "aws_s3_bucket" "admin_emailbucket" {
   bucket        = "${var.env_name}-admin-emailbucket"
   force_destroy = true
 
+  tags = {
+    Name        = "${title(var.env_name)} Admin Email Bucket"
+    Region      = title(var.aws_region_name)
+    Environment = title(var.env_name)
+    Category    = "Admin emails"
+  }
+}
+
+resource "aws_s3_bucket_policy" "admin_emailbucket" {
+  bucket = aws_s3_bucket.admin_emailbucket.id
+
   policy = <<EOF
 {
     "Version": "2008-10-17",
@@ -126,14 +140,6 @@ resource "aws_s3_bucket" "admin_emailbucket" {
     }]
 }
 EOF
-
-
-  tags = {
-    Name        = "${title(var.env_name)} Admin Email Bucket"
-    Region      = title(var.aws_region_name)
-    Environment = title(var.env_name)
-    Category    = "Admin emails"
-  }
 }
 
 resource "aws_s3_bucket_logging" "admin_emailbucket" {

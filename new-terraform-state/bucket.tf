@@ -73,6 +73,16 @@ resource "aws_iam_policy_attachment" "tfstate_replication" {
 resource "aws_s3_bucket" "state_bucket" {
   bucket = local.bucket_name
 
+  tags = {
+    Region      = data.aws_region.main.name
+    Environment = title(var.env_name)
+    Category    = "TFstate"
+  }
+}
+
+resource "aws_s3_bucket_policy" "state_bucket" {
+  bucket = aws_s3_bucket.state_bucket.id
+
   policy = <<EOF
 {
   "Version": "2008-10-17",
@@ -91,12 +101,6 @@ resource "aws_s3_bucket" "state_bucket" {
   }]
 }
 EOF
-
-  tags = {
-    Region      = data.aws_region.main.name
-    Environment = title(var.env_name)
-    Category    = "TFstate"
-  }
 }
 
 resource "aws_s3_bucket_replication_configuration" "state_bucket" {
