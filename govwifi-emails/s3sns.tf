@@ -52,24 +52,32 @@ EOF
     target_bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
     target_prefix = "user-emails"
   }
-
-  lifecycle_rule {
-    enabled = true
-
-    expiration {
-      days = 30
-    }
-
-    noncurrent_version_expiration {
-      days = 1
-    }
-  }
 }
 
 resource "aws_s3_bucket_versioning" "emailbucket" {
   bucket = aws_s3_bucket.emailbucket.id
 
   versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "emailbucket" {
+  depends_on = [aws_s3_bucket_versioning.emailbucket]
+
+  bucket = aws_s3_bucket.emailbucket.id
+
+  rule {
+    id = "expiration"
+
+    expiration {
+      days = 30
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 1
+    }
+
     status = "Enabled"
   }
 }

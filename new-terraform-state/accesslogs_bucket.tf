@@ -79,20 +79,6 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
     Category    = "Accesslogs"
   }
 
-  lifecycle_rule {
-    id      = "accesslogs-lifecycle"
-    enabled = true
-
-    transition {
-      days          = var.accesslogs_glacier_transition_days
-      storage_class = "GLACIER"
-    }
-
-    expiration {
-      days = var.accesslogs_expiration_days
-    }
-  }
-
   replication_configuration {
     role = aws_iam_role.accesslogs_replication.arn
 
@@ -119,6 +105,27 @@ resource "aws_s3_bucket_versioning" "accesslogs_bucket" {
   bucket = aws_s3_bucket.accesslogs_bucket.id
 
   versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "accesslogs_bucket" {
+  depends_on = [aws_s3_bucket_versioning.accesslogs_bucket]
+
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+
+  rule {
+    id = "accesslogs-lifecycle"
+
+    transition {
+      days          = var.accesslogs_glacier_transition_days
+      storage_class = "GLACIER"
+    }
+
+    expiration {
+      days = var.accesslogs_expiration_days
+    }
+
     status = "Enabled"
   }
 }

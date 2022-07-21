@@ -13,24 +13,6 @@ resource "aws_s3_bucket" "rds_mysql_backup_bucket" {
     Category    = "MySQL RDS data backup"
   }
 
-  lifecycle_rule {
-    enabled = true
-
-    noncurrent_version_transition {
-      days          = 30
-      storage_class = "STANDARD_IA"
-    }
-
-    noncurrent_version_transition {
-      days          = 60
-      storage_class = "GLACIER"
-    }
-
-    noncurrent_version_expiration {
-      days = 180
-    }
-  }
-
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
@@ -38,6 +20,42 @@ resource "aws_s3_bucket" "rds_mysql_backup_bucket" {
         sse_algorithm     = "aws:kms"
       }
     }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "rds_mysql_backup_bucket" {
+  count  = var.backup_mysql_rds ? 1 : 0
+  bucket = aws_s3_bucket.rds_mysql_backup_bucket[0].id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "rds_mysql_backup_bucket" {
+  count      = var.backup_mysql_rds ? 1 : 0
+  depends_on = [aws_s3_bucket_versioning.rds_mysql_backup_bucket]
+
+  bucket = aws_s3_bucket.rds_mysql_backup_bucket[0].id
+
+  rule {
+    id = "expiration"
+
+    noncurrent_version_transition {
+      noncurrent_days = 30
+      storage_class   = "STANDARD_IA"
+    }
+
+    noncurrent_version_transition {
+      noncurrent_days = 60
+      storage_class   = "GLACIER"
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 180
+    }
+
+    status = "Enabled"
   }
 }
 
