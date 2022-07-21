@@ -41,6 +41,11 @@ provider "aws" {
 }
 
 provider "aws" {
+  alias  = "dublin"
+  region = "eu-west-1"
+}
+
+provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"
 }
@@ -191,7 +196,8 @@ module "frontend" {
 
 module "govwifi_admin" {
   providers = {
-    aws = aws.main
+    aws             = aws.main
+    aws.replication = aws.dublin
   }
 
   source        = "../../govwifi-admin"

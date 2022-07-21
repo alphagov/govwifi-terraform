@@ -4,6 +4,10 @@ output "db_hostname" {
 
 output "app_data_s3_bucket_name" {
   description = "Name (id) for the admin bucket"
-  value       = aws_s3_bucket.admin_bucket[0].id
+  value       = aws_s3_bucket.admin_bucket.id
 }
 
+output "replica_app_data_s3_bucket_name" {
+  description = "Name (id) for the replica admin bucket"
+  value       = aws_s3_bucket.replication_admin_bucket.id
+}

@@ -1,5 +1,4 @@
 resource "aws_s3_bucket" "admin_bucket" {
-  count         = 1
   bucket        = "govwifi-${var.rails_env}-admin"
   force_destroy = true
   acl           = "private"
@@ -12,7 +11,7 @@ resource "aws_s3_bucket" "admin_bucket" {
 }
 
 resource "aws_s3_bucket_versioning" "admin_bucket" {
-  bucket = aws_s3_bucket.admin_bucket[0].id
+  bucket = aws_s3_bucket.admin_bucket.id
 
   versioning_configuration {
     status = "Enabled"
@@ -20,7 +19,6 @@ resource "aws_s3_bucket_versioning" "admin_bucket" {
 }
 
 resource "aws_s3_bucket" "product_page_data_bucket" {
-  count         = 1
   bucket        = "govwifi-${var.rails_env}-product-page-data"
   force_destroy = true
   acl           = "public-read"
@@ -33,7 +31,7 @@ resource "aws_s3_bucket" "product_page_data_bucket" {
 }
 
 resource "aws_s3_bucket_versioning" "product_page_data_bucket" {
-  bucket = aws_s3_bucket.product_page_data_bucket[0].id
+  bucket = aws_s3_bucket.product_page_data_bucket.id
 
   versioning_configuration {
     status = "Enabled"
@@ -41,7 +39,6 @@ resource "aws_s3_bucket_versioning" "product_page_data_bucket" {
 }
 
 resource "aws_s3_bucket" "admin_mou_bucket" {
-  count         = 1
   bucket        = "govwifi-${var.rails_env}-admin-mou"
   force_destroy = true
   acl           = "private"
@@ -54,7 +51,7 @@ resource "aws_s3_bucket" "admin_mou_bucket" {
 }
 
 resource "aws_s3_bucket_versioning" "admin_mou_bucket" {
-  bucket = aws_s3_bucket.admin_mou_bucket[0].id
+  bucket = aws_s3_bucket.admin_mou_bucket.id
 
   versioning_configuration {
     status = "Enabled"
@@ -62,7 +59,7 @@ resource "aws_s3_bucket_versioning" "admin_mou_bucket" {
 }
 
 resource "aws_s3_bucket_policy" "admin_bucket_policy" {
-  bucket = aws_s3_bucket.admin_bucket[0].id
+  bucket = aws_s3_bucket.admin_bucket.id
 
   policy = <<POLICY
 {
@@ -74,7 +71,7 @@ resource "aws_s3_bucket_policy" "admin_bucket_policy" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::${aws_s3_bucket.admin_bucket[0].id}/clients.conf",
+      "Resource": "arn:aws:s3:::${aws_s3_bucket.admin_bucket.id}/clients.conf",
       "Condition": {
         "IpAddress": {
           "aws:SourceIp": [
@@ -99,7 +96,7 @@ POLICY
 }
 
 resource "aws_s3_bucket_policy" "product_page_data_bucket_policy" {
-  bucket = aws_s3_bucket.product_page_data_bucket[0].id
+  bucket = aws_s3_bucket.product_page_data_bucket.id
 
   policy = <<POLICY
 {
@@ -114,7 +111,7 @@ resource "aws_s3_bucket_policy" "product_page_data_bucket_policy" {
                 "s3:GetObject",
                 "s3:GetObjectVersion"
             ],
-            "Resource": "arn:aws:s3:::${aws_s3_bucket.product_page_data_bucket[0].id}/*"
+            "Resource": "arn:aws:s3:::${aws_s3_bucket.product_page_data_bucket.id}/*"
         },
         {
             "Sid": "Get Product Page Data For Bucket",
@@ -125,10 +122,130 @@ resource "aws_s3_bucket_policy" "product_page_data_bucket_policy" {
                 "s3:ListBucket",
                 "s3:ListBucketVersions"
             ],
-            "Resource": "arn:aws:s3:::${aws_s3_bucket.product_page_data_bucket[0].id}"
+            "Resource": "arn:aws:s3:::${aws_s3_bucket.product_page_data_bucket.id}"
         }
     ]
 }
 POLICY
 
+}
+
+# admin_bucket replication
+
+resource "aws_iam_role" "admin_bucket_replication" {
+  name = "admin-bucket-replication-role"
+
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "s3.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_policy" "admin_bucket_replication" {
+  name = "admin-bucket-replication-role-policy"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:GetReplicationConfiguration",
+        "s3:ListBucket"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "${aws_s3_bucket.admin_bucket.arn}"
+      ]
+    },
+    {
+      "Action": [
+        "s3:GetObjectVersionForReplication",
+        "s3:GetObjectVersionAcl",
+         "s3:GetObjectVersionTagging"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "${aws_s3_bucket.admin_bucket.arn}/*"
+      ]
+    },
+    {
+      "Action": [
+        "s3:ReplicateObject",
+        "s3:ReplicateDelete",
+        "s3:ReplicateTags"
+      ],
+      "Effect": "Allow",
+      "Resource": "${aws_s3_bucket.replication_admin_bucket.arn}/*"
+    }
+  ]
+}
+POLICY
+}
+
+resource "aws_iam_role_policy_attachment" "admin_bucket_replication" {
+  role       = aws_iam_role.admin_bucket_replication.name
+  policy_arn = aws_iam_policy.admin_bucket_replication.arn
+}
+
+data "aws_region" "replication" {
+  provider = aws.replication
+}
+
+resource "aws_s3_bucket" "replication_admin_bucket" {
+  provider = aws.replication
+
+  bucket_prefix = "govwifi-admin-${var.env_name}-${data.aws_region.replication.name}-"
+
+  force_destroy = true
+}
+
+resource "aws_s3_bucket_versioning" "replication_admin_bucket" {
+  provider = aws.replication
+
+  bucket = aws_s3_bucket.replication_admin_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_replication_configuration" "replication_admin_bucket" {
+  depends_on = [
+    aws_s3_bucket_versioning.admin_bucket,
+    aws_s3_bucket_versioning.replication_admin_bucket
+  ]
+
+  role   = aws_iam_role.admin_bucket_replication.arn
+  bucket = aws_s3_bucket.admin_bucket.id
+
+  rule {
+    id = "clients.conf"
+
+    filter {
+      prefix = "clients.conf"
+    }
+
+    status = "Enabled"
+
+    destination {
+      bucket        = aws_s3_bucket.replication_admin_bucket.arn
+      storage_class = "STANDARD"
+    }
+
+    delete_marker_replication {
+      status = "Enabled"
+    }
+  }
 }
