@@ -1,7 +1,6 @@
 resource "aws_s3_bucket" "admin_bucket" {
   bucket        = "govwifi-${var.rails_env}-admin"
   force_destroy = true
-  acl           = "private"
 
   tags = {
     Name        = "${title(var.env_name)} Admin data"
@@ -41,7 +40,6 @@ resource "aws_s3_bucket_versioning" "product_page_data_bucket" {
 resource "aws_s3_bucket" "admin_mou_bucket" {
   bucket        = "govwifi-${var.rails_env}-admin-mou"
   force_destroy = true
-  acl           = "private"
 
   tags = {
     Name        = "${title(var.env_name)} MOU documents from Admin"

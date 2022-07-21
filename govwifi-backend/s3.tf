@@ -5,7 +5,6 @@ resource "aws_s3_bucket" "rds_mysql_backup_bucket" {
   count         = var.backup_mysql_rds ? 1 : 0
   bucket        = "govwifi-${var.env_name}-${lower(var.aws_region_name)}-mysql-backup-data"
   force_destroy = true
-  acl           = "private"
 
   tags = {
     Name        = "GovWifi ${title(var.env_name)} RDS MySQL data backup"

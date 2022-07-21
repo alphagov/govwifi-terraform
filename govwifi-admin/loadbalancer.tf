@@ -22,7 +22,6 @@ resource "aws_lb" "admin_alb" {
 
 resource "aws_s3_bucket" "access_logs" {
   bucket_prefix = "govwifi-admin-access-logs-"
-  acl           = "private"
 
   tags = {
     Name        = "${title(var.env_name)} admin access logs"

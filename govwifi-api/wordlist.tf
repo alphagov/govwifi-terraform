@@ -2,7 +2,6 @@ resource "aws_s3_bucket" "wordlist" {
   count = var.create_wordlist_bucket ? 1 : 0
 
   bucket_prefix = "wordlist-"
-  acl           = "private"
 
   tags = {
     Name = "wordlist"
