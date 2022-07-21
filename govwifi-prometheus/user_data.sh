@@ -110,6 +110,10 @@ log_group_name = ${prometheus-log-group}
 log_stream_name = {instance_id}/var/log/cloud-init-output.log
 EOF
 
+# Remove trust-ad from /etc/resolv.conf to avoid Go bug
+# This can probably be removed with Ubuntu/Prometheus is updated
+sed -i s/\ trust-ad// /etc/resolv.conf
+
 # Install awslogs
 # Steps required are install pre-reqs for python 3.5.n, install & build python 3.5 cos awslogs script only supports python < 3.5
 # Legacy - instance has this already - The install script requires the issue file to start with the string "Ubuntu"
