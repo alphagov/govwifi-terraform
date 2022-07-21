@@ -12,12 +12,16 @@ resource "aws_ecs_cluster" "frontend_cluster" {
 resource "aws_ecs_cluster" "frontend_fargate" {
   name = "frontend-fargate"
 
-  capacity_providers = ["FARGATE"]
-
   setting {
     name  = "containerInsights"
     value = "enabled"
   }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "frontend_fargate" {
+  cluster_name = aws_ecs_cluster.frontend_fargate.name
+
+  capacity_providers = ["FARGATE"]
 }
 
 resource "aws_cloudwatch_log_group" "frontend_log_group" {
