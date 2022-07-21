@@ -41,6 +41,31 @@ resource "aws_ecr_repository" "govwifi_raddb_ecr" {
   name  = "govwifi/raddb"
 }
 
+data "aws_caller_identity" "current" {}
+
+resource "aws_ecr_replication_configuration" "main" {
+  count = var.create_ecr
+
+  replication_configuration {
+    rule {
+      destination {
+        region      = "eu-west-1"
+        registry_id = data.aws_caller_identity.current.account_id
+      }
+
+      repository_filter {
+        filter_type = "PREFIX_MATCH"
+        filter      = "govwifi/frontend"
+      }
+
+      repository_filter {
+        filter_type = "PREFIX_MATCH"
+        filter      = "govwifi/raddb"
+      }
+    }
+  }
+}
+
 resource "aws_ecs_task_definition" "radius_task" {
   family             = "radius-task-${var.env_name}"
   task_role_arn      = aws_iam_role.ecs_task_role.arn
@@ -301,6 +326,9 @@ resource "aws_ecs_task_definition" "frontend_fargate" {
       },{
         "name": "CERT_STORE_BUCKET",
         "value": "s3://${aws_s3_bucket.frontend_cert_bucket.bucket}"
+      },{
+        "name": "AWS_REGION",
+        "value": "${var.aws_region}"
       }
     ],
     "image": "${var.raddb_docker_image}",

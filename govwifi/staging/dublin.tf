@@ -201,12 +201,20 @@ module "dublin_frontend" {
   # where N = this base + 1 + server#
   dns_numbering_base = 0
 
-  ami                   = "ami-2d386654"
-  ssh_key_name          = var.ssh_key_name
-  frontend_docker_image = format("%s/frontend:staging", local.docker_image_path)
-  raddb_docker_image    = format("%s/raddb:staging", local.docker_image_path)
+  ami          = "ami-2d386654"
+  ssh_key_name = var.ssh_key_name
 
-  admin_app_data_s3_bucket_name = module.london_admin.app_data_s3_bucket_name
+  frontend_docker_image = format(
+    "%s/frontend:staging",
+    replace(local.docker_image_path, local.london_aws_region, local.dublin_aws_region)
+  )
+
+  raddb_docker_image = format(
+    "%s/raddb:staging",
+    replace(local.docker_image_path, local.london_aws_region, local.dublin_aws_region)
+  )
+
+  admin_app_data_s3_bucket_name = module.london_admin.replica_app_data_s3_bucket_name
 
   logging_api_base_url = module.london_api.api_base_url
   auth_api_base_url    = module.dublin_api.api_base_url
