@@ -46,6 +46,6 @@ module "govwifi_deploy" {
   }
 
   source    = "../../govwifi-deploy"
-  app_names = ["user-signup-api", "logging-api"]
+  app_names = ["user-signup-api", "logging-api", "admin"]
 
 }
