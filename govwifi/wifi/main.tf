@@ -200,20 +200,12 @@ module "frontend" {
   # where N = this base + 1 + server#
   dns_numbering_base = 0
 
-  ami          = var.ami
-  ssh_key_name = var.ssh_key_name
+  ami                   = var.ami
+  ssh_key_name          = var.ssh_key_name
+  frontend_docker_image = format("%s/frontend:production", local.docker_image_path)
+  raddb_docker_image    = format("%s/raddb:production", local.docker_image_path)
 
-  frontend_docker_image = format(
-    "%s/frontend:production",
-    replace(local.docker_image_path, "eu-west-2", "eu-west-1")
-  )
-
-  raddb_docker_image = format(
-    "%s/raddb:production",
-    replace(local.docker_image_path, "eu-west-2", "eu-west-1")
-  )
-
-  admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.replica_admin_app_data_s3_bucket_name
+  admin_app_data_s3_bucket_name = data.terraform_remote_state.london.outputs.admin_app_data_s3_bucket_name
 
   logging_api_base_url = var.london_api_base_url
   auth_api_base_url    = var.dublin_api_base_url
