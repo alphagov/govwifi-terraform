@@ -399,12 +399,6 @@ module "govwifi_dashboard" {
   env_name = local.env_name
 }
 
-/*
-We are only configuring a Prometheus server in London for now.
-The server will scrape metrics from the agents configured in both regions.
-The module `govwifi-prometheus` only needs to exist in
-govwifi/staging-london/main.tf and govwifi/wifi-london/main.tf.
-*/
 module "govwifi_prometheus" {
   providers = {
     aws = aws.main
