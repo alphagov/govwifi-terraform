@@ -61,10 +61,14 @@ resource "aws_instance" "prometheus_instance" {
   }
 }
 
+data "aws_subnet" "main" {
+  id = var.wifi_frontend_subnet[0]
+}
+
 resource "aws_ebs_volume" "prometheus_ebs" {
   size              = 40
   encrypted         = true
-  availability_zone = aws_instance.prometheus_instance.availability_zone
+  availability_zone = data.aws_subnet.main.availability_zone
 
   tags = {
     Name = "${var.env_name} Prometheus volume"
