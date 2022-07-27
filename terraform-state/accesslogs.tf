@@ -101,6 +101,10 @@ resource "aws_s3_bucket_replication_configuration" "accesslogs_bucket" {
       storage_class = "STANDARD"
     }
 
+    delete_marker_replication {
+      status = "Enabled"
+    }
+
     status = "Enabled"
   }
 }

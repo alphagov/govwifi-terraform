@@ -139,6 +139,10 @@ resource "aws_s3_bucket_replication_configuration" "state_bucket" {
       storage_class = "STANDARD_IA"
     }
 
+    delete_marker_replication {
+      status = "Enabled"
+    }
+
     status = "Enabled"
   }
 }
