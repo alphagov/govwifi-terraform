@@ -250,6 +250,16 @@ resource "aws_security_group" "load_balanced_frontend_service" {
     ])
   }
 
+  ingress {
+    description = "Allow scraping Prometheus metrics from the fargate cluster"
+
+    from_port = 9812
+    to_port   = 9812
+    protocol  = "tcp"
+
+    security_groups = [var.prometheus_security_group_id]
+  }
+
   egress {
     from_port   = 9812
     to_port     = 9812

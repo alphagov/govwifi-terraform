@@ -19,15 +19,6 @@ variable "ssh_key_name" {
 variable "fe_admin_in" {
 }
 
-variable "fe_ecs_out" {
-}
-
-variable "fe_radius_in" {
-}
-
-variable "fe_radius_out" {
-}
-
 variable "wifi_frontend_subnet" {
   type = list(string)
 }

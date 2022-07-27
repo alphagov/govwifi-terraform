@@ -191,6 +191,8 @@ module "frontend" {
   prometheus_ip_london  = var.prometheus_ip_london
   prometheus_ip_ireland = var.prometheus_ip_ireland
 
+  prometheus_security_group_id = module.govwifi_prometheus.prometheus_security_group_id
+
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 }
 
@@ -397,12 +399,6 @@ module "govwifi_dashboard" {
   env_name = local.env_name
 }
 
-/*
-We are only configuring a Prometheus server in London for now.
-The server will scrape metrics from the agents configured in both regions.
-The module `govwifi-prometheus` only needs to exist in
-govwifi/staging-london/main.tf and govwifi/wifi-london/main.tf.
-*/
 module "govwifi_prometheus" {
   providers = {
     aws = aws.main
@@ -415,10 +411,7 @@ module "govwifi_prometheus" {
 
   frontend_vpc_id = module.frontend.frontend_vpc_id
 
-  fe_admin_in   = module.frontend.fe_admin_in
-  fe_ecs_out    = module.frontend.fe_ecs_out
-  fe_radius_in  = module.frontend.fe_radius_in
-  fe_radius_out = module.frontend.fe_radius_out
+  fe_admin_in = module.frontend.fe_admin_in
 
   wifi_frontend_subnet       = module.frontend.frontend_subnet_id
   london_radius_ip_addresses = var.london_radius_ip_addresses

@@ -43,11 +43,8 @@ resource "aws_instance" "prometheus_instance" {
   monitoring              = false
 
   vpc_security_group_ids = [
-    var.fe_ecs_out,
+    aws_security_group.prometheus.id,
     var.fe_admin_in,
-    var.fe_radius_out,
-    var.fe_radius_in,
-    aws_security_group.grafana_data_in.id,
   ]
 
   iam_instance_profile = aws_iam_instance_profile.prometheus_instance_profile.id
@@ -64,10 +61,14 @@ resource "aws_instance" "prometheus_instance" {
   }
 }
 
+data "aws_subnet" "main" {
+  id = var.wifi_frontend_subnet[0]
+}
+
 resource "aws_ebs_volume" "prometheus_ebs" {
   size              = 40
   encrypted         = true
-  availability_zone = aws_instance.prometheus_instance.availability_zone
+  availability_zone = data.aws_subnet.main.availability_zone
 
   tags = {
     Name = "${var.env_name} Prometheus volume"
