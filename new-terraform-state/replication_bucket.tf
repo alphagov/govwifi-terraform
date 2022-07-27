@@ -15,6 +15,8 @@ resource "aws_s3_bucket" "replication_state_bucket" {
 }
 
 resource "aws_s3_bucket_policy" "replication_state_bucket" {
+  provider = aws.replication
+
   bucket = aws_s3_bucket.replication_state_bucket.id
 
   policy = <<EOF
@@ -38,6 +40,8 @@ EOF
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "replication_state_bucket" {
+  provider = aws.replication
+
   bucket = aws_s3_bucket.replication_state_bucket.id
 
   rule {
