@@ -146,6 +146,12 @@ resource "aws_ecs_service" "logging_api_service" {
     container_port   = "8080"
   }
 
+  load_balancer {
+    target_group_arn = aws_alb_target_group.logging_api[0].arn
+    container_name   = "logging-api"
+    container_port   = "8080"
+  }
+
   lifecycle {
     ignore_changes = [desired_count]
   }
