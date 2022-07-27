@@ -7,6 +7,16 @@ resource "aws_s3_bucket" "replication_state_bucket" {
 
   bucket = local.replication_bucket_name
 
+  tags = {
+    Region      = data.aws_region.replication.name
+    Environment = title(var.env_name)
+    Category    = "TFstate"
+  }
+}
+
+resource "aws_s3_bucket_policy" "replication_state_bucket" {
+  bucket = aws_s3_bucket.replication_state_bucket.id
+
   policy = <<EOF
 {
   "Version": "2008-10-17",
@@ -25,19 +35,14 @@ resource "aws_s3_bucket" "replication_state_bucket" {
   }]
 }
 EOF
+}
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "replication_state_bucket" {
+  bucket = aws_s3_bucket.replication_state_bucket.id
 
-  tags = {
-    Region      = data.aws_region.replication.name
-    Environment = title(var.env_name)
-    Category    = "TFstate"
-  }
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "aws:kms"
-      }
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "aws:kms"
     }
   }
 }

@@ -72,17 +72,59 @@ resource "aws_iam_policy_attachment" "accesslogs_replication" {
 
 resource "aws_s3_bucket" "accesslogs_bucket" {
   bucket = local.accesslogs_bucket_name
-  acl    = "log-delivery-write"
 
   tags = {
     Region      = data.aws_region.main.name
     Environment = title(var.env_name)
     Category    = "Accesslogs"
   }
+}
 
-  lifecycle_rule {
-    id      = "accesslogs-lifecycle"
-    enabled = true
+resource "aws_s3_bucket_replication_configuration" "accesslogs_replication" {
+  depends_on = [
+    aws_s3_bucket_versioning.accesslogs_bucket,
+    aws_s3_bucket_versioning.replication_accesslogs_bucket
+  ]
+
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+  role   = aws_iam_role.accesslogs_replication.arn
+
+  rule {
+    id = "${data.aws_region.main.name}-to-${data.aws_region.replication.name}-accesslogs-backup"
+
+    filter {
+      prefix = "${var.env_name}-accesslogs-backup"
+    }
+
+    destination {
+      bucket        = aws_s3_bucket.replication_accesslogs_bucket.arn
+      storage_class = "STANDARD"
+    }
+
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_acl" "accesslogs_bucket" {
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+  acl    = "log-delivery-write"
+}
+
+resource "aws_s3_bucket_versioning" "accesslogs_bucket" {
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "accesslogs_bucket" {
+  depends_on = [aws_s3_bucket_versioning.accesslogs_bucket]
+
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+
+  rule {
+    id = "accesslogs-lifecycle"
 
     transition {
       days          = var.accesslogs_glacier_transition_days
@@ -92,29 +134,7 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
     expiration {
       days = var.accesslogs_expiration_days
     }
-  }
 
-  replication_configuration {
-    role = aws_iam_role.accesslogs_replication.arn
-
-    rules {
-      # ID is necessary to prevent continuous change issue
-      id     = "${data.aws_region.main.name}-to-${data.aws_region.replication.name}-accesslogs-backup"
-      prefix = "${var.env_name}-accesslogs-backup"
-      status = "Enabled"
-
-      destination {
-        bucket        = aws_s3_bucket.replication_accesslogs_bucket.arn
-        storage_class = "STANDARD"
-      }
-    }
-  }
-}
-
-resource "aws_s3_bucket_versioning" "accesslogs_bucket" {
-  bucket = aws_s3_bucket.accesslogs_bucket.id
-
-  versioning_configuration {
     status = "Enabled"
   }
 }

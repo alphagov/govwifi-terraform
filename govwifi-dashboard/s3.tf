@@ -1,6 +1,5 @@
 resource "aws_s3_bucket" "metrics_bucket" {
   bucket = "govwifi-${var.env_name}-metrics-bucket"
-  acl    = "private"
 
   tags = {
     Name        = "${title(var.env_name)} Metrics data"
@@ -18,7 +17,6 @@ resource "aws_s3_bucket_versioning" "metrics_bucket" {
 
 resource "aws_s3_bucket" "export_data_bucket" {
   bucket = "govwifi-${var.env_name}-export-data-bucket"
-  acl    = "private"
 
   tags = {
     Name        = "${title(var.env_name)} Exported metrics data"

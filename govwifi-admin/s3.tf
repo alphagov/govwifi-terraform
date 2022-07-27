@@ -1,7 +1,6 @@
 resource "aws_s3_bucket" "admin_bucket" {
   bucket        = "govwifi-${var.rails_env}-admin"
   force_destroy = true
-  acl           = "private"
 
   tags = {
     Name        = "${title(var.env_name)} Admin data"
@@ -21,13 +20,17 @@ resource "aws_s3_bucket_versioning" "admin_bucket" {
 resource "aws_s3_bucket" "product_page_data_bucket" {
   bucket        = "govwifi-${var.rails_env}-product-page-data"
   force_destroy = true
-  acl           = "public-read"
 
   tags = {
     Name        = "${title(var.rails_env)} Product page data"
     Region      = title(var.aws_region_name)
     Environment = title(var.rails_env)
   }
+}
+
+resource "aws_s3_bucket_acl" "product_page_data_bucket" {
+  bucket = aws_s3_bucket.product_page_data_bucket.id
+  acl    = "public-read"
 }
 
 resource "aws_s3_bucket_versioning" "product_page_data_bucket" {
@@ -41,7 +44,6 @@ resource "aws_s3_bucket_versioning" "product_page_data_bucket" {
 resource "aws_s3_bucket" "admin_mou_bucket" {
   bucket        = "govwifi-${var.rails_env}-admin-mou"
   force_destroy = true
-  acl           = "private"
 
   tags = {
     Name        = "${title(var.env_name)} MOU documents from Admin"

@@ -3,6 +3,17 @@ resource "aws_s3_bucket" "emailbucket" {
   bucket        = "${var.env_name}-emailbucket"
   force_destroy = true
 
+  tags = {
+    Name        = "${title(var.env_name)} Email Bucket"
+    Region      = title(var.aws_region_name)
+    Environment = title(var.env_name)
+    Category    = "User emails"
+  }
+}
+
+resource "aws_s3_bucket_policy" "emailbucket" {
+  bucket = aws_s3_bucket.emailbucket.id
+
   policy = <<EOF
 {
     "Version": "2008-10-17",
@@ -39,31 +50,13 @@ resource "aws_s3_bucket" "emailbucket" {
     }]
 }
 EOF
+}
 
+resource "aws_s3_bucket_logging" "emailbucket" {
+  bucket = aws_s3_bucket.emailbucket.id
 
-  tags = {
-    Name        = "${title(var.env_name)} Email Bucket"
-    Region      = title(var.aws_region_name)
-    Environment = title(var.env_name)
-    Category    = "User emails"
-  }
-
-  logging {
-    target_bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
-    target_prefix = "user-emails"
-  }
-
-  lifecycle_rule {
-    enabled = true
-
-    expiration {
-      days = 30
-    }
-
-    noncurrent_version_expiration {
-      days = 1
-    }
-  }
+  target_bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
+  target_prefix = "user-emails"
 }
 
 resource "aws_s3_bucket_versioning" "emailbucket" {
@@ -74,11 +67,42 @@ resource "aws_s3_bucket_versioning" "emailbucket" {
   }
 }
 
+resource "aws_s3_bucket_lifecycle_configuration" "emailbucket" {
+  depends_on = [aws_s3_bucket_versioning.emailbucket]
+
+  bucket = aws_s3_bucket.emailbucket.id
+
+  rule {
+    id = "expiration"
+
+    expiration {
+      days = 30
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 1
+    }
+
+    status = "Enabled"
+  }
+}
+
 # S3 bucket to store administration emails - mostly set up so we can receive
 # emails regards to the AWS-provided certificate(used for the elb) approval process.
 resource "aws_s3_bucket" "admin_emailbucket" {
   bucket        = "${var.env_name}-admin-emailbucket"
   force_destroy = true
+
+  tags = {
+    Name        = "${title(var.env_name)} Admin Email Bucket"
+    Region      = title(var.aws_region_name)
+    Environment = title(var.env_name)
+    Category    = "Admin emails"
+  }
+}
+
+resource "aws_s3_bucket_policy" "admin_emailbucket" {
+  bucket = aws_s3_bucket.admin_emailbucket.id
 
   policy = <<EOF
 {
@@ -116,19 +140,13 @@ resource "aws_s3_bucket" "admin_emailbucket" {
     }]
 }
 EOF
+}
 
+resource "aws_s3_bucket_logging" "admin_emailbucket" {
+  bucket = aws_s3_bucket.admin_emailbucket.id
 
-  tags = {
-    Name        = "${title(var.env_name)} Admin Email Bucket"
-    Region      = title(var.aws_region_name)
-    Environment = title(var.env_name)
-    Category    = "Admin emails"
-  }
-
-  logging {
-    target_bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
-    target_prefix = "admin-emails"
-  }
+  target_bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
+  target_prefix = "admin-emails"
 }
 
 resource "aws_s3_bucket_versioning" "admin_emailbucket" {

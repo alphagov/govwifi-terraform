@@ -72,7 +72,6 @@ resource "aws_iam_policy_attachment" "accesslogs_replication" {
 
 resource "aws_s3_bucket" "accesslogs_bucket" {
   bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
-  acl    = "log-delivery-write"
 
   tags = {
     Region      = title(var.aws_region_name)
@@ -80,10 +79,52 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
     Environment = title(var.env_name)
     Category    = "Accesslogs"
   }
+}
 
-  lifecycle_rule {
-    id      = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-accesslogs-lifecycle"
-    enabled = true
+resource "aws_s3_bucket_replication_configuration" "accesslogs_bucket" {
+  depends_on = [
+    aws_s3_bucket_versioning.accesslogs_bucket
+  ]
+
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+  role   = aws_iam_role.accesslogs_replication.arn
+
+  rule {
+    id = "${lower(var.aws_region_name)}-to-${lower(var.backup_region_name)}-accesslogs-backup"
+
+    filter {
+      prefix = "${lower(var.aws_region_name)}-accesslogs-backup"
+    }
+
+    destination {
+      bucket        = "arn:aws:s3:::${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.backup_region_name)}-accesslogs"
+      storage_class = "STANDARD"
+    }
+
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_acl" "accesslogs_bucket" {
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+  acl    = "log-delivery-write"
+}
+
+resource "aws_s3_bucket_versioning" "accesslogs_bucket" {
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "accesslogs_bucket" {
+  depends_on = [aws_s3_bucket_versioning.accesslogs_bucket]
+
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+
+  rule {
+    id = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-accesslogs-lifecycle"
 
     transition {
       days          = var.accesslogs_glacier_transition_days
@@ -93,29 +134,7 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
     expiration {
       days = var.accesslogs_expiration_days
     }
-  }
 
-  replication_configuration {
-    role = aws_iam_role.accesslogs_replication.arn
-
-    rules {
-      # ID is necessary to prevent continuous change issue
-      id     = "${lower(var.aws_region_name)}-to-${lower(var.backup_region_name)}-accesslogs-backup"
-      prefix = "${lower(var.aws_region_name)}-accesslogs-backup"
-      status = "Enabled"
-
-      destination {
-        bucket        = "arn:aws:s3:::${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.backup_region_name)}-accesslogs"
-        storage_class = "STANDARD"
-      }
-    }
-  }
-}
-
-resource "aws_s3_bucket_versioning" "accesslogs_bucket" {
-  bucket = aws_s3_bucket.accesslogs_bucket.id
-
-  versioning_configuration {
     status = "Enabled"
   }
 }

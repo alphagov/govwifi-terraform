@@ -73,6 +73,16 @@ resource "aws_iam_policy_attachment" "tfstate_replication" {
 resource "aws_s3_bucket" "state_bucket" {
   bucket = local.bucket_name
 
+  tags = {
+    Region      = data.aws_region.main.name
+    Environment = title(var.env_name)
+    Category    = "TFstate"
+  }
+}
+
+resource "aws_s3_bucket_policy" "state_bucket" {
+  bucket = aws_s3_bucket.state_bucket.id
+
   policy = <<EOF
 {
   "Version": "2008-10-17",
@@ -91,39 +101,46 @@ resource "aws_s3_bucket" "state_bucket" {
   }]
 }
 EOF
+}
 
-  tags = {
-    Region      = data.aws_region.main.name
-    Environment = title(var.env_name)
-    Category    = "TFstate"
-  }
+resource "aws_s3_bucket_replication_configuration" "state_bucket" {
+  depends_on = [
+    aws_s3_bucket_versioning.state_bucket,
+    aws_s3_bucket_versioning.replication_state_bucket
+  ]
 
-  logging {
-    target_bucket = aws_s3_bucket.accesslogs_bucket.id
-    target_prefix = "${var.env_name}-tfstate"
-  }
+  bucket = aws_s3_bucket.state_bucket.id
+  role   = aws_iam_role.tfstate_replication.arn
 
-  replication_configuration {
-    role = aws_iam_role.tfstate_replication.arn
+  rule {
+    id = "${lower(data.aws_region.main.name)}-to-${lower(data.aws_region.replication.name)}-tfstate-backup"
 
-    rules {
-      # ID is necessary to prevent continuous change issue
-      id     = "${lower(data.aws_region.main.name)}-to-${lower(data.aws_region.replication.name)}-tfstate-backup"
+    filter {
       prefix = "${lower(data.aws_region.main.name)}-tfstate"
-      status = "Enabled"
-
-      destination {
-        bucket        = aws_s3_bucket.replication_state_bucket.arn
-        storage_class = "STANDARD_IA"
-      }
     }
-  }
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "aws:kms"
-      }
+    destination {
+      bucket        = aws_s3_bucket.replication_state_bucket.arn
+      storage_class = "STANDARD_IA"
+    }
+
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_logging" "state_bucket" {
+  bucket = aws_s3_bucket.state_bucket.id
+
+  target_bucket = aws_s3_bucket.accesslogs_bucket.id
+  target_prefix = "${var.env_name}-tfstate"
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "state_bucket" {
+  bucket = aws_s3_bucket.state_bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "aws:kms"
     }
   }
 }

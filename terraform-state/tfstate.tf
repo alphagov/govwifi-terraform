@@ -88,6 +88,17 @@ resource "aws_kms_alias" "tfstate_key_alias" {
 resource "aws_s3_bucket" "state_bucket" {
   bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate"
 
+  tags = {
+    Region      = title(var.aws_region_name)
+    Product     = var.product_name
+    Environment = title(var.env_name)
+    Category    = "TFstate"
+  }
+}
+
+resource "aws_s3_bucket_policy" "state_bucket" {
+  bucket = aws_s3_bucket.state_bucket.id
+
   policy = <<EOF
 {
     "Version": "2008-10-17",
@@ -106,42 +117,46 @@ resource "aws_s3_bucket" "state_bucket" {
     }]
 }
 EOF
+}
 
+resource "aws_s3_bucket_replication_configuration" "state_bucket" {
+  depends_on = [
+    aws_s3_bucket_versioning.state_bucket
+  ]
 
-  tags = {
-    Region      = title(var.aws_region_name)
-    Product     = var.product_name
-    Environment = title(var.env_name)
-    Category    = "TFstate"
-  }
+  bucket = aws_s3_bucket.state_bucket.id
+  role   = aws_iam_role.tfstate_replication.arn
 
-  logging {
-    target_bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-accesslogs"
-    target_prefix = "${lower(var.aws_region_name)}-tfstate"
-  }
+  rule {
+    id = "${lower(var.aws_region_name)}-to-${lower(var.backup_region_name)}-tfstate-backup"
 
-  replication_configuration {
-    role = aws_iam_role.tfstate_replication.arn
-
-    rules {
-      # ID is necessary to prevent continuous change issue
-      id     = "${lower(var.aws_region_name)}-to-${lower(var.backup_region_name)}-tfstate-backup"
+    filter {
       prefix = "${lower(var.aws_region_name)}-tfstate"
-      status = "Enabled"
-
-      destination {
-        bucket        = "arn:aws:s3:::${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.backup_region_name)}-tfstate"
-        storage_class = "STANDARD_IA"
-      }
     }
-  }
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        kms_master_key_id = aws_kms_key.tfstate_key.arn
-        sse_algorithm     = "aws:kms"
-      }
+    destination {
+      bucket        = "arn:aws:s3:::${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.backup_region_name)}-tfstate"
+      storage_class = "STANDARD_IA"
+    }
+
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_logging" "state_bucket" {
+  bucket = aws_s3_bucket.state_bucket.id
+
+  target_bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-accesslogs"
+  target_prefix = "${lower(var.aws_region_name)}-tfstate"
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "state_bucket" {
+  bucket = aws_s3_bucket.state_bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.tfstate_key.arn
+      sse_algorithm     = "aws:kms"
     }
   }
 }

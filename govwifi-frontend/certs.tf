@@ -1,18 +1,19 @@
 resource "aws_s3_bucket" "frontend_cert_bucket" {
   bucket_prefix = "frontend-cert-${lower(var.aws_region_name)}-"
-  acl           = "private"
 
   tags = {
     Name        = "${title(var.env_name)} Frontend certs"
     Region      = title(var.aws_region_name)
     Environment = title(var.rack_env)
   }
+}
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
+resource "aws_s3_bucket_server_side_encryption_configuration" "frontend_cert_bucket" {
+  bucket = aws_s3_bucket.frontend_cert_bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "aws:kms"
     }
   }
 }

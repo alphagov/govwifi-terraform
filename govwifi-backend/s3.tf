@@ -5,7 +5,6 @@ resource "aws_s3_bucket" "rds_mysql_backup_bucket" {
   count         = var.backup_mysql_rds ? 1 : 0
   bucket        = "govwifi-${var.env_name}-${lower(var.aws_region_name)}-mysql-backup-data"
   force_destroy = true
-  acl           = "private"
 
   tags = {
     Name        = "GovWifi ${title(var.env_name)} RDS MySQL data backup"
@@ -13,32 +12,53 @@ resource "aws_s3_bucket" "rds_mysql_backup_bucket" {
     Environment = title(var.env_name)
     Category    = "MySQL RDS data backup"
   }
+}
 
-  lifecycle_rule {
-    enabled = true
+resource "aws_s3_bucket_server_side_encryption_configuration" "rds_mysql_backup_bucket" {
+  count  = var.backup_mysql_rds ? 1 : 0
+  bucket = aws_s3_bucket.rds_mysql_backup_bucket[0].id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = "alias/mysql_rds_backup_s3_key"
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
+resource "aws_s3_bucket_versioning" "rds_mysql_backup_bucket" {
+  count  = var.backup_mysql_rds ? 1 : 0
+  bucket = aws_s3_bucket.rds_mysql_backup_bucket[0].id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "rds_mysql_backup_bucket" {
+  count      = var.backup_mysql_rds ? 1 : 0
+  depends_on = [aws_s3_bucket_versioning.rds_mysql_backup_bucket]
+
+  bucket = aws_s3_bucket.rds_mysql_backup_bucket[0].id
+
+  rule {
+    id = "expiration"
 
     noncurrent_version_transition {
-      days          = 30
-      storage_class = "STANDARD_IA"
+      noncurrent_days = 30
+      storage_class   = "STANDARD_IA"
     }
 
     noncurrent_version_transition {
-      days          = 60
-      storage_class = "GLACIER"
+      noncurrent_days = 60
+      storage_class   = "GLACIER"
     }
 
     noncurrent_version_expiration {
-      days = 180
+      noncurrent_days = 180
     }
-  }
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        kms_master_key_id = "alias/mysql_rds_backup_s3_key"
-        sse_algorithm     = "aws:kms"
-      }
-    }
+    status = "Enabled"
   }
 }
 
