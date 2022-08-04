@@ -31,3 +31,37 @@ resource "aws_ecr_repository_policy" "govwifi_ecr_repo_policy" {
 }
 EOF
 }
+
+resource "aws_ecr_repository" "govwifi_frontend" {
+  for_each = toset(var.frontend_docker_images)
+  name     = "govwifi/staging/${each.key}"
+}
+
+resource "aws_ecr_repository_policy" "govwifi_frontend_policy" {
+  for_each   = toset(var.frontend_docker_images)
+  repository = aws_ecr_repository.govwifi_frontend[each.key].name
+
+  policy = <<EOF
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowPushPull",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::${local.aws_staging_account_id}:root"
+      },
+      "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:CompleteLayerUpload",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:InitiateLayerUpload",
+        "ecr:PutImage",
+        "ecr:UploadLayerPart"
+      ]
+    }
+  ]
+}
+EOF
+}
