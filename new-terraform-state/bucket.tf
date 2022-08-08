@@ -23,6 +23,16 @@ POLICY
 
 }
 
+data "aws_kms_key" "source" {
+  key_id = "alias/aws/s3"
+}
+
+data "aws_kms_key" "replication" {
+  provider = aws.replication
+
+  key_id = "alias/aws/s3"
+}
+
 resource "aws_iam_policy" "tfstate_replication" {
   name = "tfstate-replication"
 
@@ -56,7 +66,27 @@ resource "aws_iam_policy" "tfstate_replication" {
         "s3:ReplicateDelete"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${local.replication_bucket_name}/*"
+      "Resource": "${aws_s3_bucket.replication_state_bucket.arn}/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": [
+        "${data.aws_kms_key.source.arn}"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "kms:GenerateDataKey",
+        "kms:Encrypt"
+      ],
+      "Resource": [
+        "${data.aws_kms_key.replication.arn}"
+      ]
     }
   ]
 }
@@ -64,9 +94,8 @@ EOF
 
 }
 
-resource "aws_iam_policy_attachment" "tfstate_replication" {
-  name       = "tfstate-replication"
-  roles      = [aws_iam_role.tfstate_replication.name]
+resource "aws_iam_role_policy_attachment" "tfstate_replication" {
+  role       = aws_iam_role.tfstate_replication.name
   policy_arn = aws_iam_policy.tfstate_replication.arn
 }
 
@@ -105,7 +134,6 @@ EOF
 
 resource "aws_s3_bucket_replication_configuration" "state_bucket" {
   depends_on = [
-    aws_s3_bucket_versioning.state_bucket,
     aws_s3_bucket_versioning.replication_state_bucket
   ]
 
@@ -122,10 +150,20 @@ resource "aws_s3_bucket_replication_configuration" "state_bucket" {
     destination {
       bucket        = aws_s3_bucket.replication_state_bucket.arn
       storage_class = "STANDARD_IA"
+
+      encryption_configuration {
+        replica_kms_key_id = data.aws_kms_key.replication.arn
+      }
     }
 
     delete_marker_replication {
       status = "Enabled"
+    }
+
+    source_selection_criteria {
+      sse_kms_encrypted_objects {
+        status = "Enabled"
+      }
     }
 
     status = "Enabled"
