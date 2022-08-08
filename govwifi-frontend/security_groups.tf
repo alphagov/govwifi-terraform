@@ -211,19 +211,19 @@ resource "aws_security_group" "load_balanced_frontend_service" {
   }
 
   ingress {
-    description = "RADIUS traffic from load balancer"
+    description = "RADIUS traffic"
     from_port   = 1812
     to_port     = 1812
     protocol    = "udp"
-    cidr_blocks = [for ip in aws_eip.test_radius_eips.*.public_ip : "${ip}/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    description = "RADIUS traffic to load balancer"
+    description = "RADIUS traffic"
     from_port   = 1812
     to_port     = 1812
     protocol    = "udp"
-    cidr_blocks = [for ip in aws_eip.test_radius_eips.*.public_ip : "${ip}/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
