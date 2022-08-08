@@ -30,6 +30,12 @@ resource "aws_cloudwatch_log_group" "frontend_log_group" {
   retention_in_days = 90
 }
 
+resource "aws_cloudwatch_log_group" "frontend" {
+  name = "frontend"
+
+  retention_in_days = 90
+}
+
 resource "aws_ecr_repository" "govwifi_frontend_ecr" {
   count = var.create_ecr
   name  = "govwifi/frontend"
@@ -301,9 +307,9 @@ resource "aws_ecs_task_definition" "frontend_fargate" {
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${aws_cloudwatch_log_group.frontend_log_group.name}",
+        "awslogs-group": "${aws_cloudwatch_log_group.frontend.name}",
         "awslogs-region": "${var.aws_region}",
-        "awslogs-stream-prefix": "${var.env_name}-docker-logs"
+        "awslogs-stream-prefix": "frontend"
       }
     },
     "expanded": true,
@@ -339,9 +345,9 @@ resource "aws_ecs_task_definition" "frontend_fargate" {
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${aws_cloudwatch_log_group.frontend_log_group.name}",
+        "awslogs-group": "${aws_cloudwatch_log_group.frontend.name}",
         "awslogs-region": "${var.aws_region}",
-        "awslogs-stream-prefix": "${var.env_name}-docker-logs"
+        "awslogs-stream-prefix": "frontend"
       }
     },
     "expanded": true
