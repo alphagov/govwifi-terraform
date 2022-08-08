@@ -116,7 +116,7 @@ resource "aws_s3_bucket_replication_configuration" "state_bucket" {
     id = "${lower(data.aws_region.main.name)}-to-${lower(data.aws_region.replication.name)}-tfstate-backup"
 
     filter {
-      prefix = "${lower(data.aws_region.main.name)}-tfstate"
+      prefix = "${var.env_name}-tfstate"
     }
 
     destination {
