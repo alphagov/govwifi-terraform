@@ -157,7 +157,7 @@ resource "aws_ecs_task_definition" "radius_task" {
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:ssid::"
       }
     ],
-    "image": "${data.aws_secretsmanager_secret_version.tools_account.secret_string}.dkr.ecr.eu-west-2.amazonaws.com/govwifi/staging/frontend:latest",
+    "image": "${var.frontend_docker_image}",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -193,7 +193,7 @@ resource "aws_ecs_task_definition" "radius_task" {
         "value": "s3://${aws_s3_bucket.frontend_cert_bucket.bucket}"
       }
     ],
-    "image": "${data.aws_secretsmanager_secret_version.tools_account.secret_string}.dkr.ecr.eu-west-2.amazonaws.com/govwifi/staging/raddb:latest",
+    "image": "${var.raddb_docker_image}",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
