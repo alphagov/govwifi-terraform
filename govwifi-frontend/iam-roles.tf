@@ -145,6 +145,27 @@ data "aws_iam_policy_document" "cert_bucket_policy" {
   }
 }
 
+resource "aws_iam_role_policy" "allow_ssm" {
+  name   = "${var.aws_region_name}-allow-ssm-${var.env_name}"
+  role   = aws_iam_role.ecs_task_role.id
+  policy = data.aws_iam_policy_document.allow_ssm.json
+}
+
+data "aws_iam_policy_document" "allow_ssm" {
+  statement {
+    actions = [
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+}
+
 resource "aws_iam_role_policy" "admin_bucket_policy" {
   name   = "${var.aws_region_name}-frontend-admin-bucket-${var.env_name}"
   role   = aws_iam_role.ecs_task_role.id
