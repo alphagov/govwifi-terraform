@@ -2,6 +2,8 @@ resource "aws_lb" "main" {
   name               = "frontend"
   load_balancer_type = "network"
 
+  enable_cross_zone_load_balancing = true
+
   dynamic "subnet_mapping" {
     for_each = [for subnet in aws_subnet.wifi_frontend_subnet : subnet.id]
     iterator = subnet_id
@@ -35,6 +37,13 @@ resource "aws_lb_target_group" "main" {
     protocol = "HTTP"
     path     = "/"
     port     = 3000
+
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+  }
+
+  stickiness {
+    type = "source_ip"
   }
 }
 

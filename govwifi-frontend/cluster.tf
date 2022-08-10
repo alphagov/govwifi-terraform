@@ -30,6 +30,12 @@ resource "aws_cloudwatch_log_group" "frontend_log_group" {
   retention_in_days = 90
 }
 
+resource "aws_cloudwatch_log_group" "frontend" {
+  name = "frontend"
+
+  retention_in_days = 90
+}
+
 resource "aws_ecr_repository" "govwifi_frontend_ecr" {
   count = var.create_ecr
   name  = "govwifi/frontend"
@@ -301,9 +307,9 @@ resource "aws_ecs_task_definition" "frontend_fargate" {
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${aws_cloudwatch_log_group.frontend_log_group.name}",
+        "awslogs-group": "${aws_cloudwatch_log_group.frontend.name}",
         "awslogs-region": "${var.aws_region}",
-        "awslogs-stream-prefix": "${var.env_name}-docker-logs"
+        "awslogs-stream-prefix": "frontend"
       }
     },
     "expanded": true,
@@ -339,9 +345,9 @@ resource "aws_ecs_task_definition" "frontend_fargate" {
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${aws_cloudwatch_log_group.frontend_log_group.name}",
+        "awslogs-group": "${aws_cloudwatch_log_group.frontend.name}",
         "awslogs-region": "${var.aws_region}",
-        "awslogs-stream-prefix": "${var.env_name}-docker-logs"
+        "awslogs-stream-prefix": "frontend"
       }
     },
     "expanded": true
@@ -368,6 +374,8 @@ resource "aws_ecs_service" "load_balanced_frontend_service" {
   launch_type     = "FARGATE"
   task_definition = aws_ecs_task_definition.frontend_fargate.arn
   desired_count   = var.radius_instance_count
+
+  enable_execute_command = true
 
   load_balancer {
     target_group_arn = aws_lb_target_group.main.arn
@@ -442,6 +450,34 @@ resource "aws_vpc_endpoint" "secretsmanager" {
 resource "aws_vpc_endpoint" "logs" {
   vpc_id            = aws_vpc.wifi_frontend.id
   service_name      = "com.amazonaws.${var.aws_region}.logs"
+  vpc_endpoint_type = "Interface"
+
+  security_group_ids = [
+    aws_security_group.vpc_endpoints.id,
+  ]
+
+  subnet_ids = [for subnet in aws_subnet.wifi_frontend_subnet : subnet.id]
+
+  private_dns_enabled = true
+}
+
+resource "aws_vpc_endpoint" "ssm" {
+  vpc_id            = aws_vpc.wifi_frontend.id
+  service_name      = "com.amazonaws.${var.aws_region}.ssm"
+  vpc_endpoint_type = "Interface"
+
+  security_group_ids = [
+    aws_security_group.vpc_endpoints.id,
+  ]
+
+  subnet_ids = [for subnet in aws_subnet.wifi_frontend_subnet : subnet.id]
+
+  private_dns_enabled = true
+}
+
+resource "aws_vpc_endpoint" "ssmmessages" {
+  vpc_id            = aws_vpc.wifi_frontend.id
+  service_name      = "com.amazonaws.${var.aws_region}.ssmmessages"
   vpc_endpoint_type = "Interface"
 
   security_group_ids = [
