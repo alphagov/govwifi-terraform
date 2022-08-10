@@ -41,6 +41,10 @@ resource "aws_lb_target_group" "main" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
   }
+
+  stickiness {
+    type = "source_ip"
+  }
 }
 
 # TODO These EIPs are being used to test the network load balancer,
