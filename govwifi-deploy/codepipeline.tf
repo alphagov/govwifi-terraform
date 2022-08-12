@@ -59,8 +59,8 @@ resource "aws_codepipeline" "codepipeline" {
       role_arn = "arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-crossaccount-tools-deploy"
 
       configuration = {
-        ClusterName : "staging-api-cluster"
-        ServiceName : "${each.key}-service-staging"
+        ClusterName : each.key == "admin" ? "staging-admin-cluster" : "staging-api-cluster"
+        ServiceName : each.key == "admin" ? "admin-staging" : "${each.key}-service-staging"
       }
     }
   }
