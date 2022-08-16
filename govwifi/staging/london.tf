@@ -74,7 +74,7 @@ module "london_backend" {
   user_db_storage_gb    = 20
 
   prometheus_ip_london  = module.london_prometheus.eip_public_ip
-  prometheus_ip_ireland = module.london_prometheus.eip_public_ip
+  prometheus_ip_ireland = module.dublin_prometheus.eip_public_ip
   grafana_ip            = module.london_grafana.eip_public_ip
 
   backup_mysql_rds = local.backup_mysql_rds
@@ -345,7 +345,8 @@ module "london_grafana" {
 
   administrator_cidrs = var.administrator_cidrs
   prometheus_ips = [
-    module.london_prometheus.eip_public_ip
+    module.london_prometheus.eip_public_ip,
+    module.dublin_prometheus.eip_public_ip
   ]
 
 }
