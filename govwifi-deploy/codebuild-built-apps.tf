@@ -1,6 +1,7 @@
-resource "aws_codebuild_project" "govwifi_codebuild_saferestarter" {
-  name           = "govwifi-build-safe-restarter"
-  description    = "This project builds the safe-restarter image and pushes it to ECR"
+resource "aws_codebuild_project" "govwifi_codebuild_built_app" {
+  for_each       = toset(var.built_app_names)
+  name           = "govwifi-codebuild-${each.key}"
+  description    = "This project builds the ${each.key} image and pushes it to ECR"
   build_timeout  = "5"
   service_role   = aws_iam_role.govwifi_codebuild.arn
   encryption_key = aws_kms_key.codepipeline_key.arn
@@ -36,39 +37,34 @@ resource "aws_codebuild_project" "govwifi_codebuild_saferestarter" {
       value = "staging"
     }
 
-    environment_variable {
-      name  = "REPOSITORY_URI"
-      value = aws_ecr_repository.safe_restarter_ecr.name
-    }
-
-
   }
 
   source_version = "codebuild-test"
 
   source {
     type            = "GITHUB"
-    location        = "https://github.com/alphagov/govwifi-safe-restarter.git"
+    location        = "https://github.com/alphagov/govwifi-${each.key}.git"
     git_clone_depth = 1
     buildspec       = "buildspec-build.yml"
   }
 
   logs_config {
     cloudwatch_logs {
-      group_name  = "govwifi-safe-restarter-group"
-      stream_name = "govwifi-safe-restarter-stream"
+      group_name  = "govwifi-codebuild-${each.key}-group"
+      stream_name = "govwifi-codebuild-${each.key}-stream"
     }
 
     s3_logs {
       status   = "ENABLED"
-      location = "${aws_s3_bucket.codepipeline_bucket.id}/safe-restarter-log"
+      location = "${aws_s3_bucket.codepipeline_bucket.id}/${each.key}-log"
     }
   }
 
 }
 
-resource "aws_codebuild_webhook" "govwifi_saferestarter_webhook" {
-  project_name = aws_codebuild_project.govwifi_codebuild_saferestarter.name
+resource "aws_codebuild_webhook" "govwifi_built_app_webhook" {
+  for_each     = toset(var.built_app_names)
+  project_name = "govwifi-codebuild-${each.key}"
 
   build_type = "BUILD"
 
@@ -83,4 +79,7 @@ resource "aws_codebuild_webhook" "govwifi_saferestarter_webhook" {
       pattern = "^refs/heads/codebuild-test$"
     }
   }
+  depends_on = [
+    aws_codebuild_project.govwifi_codebuild_built_app
+  ]
 }

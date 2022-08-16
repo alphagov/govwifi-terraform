@@ -1,5 +1,5 @@
 resource "aws_codepipeline" "codepipeline" {
-  for_each = toset(var.app_names)
+  for_each = toset(var.deployed_app_names)
   name     = "govwifi-deploy-${each.key}-staging-pipeline"
   role_arn = aws_iam_role.govwifi_codepipeline_staging_role.arn
 
