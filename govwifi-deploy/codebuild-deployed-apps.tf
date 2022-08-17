@@ -1,5 +1,5 @@
 resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr" {
-  for_each      = toset(var.app_names)
+  for_each      = toset(var.deployed_app_names)
   name          = "govwifi-codebuild-${each.key}-push-image-to-ecr"
   description   = "Test codebuild project for the ${each.key}"
   build_timeout = "12"
@@ -85,7 +85,7 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr" {
 }
 
 resource "aws_codebuild_webhook" "govwifi_app_webhook" {
-  for_each     = toset(var.app_names)
+  for_each     = toset(var.deployed_app_names)
   project_name = aws_codebuild_project.govwifi_codebuild_project_push_image_to_ecr[each.key].name
 
   build_type = "BUILD"
@@ -108,7 +108,7 @@ resource "aws_codebuild_webhook" "govwifi_app_webhook" {
 ### more info here: https://stackoverflow.com/questions/61919191/how-to-deploy-to-ecs-when-an-image-is-pushed-to-ecr
 
 resource "aws_codebuild_project" "govwifi_codebuild_project_convert_image_format" {
-  for_each       = toset(var.app_names)
+  for_each       = toset(var.deployed_app_names)
   name           = "govwifi-codebuild-convert-image-format-${each.key}"
   description    = "This job converts the ECR image into a format usable by the ECS deploy stage"
   build_timeout  = "5"
@@ -202,85 +202,4 @@ resource "aws_codebuild_project" "govwifi_codebuild_acceptance_tests" {
     }
   }
 
-}
-
-resource "aws_codebuild_project" "govwifi_codebuild_frontend" {
-  name           = "govwifi-build-frontend"
-  description    = "This project builds the frontend images and pushes them to ECR"
-  build_timeout  = "5"
-  service_role   = aws_iam_role.govwifi_codebuild.arn
-  encryption_key = aws_kms_key.codepipeline_key.arn
-
-  artifacts {
-    type = "NO_ARTIFACTS"
-  }
-
-  environment {
-    compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/standard:5.0"
-    type                        = "LINUX_CONTAINER"
-    image_pull_credentials_type = "CODEBUILD"
-    privileged_mode             = true
-
-    environment_variable {
-      name  = "DOCKER_HUB_AUTHTOKEN_ENV"
-      value = data.aws_secretsmanager_secret_version.docker_hub_authtoken.secret_string
-    }
-
-    environment_variable {
-      name  = "DOCKER_HUB_USERNAME_ENV"
-      value = data.aws_secretsmanager_secret_version.docker_hub_username.secret_string
-    }
-
-    environment_variable {
-      name  = "AWS_ACCOUNT_ID"
-      value = local.aws_account_id
-    }
-
-    environment_variable {
-      name  = "STAGE"
-      value = "staging"
-    }
-
-  }
-
-  source_version = "codebuild-test"
-
-  source {
-    type            = "GITHUB"
-    location        = "https://github.com/alphagov/govwifi-frontend.git"
-    git_clone_depth = 1
-    buildspec       = "buildspec-build.yml"
-  }
-
-  logs_config {
-    cloudwatch_logs {
-      group_name  = "govwifi-frontend-group"
-      stream_name = "govwifi-frontend-stream"
-    }
-
-    s3_logs {
-      status   = "ENABLED"
-      location = "${aws_s3_bucket.codepipeline_bucket.id}/frontend-log"
-    }
-  }
-
-}
-
-resource "aws_codebuild_webhook" "govwifi_frontend_webhook" {
-  project_name = aws_codebuild_project.govwifi_codebuild_frontend.name
-
-  build_type = "BUILD"
-
-  filter_group {
-    filter {
-      type    = "EVENT"
-      pattern = "PUSH"
-    }
-
-    filter {
-      type    = "HEAD_REF"
-      pattern = "^refs/heads/codebuild-test$"
-    }
-  }
 }
