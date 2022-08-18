@@ -16,13 +16,19 @@ resource "aws_route53_record" "radius" {
   ]
 }
 
+# TODO This resource can be removed after the switch to the NLBs
 resource "aws_route53_health_check" "radius" {
-  count = var.radius_instance_count
+  for_each = {
+    for az, subnet
+    in aws_subnet.wifi_frontend_subnet :
+    index(data.aws_availability_zones.zones.names, az) => subnet.id
+  }
+
   reference_name = format(
     "${var.env_name}-${var.aws_region_name}-frontend-%d",
-    count.index + 1
+    each.key + 1
   )
-  ip_address        = element(aws_eip_association.eip_assoc.*.public_ip, count.index)
+  ip_address        = aws_eip_association.eip_assoc[each.key].public_ip
   port              = 3000
   type              = "HTTP"
   request_interval  = "30"
@@ -31,6 +37,6 @@ resource "aws_route53_health_check" "radius" {
   regions           = ["eu-west-1", "us-east-1", "us-west-1"]
 
   tags = {
-    Name = format("${var.env_name}-${var.aws_region_name}-%d", count.index + 1)
+    Name = format("${var.env_name}-${var.aws_region_name}-%d", each.key + 1)
   }
 }

@@ -175,7 +175,12 @@ DATA
 }
 
 resource "aws_eip_association" "eip_assoc" {
-  count       = var.radius_instance_count
-  instance_id = element(aws_instance.radius.*.id, count.index)
-  public_ip   = aws_eip.radius_eips[count.index].public_ip
+  for_each = {
+    for az, subnet
+    in aws_subnet.wifi_frontend_subnet :
+    index(data.aws_availability_zones.zones.names, az) => subnet.id
+  }
+
+  instance_id = element(aws_instance.radius.*.id, each.key)
+  public_ip   = aws_eip.radius_eips[each.key].public_ip
 }

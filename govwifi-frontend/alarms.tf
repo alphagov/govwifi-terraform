@@ -1,10 +1,13 @@
+# TODO This resource can be removed after the switch to the NLBs
 resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
-  provider = aws.us_east_1
-  count    = var.radius_instance_count
-  alarm_name = "${element(
-    aws_route53_health_check.radius.*.reference_name,
-    count.index,
-  )}-hc"
+  for_each = {
+    for az, subnet
+    in aws_subnet.wifi_frontend_subnet :
+    index(data.aws_availability_zones.zones.names, az) => subnet.id
+  }
+
+  provider            = aws.us_east_1
+  alarm_name          = "${aws_route53_health_check.radius[each.key].reference_name}-hc"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "HealthCheckStatus"
@@ -15,7 +18,7 @@ resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
   treat_missing_data  = "breaching"
 
   dimensions = {
-    HealthCheckId = element(aws_route53_health_check.radius.*.id, count.index)
+    HealthCheckId = aws_route53_health_check.radius[each.key].id
   }
 
   alarm_actions = [
@@ -31,16 +34,19 @@ resource "aws_cloudwatch_composite_alarm" "all_radius_servers_down" {
 
   alarm_actions = [var.us_east_1_pagerduty_notifications_arn]
 
-  alarm_rule = join(" AND ", formatlist("ALARM(\"%s\")", aws_cloudwatch_metric_alarm.radius_healthcheck[*].alarm_name))
+  alarm_rule = join(" AND ", formatlist("ALARM(\"%s\")", [for alarm in aws_cloudwatch_metric_alarm.radius_healthcheck : alarm.alarm_name]))
 }
 
+# TODO This resource can be removed after the switch to the NLBs
 resource "aws_cloudwatch_metric_alarm" "radius_latency" {
-  provider = aws.us_east_1
-  count    = var.radius_instance_count
-  alarm_name = "${element(
-    aws_route53_health_check.radius.*.reference_name,
-    count.index,
-  )}-latency"
+  for_each = {
+    for az, subnet
+    in aws_subnet.wifi_frontend_subnet :
+    index(data.aws_availability_zones.zones.names, az) => subnet.id
+  }
+
+  provider            = aws.us_east_1
+  alarm_name          = "${aws_route53_health_check.radius[each.key].reference_name}-latency"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "TimeToFirstByte"
@@ -50,7 +56,7 @@ resource "aws_cloudwatch_metric_alarm" "radius_latency" {
   threshold           = "1000"
 
   dimensions = {
-    HealthCheckId = element(aws_route53_health_check.radius.*.id, count.index)
+    HealthCheckId = aws_route53_health_check.radius[each.key].id
   }
 
   alarm_actions = [
