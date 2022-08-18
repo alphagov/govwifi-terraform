@@ -178,7 +178,7 @@ resource "aws_eip_association" "eip_assoc" {
   for_each = {
     for az, subnet
     in aws_subnet.wifi_frontend_subnet :
-    index(data.aws_availability_zones.zones.names, az) => subnet.id
+    index(data.aws_availability_zones.zones.names, az) => subnet.id if index(data.aws_availability_zones.zones.names, az) != 1
   }
 
   instance_id = element(aws_instance.radius.*.id, each.key)
