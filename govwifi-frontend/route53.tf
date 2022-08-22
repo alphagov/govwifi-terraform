@@ -21,7 +21,7 @@ resource "aws_route53_health_check" "radius" {
   for_each = {
     for az, subnet
     in aws_subnet.wifi_frontend_subnet :
-    index(data.aws_availability_zones.zones.names, az) => subnet.id
+    index(data.aws_availability_zones.zones.names, az) => subnet.id if index(data.aws_availability_zones.zones.names, az) != 1
   }
 
   reference_name = format(

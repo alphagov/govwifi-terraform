@@ -222,9 +222,8 @@ module "dublin_frontend" {
   authentication_api_internal_dns_name = module.dublin_api.authentication_api_internal_dns_name
   logging_api_internal_dns_name        = one(module.london_api.logging_api_internal_dns_name)
 
-  critical_notifications_arn            = module.dublin_notifications.topic_arn
-  us_east_1_critical_notifications_arn  = module.dublin_route53_notifications.topic_arn
-  us_east_1_pagerduty_notifications_arn = module.london_route53_notifications.topic_arn
+  critical_notifications_arn           = module.dublin_notifications.topic_arn
+  us_east_1_critical_notifications_arn = module.dublin_route53_notifications.topic_arn
 
   bastion_server_ip = module.london_backend.bastion_public_ip
 

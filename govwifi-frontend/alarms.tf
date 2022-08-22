@@ -3,7 +3,7 @@ resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
   for_each = {
     for az, subnet
     in aws_subnet.wifi_frontend_subnet :
-    index(data.aws_availability_zones.zones.names, az) => subnet.id
+    index(data.aws_availability_zones.zones.names, az) => subnet.id if index(data.aws_availability_zones.zones.names, az) != 1
   }
 
   provider            = aws.us_east_1
@@ -28,21 +28,13 @@ resource "aws_cloudwatch_metric_alarm" "radius_healthcheck" {
   alarm_description = "Route53 healthcheck request failed to authenticate via FreeRADIUS and Authentication API. Investigate CloudWatch logs for root cause."
 }
 
-resource "aws_cloudwatch_composite_alarm" "all_radius_servers_down" {
-  provider   = aws.us_east_1
-  alarm_name = "${var.env_name} ${var.aws_region} All Radius servers down"
-
-  alarm_actions = [var.us_east_1_pagerduty_notifications_arn]
-
-  alarm_rule = join(" AND ", formatlist("ALARM(\"%s\")", [for alarm in aws_cloudwatch_metric_alarm.radius_healthcheck : alarm.alarm_name]))
-}
 
 # TODO This resource can be removed after the switch to the NLBs
 resource "aws_cloudwatch_metric_alarm" "radius_latency" {
   for_each = {
     for az, subnet
     in aws_subnet.wifi_frontend_subnet :
-    index(data.aws_availability_zones.zones.names, az) => subnet.id
+    index(data.aws_availability_zones.zones.names, az) => subnet.id if index(data.aws_availability_zones.zones.names, az) != 1
   }
 
   provider            = aws.us_east_1
