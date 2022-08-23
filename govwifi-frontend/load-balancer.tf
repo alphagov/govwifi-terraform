@@ -5,12 +5,12 @@ resource "aws_lb" "main" {
   enable_cross_zone_load_balancing = true
 
   dynamic "subnet_mapping" {
-    for_each = { for az, subnet in aws_subnet.wifi_frontend_subnet : index(data.aws_availability_zones.zones.names, az) => subnet.id }
+    for_each = { for az, subnet in aws_subnet.wifi_frontend_subnet : index(data.aws_availability_zones.zones.names, az) => subnet.id if index(data.aws_availability_zones.zones.names, az) == 1 }
     iterator = subnet_id
 
     content {
       subnet_id     = subnet_id.value
-      allocation_id = subnet_id.key == "1" ? aws_eip.radius_eips[subnet_id.key].id : aws_eip.test_radius_eips[subnet_id.key].id
+      allocation_id = aws_eip.radius_eips[subnet_id.key].id
     }
   }
 }
