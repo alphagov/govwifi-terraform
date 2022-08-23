@@ -50,6 +50,16 @@ provider "aws" {
   region = "us-east-1"
 }
 
+data "terraform_remote_state" "dublin" {
+  backend = "s3"
+
+  config = {
+    bucket = "govwifi-wifi-dublin-tfstate"
+    key    = "dublin-tfstate"
+    region = "eu-west-1"
+  }
+}
+
 module "govwifi_keys" {
   providers = {
     aws = aws.main
@@ -283,10 +293,13 @@ module "api" {
   wordlist_file_path     = "../wordlist-short"
   ecr_repository_count   = 1
 
-  db_hostname               = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
-  rack_env                  = "production"
-  sentry_current_env        = "production"
-  radius_server_ips         = local.frontend_radius_ips
+  db_hostname        = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
+  rack_env           = "production"
+  sentry_current_env = "production"
+  radius_server_ips = concat(
+    module.frontend.ec2_instance_public_ips,
+    data.terraform_remote_state.dublin.outputs.frontend_ec2_instance_public_ips
+  )
   subnet_ids                = module.backend.backend_subnet_ids
   private_subnet_ids        = module.backend.backend_private_subnet_ids
   nat_gateway_elastic_ips   = module.backend.nat_gateway_elastic_ips

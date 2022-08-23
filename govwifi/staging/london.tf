@@ -235,7 +235,7 @@ module "london_api" {
 
   rack_env                  = "staging"
   sentry_current_env        = "secondary-staging"
-  radius_server_ips         = local.frontend_radius_ips
+  radius_server_ips         = module.london_frontend.ec2_instance_public_ips
   subnet_ids                = module.london_backend.backend_subnet_ids
   private_subnet_ids        = module.london_backend.backend_private_subnet_ids
   nat_gateway_elastic_ips   = module.london_backend.nat_gateway_elastic_ips

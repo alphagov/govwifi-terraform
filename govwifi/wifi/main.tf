@@ -271,7 +271,7 @@ module "api" {
   db_hostname              = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
   rack_env                 = "production"
   sentry_current_env       = "production"
-  radius_server_ips        = local.frontend_radius_ips
+  radius_server_ips        = module.frontend.ec2_instance_public_ips
   user_signup_docker_image = ""
   subnet_ids               = module.backend.backend_subnet_ids
   private_subnet_ids       = module.backend.backend_private_subnet_ids
