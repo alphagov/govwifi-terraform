@@ -173,14 +173,3 @@ DATA
     create_before_destroy = true
   }
 }
-
-resource "aws_eip_association" "eip_assoc" {
-  for_each = {
-    for az, subnet
-    in aws_subnet.wifi_frontend_subnet :
-    index(data.aws_availability_zones.zones.names, az) => subnet.id if index(data.aws_availability_zones.zones.names, az) != 1
-  }
-
-  instance_id = element(aws_instance.radius.*.id, each.key)
-  public_ip   = aws_eip.radius_eips[each.key].public_ip
-}

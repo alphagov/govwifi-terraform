@@ -5,7 +5,7 @@ resource "aws_lb" "main" {
   enable_cross_zone_load_balancing = true
 
   dynamic "subnet_mapping" {
-    for_each = { for az, subnet in aws_subnet.wifi_frontend_subnet : index(data.aws_availability_zones.zones.names, az) => subnet.id if index(data.aws_availability_zones.zones.names, az) == 1 }
+    for_each = [for subnet in aws_subnet.wifi_frontend_subnet : subnet.id]
     iterator = subnet_id
 
     content {
