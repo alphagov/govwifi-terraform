@@ -260,3 +260,18 @@ resource "aws_iam_role_policy_attachment" "crossaccount_tools_ecs_access" {
   role       = aws_iam_role.crossaccount_tools[0].name
   policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
 }
+
+data "aws_iam_policy_document" "allow_ssm" {
+  statement {
+    actions = [
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+}

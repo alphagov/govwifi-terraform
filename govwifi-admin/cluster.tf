@@ -179,6 +179,8 @@ resource "aws_ecs_service" "admin_service" {
   launch_type      = "FARGATE"
   platform_version = "1.3.0"
 
+  enable_execute_command = true
+
   load_balancer {
     target_group_arn = aws_alb_target_group.admin_tg.arn
     container_name   = "admin"

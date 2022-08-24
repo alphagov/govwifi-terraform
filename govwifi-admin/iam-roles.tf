@@ -97,6 +97,27 @@ resource "aws_iam_role" "ecs_admin_instance_role" {
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
+resource "aws_iam_role_policy" "allow_ssm" {
+  name   = "${var.aws_region_name}-allow-ssm-${var.env_name}"
+  role   = aws_iam_role.ecs_admin_instance_role.id
+  policy = data.aws_iam_policy_document.allow_ssm.json
+}
+
+data "aws_iam_policy_document" "allow_ssm" {
+  statement {
+    actions = [
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel"
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+}
+
 resource "aws_iam_role" "ecs_task_execution_role" {
   name               = "admin-ecsTaskExecutionRole-${var.rails_env}-${var.aws_region_name}"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json

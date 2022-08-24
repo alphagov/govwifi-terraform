@@ -12,6 +12,7 @@ resource "aws_ecr_repository" "authorisation_api_ecr" {
 resource "aws_ecs_task_definition" "authorisation_api_task" {
   family                   = "authorisation-api-task-${var.env_name}"
   requires_compatibilities = ["FARGATE"]
+  task_role_arn            = aws_iam_role.authentication_api_ecs_task.arn
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   memory                   = 512
   cpu                      = "256"
@@ -99,6 +100,8 @@ resource "aws_ecs_service" "authorisation_api_service" {
   desired_count    = var.authorisation_api_count
   launch_type      = "FARGATE"
   platform_version = "1.3.0"
+
+  enable_execute_command = true
 
   health_check_grace_period_seconds = 20
 
@@ -207,4 +210,16 @@ resource "aws_alb_listener" "authentication" {
     type             = "forward"
     target_group_arn = aws_alb_target_group.authentication_api.id
   }
+}
+
+resource "aws_iam_role" "authentication_api_ecs_task" {
+  name = "${var.aws_region_name}-apiEcsTask-${var.rack_env}"
+
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+}
+
+resource "aws_iam_role_policy" "allow_ssm" {
+  name   = "${var.aws_region_name}-allow-ssm-${var.env_name}"
+  role   = aws_iam_role.authentication_api_ecs_task.id
+  policy = data.aws_iam_policy_document.allow_ssm.json
 }
