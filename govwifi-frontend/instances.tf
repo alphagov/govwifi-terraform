@@ -166,7 +166,6 @@ DATA
 
   tags = {
     Name = "${title(var.env_name)} Frontend Radius-${var.dns_numbering_base + count.index + 1}"
-    Env  = title(var.env_name)
   }
 
   lifecycle {

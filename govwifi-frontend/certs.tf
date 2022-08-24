@@ -2,9 +2,8 @@ resource "aws_s3_bucket" "frontend_cert_bucket" {
   bucket_prefix = "frontend-cert-${lower(var.aws_region_name)}-"
 
   tags = {
-    Name        = "${title(var.env_name)} Frontend certs"
-    Region      = title(var.aws_region_name)
-    Environment = title(var.rack_env)
+    Name   = "${title(var.env_name)} Frontend certs"
+    Region = title(var.aws_region_name)
   }
 }
 

@@ -3,7 +3,6 @@ resource "aws_eip" "grafana_eip" {
 
   tags = {
     Name = "grafana-${var.env_name}"
-    Env  = title(var.env_name)
   }
 }
 

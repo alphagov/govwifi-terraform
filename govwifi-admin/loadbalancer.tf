@@ -24,9 +24,8 @@ resource "aws_s3_bucket" "access_logs" {
   bucket_prefix = "govwifi-admin-access-logs-"
 
   tags = {
-    Name        = "${title(var.env_name)} admin access logs"
-    Region      = title(var.aws_region_name)
-    Environment = title(var.rails_env)
+    Name   = "${title(var.env_name)} admin access logs"
+    Region = title(var.aws_region_name)
   }
 }
 

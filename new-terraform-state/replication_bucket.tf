@@ -8,9 +8,8 @@ resource "aws_s3_bucket" "replication_state_bucket" {
   bucket = local.replication_bucket_name
 
   tags = {
-    Region      = data.aws_region.replication.name
-    Environment = title(var.env_name)
-    Category    = "TFstate"
+    Region   = data.aws_region.replication.name
+    Category = "TFstate"
   }
 }
 

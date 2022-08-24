@@ -11,9 +11,8 @@ resource "aws_s3_bucket" "govwifi_datasync" {
   bucket = "govwifi-datasync"
 
   tags = {
-    Name        = "Govwifi Datasync"
-    Region      = title(var.aws_region)
-    Environment = title(var.rack_env)
+    Name   = "Govwifi Datasync"
+    Region = title(var.aws_region)
   }
 }
 

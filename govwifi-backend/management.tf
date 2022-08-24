@@ -156,7 +156,6 @@ DATA
 
   tags = {
     Name = "${title(var.env_name)} Bastion - backend (${aws_vpc.wifi_backend.id})"
-    Env  = title(var.env_name)
   }
 }
 
@@ -253,7 +252,6 @@ resource "aws_eip" "bastion_eip" {
 
   tags = {
     Name = "bastion"
-    Env  = title(var.env_name)
   }
 }
 

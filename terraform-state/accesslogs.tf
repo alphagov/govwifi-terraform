@@ -74,10 +74,9 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
   bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
 
   tags = {
-    Region      = title(var.aws_region_name)
-    Product     = var.product_name
-    Environment = title(var.env_name)
-    Category    = "Accesslogs"
+    Region   = title(var.aws_region_name)
+    Product  = var.product_name
+    Category = "Accesslogs"
   }
 }
 

@@ -5,7 +5,6 @@ resource "aws_s3_bucket" "wordlist" {
 
   tags = {
     Name = "wordlist"
-    Env  = title(var.env_name)
   }
 }
 
