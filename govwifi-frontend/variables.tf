@@ -73,6 +73,10 @@ variable "create_ecr" {
 variable "bastion_server_ip" {
 }
 
+variable "notification_arn" {
+  type = string
+}
+
 variable "critical_notifications_arn" {
   type = string
 }

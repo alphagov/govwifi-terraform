@@ -1,3 +1,23 @@
+resource "aws_cloudwatch_metric_alarm" "no_healthy_hosts" {
+  alarm_name          = "${var.env_name} frontend no healthy hosts"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "HealthyHostCount"
+  namespace           = "AWS/NetworkELB"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "1"
+  datapoints_to_alarm = "1"
+
+  dimensions = {
+    LoadBalancer = aws_lb.main.arn_suffix
+  }
+
+  alarm_description = "Detect when there are no healthy frontend targets"
+
+  alarm_actions = [var.notification_arn]
+}
+
 resource "aws_cloudwatch_metric_alarm" "radius_cannot_connect_to_api" {
   alarm_name          = "${var.env_name}-radius-cannot-connect-to-api"
   comparison_operator = "GreaterThanThreshold"

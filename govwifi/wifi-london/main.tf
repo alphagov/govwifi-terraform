@@ -182,6 +182,7 @@ module "frontend" {
   authentication_api_internal_dns_name = module.api.authentication_api_internal_dns_name
   logging_api_internal_dns_name        = one(module.api.logging_api_internal_dns_name)
 
+  notification_arn           = module.region_pagerduty.topic_arn
   critical_notifications_arn = module.critical_notifications.topic_arn
 
   bastion_server_ip = var.bastion_server_ip
