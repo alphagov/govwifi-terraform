@@ -11,6 +11,7 @@ resource "aws_cloudwatch_metric_alarm" "no_healthy_hosts" {
 
   dimensions = {
     LoadBalancer = aws_lb.main.arn_suffix
+    TargetGroup  = aws_lb_target_group.main.arn_suffix
   }
 
   alarm_description = "Detect when there are no healthy frontend targets"
