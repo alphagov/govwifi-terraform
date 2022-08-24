@@ -8,6 +8,12 @@ locals {
 provider "aws" {
   alias  = "dublin"
   region = local.dublin_aws_region
+
+  default_tags {
+    tags = {
+      Environment = title(local.env_name)
+    }
+  }
 }
 
 # Cross region peering

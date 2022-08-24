@@ -38,16 +38,34 @@ terraform {
 provider "aws" {
   alias  = "main"
   region = var.aws_region
+
+  default_tags {
+    tags = {
+      Environment = "Production"
+    }
+  }
 }
 
 provider "aws" {
   alias  = "london"
   region = "eu-west-2"
+
+  default_tags {
+    tags = {
+      Environment = "Production"
+    }
+  }
 }
 
 provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"
+
+  default_tags {
+    tags = {
+      Environment = title(local.env_name)
+    }
+  }
 }
 
 data "terraform_remote_state" "london" {

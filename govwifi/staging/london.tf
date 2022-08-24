@@ -6,6 +6,12 @@ locals {
 provider "aws" {
   alias  = "london"
   region = local.london_aws_region
+
+  default_tags {
+    tags = {
+      Environment = title(local.env_name)
+    }
+  }
 }
 
 module "london_keys" {
