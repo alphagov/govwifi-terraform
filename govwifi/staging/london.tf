@@ -126,7 +126,7 @@ module "london_frontend" {
   authentication_api_internal_dns_name = module.london_api.authentication_api_internal_dns_name
   logging_api_internal_dns_name        = one(module.london_api.logging_api_internal_dns_name)
 
-  notification_arn           = module.dublin_notifications.topic_arn
+  notification_arn           = module.london_notifications.topic_arn
   critical_notifications_arn = module.london_notifications.topic_arn
 
   bastion_server_ip = module.london_backend.bastion_public_ip
