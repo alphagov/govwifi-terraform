@@ -74,9 +74,8 @@ resource "aws_s3_bucket" "state_bucket" {
   bucket = local.bucket_name
 
   tags = {
-    Region      = data.aws_region.main.name
-    Environment = title(var.env_name)
-    Category    = "TFstate"
+    Region   = data.aws_region.main.name
+    Category = "TFstate"
   }
 }
 

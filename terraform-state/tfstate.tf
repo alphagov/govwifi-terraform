@@ -73,10 +73,9 @@ resource "aws_kms_key" "tfstate_key" {
   is_enabled              = true
 
   tags = {
-    Region      = title(var.aws_region_name)
-    Product     = var.product_name
-    Environment = title(var.env_name)
-    Category    = "TFstate"
+    Region   = title(var.aws_region_name)
+    Product  = var.product_name
+    Category = "TFstate"
   }
 }
 
@@ -89,10 +88,9 @@ resource "aws_s3_bucket" "state_bucket" {
   bucket = "${lower(var.product_name)}-${lower(var.env_name)}-${lower(var.aws_region_name)}-tfstate"
 
   tags = {
-    Region      = title(var.aws_region_name)
-    Product     = var.product_name
-    Environment = title(var.env_name)
-    Category    = "TFstate"
+    Region   = title(var.aws_region_name)
+    Product  = var.product_name
+    Category = "TFstate"
   }
 }
 

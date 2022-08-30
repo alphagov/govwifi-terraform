@@ -6,6 +6,12 @@ locals {
 provider "aws" {
   alias  = "london"
   region = local.london_aws_region
+
+  default_tags {
+    tags = {
+      Environment = title(local.env_name)
+    }
+  }
 }
 
 module "london_keys" {
@@ -373,5 +379,4 @@ module "datasync" {
   source = "../../govwifi-datasync"
 
   aws_region = local.london_aws_region
-  rack_env   = "staging"
 }

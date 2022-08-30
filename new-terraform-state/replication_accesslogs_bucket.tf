@@ -2,9 +2,8 @@ resource "aws_s3_bucket" "replication_accesslogs_bucket" {
   bucket = "govwifi-${var.env_name}-accesslogs-${data.aws_region.replication.name}"
 
   tags = {
-    Region      = data.aws_region.replication.name
-    Environment = title(var.env_name)
-    Category    = "Accesslogs"
+    Region   = data.aws_region.replication.name
+    Category = "Accesslogs"
   }
 }
 

@@ -3,9 +3,8 @@ resource "aws_s3_bucket" "admin_bucket" {
   force_destroy = true
 
   tags = {
-    Name        = "${title(var.env_name)} Admin data"
-    Region      = title(var.aws_region_name)
-    Environment = title(var.rails_env)
+    Name   = "${title(var.env_name)} Admin data"
+    Region = title(var.aws_region_name)
   }
 }
 
@@ -22,9 +21,8 @@ resource "aws_s3_bucket" "product_page_data_bucket" {
   force_destroy = true
 
   tags = {
-    Name        = "${title(var.rails_env)} Product page data"
-    Region      = title(var.aws_region_name)
-    Environment = title(var.rails_env)
+    Name   = "${title(var.rails_env)} Product page data"
+    Region = title(var.aws_region_name)
   }
 }
 
@@ -46,9 +44,8 @@ resource "aws_s3_bucket" "admin_mou_bucket" {
   force_destroy = true
 
   tags = {
-    Name        = "${title(var.env_name)} MOU documents from Admin"
-    Region      = title(var.aws_region_name)
-    Environment = title(var.rails_env)
+    Name   = "${title(var.env_name)} MOU documents from Admin"
+    Region = title(var.aws_region_name)
   }
 }
 

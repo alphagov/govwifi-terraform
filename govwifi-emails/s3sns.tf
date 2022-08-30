@@ -4,10 +4,9 @@ resource "aws_s3_bucket" "emailbucket" {
   force_destroy = true
 
   tags = {
-    Name        = "${title(var.env_name)} Email Bucket"
-    Region      = title(var.aws_region_name)
-    Environment = title(var.env_name)
-    Category    = "User emails"
+    Name     = "${title(var.env_name)} Email Bucket"
+    Region   = title(var.aws_region_name)
+    Category = "User emails"
   }
 }
 
@@ -94,10 +93,9 @@ resource "aws_s3_bucket" "admin_emailbucket" {
   force_destroy = true
 
   tags = {
-    Name        = "${title(var.env_name)} Admin Email Bucket"
-    Region      = title(var.aws_region_name)
-    Environment = title(var.env_name)
-    Category    = "Admin emails"
+    Name     = "${title(var.env_name)} Admin Email Bucket"
+    Region   = title(var.aws_region_name)
+    Category = "Admin emails"
   }
 }
 

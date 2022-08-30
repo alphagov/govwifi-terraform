@@ -74,9 +74,8 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
   bucket = local.accesslogs_bucket_name
 
   tags = {
-    Region      = data.aws_region.main.name
-    Environment = title(var.env_name)
-    Category    = "Accesslogs"
+    Region   = data.aws_region.main.name
+    Category = "Accesslogs"
   }
 }
 

@@ -46,7 +46,6 @@ resource "aws_instance" "grafana_instance" {
 
   tags = {
     Name = "${title(var.env_name)} Grafana-Server"
-    Env  = title(var.env_name)
   }
 
   lifecycle {

@@ -51,7 +51,6 @@ resource "aws_instance" "prometheus_instance" {
 
   tags = {
     Name = "${title(var.env_name)} Prometheus-Server"
-    Env  = title(var.env_name)
   }
 
   lifecycle {
@@ -87,7 +86,6 @@ resource "aws_eip" "eip" {
 
   tags = {
     Name = "prometheus"
-    Env  = title(var.env_name)
   }
 }
 
