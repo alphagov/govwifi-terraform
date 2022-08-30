@@ -1,20 +1,3 @@
-data "aws_iam_policy_document" "secrets_manager_policy" {
-  statement {
-    actions = [
-      "secretsmanager:GetSecretValue"
-    ]
-
-    resources = [
-      data.aws_secretsmanager_secret.grafana_credentials.arn
-    ]
-
-    principals {
-      identifiers = ["ec2.amazonaws.com"]
-      type        = "Service"
-    }
-  }
-}
-
 resource "aws_iam_instance_profile" "grafana_instance_profile" {
   name = "${var.aws_region}-${var.env_name}-grafana-instance"
   role = aws_iam_role.grafana_instance_role.name
