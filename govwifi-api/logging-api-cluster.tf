@@ -126,6 +126,8 @@ resource "aws_ecs_service" "logging_api_service" {
   launch_type      = "FARGATE"
   platform_version = "1.3.0"
 
+  enable_execute_command = true
+
   health_check_grace_period_seconds = 20
 
   network_configuration {
@@ -217,6 +219,14 @@ resource "aws_iam_role" "logging_api_task_role" {
 }
 EOF
 
+}
+
+resource "aws_iam_role_policy" "logging_allow_ssm" {
+  count = var.logging_enabled
+
+  name   = "${var.aws_region_name}-allow-ssm-${var.env_name}"
+  role   = aws_iam_role.logging_api_task_role[0].id
+  policy = data.aws_iam_policy_document.allow_ssm.json
 }
 
 resource "aws_iam_role_policy" "logging_api_task_policy" {

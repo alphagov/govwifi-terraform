@@ -68,6 +68,14 @@ EOF
 
 }
 
+resource "aws_iam_role_policy" "user_signup_api_allow_ssm" {
+  count = var.user_signup_enabled
+
+  name   = "${var.aws_region_name}-allow-ssm-${var.env_name}"
+  role   = aws_iam_role.user_signup_api_task_role[0].id
+  policy = data.aws_iam_policy_document.allow_ssm.json
+}
+
 data "aws_s3_bucket" "admin_bucket" {
   count  = var.user_signup_enabled
   bucket = var.admin_app_data_s3_bucket_name
@@ -182,6 +190,8 @@ resource "aws_ecs_service" "user_signup_api_service" {
   desired_count    = var.backend_instance_count
   launch_type      = "FARGATE"
   platform_version = "1.3.0"
+
+  enable_execute_command = true
 
   health_check_grace_period_seconds = 20
 
