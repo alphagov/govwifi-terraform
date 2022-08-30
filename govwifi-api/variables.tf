@@ -124,6 +124,9 @@ variable "wordlist_file_path" {
 variable "vpc_id" {
 }
 
+variable "vpc_endpoints_security_group_id" {
+}
+
 variable "admin_app_data_s3_bucket_name" {
   default     = ""
   type        = string

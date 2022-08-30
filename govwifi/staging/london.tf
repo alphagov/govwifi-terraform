@@ -160,6 +160,8 @@ module "london_admin" {
   vpc_id          = module.london_backend.backend_vpc_id
   instance_count  = 1
 
+  vpc_endpoints_security_group_id = module.london_backend.vpc_endpoints_security_group_id
+
   route53_zone_id = data.aws_route53_zone.main.zone_id
 
   admin_docker_image   = format("%s/admin:staging", local.docker_image_path)
@@ -219,6 +221,8 @@ module "london_api" {
   route53_zone_id        = data.aws_route53_zone.main.zone_id
   vpc_id                 = module.london_backend.backend_vpc_id
   safe_restart_enabled   = 1
+
+  vpc_endpoints_security_group_id = module.london_backend.vpc_endpoints_security_group_id
 
   capacity_notifications_arn = module.london_notifications.topic_arn
   devops_notifications_arn   = module.london_notifications.topic_arn

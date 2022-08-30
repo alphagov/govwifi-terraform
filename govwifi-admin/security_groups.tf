@@ -101,3 +101,14 @@ data "aws_subnet" "backend_subnet" {
   count = length(var.subnet_ids)
   id    = var.subnet_ids[count.index]
 }
+
+resource "aws_security_group_rule" "permit_admin_app_ingress_to_vpc_endpoints" {
+  security_group_id = var.vpc_endpoints_security_group_id
+
+  type      = "ingress"
+  from_port = 443
+  to_port   = 443
+  protocol  = "tcp"
+
+  source_security_group_id = aws_security_group.admin_ec2_out.id
+}

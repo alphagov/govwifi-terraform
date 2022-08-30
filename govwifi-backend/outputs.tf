@@ -41,3 +41,7 @@ output "nat_gateway_elastic_ips" {
 output "bastion_public_ip" {
   value = var.enable_bastion == 1 ? aws_eip.bastion_eip[0].public_ip : null
 }
+
+output "vpc_endpoints_security_group_id" {
+  value = aws_security_group.vpc_endpoints.id
+}
