@@ -99,7 +99,7 @@ resource "aws_ecs_service" "authorisation_api_service" {
   task_definition  = aws_ecs_task_definition.authorisation_api_task.arn
   desired_count    = var.authorisation_api_count
   launch_type      = "FARGATE"
-  platform_version = "1.3.0"
+  platform_version = "1.4.0"
 
   enable_execute_command = true
 
