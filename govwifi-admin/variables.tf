@@ -36,6 +36,9 @@ variable "vpc_id" {
   description = "VPC ID used for placing the ALB into"
 }
 
+variable "vpc_endpoints_security_group_id" {
+}
+
 variable "route53_zone_id" {
   description = "Route53 zone to use for the domain name"
 }

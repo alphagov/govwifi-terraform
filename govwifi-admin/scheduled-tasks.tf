@@ -73,7 +73,7 @@ resource "aws_cloudwatch_event_target" "cleanup_orphan_admin_users" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.admin_task.arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -119,7 +119,7 @@ resource "aws_cloudwatch_event_target" "admin_backup_service_emails" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.admin_task.arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids

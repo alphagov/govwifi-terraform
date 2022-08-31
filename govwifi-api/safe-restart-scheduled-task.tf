@@ -208,7 +208,7 @@ resource "aws_cloudwatch_event_target" "daily_safe_restart" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.safe_restart_task_definition[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids

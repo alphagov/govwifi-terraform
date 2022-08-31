@@ -9,7 +9,7 @@ resource "aws_cloudwatch_event_target" "retrieve_notifications" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.user_signup_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -106,7 +106,7 @@ resource "aws_cloudwatch_event_target" "user_signup_daily_user_deletion" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.user_signup_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -145,7 +145,7 @@ resource "aws_cloudwatch_event_target" "smoke_test_user_deletion" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.user_signup_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -184,7 +184,7 @@ resource "aws_cloudwatch_event_target" "trim_sessions_database_table" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.user_signup_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -321,7 +321,7 @@ resource "aws_cloudwatch_event_target" "active_users_signup_surveys" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.user_signup_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids

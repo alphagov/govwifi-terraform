@@ -67,7 +67,7 @@ resource "aws_cloudwatch_event_target" "logging_daily_session_deletion" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -106,7 +106,7 @@ resource "aws_cloudwatch_event_target" "gdpr_set_user_last_login" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -145,7 +145,7 @@ resource "aws_cloudwatch_event_target" "hourly_request_statistics" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -185,7 +185,7 @@ resource "aws_cloudwatch_event_target" "publish_monthly_metrics_logging" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -224,7 +224,7 @@ resource "aws_cloudwatch_event_target" "publish_weekly_metrics_logging" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -263,7 +263,7 @@ resource "aws_cloudwatch_event_target" "publish_daily_metrics_logging" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -302,7 +302,7 @@ resource "aws_cloudwatch_event_target" "publish_monthly_metrics_to_elasticsearch
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -341,7 +341,7 @@ resource "aws_cloudwatch_event_target" "publish_weekly_metrics_to_elasticsearch"
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -380,7 +380,7 @@ resource "aws_cloudwatch_event_target" "publish_daily_metrics_to_elasticsearch" 
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -419,7 +419,7 @@ resource "aws_cloudwatch_event_target" "publish_metrics_to_data_bucket" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids
@@ -569,7 +569,7 @@ resource "aws_cloudwatch_event_target" "sync_s3_to_elasticsearch" {
     task_count          = 1
     task_definition_arn = aws_ecs_task_definition.logging_api_scheduled_task[0].arn
     launch_type         = "FARGATE"
-    platform_version    = "1.3.0"
+    platform_version    = "1.4.0"
 
     network_configuration {
       subnets = var.subnet_ids

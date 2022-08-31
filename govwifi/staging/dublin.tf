@@ -260,6 +260,8 @@ module "dublin_api" {
   route53_zone_id        = data.aws_route53_zone.main.zone_id
   vpc_id                 = module.dublin_backend.backend_vpc_id
 
+  vpc_endpoints_security_group_id = module.dublin_backend.vpc_endpoints_security_group_id
+
   user_signup_enabled  = 0
   logging_enabled      = 0
   alarm_count          = 0

@@ -147,3 +147,12 @@ resource "aws_security_group" "be_radius_api_in" {
   }
 }
 
+resource "aws_security_group" "vpc_endpoints" {
+  name        = "backend_vpc_endpoints"
+  description = "Permit traffic to the backend VPC endpoints"
+  vpc_id      = aws_vpc.wifi_backend.id
+
+  tags = {
+    Name = "${title(var.env_name)} Backend VPC Endpoints"
+  }
+}

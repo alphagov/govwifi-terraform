@@ -177,7 +177,7 @@ resource "aws_ecs_service" "admin_service" {
   task_definition  = aws_ecs_task_definition.admin_task.arn
   desired_count    = var.instance_count
   launch_type      = "FARGATE"
-  platform_version = "1.3.0"
+  platform_version = "1.4.0"
 
   enable_execute_command = true
 

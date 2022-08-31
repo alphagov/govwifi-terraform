@@ -228,6 +228,8 @@ module "govwifi_admin" {
   vpc_id          = module.backend.backend_vpc_id
   instance_count  = 2
 
+  vpc_endpoints_security_group_id = module.backend.vpc_endpoints_security_group_id
+
   route53_zone_id = data.aws_route53_zone.main.zone_id
 
   admin_docker_image   = format("%s/admin:production", local.docker_image_path)
@@ -286,6 +288,8 @@ module "api" {
   aws_region             = var.aws_region
   route53_zone_id        = data.aws_route53_zone.main.zone_id
   vpc_id                 = module.backend.backend_vpc_id
+
+  vpc_endpoints_security_group_id = module.backend.vpc_endpoints_security_group_id
 
   capacity_notifications_arn = module.capacity_notifications.topic_arn
   devops_notifications_arn   = module.devops_notifications.topic_arn
