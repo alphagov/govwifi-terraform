@@ -63,7 +63,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Environment = title(local.env_name)
+      Environment = "Production"
     }
   }
 }

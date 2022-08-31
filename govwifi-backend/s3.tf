@@ -7,10 +7,9 @@ resource "aws_s3_bucket" "rds_mysql_backup_bucket" {
   force_destroy = true
 
   tags = {
-    Name        = "GovWifi ${title(var.env_name)} RDS MySQL data backup"
-    Region      = title(var.aws_region_name)
-    Environment = title(var.env_name)
-    Category    = "MySQL RDS data backup"
+    Name     = "GovWifi ${title(var.env_name)} RDS MySQL data backup"
+    Region   = title(var.aws_region_name)
+    Category = "MySQL RDS data backup"
   }
 }
 
