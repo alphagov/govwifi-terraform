@@ -1,20 +1,3 @@
-# module "tfstate" {
-#   providers = {
-#     aws = aws.main
-#   }
-#
-#   source             = "../../terraform-state"
-#   product_name       = local.product_name
-#   env_name           = local.env_name
-#   aws_account_id     = local.aws_account_id
-#   aws_region_name    = var.aws_region_name
-#   backup_region_name = var.backup_region_name
-#
-#   # TODO: separate module for accesslogs
-#   accesslogs_glacier_transition_days = 7
-#   accesslogs_expiration_days         = 30
-# }
-
 terraform {
   required_version = "~> 1.1.8"
 
