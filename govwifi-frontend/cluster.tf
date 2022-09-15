@@ -366,6 +366,12 @@ resource "aws_ecs_service" "frontend_service" {
     type  = "spread"
     field = "instanceId"
   }
+
+  # TODO: Terraform has problems tagging this service due to ARN
+  # issues in production, so avoid this by ignoring tag changes
+  lifecycle {
+    ignore_changes = [tags_all]
+  }
 }
 
 resource "aws_ecs_service" "load_balanced_frontend_service" {
