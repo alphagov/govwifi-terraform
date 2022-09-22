@@ -20,3 +20,19 @@ variable "zendesk_api_user" {
 
 variable "notification_email" {
 }
+
+variable "smoketests_vpc_cidr" {
+}
+
+
+variable "smoketest_subnet_private_a" {
+}
+
+variable "smoketest_subnet_private_b" {
+}
+
+variable "smoketest_subnet_public_a" {
+}
+
+variable "smoketest_subnet_public_b" {
+}

@@ -1,0 +1,79 @@
+data "aws_secretsmanager_secret_version" "docker_hub_authtoken" {
+  secret_id = data.aws_secretsmanager_secret.docker_hub_authtoken.id
+}
+
+data "aws_secretsmanager_secret" "docker_hub_authtoken" {
+  name = "deploy/docker_hub_authtoken"
+}
+
+data "aws_secretsmanager_secret_version" "docker_hub_username" {
+  secret_id = data.aws_secretsmanager_secret.docker_hub_username.id
+}
+
+data "aws_secretsmanager_secret" "docker_hub_username" {
+  name = "deploy/docker_hub_username"
+}
+
+data "aws_secretsmanager_secret_version" "gw_user" {
+  secret_id = data.aws_secretsmanager_secret.gw_user.id
+}
+
+data "aws_secretsmanager_secret" "gw_user" {
+  name = "deploy/gw_user"
+}
+
+
+data "aws_secretsmanager_secret_version" "gw_pass" {
+  secret_id = data.aws_secretsmanager_secret.gw_pass.id
+}
+
+data "aws_secretsmanager_secret" "gw_pass" {
+  name = "deploy/gw_pass"
+}
+
+
+data "aws_secretsmanager_secret_version" "gw_2fa_secret" {
+  secret_id = data.aws_secretsmanager_secret.gw_2fa_secret.id
+}
+
+data "aws_secretsmanager_secret" "gw_2fa_secret" {
+  name = "deploy/gw_2fa_secret"
+}
+
+
+data "aws_secretsmanager_secret_version" "google_api_credentials" {
+  secret_id = data.aws_secretsmanager_secret.google_api_credentials.id
+}
+
+data "aws_secretsmanager_secret" "google_api_credentials" {
+  name = "deploy/google_api_credentials"
+}
+
+
+
+data "aws_secretsmanager_secret_version" "google_api_token_data" {
+  secret_id = data.aws_secretsmanager_secret.google_api_token_data.id
+}
+
+data "aws_secretsmanager_secret" "google_api_token_data" {
+  name = "deploy/google_api_token_data"
+}
+
+
+data "aws_secretsmanager_secret_version" "radius_key" {
+  secret_id = data.aws_secretsmanager_secret.radius_key.id
+}
+
+data "aws_secretsmanager_secret" "radius_key" {
+  name = "deploy/radius_key"
+}
+
+
+
+data "aws_secretsmanager_secret_version" "radius_ips" {
+  secret_id = data.aws_secretsmanager_secret.radius_ips.id
+}
+
+data "aws_secretsmanager_secret" "radius_ips" {
+  name = "deploy/radius_ips"
+}
