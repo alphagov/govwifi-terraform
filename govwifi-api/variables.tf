@@ -31,6 +31,14 @@ variable "authorisation_api_count" {
   default = 3
 }
 
+# dp
+
+variable "authentication_api_count" {
+  default = 3
+}
+
+# dp
+
 variable "backend_elb_count" {
 }
 

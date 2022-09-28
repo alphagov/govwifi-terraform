@@ -7,6 +7,7 @@ terraform.tfstate
 terraform.tfstate.*.backup
 *.tfstate.backup
 terraform/*/*.zip
+errored.tfstate
 
 secrets.auto.tfvars
 variables.auto.tfvars
