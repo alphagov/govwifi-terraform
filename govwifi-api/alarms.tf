@@ -17,7 +17,7 @@ resource "aws_cloudwatch_metric_alarm" "auth_ecs_cpu_alarm_high" {
   alarm_description = "ECS cluster CPU is high, scaling up number of tasks. Investigate api cluster and CloudWatch logs for root cause."
 
   alarm_actions = [
-    aws_appautoscaling_policy.ecs_policy_up.arn,
+    aws_appautoscaling_policy.ecs_policy_up_authentication_api.arn,
     var.devops_notifications_arn,
   ]
 
@@ -44,7 +44,7 @@ resource "aws_cloudwatch_metric_alarm" "auth_ecs_cpu_alarm_low" {
   alarm_description = "ECS cluster CPU is low, scaling down number of ECS tasks to save on cost."
 
   alarm_actions = [
-    aws_appautoscaling_policy.ecs_policy_down.arn,
+    aws_appautoscaling_policy.ecs_policy_down_authentication_api.arn,
   ]
 
   treat_missing_data = "breaching"
