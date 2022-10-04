@@ -133,93 +133,93 @@ resource "aws_ecs_service" "authorisation_api_service" {
     ignore_changes = [desired_count]
   }
 }
-
-resource "aws_alb_listener_rule" "static" {
-  depends_on   = [aws_alb_target_group.alb_target_group]
-  listener_arn = aws_alb_listener.alb_listener.arn
-  priority     = 1
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_alb_target_group.alb_target_group.id
-  }
-
-  condition {
-    path_pattern {
-      values = ["/authorize/*"]
-    }
-  }
-}
-
-resource "aws_alb_target_group" "alb_target_group" {
-  depends_on  = [aws_lb.api_alb]
-  name        = "api-lb-tg-${var.env_name}"
-  port        = "8080"
-  protocol    = "HTTP"
-  vpc_id      = var.vpc_id
-  target_type = "ip"
-
-  tags = {
-    Name = "api-alb-tg-${var.env_name}"
-  }
-
-  health_check {
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 4
-    interval            = 10
-    path                = "/authorize/user/HEALTH"
-  }
-}
-
-resource "aws_lb" "authentication_api" {
-  name     = "authentication-api"
-  internal = true
-
-  subnets = var.subnet_ids
-
-  security_groups = [
-    aws_security_group.authentication_api_alb.id,
-  ]
-
-  load_balancer_type = "application"
-}
-
-resource "aws_alb_target_group" "authentication_api" {
-  name        = "authentication-api"
-  port        = "8080"
-  protocol    = "HTTP"
-  vpc_id      = var.vpc_id
-  target_type = "ip"
-
-  health_check {
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 4
-    interval            = 10
-    path                = "/authorize/user/HEALTH"
-  }
-}
-
-resource "aws_alb_listener" "authentication" {
-  load_balancer_arn = aws_lb.authentication_api.arn
-  protocol          = "HTTP"
-  port              = 80
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_alb_target_group.authentication_api.id
-  }
-}
-
-resource "aws_iam_role" "authentication_api_ecs_task" {
-  name = "${var.aws_region_name}-apiEcsTask-${var.rack_env}"
-
-  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
-}
-
-resource "aws_iam_role_policy" "allow_ssm" {
-  name   = "${var.aws_region_name}-allow-ssm-${var.env_name}"
-  role   = aws_iam_role.authentication_api_ecs_task.id
-  policy = data.aws_iam_policy_document.allow_ssm.json
-}
+#
+# resource "aws_alb_listener_rule" "static" {
+#   depends_on   = [aws_alb_target_group.alb_target_group]
+#   listener_arn = aws_alb_listener.alb_listener.arn
+#   priority     = 1
+#
+#   action {
+#     type             = "forward"
+#     target_group_arn = aws_alb_target_group.alb_target_group.id
+#   }
+#
+#   condition {
+#     path_pattern {
+#       values = ["/authorize/*"]
+#     }
+#   }
+# }
+#
+# resource "aws_alb_target_group" "alb_target_group" {
+#   depends_on  = [aws_lb.api_alb]
+#   name        = "api-lb-tg-${var.env_name}"
+#   port        = "8080"
+#   protocol    = "HTTP"
+#   vpc_id      = var.vpc_id
+#   target_type = "ip"
+#
+#   tags = {
+#     Name = "api-alb-tg-${var.env_name}"
+#   }
+#
+#   health_check {
+#     healthy_threshold   = 2
+#     unhealthy_threshold = 2
+#     timeout             = 4
+#     interval            = 10
+#     path                = "/authorize/user/HEALTH"
+#   }
+# }
+#
+# resource "aws_lb" "authentication_api" {
+#   name     = "authentication-api"
+#   internal = true
+#
+#   subnets = var.subnet_ids
+#
+#   security_groups = [
+#     aws_security_group.authentication_api_alb.id,
+#   ]
+#
+#   load_balancer_type = "application"
+# }
+#
+# resource "aws_alb_target_group" "authentication_api" {
+#   name        = "authentication-api"
+#   port        = "8080"
+#   protocol    = "HTTP"
+#   vpc_id      = var.vpc_id
+#   target_type = "ip"
+#
+#   health_check {
+#     healthy_threshold   = 2
+#     unhealthy_threshold = 2
+#     timeout             = 4
+#     interval            = 10
+#     path                = "/authorize/user/HEALTH"
+#   }
+# }
+#
+# resource "aws_alb_listener" "authentication" {
+#   load_balancer_arn = aws_lb.authentication_api.arn
+#   protocol          = "HTTP"
+#   port              = 80
+#
+#   default_action {
+#     type             = "forward"
+#     target_group_arn = aws_alb_target_group.authentication_api.id
+#   }
+# }
+#
+# resource "aws_iam_role" "authentication_api_ecs_task" {
+#   name = "${var.aws_region_name}-apiEcsTask-${var.rack_env}"
+#
+#   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+# }
+#
+# resource "aws_iam_role_policy" "allow_ssm" {
+#   name   = "${var.aws_region_name}-allow-ssm-${var.env_name}"
+#   role   = aws_iam_role.authentication_api_ecs_task.id
+#   policy = data.aws_iam_policy_document.allow_ssm.json
+# }
