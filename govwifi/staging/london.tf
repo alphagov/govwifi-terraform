@@ -228,7 +228,6 @@ module "london_api" {
   devops_notifications_arn   = module.london_notifications.topic_arn
   notification_arn           = module.london_notifications.topic_arn
 
-  auth_docker_image             = format("%s/authorisation-api:staging", local.docker_image_path)
   user_signup_docker_image      = format("%s/user-signup-api:staging", local.docker_image_path)
   logging_docker_image          = format("%s/logging-api:staging", local.docker_image_path)
   safe_restart_docker_image     = format("%s/safe-restarter:staging", local.docker_image_path)

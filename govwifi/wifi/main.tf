@@ -262,14 +262,14 @@ module "api" {
   env_name      = local.env_name
   env_subdomain = local.env_subdomain
 
-  backend_elb_count       = 1
-  backend_instance_count  = 2
-  authorisation_api_count = 3
-  aws_account_id          = local.aws_account_id
-  aws_region_name         = lower(var.aws_region_name)
-  aws_region              = var.aws_region
-  route53_zone_id         = data.aws_route53_zone.main.zone_id
-  vpc_id                  = module.backend.backend_vpc_id
+  backend_elb_count        = 1
+  backend_instance_count   = 2
+  authentication_api_count = 3
+  aws_account_id           = local.aws_account_id
+  aws_region_name          = lower(var.aws_region_name)
+  aws_region               = var.aws_region
+  route53_zone_id          = data.aws_route53_zone.main.zone_id
+  vpc_id                   = module.backend.backend_vpc_id
 
   vpc_endpoints_security_group_id = module.backend.vpc_endpoints_security_group_id
 
@@ -283,7 +283,6 @@ module "api" {
   devops_notifications_arn   = module.devops_notifications.topic_arn
   notification_arn           = module.region_pagerduty.topic_arn
 
-  auth_docker_image             = format("%s/authorisation-api:production", local.docker_image_path)
   logging_docker_image          = format("%s/logging-api:production", local.docker_image_path)
   safe_restart_docker_image     = format("%s/safe-restarter:production", local.docker_image_path)
   backup_rds_to_s3_docker_image = ""
