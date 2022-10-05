@@ -9,6 +9,11 @@ resource "aws_ecr_repository" "authorisation_api_ecr" {
   name  = "govwifi/authorisation-api"
 }
 
+resource "aws_ecr_repository" "authentication_api_ecr" {
+  count = var.ecr_repository_count
+  name  = "govwifi/authentication-api"
+}
+
 resource "aws_ecs_task_definition" "authorisation_api_task" {
   family                   = "authorisation-api-task-${var.env_name}"
   requires_compatibilities = ["FARGATE"]
