@@ -27,7 +27,7 @@ variable "event_rule_count" {
 variable "backend_instance_count" {
 }
 
-variable "authorisation_api_count" {
+variable "authentication_api_count" {
   default = 3
 }
 
@@ -89,9 +89,6 @@ variable "subnet_ids" {
 
 variable "private_subnet_ids" {
   type = list(string)
-}
-
-variable "auth_docker_image" {
 }
 
 variable "user_signup_docker_image" {

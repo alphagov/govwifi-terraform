@@ -1,7 +1,12 @@
-resource "aws_cloudwatch_log_group" "authorisation_api_log_group" {
-  name = "${var.env_name}-authorisation-api-docker-log-group"
+resource "aws_cloudwatch_log_group" "authentication_api_log_group" {
+  name = "${var.env_name}-authentication-api-docker-log-group"
 
   retention_in_days = 90
+}
+
+resource "aws_ecr_repository" "authentication_api_ecr" {
+  count = var.ecr_repository_count
+  name  = "govwifi/authentication-api"
 }
 
 resource "aws_ecr_repository" "authorisation_api_ecr" {
@@ -9,8 +14,8 @@ resource "aws_ecr_repository" "authorisation_api_ecr" {
   name  = "govwifi/authorisation-api"
 }
 
-resource "aws_ecs_task_definition" "authorisation_api_task" {
-  family                   = "authorisation-api-task-${var.env_name}"
+resource "aws_ecs_task_definition" "authentication_api_task" {
+  family                   = "authentication-api-task-${var.env_name}"
   requires_compatibilities = ["FARGATE"]
   task_role_arn            = aws_iam_role.authentication_api_ecs_task.arn
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
@@ -72,16 +77,17 @@ resource "aws_ecs_task_definition" "authorisation_api_task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.auth_docker_image}",
+      "image": "${var.aws_account_id}.dkr.ecr.eu-west-2.amazonaws.com/govwifi/authentication-api:${var.rack_env}",
+
       "command": null,
       "user": null,
       "dockerLabels": null,
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "${aws_cloudwatch_log_group.authorisation_api_log_group.name}",
+          "awslogs-group": "${aws_cloudwatch_log_group.authentication_api_log_group.name}",
           "awslogs-region": "${var.aws_region}",
-          "awslogs-stream-prefix": "${var.env_name}-authorisation-api-docker-logs"
+          "awslogs-stream-prefix": "${var.env_name}-authentication-api-docker-logs"
         }
       },
       "cpu": 0,
@@ -93,11 +99,11 @@ EOF
 
 }
 
-resource "aws_ecs_service" "authorisation_api_service" {
-  name             = "authorisation-api-service-${var.env_name}"
+resource "aws_ecs_service" "authentication_api_service" {
+  name             = "authentication-api-service-${var.env_name}"
   cluster          = aws_ecs_cluster.api_cluster.id
-  task_definition  = aws_ecs_task_definition.authorisation_api_task.arn
-  desired_count    = var.authorisation_api_count
+  task_definition  = aws_ecs_task_definition.authentication_api_task.arn
+  desired_count    = var.authentication_api_count
   launch_type      = "FARGATE"
   platform_version = "1.4.0"
 
