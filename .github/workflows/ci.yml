@@ -4,25 +4,31 @@ jobs:
   test:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: Homebrew/actions/setup-homebrew@master
+      - name: Install Required Packages
+        run: |
+          brew install tfenv tflint grep findutils
+          tfenv install $(cat .terraform-version)
+          tfenv use $(cat .terraform-version)
 
+      # - uses: actions/checkout@v2
       # - name: lint
-      #   run: |
-      #     brew install tfenv tflint grep findutils
-      #     tfenv install $(cat .terraform-version)
-      #     tfenv use $(cat .terraform-version)
-      #     GITHUB_TOKEN=${{ secrets.GH_TOKEN }} tflint --init
-      #     PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH" make lint
+        # run: |
+        #   GITHUB_TOKEN=${{ secrets.GH_TOKEN }} tflint --init
+        #   PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH" make lint
   validate:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-
-      - name: validate
+      - uses: Homebrew/actions/setup-homebrew@master
+      - name: Install Required Packages
         run: |
           brew install tfenv
           tfenv install $(cat .terraform-version)
           tfenv use $(cat .terraform-version)
+
+      - uses: actions/checkout@v3
+      - name: validate
+        run: |
           for dir in govwifi/*;
           do
             cd $dir
