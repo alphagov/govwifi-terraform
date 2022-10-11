@@ -474,6 +474,7 @@ module "govwifi_slack_alerts" {
   critical_notifications_topic_arn         = module.critical_notifications.topic_arn
   capacity_notifications_topic_arn         = module.capacity_notifications.topic_arn
   route53_critical_notifications_topic_arn = module.route53_critical_notifications.topic_arn
+  smoke_tests_alerts_topic_arn             = module.govwifi_smoke_tests.topic_arn
 }
 
 module "govwifi_elasticsearch" {
@@ -490,4 +491,23 @@ module "govwifi_elasticsearch" {
   vpc_cidr_block = module.backend.vpc_cidr_block
 
   backend_subnet_id = module.backend.backend_subnet_ids[0]
+}
+
+module "govwifi_smoke_tests" {
+  providers = {
+    aws = aws.main
+  }
+
+  source = "../../govwifi-smoke-tests"
+
+  aws_account_id             = local.aws_account_id
+  env_subdomain              = local.env_subdomain
+  env                        = "production"
+  is_production              = 1
+  smoketests_vpc_cidr        = var.smoketests_vpc_cidr
+  smoketest_subnet_private_a = var.smoketest_subnet_private_a
+  smoketest_subnet_private_b = var.smoketest_subnet_private_b
+  smoketest_subnet_public_a  = var.smoketest_subnet_public_a
+  smoketest_subnet_public_b  = var.smoketest_subnet_public_b
+
 }

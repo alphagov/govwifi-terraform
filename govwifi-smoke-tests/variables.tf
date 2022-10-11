@@ -18,3 +18,10 @@ variable "smoketest_subnet_public_a" {
 
 variable "smoketest_subnet_public_b" {
 }
+
+variable "is_production" {
+  default = 0
+}
+
+variable "env" {
+}

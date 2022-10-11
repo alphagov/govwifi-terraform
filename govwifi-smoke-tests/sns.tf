@@ -1,8 +1,10 @@
 resource "aws_sns_topic" "smoke_tests" {
-  name = "govwifi-smoke-tests"
+  count = var.is_production
+  name  = "govwifi-smoke-tests"
 }
 
 resource "aws_cloudwatch_event_rule" "smoke_tests" {
+  count       = var.is_production
   name        = "smoke-tests-notification"
   description = "Capture any failed smoke-tests and notify smoke-tests sns topic"
 
@@ -20,9 +22,10 @@ EOF
 }
 
 resource "aws_cloudwatch_event_target" "sns" {
-  rule      = aws_cloudwatch_event_rule.smoke_tests.name
+  count     = var.is_production
+  rule      = aws_cloudwatch_event_rule.smoke_tests[0].name
   target_id = "SendSmoketestsToSNS"
-  arn       = aws_sns_topic.smoke_tests.arn
+  arn       = aws_sns_topic.smoke_tests[0].arn
 
   input_transformer {
     input_paths = {

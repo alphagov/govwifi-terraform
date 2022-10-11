@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "smoke_tests_bucket" {
-  bucket = "govwifi-smoketests-logs-bucket"
+  bucket = "govwifi-${var.env}-smoketests-logs-bucket"
 }
 
 resource "aws_s3_bucket_policy" "smoke_tests_bucket_policy" {
