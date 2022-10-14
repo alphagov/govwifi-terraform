@@ -86,7 +86,19 @@ resource "aws_iam_policy" "govwifi_codebuild_role_policy" {
             "Effect": "Allow",
             "Resource": "*",
             "Sid": "S3BucketIdentity"
-        }
+        },
+				{
+						"Effect": "Allow",
+						"Action": [
+							"s3:*"
+						],
+						"Resource": [
+								"${aws_s3_bucket.codepipeline_bucket.arn}",
+								"${aws_s3_bucket.codepipeline_bucket.arn}/*",
+								"${aws_s3_bucket.codepipeline_bucket_ireland.arn}",
+								"${aws_s3_bucket.codepipeline_bucket_ireland.arn}/*"
+						]
+				}
     ],
     "Version": "2012-10-17"
 }

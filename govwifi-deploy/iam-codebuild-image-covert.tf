@@ -75,7 +75,9 @@ resource "aws_iam_policy" "govwifi_codebuild_convert_service_policy" {
 						],
             "Resource": [
                 "${aws_s3_bucket.codepipeline_bucket.arn}",
-                "${aws_s3_bucket.codepipeline_bucket.arn}/*"
+                "${aws_s3_bucket.codepipeline_bucket.arn}/*",
+								"${aws_s3_bucket.codepipeline_bucket_ireland.arn}",
+								"${aws_s3_bucket.codepipeline_bucket_ireland.arn}/*"
             ]
         },
         {
