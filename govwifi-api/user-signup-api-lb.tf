@@ -29,6 +29,39 @@ resource "aws_lb_listener" "user_signup_api" {
     target_group_arn = aws_alb_target_group.user_signup_api_tg[0].arn
     type             = "forward"
   }
+
+}
+
+resource "aws_lb_listener_rule" "host_based_weighted_routing" {
+  listener_arn = aws_lb_listener.user_signup_api[0].arn
+  # priority     = 99
+
+  action {
+    type             = "forward"
+    forward {
+      target_group {
+        arn              = aws_alb_target_group.user_signup_api_tg[0].arn
+        weight           = 1
+      }
+
+      target_group {
+        arn              = aws_alb_target_group.user_signup_api_tg_two[0].arn
+        weight           = 1
+      }
+    }
+  }
+
+  condition {
+   query_string {
+     key   = "health"
+     value = "check"
+   }
+
+   query_string {
+     value = "bar"
+   }
+ }
+
 }
 
 resource "aws_lb_listener_certificate" "user_signup_api_regional" {
@@ -38,4 +71,3 @@ resource "aws_lb_listener_certificate" "user_signup_api_regional" {
 
   depends_on = [aws_acm_certificate_validation.user_signup_api_regional]
 }
-
