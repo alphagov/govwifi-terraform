@@ -29,15 +29,6 @@ resource "aws_ecr_repository_policy" "govwifi_ecr_saferestater_policy" {
   policy     = data.aws_iam_policy_document.govwifi_ecr_repo_policy.json
 }
 
-resource "aws_ecr_repository" "authentication_api_ecr" {
-  name = "govwifi/staging/authentication-api"
-}
-
-resource "aws_ecr_repository_policy" "govwifi_ecr_authentication_api_policy" {
-  repository = aws_ecr_repository.authentication_api_ecr.name
-  policy     = data.aws_iam_policy_document.govwifi_ecr_repo_policy.json
-}
-
 resource "aws_ecr_repository" "database_backup_ecr" {
   name = "govwifi/staging/database-backup"
 }
