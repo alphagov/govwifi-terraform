@@ -186,7 +186,7 @@ resource "aws_iam_role" "crossaccount_tools" {
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-                    "arn:aws:iam::${data.aws_secretsmanager_secret_version.tools_account.secret_string}:role/govwifi-codepipeline-${var.env}-role"
+										"arn:aws:iam::${data.aws_secretsmanager_secret_version.tools_account.secret_string}:role/govwifi-codepipeline-global-role"
                 ]
             },
             "Action": "sts:AssumeRole",
@@ -216,14 +216,13 @@ resource "aws_iam_policy" "crossaccount_tools" {
         {
             "Effect": "Allow",
             "Action": [
-                "s3:Get*",
-                "s3:List*",
-                "s3:PutObject",
-                "s3:PutObjectAcl"
+                "s3:*"
             ],
             "Resource": [
                 "arn:aws:s3:::govwifi-codepipeline-bucket",
-                "arn:aws:s3:::govwifi-codepipeline-bucket/*"
+                "arn:aws:s3:::govwifi-codepipeline-bucket/*",
+								"arn:aws:s3:::govwifi-codepipeline-bucket-ireland",
+								"arn:aws:s3:::govwifi-codepipeline-bucket-ireland/*"
             ]
         },
         {
@@ -237,7 +236,8 @@ resource "aws_iam_policy" "crossaccount_tools" {
                 "kms:DescribeKey"
             ],
             "Resource": [
-                "arn:aws:kms:eu-west-2:${data.aws_secretsmanager_secret_version.tools_account.secret_string}:key/${data.aws_secretsmanager_secret_version.tools_kms_key.secret_string}"
+                "arn:aws:kms:eu-west-2:${data.aws_secretsmanager_secret_version.tools_account.secret_string}:key/${data.aws_secretsmanager_secret_version.tools_kms_key.secret_string}",
+								"arn:aws:kms:eu-west-1:${data.aws_secretsmanager_secret_version.tools_account.secret_string}:key/${data.aws_secretsmanager_secret_version.tools_kms_key_ireland.secret_string}"
             ]
         },
         {

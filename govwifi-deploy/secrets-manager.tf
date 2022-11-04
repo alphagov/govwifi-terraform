@@ -14,6 +14,14 @@ data "aws_secretsmanager_secret" "staging_aws_account_no" {
   name = "staging/AccountID"
 }
 
+data "aws_secretsmanager_secret_version" "production_aws_account_no" {
+  secret_id = data.aws_secretsmanager_secret.production_aws_account_no.id
+}
+
+data "aws_secretsmanager_secret" "production_aws_account_no" {
+  name = "production/AccountID"
+}
+
 data "aws_secretsmanager_secret_version" "docker_hub_authtoken" {
   secret_id = data.aws_secretsmanager_secret.docker_hub_authtoken.id
 }

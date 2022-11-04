@@ -1,6 +1,9 @@
 variable "aws_account_id" {
 }
 
+variable "env" {
+}
+
 variable "env_subdomain" {
 }
 

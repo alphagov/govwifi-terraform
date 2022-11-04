@@ -23,14 +23,20 @@ provider "aws" {
   region = var.aws_region
 }
 
+provider "aws" {
+  alias  = "dublin"
+  region = "eu-west-1"
+}
+
 module "govwifi_deploy" {
   providers = {
-    aws = aws.main
+    aws        = aws.main
+    aws.dublin = aws.dublin
   }
 
   source = "../../govwifi-deploy"
 
-  deployed_app_names     = ["user-signup-api", "logging-api", "admin"]
-  built_app_names        = ["frontend", "safe-restarter", "database-backup", "authentication-api"]
+  deployed_app_names     = ["user-signup-api", "logging-api", "admin", "authentication-api"]
+  built_app_names        = ["frontend", "safe-restarter", "database-backup"]
   frontend_docker_images = ["raddb", "frontend"]
 }

@@ -1,8 +1,8 @@
 resource "aws_codebuild_project" "govwifi_codebuild_built_app" {
   for_each       = toset(var.built_app_names)
-  name           = "govwifi-codebuild-${each.key}"
+  name           = "Push-${each.key}-docker-image-to-staging-ECR"
   description    = "This project builds the ${each.key} image and pushes it to ECR"
-  build_timeout  = "5"
+  build_timeout  = "12"
   service_role   = aws_iam_role.govwifi_codebuild.arn
   encryption_key = aws_kms_key.codepipeline_key.arn
 
@@ -39,7 +39,7 @@ resource "aws_codebuild_project" "govwifi_codebuild_built_app" {
 
   }
 
-  source_version = "codebuild-test"
+  source_version = "master"
 
   source {
     type            = "GITHUB"
@@ -62,21 +62,16 @@ resource "aws_codebuild_project" "govwifi_codebuild_built_app" {
 
 }
 
-resource "aws_codebuild_webhook" "govwifi_built_app_webhook" {
+resource "aws_codebuild_webhook" "govwifi_built_app_webhook_staging" {
   for_each     = toset(var.built_app_names)
-  project_name = "govwifi-codebuild-${each.key}"
+  project_name = "Push-${each.key}-docker-image-to-staging-ECR"
 
   build_type = "BUILD"
 
   filter_group {
     filter {
       type    = "EVENT"
-      pattern = "PUSH"
-    }
-
-    filter {
-      type    = "HEAD_REF"
-      pattern = "^refs/heads/codebuild-test$"
+      pattern = "PULL_REQUEST_MERGED"
     }
   }
   depends_on = [

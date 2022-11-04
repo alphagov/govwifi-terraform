@@ -77,3 +77,19 @@ data "aws_secretsmanager_secret_version" "radius_ips" {
 data "aws_secretsmanager_secret" "radius_ips" {
   name = "deploy/radius_ips"
 }
+
+data "aws_secretsmanager_secret_version" "tools_account" {
+  secret_id = data.aws_secretsmanager_secret.tools_account.id
+}
+
+data "aws_secretsmanager_secret" "tools_account" {
+  name = "tools/AccountID"
+}
+
+data "aws_secretsmanager_secret_version" "tools_kms_key" {
+  secret_id = data.aws_secretsmanager_secret.tools_kms_key.id
+}
+
+data "aws_secretsmanager_secret" "tools_kms_key" {
+  name = "tools/codepipeline-kms-key-arn"
+}

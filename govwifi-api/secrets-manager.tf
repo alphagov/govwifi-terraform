@@ -77,3 +77,11 @@ data "aws_secretsmanager_secret_version" "tools_kms_key" {
 data "aws_secretsmanager_secret" "tools_kms_key" {
   name = "tools/codepipeline-kms-key-arn"
 }
+
+data "aws_secretsmanager_secret_version" "tools_kms_key_ireland" {
+  secret_id = data.aws_secretsmanager_secret.tools_kms_key_ireland.id
+}
+
+data "aws_secretsmanager_secret" "tools_kms_key_ireland" {
+  name = "tools/codepipeline-kms-key-arn-ireland"
+}
