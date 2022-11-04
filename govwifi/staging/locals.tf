@@ -1,8 +1,8 @@
 locals {
   env_name      = "staging"
   env_subdomain = "staging.wifi" # Environment specific subdomain to use under the service domain
-
-  product_name = "GovWifi"
+  env           = "staging"
+  product_name  = "GovWifi"
 
   backup_mysql_rds = true
 }

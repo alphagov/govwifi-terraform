@@ -1,6 +1,7 @@
 locals {
   env_name      = "wifi"
   env_subdomain = "wifi" # Environment specific subdomain to use under the service domain
+  env           = "production"
 
   product_name = "GovWifi"
 

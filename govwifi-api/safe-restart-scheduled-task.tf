@@ -69,7 +69,7 @@ resource "aws_ecs_task_definition" "safe_restart_task_definition" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.safe_restart_docker_image}",
+      "image": "${local.safe_restart_docker_image_new}",
       "command": null,
       "user": null,
       "dockerLabels": null,

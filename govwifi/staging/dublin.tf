@@ -188,6 +188,7 @@ module "dublin_frontend" {
   source        = "../../govwifi-frontend"
   env_name      = local.env_name
   env_subdomain = local.env_subdomain
+  env           = local.env
 
   # AWS VPC setup -----------------------------------------
   aws_region         = local.dublin_aws_region

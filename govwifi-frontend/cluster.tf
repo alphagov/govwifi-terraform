@@ -163,7 +163,7 @@ resource "aws_ecs_task_definition" "radius_task" {
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:ssid::"
       }
     ],
-    "image": "${var.frontend_docker_image}",
+    "image": "${local.frontend_image_new}",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -199,7 +199,7 @@ resource "aws_ecs_task_definition" "radius_task" {
         "value": "s3://${aws_s3_bucket.frontend_cert_bucket.bucket}"
       }
     ],
-    "image": "${var.raddb_docker_image}",
+    "image": "${local.raddb_image_new}",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -303,7 +303,7 @@ resource "aws_ecs_task_definition" "frontend_fargate" {
         "valueFrom": "${data.aws_secretsmanager_secret_version.healthcheck.arn}:ssid::"
       }
     ],
-    "image": "${var.frontend_docker_image}",
+    "image": "${local.frontend_image_new}",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -341,7 +341,7 @@ resource "aws_ecs_task_definition" "frontend_fargate" {
         "value": "${var.aws_region}"
       }
     ],
-    "image": "${var.raddb_docker_image}",
+    "image": "${local.raddb_image_new}",
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {

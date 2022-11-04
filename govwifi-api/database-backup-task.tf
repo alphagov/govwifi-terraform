@@ -105,7 +105,7 @@ resource "aws_ecs_task_definition" "backup_rds_to_s3_task_definition" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.backup_rds_to_s3_docker_image}",
+      "image": "${local.backup_rds_to_s3_docker_image_new}",
       "command": null,
       "user": null,
       "dockerLabels": null,
