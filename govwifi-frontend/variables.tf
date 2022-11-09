@@ -4,6 +4,9 @@ variable "env_name" {
 variable "env_subdomain" {
 }
 
+variable "env" {
+}
+
 variable "route53_zone_id" {
 }
 
