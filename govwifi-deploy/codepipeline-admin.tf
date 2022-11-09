@@ -141,4 +141,26 @@ resource "aws_codepipeline" "admin_pipeline" {
 
   }
 
+
+	stage {
+    name = "Production-Smoketests"
+
+    action {
+      name            = "Production-Smoketests"
+      category        = "Test"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      input_artifacts = ["govwifi-build-admin-convert-imagedetail-amended"]
+
+      # This resource lives in the Staging & Production environments. It will always have to
+      # either be hardcoded or retrieved from the AWS secrets or parameter store
+      role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role"
+      version  = "1"
+
+      configuration = {
+        ProjectName = "govwifi-smoke-tests"
+      }
+    }
+  }
+
 }
