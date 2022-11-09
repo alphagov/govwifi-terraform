@@ -186,7 +186,7 @@ resource "aws_codepipeline" "authentication_api_pipeline" {
       category        = "Test"
       owner           = "AWS"
       provider        = "CodeBuild"
-      input_artifacts = ["govwifi-build-admin-convert-imagedetail-amended"]
+      input_artifacts = ["govwifi-build-authentication-api-convert-imagedetail-amended"]
 
       # This resource lives in the Staging & Production environments. It will always have to
       # either be hardcoded or retrieved from the AWS secrets or parameter store
