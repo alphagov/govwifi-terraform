@@ -502,7 +502,7 @@ module "smoke_tests" {
 
   aws_account_id             = local.aws_account_id
   env_subdomain              = local.env_subdomain
-  env                        = local.env_name
+  env                        = local.env
   smoketests_vpc_cidr        = var.smoketests_vpc_cidr
   smoketest_subnet_private_a = var.smoketest_subnet_private_a
   smoketest_subnet_private_b = var.smoketest_subnet_private_b
