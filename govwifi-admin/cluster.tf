@@ -154,7 +154,7 @@ resource "aws_ecs_task_definition" "admin_task" {
           "valueFrom": "${data.aws_secretsmanager_secret.sentry_dsn.arn}"
         }
       ],
-      "image": "${var.admin_docker_image}",
+      "image": "${local.admin_docker_image_new}",
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
