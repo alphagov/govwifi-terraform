@@ -537,7 +537,7 @@ resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.logging_docker_image}",
+      "image": "${local.logging_docker_image_new}",
       "command": null,
       "user": null,
       "dockerLabels": null,
