@@ -475,6 +475,7 @@ module "govwifi_slack_alerts" {
   critical_notifications_topic_arn         = module.critical_notifications.topic_arn
   capacity_notifications_topic_arn         = module.capacity_notifications.topic_arn
   route53_critical_notifications_topic_arn = module.route53_critical_notifications.topic_arn
+  smoke_tests_notifications_topic_arn      = module.smoke_tests.topic_arn
 }
 
 module "govwifi_elasticsearch" {

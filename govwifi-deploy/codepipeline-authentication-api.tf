@@ -178,7 +178,7 @@ resource "aws_codepipeline" "authentication_api_pipeline" {
 
   }
 
-	stage {
+  stage {
     name = "Production-Smoketests"
 
     action {
