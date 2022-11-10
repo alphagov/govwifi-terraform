@@ -77,7 +77,7 @@ resource "aws_ecs_task_definition" "authentication_api_task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.aws_account_id}.dkr.ecr.eu-west-2.amazonaws.com/govwifi/authentication-api:${var.rack_env}",
+      "image": "${local.tools_account_id}.dkr.ecr.eu-west-2.amazonaws.com/govwifi/authentication-api:latest",
 
       "command": null,
       "user": null,

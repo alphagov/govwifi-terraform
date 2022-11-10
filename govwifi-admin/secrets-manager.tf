@@ -65,3 +65,11 @@ data "aws_secretsmanager_secret" "google_service_account_backup_credentials" {
 data "aws_secretsmanager_secret" "sentry_dsn" {
   name = "sentry/admin_dsn"
 }
+
+data "aws_secretsmanager_secret_version" "tools_account" {
+  secret_id = data.aws_secretsmanager_secret.tools_account.id
+}
+
+data "aws_secretsmanager_secret" "tools_account" {
+  name = "tools/AccountID"
+}

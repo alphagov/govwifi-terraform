@@ -289,7 +289,7 @@ resource "aws_ecs_task_definition" "user_signup_api_scheduled_task" {
       "links": null,
       "workingDirectory": null,
       "readonlyRootFilesystem": null,
-      "image": "${var.user_signup_docker_image}",
+      "image": "${local.user_signup_docker_image_new}",
       "command": null,
       "user": null,
       "dockerLabels": null,
