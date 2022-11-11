@@ -111,6 +111,7 @@ resource "aws_cloudwatch_event_target" "trigger_smoke_tests" {
 }
 
 resource "aws_cloudwatch_event_rule" "smoke_tests_schedule_rule" {
+  is_enabled          = false
   name                = "smoke-tests-scheduled-build"
   schedule_expression = "cron(0/15 * * * ? *)"
 }

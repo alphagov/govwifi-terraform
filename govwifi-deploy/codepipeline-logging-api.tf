@@ -142,7 +142,7 @@ resource "aws_codepipeline" "logging_api_pipeline" {
     }
   }
 
-	stage {
+  stage {
     name = "Production-Smoketests"
 
     action {
