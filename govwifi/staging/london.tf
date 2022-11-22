@@ -155,6 +155,7 @@ module "london_admin" {
   source        = "../../govwifi-admin"
   env_name      = local.env_name
   env_subdomain = local.env_subdomain
+  env           = local.env
 
   aws_region      = local.london_aws_region
   aws_region_name = local.london_aws_region_name

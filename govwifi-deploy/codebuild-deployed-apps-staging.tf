@@ -1,6 +1,6 @@
-resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_global" {
+resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_staging" {
   for_each      = toset(var.deployed_app_names)
-  name          = "govwifi-codebuild-global-${each.key}-push-image-to-ecr"
+  name          = "${each.key}-push-image-to-ecr-staging"
   description   = "This project builds the API docker images and pushes them to ECR ${each.key}"
   build_timeout = "12"
   service_role  = aws_iam_role.govwifi_codebuild.arn
@@ -31,10 +31,10 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_gl
       value = "eu-west-2"
     }
 
-    # environment_variable {
-    #   name  = "STAGE"
-    #   value = "staging"
-    # }
+    environment_variable {
+      name  = "STAGE"
+      value = "staging"
+    }
 
     environment_variable {
       name  = "DOCKER_HUB_AUTHTOKEN_ENV"
@@ -73,7 +73,7 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_gl
     }
   }
 
-  source_version = "temp-pipeline-build"
+  source_version = "master"
 
 
   source {
@@ -85,23 +85,23 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_gl
 
 }
 
-resource "aws_codebuild_webhook" "govwifi_app_webhook_global" {
+resource "aws_codebuild_webhook" "govwifi_app_webhook_staging" {
   for_each     = toset(var.deployed_app_names)
-  project_name = aws_codebuild_project.govwifi_codebuild_project_push_image_to_ecr_global[each.key].name
+  project_name = aws_codebuild_project.govwifi_codebuild_project_push_image_to_ecr_staging[each.key].name
 
   build_type = "BUILD"
 
   filter_group {
     filter {
       type    = "EVENT"
-      pattern = "PUSH"
+      pattern = "PULL_REQUEST_MERGED"
     }
 
     ### To test a branch without needing to raise a PR, uncomment the below and change source to the name of your branch
-    filter {
-      type    = "HEAD_REF"
-      pattern = "^refs/heads/temp-pipeline-build$"
-    }
+    # filter {
+    #   type    = "HEAD_REF"
+    #   pattern = "^refs/heads/buildspec-global-ecr$"
+    # }
 
 
   }

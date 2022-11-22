@@ -121,6 +121,25 @@ resource "aws_codepipeline" "user_signup_api_pipeline" {
 
 
   stage {
+    name = "Push-PRODUCTION-image-to-ECR"
+
+    action {
+      name            = "Push-PRODUCTION-image-to-ECR"
+      category        = "Test"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      input_artifacts = ["govwifi-build-user-signup-api-convert-imagedetail-amended"]
+
+      version = "1"
+
+      configuration = {
+        ProjectName = "${aws_codebuild_project.govwifi_codebuild_project_push_image_to_ecr_production["user-signup-api"].name}"
+      }
+    }
+  }
+
+
+  stage {
     name = "PRODUCTION-Deploy"
 
     action {

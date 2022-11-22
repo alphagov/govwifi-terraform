@@ -67,6 +67,17 @@ data "aws_iam_policy_document" "govwifi_ecr_repo_policy_staging" {
 
 }
 
+resource "aws_ecr_repository" "govwifi_ecr_repo_deployed_apps_staging" {
+  for_each = toset(var.deployed_app_names)
+  name     = "govwifi/${each.key}/staging"
+}
+
+resource "aws_ecr_repository_policy" "govwifi_ecr_repo_policy_deployed_apps_staging" {
+  for_each   = toset(var.deployed_app_names)
+  repository = aws_ecr_repository.govwifi_ecr_repo_deployed_apps_staging[each.key].name
+  policy     = data.aws_iam_policy_document.govwifi_ecr_repo_policy_staging.json
+}
+
 ### End Staging
 
 ### Begin Production
@@ -137,6 +148,20 @@ data "aws_iam_policy_document" "govwifi_ecr_repo_policy_production" {
   }
 
 }
+
+
+resource "aws_ecr_repository" "govwifi_ecr_repo_deployed_apps_production" {
+  for_each = toset(var.deployed_app_names)
+  name     = "govwifi/${each.key}/production"
+}
+
+resource "aws_ecr_repository_policy" "govwifi_ecr_repo_policy_deployed_apps_production" {
+  for_each   = toset(var.deployed_app_names)
+  repository = aws_ecr_repository.govwifi_ecr_repo_deployed_apps_production[each.key].name
+  policy     = data.aws_iam_policy_document.govwifi_ecr_repo_policy_production.json
+}
+
+
 ### End Production
 
 ### Global
@@ -176,5 +201,3 @@ data "aws_iam_policy_document" "govwifi_ecr_repo_policy_global" {
   }
 
 }
-
-### End Global
