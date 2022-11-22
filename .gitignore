@@ -2,6 +2,7 @@ govwifi/govwifi-staging-bastion-key
 govwifi/govwifi-bastion-key
 govwifi/govwifi-staging-key
 govwifi/govwifi-key.pem
+govwifi-smoke-tests/*.zip
 .terraform
 terraform.tfstate
 terraform.tfstate.*.backup

@@ -401,5 +401,7 @@ module "london_smoke_tests" {
   smoketest_subnet_private_b = var.smoketest_subnet_private_b
   smoketest_subnet_public_a  = var.smoketest_subnet_public_a
   smoketest_subnet_public_b  = var.smoketest_subnet_public_b
+  aws_region                 = local.london_aws_region
+  create_slack_alert         = 0
 
 }
