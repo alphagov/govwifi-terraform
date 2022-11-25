@@ -1,9 +1,13 @@
 variable "env_name" {
-  description = "E.g. staging"
+  description = "E.g. wifi"
 }
 
 variable "env_subdomain" {
   description = "E.g. staging.wifi"
+}
+
+variable "env" {
+  description = "E.g. production"
 }
 
 variable "aws_region" {

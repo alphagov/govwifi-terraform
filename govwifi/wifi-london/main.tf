@@ -223,6 +223,7 @@ module "govwifi_admin" {
   source        = "../../govwifi-admin"
   env_name      = local.env_name
   env_subdomain = local.env_subdomain
+  env           = local.env
 
   aws_region      = var.aws_region
   aws_region_name = var.aws_region_name

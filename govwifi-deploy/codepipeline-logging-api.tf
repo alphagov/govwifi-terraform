@@ -121,6 +121,25 @@ resource "aws_codepipeline" "logging_api_pipeline" {
 
 
   stage {
+    name = "Push-PRODUCTION-image-to-ECR"
+
+    action {
+      name            = "Push-PRODUCTION-image-to-ECR"
+      category        = "Test"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      input_artifacts = ["govwifi-build-logging-api-convert-imagedetail-amended"]
+
+      version = "1"
+
+      configuration = {
+        ProjectName = "${aws_codebuild_project.govwifi_codebuild_project_push_image_to_ecr_production["logging-api"].name}"
+      }
+    }
+  }
+
+
+  stage {
     name = "PRODUCTION-Deploy"
 
     action {
@@ -142,26 +161,26 @@ resource "aws_codepipeline" "logging_api_pipeline" {
     }
   }
 
-  stage {
-    name = "Production-Smoketests"
-
-    action {
-      name            = "Production-Smoketests"
-      category        = "Test"
-      owner           = "AWS"
-      provider        = "CodeBuild"
-      input_artifacts = ["govwifi-build-logging-api-convert-imagedetail-amended"]
-
-      # This resource lives in the Staging & Production environments. It will always have to
-      # either be hardcoded or retrieved from the AWS secrets or parameter store
-      role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role"
-      version  = "1"
-
-      configuration = {
-        ProjectName = "govwifi-smoke-tests"
-      }
-    }
-  }
+  # stage {
+  #   name = "Production-Smoketests"
+  #
+  #   action {
+  #     name            = "Production-Smoketests"
+  #     category        = "Test"
+  #     owner           = "AWS"
+  #     provider        = "CodeBuild"
+  #     input_artifacts = ["govwifi-build-logging-api-convert-imagedetail-amended"]
+  #
+  #     # This resource lives in the Staging & Production environments. It will always have to
+  #     # either be hardcoded or retrieved from the AWS secrets or parameter store
+  #     role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role"
+  #     version  = "1"
+  #
+  #     configuration = {
+  #       ProjectName = "govwifi-smoke-tests"
+  #     }
+  #   }
+  # }
 
 
 }

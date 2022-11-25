@@ -64,7 +64,7 @@ resource "aws_codepipeline" "admin_pipeline" {
 
 
     action {
-      name            = "Deploy-to-eu-west-2-staging"
+      name            = "Deploy-to-eu-west-2"
       category        = "Deploy"
       owner           = "AWS"
       provider        = "ECS"
@@ -80,9 +80,8 @@ resource "aws_codepipeline" "admin_pipeline" {
       }
     }
 
-
-
   }
+
 
   stage {
     name = "Staging-Smoketests"
@@ -105,7 +104,6 @@ resource "aws_codepipeline" "admin_pipeline" {
     }
   }
 
-
   stage {
     name = "Release-to-PRODUCTION"
 
@@ -118,6 +116,28 @@ resource "aws_codepipeline" "admin_pipeline" {
     }
   }
 
+  ###
+  # Update admin image in production. Copy staging docker image to production repo now it has been tested
+  # The way AWS works is that the actual image being deployed by the AWS deploy stage is the asset
+  # that is passed along the code pipe line..However the production task definition must also
+
+  stage {
+    name = "Push-PRODUCTION-image-to-ECR"
+
+    action {
+      name            = "Push-PRODUCTION-image-to-ECR"
+      category        = "Test"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      input_artifacts = ["govwifi-build-admin-convert-imagedetail-amended"]
+
+      version = "1"
+
+      configuration = {
+        ProjectName = "${aws_codebuild_project.govwifi_codebuild_project_push_image_to_ecr_production["admin"].name}"
+      }
+    }
+  }
 
   stage {
     name = "PRODUCTION-Deploy"
@@ -141,26 +161,25 @@ resource "aws_codepipeline" "admin_pipeline" {
 
   }
 
-
-  stage {
-    name = "Production-Smoketests"
-
-    action {
-      name            = "Production-Smoketests"
-      category        = "Test"
-      owner           = "AWS"
-      provider        = "CodeBuild"
-      input_artifacts = ["govwifi-build-admin-convert-imagedetail-amended"]
-
-      # This resource lives in the Staging & Production environments. It will always have to
-      # either be hardcoded or retrieved from the AWS secrets or parameter store
-      role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role"
-      version  = "1"
-
-      configuration = {
-        ProjectName = "govwifi-smoke-tests"
-      }
-    }
-  }
+  # stage {
+  #   name = "Production-Smoketests"
+  #
+  #   action {
+  #     name            = "Production-Smoketests"
+  #     category        = "Test"
+  #     owner           = "AWS"
+  #     provider        = "CodeBuild"
+  #     input_artifacts = ["govwifi-build-admin-convert-imagedetail-amended"]
+  #
+  #     # This resource lives in the Staging & Production environments. It will always have to
+  #     # either be hardcoded or retrieved from the AWS secrets or parameter store
+  #     role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role"
+  #     version  = "1"
+  #
+  #     configuration = {
+  #       ProjectName = "govwifi-smoke-tests"
+  #     }
+  #   }
+  # }
 
 }
