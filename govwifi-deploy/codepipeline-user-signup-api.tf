@@ -37,7 +37,7 @@ resource "aws_codepipeline" "user_signup_api_pipeline" {
       output_artifacts = ["SourceArtifact"]
 
       configuration = {
-        RepositoryName = "govwifi/user-signup-api"
+        RepositoryName = "govwifi/user-signup-api/staging"
       }
     }
   }
