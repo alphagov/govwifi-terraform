@@ -2,9 +2,9 @@ terraform {
   required_version = "~> 1.1.8"
 
   backend "s3" {
-    bucket = "govwifi-staging-tfstate-eu-west-2"
+    bucket = "govwifi-development-tfstate-eu-west-2"
 
-    key    = "staging-tfstate"
+    key    = "development-tfstate"
     region = "eu-west-2"
   }
 
