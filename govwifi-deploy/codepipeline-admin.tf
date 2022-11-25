@@ -36,7 +36,7 @@ resource "aws_codepipeline" "admin_pipeline" {
       output_artifacts = ["SourceArtifact"]
 
       configuration = {
-        RepositoryName = "govwifi/admin"
+        RepositoryName = "govwifi/admin/staging"
       }
     }
   }

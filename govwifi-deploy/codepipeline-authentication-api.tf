@@ -37,7 +37,7 @@ resource "aws_codepipeline" "authentication_api_pipeline" {
       output_artifacts = ["SourceArtifact"]
 
       configuration = {
-        RepositoryName = "govwifi/authentication-api"
+        RepositoryName = "govwifi/authentication-api/staging"
       }
     }
   }
