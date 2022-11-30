@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - aws --version
+  build:
+    commands:
+      - echo Build started on `date`
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Writing image definitions file...
+      - echo "Restart ECS Service Admin in PRODUCTION"
+      - aws ecs update-service --force-new-deployment --service $SERVICE_NAME --cluster $CLUSTER_NAME
