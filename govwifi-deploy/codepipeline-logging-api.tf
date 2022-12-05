@@ -37,7 +37,7 @@ resource "aws_codepipeline" "logging_api_pipeline" {
       output_artifacts = ["SourceArtifact"]
 
       configuration = {
-        RepositoryName = "govwifi/logging-api/staging"
+        RepositoryName = "govwifi/logging-api"
       }
     }
   }
