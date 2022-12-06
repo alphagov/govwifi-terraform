@@ -136,8 +136,9 @@ resource "aws_ecs_service" "authentication_api_service" {
   }
 
   lifecycle {
-    ignore_changes = [desired_count]
+    ignore_changes = [desired_count, task_definition]
   }
+
 }
 
 resource "aws_alb_listener_rule" "static" {

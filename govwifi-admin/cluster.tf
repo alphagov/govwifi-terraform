@@ -201,7 +201,7 @@ resource "aws_ecs_service" "admin_service" {
   # TODO: Terraform has problems tagging this service due to ARN
   # issues in production, so avoid this by ignoring tag changes
   lifecycle {
-    ignore_changes = [tags_all]
+    ignore_changes = [tags_all, task_definition]
   }
 }
 
