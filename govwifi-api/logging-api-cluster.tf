@@ -155,7 +155,7 @@ resource "aws_ecs_service" "logging_api_service" {
   }
 
   lifecycle {
-    ignore_changes = [desired_count]
+    ignore_changes = [desired_count, task_definition]
   }
 }
 

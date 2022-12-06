@@ -211,6 +211,10 @@ resource "aws_ecs_service" "user_signup_api_service" {
     container_name   = "user-signup-api"
     container_port   = "8080"
   }
+
+  lifecycle {
+    ignore_changes = [task_definition]
+  }
 }
 
 resource "aws_alb_target_group" "user_signup_api_tg" {
