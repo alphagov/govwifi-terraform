@@ -139,27 +139,27 @@ resource "aws_codepipeline" "admin_pipeline" {
     }
   }
 
-  stage {
-    name = "PRODUCTION-Deploy"
-
-    action {
-      name            = "Deploy-to-eu-west-2-production"
-      category        = "Deploy"
-      owner           = "AWS"
-      provider        = "ECS"
-      input_artifacts = ["govwifi-build-admin-convert-imagedetail-amended"]
-      version         = "1"
-      # This resource lives in the Staging & Production environments. It will always have to
-      # either be hardcoded or retrieved from the AWS secrets or parameter store
-      role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-crossaccount-tools-deploy"
-
-      configuration = {
-        ClusterName : "wifi-admin-cluster"
-        ServiceName : "admin-wifi"
-      }
-    }
-
-  }
+  # stage {
+  #   name = "PRODUCTION-Deploy"
+	#
+  #   action {
+  #     name            = "Deploy-to-eu-west-2-production"
+  #     category        = "Deploy"
+  #     owner           = "AWS"
+  #     provider        = "ECS"
+  #     input_artifacts = ["govwifi-build-admin-convert-imagedetail-amended"]
+  #     version         = "1"
+  #     # This resource lives in the Staging & Production environments. It will always have to
+  #     # either be hardcoded or retrieved from the AWS secrets or parameter store
+  #     role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-crossaccount-tools-deploy"
+	#
+  #     configuration = {
+  #       ClusterName : "wifi-admin-cluster"
+  #       ServiceName : "admin-wifi"
+  #     }
+  #   }
+	#
+  # }
 
   # stage {
   #   name = "Production-Smoketests"
