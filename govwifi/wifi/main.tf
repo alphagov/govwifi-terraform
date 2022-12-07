@@ -441,3 +441,17 @@ resource "aws_route" "backend_to_frontend_route" {
   destination_cidr_block    = one(data.aws_vpc.dublin_frontend.cidr_block_associations).cidr_block
   vpc_peering_connection_id = aws_vpc_peering_connection.dublin_frontend_to_london_backend.id
 }
+
+module "govwifi-ecs-update-service" {
+  providers = {
+    aws = aws.main
+  }
+
+  source = "../../govwifi-ecs-update-service"
+
+  deployed_app_names = ["authentication-api"]
+
+  env_name = "wifi"
+
+  aws_account_id = local.aws_account_id
+}

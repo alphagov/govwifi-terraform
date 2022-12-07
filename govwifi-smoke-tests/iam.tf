@@ -97,9 +97,8 @@ EOF
 
 }
 
-resource "aws_iam_policy_attachment" "govwifi_codebuild_role_policy" {
-  name       = "govwifi-codebuild-role-policy"
-  roles      = [aws_iam_role.govwifi_codebuild.name]
+resource "aws_iam_role_policy_attachment" "govwifi_codebuild_role_policy" {
+  role       = aws_iam_role.govwifi_codebuild.name
   policy_arn = aws_iam_policy.govwifi_codebuild_role_policy.arn
 }
 
@@ -206,20 +205,23 @@ EOF
 }
 
 
-resource "aws_iam_policy_attachment" "codebuild_vpc" {
-  name       = "govwifi-codebuild-vpc"
-  roles      = [aws_iam_role.govwifi_codebuild.name]
+resource "aws_iam_role_policy_attachment" "crossaccount_tools_ecs_access_ecs_restart" {
+  role       = aws_iam_role.govwifi_codebuild.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
+}
+
+
+resource "aws_iam_role_policy_attachment" "codebuild_vpc" {
+  role       = aws_iam_role.govwifi_codebuild.name
   policy_arn = aws_iam_policy.govwifi_codebuild_vpc_policy.arn
 }
 
-resource "aws_iam_policy_attachment" "codepipeline_ssm_readonly" {
-  name       = "codepipeline-ssm-readonly"
-  roles      = [aws_iam_role.govwifi_codebuild.name]
+resource "aws_iam_role_policy_attachment" "codepipeline_ssm_readonly" {
+  role       = aws_iam_role.govwifi_codebuild.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
 }
 
-resource "aws_iam_policy_attachment" "codebuild_start_build_perm" {
-  name       = "codebuild-startbuild-perm"
-  roles      = [aws_iam_role.govwifi_codebuild.name]
+resource "aws_iam_role_policy_attachment" "codebuild_start_build_perm" {
+  role       = aws_iam_role.govwifi_codebuild.name
   policy_arn = "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
 }

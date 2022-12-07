@@ -512,3 +512,17 @@ module "smoke_tests" {
   smoketest_subnet_public_b  = var.smoketest_subnet_public_b
 
 }
+
+module "govwifi-ecs-update-service" {
+  providers = {
+    aws = aws.main
+  }
+
+  source = "../../govwifi-ecs-update-service"
+
+  deployed_app_names = ["user-signup-api", "logging-api", "admin", "authentication-api"]
+
+  env_name = "wifi"
+
+  aws_account_id = local.aws_account_id
+}
