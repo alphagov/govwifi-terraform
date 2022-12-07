@@ -159,7 +159,7 @@ resource "aws_codepipeline" "admin_pipeline" {
   #     }
   #   }
 	#
-  #}
+  # }
 
   # stage {
   #   name = "Production-Smoketests"

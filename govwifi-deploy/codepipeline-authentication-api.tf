@@ -155,46 +155,46 @@ resource "aws_codepipeline" "authentication_api_pipeline" {
   }
 
 
-  stage {
-    name = "PRODUCTION-Deploy"
-
-    action {
-      name            = "Deploy-to-eu-west-2-production"
-      category        = "Deploy"
-      owner           = "AWS"
-      provider        = "ECS"
-      input_artifacts = ["govwifi-build-authentication-api-convert-imagedetail-amended"]
-      version         = "1"
-      region          = "eu-west-2"
-      # This resource lives in the Staging & Production environments. It will always have to
-      # either be hardcoded or retrieved from the AWS secrets or parameter store
-      role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-crossaccount-tools-deploy"
-
-      configuration = {
-        ClusterName : "wifi-api-cluster"
-        ServiceName : "authentication-api-service-wifi"
-      }
-    }
-
-    action {
-      name            = "Deploy-to-eu-west-1-production"
-      category        = "Deploy"
-      owner           = "AWS"
-      provider        = "ECS"
-      input_artifacts = ["govwifi-build-authentication-api-convert-imagedetail-amended"]
-      version         = "1"
-      region          = "eu-west-1"
-      # This resource lives in the Staging & Production environments. It will always have to
-      # either be hardcoded or retrieved from the AWS secrets or parameter store
-      role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-crossaccount-tools-deploy"
-
-      configuration = {
-        ClusterName : "wifi-api-cluster"
-        ServiceName : "authentication-api-service-wifi"
-      }
-    }
-
-  }
+  # stage {
+  #   name = "PRODUCTION-Deploy"
+	#
+  #   action {
+  #     name            = "Deploy-to-eu-west-2-production"
+  #     category        = "Deploy"
+  #     owner           = "AWS"
+  #     provider        = "ECS"
+  #     input_artifacts = ["govwifi-build-authentication-api-convert-imagedetail-amended"]
+  #     version         = "1"
+  #     region          = "eu-west-2"
+  #     # This resource lives in the Staging & Production environments. It will always have to
+  #     # either be hardcoded or retrieved from the AWS secrets or parameter store
+  #     role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-crossaccount-tools-deploy"
+	#
+  #     configuration = {
+  #       ClusterName : "wifi-api-cluster"
+  #       ServiceName : "authentication-api-service-wifi"
+  #     }
+  #   }
+	#
+  #   action {
+  #     name            = "Deploy-to-eu-west-1-production"
+  #     category        = "Deploy"
+  #     owner           = "AWS"
+  #     provider        = "ECS"
+  #     input_artifacts = ["govwifi-build-authentication-api-convert-imagedetail-amended"]
+  #     version         = "1"
+  #     region          = "eu-west-1"
+  #     # This resource lives in the Staging & Production environments. It will always have to
+  #     # either be hardcoded or retrieved from the AWS secrets or parameter store
+  #     role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-crossaccount-tools-deploy"
+	#
+  #     configuration = {
+  #       ClusterName : "wifi-api-cluster"
+  #       ServiceName : "authentication-api-service-wifi"
+  #     }
+  #   }
+	#
+  # }
 
   # stage {
   #   name = "Production-Smoketests"
