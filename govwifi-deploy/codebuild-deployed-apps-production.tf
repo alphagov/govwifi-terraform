@@ -6,9 +6,7 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_pr
   service_role  = aws_iam_role.govwifi_codebuild.arn
 
   artifacts {
-    type                = "CODEPIPELINE"
-    packaging           = "ZIP"
-    encryption_disabled = true
+    type = "NO_ARTIFACTS"
   }
 
   cache {
@@ -34,11 +32,6 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_pr
     }
 
     environment_variable {
-      name  = "STAGE"
-      value = "production"
-    }
-
-    environment_variable {
       name  = "DOCKER_HUB_AUTHTOKEN_ENV"
       value = "/govwifi-cd/pipelines/main/docker_hub_authtoken"
       type  = "PARAMETER_STORE"
@@ -48,17 +41,6 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_pr
       name  = "DOCKER_HUB_USERNAME_ENV"
       value = "/govwifi-cd/pipelines/main/docker_hub_username"
       type  = "PARAMETER_STORE"
-    }
-
-    environment_variable {
-      name  = "WORDLIST_BUCKET_NAME"
-      value = "/govwifi-cd/pipelines/main/wordlist_bucket_name"
-      type  = "PARAMETER_STORE"
-    }
-
-    environment_variable {
-      name  = "ACCEPTANCE_TESTS_PROJECT_NAME"
-      value = "acceptance-tests"
     }
 
     environment_variable {
@@ -80,7 +62,7 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_pr
   }
 
   source {
-    type      = "CODEPIPELINE"
+    type      = "NO_SOURCE"
     buildspec = file("${path.module}/buildspec_production_deployed_image.yml")
   }
 }
