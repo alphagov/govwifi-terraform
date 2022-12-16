@@ -56,9 +56,8 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_st
 
     environment_variable {
       name  = "ACCEPTANCE_TESTS_PROJECT_NAME"
-      value = "govwifi-codebuild-acceptance-tests"
+      value = "acceptance-tests"
     }
-
   }
 
   logs_config {
@@ -82,11 +81,11 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_st
     git_clone_depth = 1
     buildspec       = "buildspec.yml"
   }
-
 }
 
 resource "aws_codebuild_webhook" "govwifi_app_webhook_staging" {
   for_each     = toset(var.deployed_app_names)
+
   project_name = aws_codebuild_project.govwifi_codebuild_project_push_image_to_ecr_staging[each.key].name
 
   build_type = "BUILD"
@@ -102,7 +101,5 @@ resource "aws_codebuild_webhook" "govwifi_app_webhook_staging" {
     #   type    = "HEAD_REF"
     #   pattern = "^refs/heads/buildspec-global-ecr$"
     # }
-
-
   }
 }
