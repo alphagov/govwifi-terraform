@@ -58,14 +58,13 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_pr
 
     environment_variable {
       name  = "ACCEPTANCE_TESTS_PROJECT_NAME"
-      value = "govwifi-codebuild-acceptance-tests"
+      value = "acceptance-tests"
     }
 
     environment_variable {
       name  = "APP"
       value = each.key
     }
-
   }
 
   logs_config {
@@ -84,5 +83,4 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_pr
     type      = "CODEPIPELINE"
     buildspec = file("${path.module}/buildspec_production_deployed_image.yml")
   }
-
 }

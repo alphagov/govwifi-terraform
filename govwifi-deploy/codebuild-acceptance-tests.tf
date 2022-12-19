@@ -1,5 +1,5 @@
 resource "aws_codebuild_project" "govwifi_codebuild_acceptance_tests" {
-  name           = "govwifi-codebuild-acceptance-tests"
+  name           = "acceptance-tests"
   description    = "This project runs the frontend acceptance tests"
   build_timeout  = "12"
   service_role   = aws_iam_role.govwifi_codebuild.arn

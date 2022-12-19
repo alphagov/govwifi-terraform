@@ -1,6 +1,6 @@
 resource "aws_codebuild_project" "govwifi_codebuild_built_app_production" {
   for_each       = toset(var.built_app_names)
-  name           = "Push-${each.key}-docker-image-to-production-ECR"
+  name           = "${each.key}-push-docker-image-to-production-ECR"
   description    = "This project builds the ${each.key} production image and pushes it to ECR."
   build_timeout  = "12"
   service_role   = aws_iam_role.govwifi_codebuild.arn
