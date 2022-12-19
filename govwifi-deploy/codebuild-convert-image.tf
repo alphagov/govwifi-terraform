@@ -3,7 +3,6 @@
 
 resource "aws_codebuild_project" "govwifi_codebuild_project_convert_image_format" {
   for_each      = toset(var.deployed_app_names)
-  # name          = "govwifi-codebuild-convert-image-format-${each.key}"
   name          = "${each.key}-convert-image-format"
   description   = "This job converts the ECR image into a format usable by the ECS deploy stage"
   build_timeout = "5"
