@@ -499,18 +499,18 @@ module "smoke_tests" {
     aws = aws.main
   }
 
-	source = "../../govwifi-smoke-tests"
+  source = "../../govwifi-smoke-tests"
 
-	aws_account_id             = local.aws_account_id
-	env_subdomain              = local.env_subdomain
-	env                        = local.env_name
-	smoketests_vpc_cidr        = var.smoketests_vpc_cidr
-	smoketest_subnet_private_a = var.smoketest_subnet_private_a
-	smoketest_subnet_private_b = var.smoketest_subnet_private_b
-	smoketest_subnet_public_a  = var.smoketest_subnet_public_a
-	smoketest_subnet_public_b  = var.smoketest_subnet_public_b
-	aws_region                 = var.aws_region
-	create_slack_alert         = 1
+  aws_account_id             = local.aws_account_id
+  env_subdomain              = local.env_subdomain
+  env                        = local.env_name
+  smoketests_vpc_cidr        = var.smoketests_vpc_cidr
+  smoketest_subnet_private_a = var.smoketest_subnet_private_a
+  smoketest_subnet_private_b = var.smoketest_subnet_private_b
+  smoketest_subnet_public_a  = var.smoketest_subnet_public_a
+  smoketest_subnet_public_b  = var.smoketest_subnet_public_b
+  aws_region                 = var.aws_region
+  create_slack_alert         = 1
 
 }
 
