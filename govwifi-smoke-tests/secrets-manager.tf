@@ -22,6 +22,15 @@ data "aws_secretsmanager_secret" "gw_user" {
   name = "deploy/gw_user"
 }
 
+data "aws_secretsmanager_secret_version" "slack_alert_url" {
+  secret_id = data.aws_secretsmanager_secret.slack_alert_url.id
+}
+
+data "aws_secretsmanager_secret" "slack_alert_url" {
+  name = "smoketests/slack-alert-url"
+}
+
+
 
 data "aws_secretsmanager_secret_version" "gw_pass" {
   secret_id = data.aws_secretsmanager_secret.gw_pass.id

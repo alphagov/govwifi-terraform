@@ -84,7 +84,7 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_st
 }
 
 resource "aws_codebuild_webhook" "govwifi_app_webhook_staging" {
-  for_each     = toset(var.deployed_app_names)
+  for_each = toset(var.deployed_app_names)
 
   project_name = aws_codebuild_project.govwifi_codebuild_project_push_image_to_ecr_staging[each.key].name
 

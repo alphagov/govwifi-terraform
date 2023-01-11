@@ -55,7 +55,7 @@ resource "aws_codepipeline" "admin_pipeline" {
 
       configuration = {
         ProjectName = aws_codebuild_project.govwifi_codebuild_project_convert_image_format["admin"].name
-     }
+      }
     }
   }
 

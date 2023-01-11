@@ -1,8 +1,10 @@
 resource "aws_sns_topic" "smoke_tests" {
-  name = "govwifi-smoke-tests"
+  count = var.create_slack_alert
+  name  = "govwifi-smoke-tests"
 }
 
 resource "aws_cloudwatch_event_rule" "smoke_tests" {
+  count       = var.create_slack_alert
   name        = "smoke-tests-notification"
   description = "Capture any failed smoke-tests and notify smoke-tests sns topic"
 
@@ -22,7 +24,8 @@ EOF
 
 
 resource "aws_sns_topic_policy" "smoke_tests" {
-  arn = aws_sns_topic.smoke_tests.arn
+  count = var.create_slack_alert
+  arn   = aws_sns_topic.smoke_tests[0].arn
 
   policy = <<EOF
 {
@@ -79,15 +82,23 @@ EOF
 
 
 resource "aws_cloudwatch_event_target" "sns" {
-  rule      = aws_cloudwatch_event_rule.smoke_tests.name
+  count     = var.create_slack_alert
+  rule      = aws_cloudwatch_event_rule.smoke_tests[0].name
   target_id = "SendSmoketestsToSNS"
-  arn       = aws_sns_topic.smoke_tests.arn
+  arn       = aws_sns_topic.smoke_tests[0].arn
 
   input_transformer {
     input_paths = {
       build-id = "$.detail.build-id",
     }
 
-    input_template = "\"Smoke Test Failure: <build-id>\""
+    input_template = "\"@here ${var.env} smoke test failure: <build-id>\""
   }
+}
+
+resource "aws_sns_topic_subscription" "slack_alert_target" {
+  count     = var.create_slack_alert
+  topic_arn = aws_sns_topic.smoke_tests[0].arn
+  protocol  = "lambda"
+  endpoint  = aws_lambda_function.slack_alert[0].arn
 }

@@ -476,7 +476,6 @@ module "govwifi_slack_alerts" {
   critical_notifications_topic_arn         = module.critical_notifications.topic_arn
   capacity_notifications_topic_arn         = module.capacity_notifications.topic_arn
   route53_critical_notifications_topic_arn = module.route53_critical_notifications.topic_arn
-  smoke_tests_notifications_topic_arn      = module.smoke_tests.topic_arn
 }
 
 module "govwifi_elasticsearch" {
@@ -500,16 +499,18 @@ module "smoke_tests" {
     aws = aws.main
   }
 
-  source = "../../govwifi-smoke-tests"
+	source = "../../govwifi-smoke-tests"
 
-  aws_account_id             = local.aws_account_id
-  env_subdomain              = local.env_subdomain
-  env                        = local.env
-  smoketests_vpc_cidr        = var.smoketests_vpc_cidr
-  smoketest_subnet_private_a = var.smoketest_subnet_private_a
-  smoketest_subnet_private_b = var.smoketest_subnet_private_b
-  smoketest_subnet_public_a  = var.smoketest_subnet_public_a
-  smoketest_subnet_public_b  = var.smoketest_subnet_public_b
+	aws_account_id             = local.aws_account_id
+	env_subdomain              = local.env_subdomain
+	env                        = local.env_name
+	smoketests_vpc_cidr        = var.smoketests_vpc_cidr
+	smoketest_subnet_private_a = var.smoketest_subnet_private_a
+	smoketest_subnet_private_b = var.smoketest_subnet_private_b
+	smoketest_subnet_public_a  = var.smoketest_subnet_public_a
+	smoketest_subnet_public_b  = var.smoketest_subnet_public_b
+	aws_region                 = var.aws_region
+	create_slack_alert         = 1
 
 }
 
