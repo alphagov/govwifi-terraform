@@ -377,15 +377,6 @@ module "london_elasticsearch" {
   backend_subnet_id = module.london_backend.backend_subnet_ids[0]
 }
 
-module "datasync" {
-  providers = {
-    aws = aws.us_east_1
-  }
-  source = "../../govwifi-datasync"
-
-  aws_region = local.london_aws_region
-}
-
 module "london_smoke_tests" {
   providers = {
     aws = aws.london
