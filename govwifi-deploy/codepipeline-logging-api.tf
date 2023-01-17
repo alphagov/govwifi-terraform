@@ -134,4 +134,27 @@ resource "aws_codepipeline" "logging_api_pipeline" {
       }
     }
   }
+
+  stage {
+    name = "Production-Restart-Service"
+
+    action {
+      name            = "eu-west-2-deploy"
+      category        = "Build"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      region          = "eu-west-2"
+      input_artifacts = ["govwifi-build-logging-api-convert-imagedetail-amended"]
+
+      # This resource lives in the Staging & Production environments. It will always have to
+      # either be hardcoded or retrieved from the AWS secrets or parameter store
+      role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role"
+      version  = "1"
+
+      configuration = {
+        ProjectName = "govwifi-ecs-update-service-logging-api"
+      }
+    }
+  }
+
 }

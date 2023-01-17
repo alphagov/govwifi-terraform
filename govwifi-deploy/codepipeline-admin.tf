@@ -136,4 +136,27 @@ resource "aws_codepipeline" "admin_pipeline" {
       }
     }
   }
+
+  stage {
+    name = "Production-Restart-Service"
+
+    action {
+      name            = "Production-Deploy-test-eu-west-2"
+      category        = "Build"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      region          = "eu-west-2"
+      input_artifacts = ["govwifi-build-admin-convert-imagedetail-amended"]
+
+      # This resource lives in the Staging & Production environments. It will always have to
+      # either be hardcoded or retrieved from the AWS secrets or parameter store
+      role_arn = "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role"
+      version  = "1"
+
+      configuration = {
+        ProjectName = "govwifi-ecs-update-service-admin"
+      }
+    }
+
+  }
 }

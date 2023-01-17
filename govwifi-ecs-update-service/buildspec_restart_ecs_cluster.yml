@@ -6,10 +6,26 @@ phases:
       - aws --version
   build:
     commands:
-      - echo Build started on `date`
-  post_build:
-    commands:
-      - echo Build completed on `date`
-      - echo Writing image definitions file...
-      - echo "Restart ECS Service Admin in PRODUCTION"
+      - echo "Build started on `date`"
+      - echo "Restart ECS Service $SERVICE_NAME in $ENV_NAME"
       - aws ecs update-service --force-new-deployment --service $SERVICE_NAME --cluster $CLUSTER_NAME
+
+
+      - echo "Waiting for tasks to reach a steady state"
+      - sleep 1m
+      - CURRENT_SERVICE_STATUS=$(aws ecs describe-services --service $SERVICE_NAME --cluster $CLUSTER_NAME | jq -r '.services[].events[0].message')
+      - echo "CURRENT_SERVICE_STATUS is $CURRENT_SERVICE_STATUS"
+      - DESIRED_SERVICE_STATUS="(service $SERVICE_NAME) has reached a steady state."
+      - echo "DESIRED_SERVICE_STATUS is $DESIRED_SERVICE_STATUS"
+      - |
+        while [ "$CURRENT_SERVICE_STATUS" != "$DESIRED_SERVICE_STATUS" ] ; do
+            sleep 15s
+            echo "Waiting for service to reach a steady state"
+            CURRENT_SERVICE_STATUS=$(aws ecs describe-services --service $SERVICE_NAME --cluster $CLUSTER_NAME | jq -r '.services[].events[0].message')
+            echo "CURRENT_SERVICE_STATUS is: $CURRENT_SERVICE_STATUS"
+            if [ "$CURRENT_SERVICE_STATUS" = "$DESIRED_SERVICE_STATUS" ]
+            then
+              exit 0;
+              break
+            fi
+          done

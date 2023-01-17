@@ -2,9 +2,8 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_restart_ecs_cluster"
   for_each      = toset(var.deployed_app_names)
   name          = "govwifi-ecs-update-service-${each.key}"
   description   = "Force restart the service to pick up the latest production image."
-  build_timeout = "60"
-  # service_role  = aws_iam_role.govwifi_codebuild_ecs_restart.arn
-  service_role = "arn:aws:iam::${var.aws_account_id}:role/govwifi-codebuild-role"
+  build_timeout = "10"
+  service_role  = "arn:aws:iam::${var.aws_account_id}:role/govwifi-codebuild-role"
 
   artifacts {
     type = "NO_ARTIFACTS"
@@ -19,12 +18,17 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_restart_ecs_cluster"
 
     environment_variable {
       name  = "SERVICE_NAME"
-      value = each.key == "admin" ? "admin-wifi" : "${each.key}-service-${var.env_name}"
+      value = each.key == "admin" ? "admin-${var.env_name}" : "${each.key}-service-${var.env_name}"
     }
 
     environment_variable {
       name  = "CLUSTER_NAME"
       value = each.key == "admin" ? "${var.env_name}-admin-cluster" : "${var.env_name}-api-cluster"
+    }
+
+    environment_variable {
+      name  = "ENV_NAME"
+      value = var.env_name
     }
 
   }

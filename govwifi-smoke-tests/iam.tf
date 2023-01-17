@@ -102,6 +102,11 @@ resource "aws_iam_role_policy_attachment" "govwifi_codebuild_role_policy" {
   policy_arn = aws_iam_policy.govwifi_codebuild_role_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "govwifi_codebuild_role_deploy_policy" {
+  role       = aws_iam_role.govwifi_codebuild.name
+  policy_arn = "arn:aws:iam::${var.aws_account_id}:policy/govwifi-crossaccount-tools-deploy"
+}
+
 resource "aws_iam_policy" "crossaccount_tools" {
   name        = "govwifi-crossaccount-tools-run-smoke-tests"
   path        = "/"
