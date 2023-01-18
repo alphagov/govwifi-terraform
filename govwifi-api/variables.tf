@@ -188,3 +188,6 @@ variable "alb_permitted_cidr_blocks" {
   type    = list(string)
   default = []
 }
+
+variable "app_env" {
+}

@@ -290,6 +290,7 @@ module "api" {
 
   db_hostname              = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
   rack_env                 = "production"
+  app_env                  = "production"
   sentry_current_env       = "production"
   radius_server_ips        = local.frontend_radius_ips
   user_signup_docker_image = ""
