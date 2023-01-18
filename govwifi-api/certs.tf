@@ -9,7 +9,10 @@ resource "aws_acm_certificate" "api_elb_global" {
 }
 
 resource "aws_acm_certificate_validation" "api_elb_global" {
-  count                   = var.backend_elb_count
+  #  count                   = var.backend_elb_count
+
+  count = var.aws_region_name == "London" ? 0 : var.backend_elb_count
+
   certificate_arn         = aws_acm_certificate.api_elb_global[0].arn
   validation_record_fqdns = [aws_route53_record.elb_global_cert_validation[0].fqdn]
 }

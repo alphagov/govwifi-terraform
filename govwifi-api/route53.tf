@@ -30,7 +30,9 @@ resource "aws_route53_record" "elb_global" {
 }
 
 resource "aws_route53_record" "elb_global_cert_validation" {
-  count   = var.backend_elb_count
+  count = var.aws_region_name == "London" ? 0 : var.backend_elb_count
+  #  count   = var.backend_elb_count
+
   name    = one(aws_acm_certificate.api_elb_global[0].domain_validation_options).resource_record_name
   type    = one(aws_acm_certificate.api_elb_global[0].domain_validation_options).resource_record_type
   zone_id = var.route53_zone_id
