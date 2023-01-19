@@ -1,6 +1,6 @@
 variable "ssh_key_name" {
   type    = string
-  default = "staging-ec2-instances-20200717"
+  default = "govwifi-staging-bastion-key-20230119"
 }
 
 variable "notify_ips" {
