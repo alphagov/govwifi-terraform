@@ -141,7 +141,7 @@ resource "aws_codepipeline" "admin_pipeline" {
     name = "Production-Restart-Service"
 
     action {
-      name            = "Production-Deploy-test-eu-west-2"
+      name            = "eu-west-2-deploy"
       category        = "Build"
       owner           = "AWS"
       provider        = "CodeBuild"
