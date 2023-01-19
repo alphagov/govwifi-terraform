@@ -124,3 +124,6 @@ variable "public_google_api_key" {
 
 variable "bastion_server_ip" {
 }
+
+variable "elasticsearch_endpoint" {
+}
