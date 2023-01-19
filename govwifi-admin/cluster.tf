@@ -110,6 +110,9 @@ resource "aws_ecs_task_definition" "admin_task" {
         },{
           "name": "GOOGLE_MAPS_PUBLIC_API_KEY",
           "value": "${var.public_google_api_key}"
+        },{
+          "name": "ELASTICSEARCH_ENDPOINT",
+          "value": "https://${var.elasticsearch_endpoint}"
         }
       ],
       "secrets": [

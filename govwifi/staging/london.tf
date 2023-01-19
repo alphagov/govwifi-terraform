@@ -203,6 +203,8 @@ module "london_admin" {
   bastion_server_ip = module.london_backend.bastion_public_ip
 
   notification_arn = module.london_notifications.topic_arn
+
+  elasticsearch_endpoint = module.london_elasticsearch.endpoint
 }
 
 module "london_api" {

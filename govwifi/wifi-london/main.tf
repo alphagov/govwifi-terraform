@@ -271,6 +271,8 @@ module "govwifi_admin" {
   zendesk_api_user     = var.zendesk_api_user
 
   bastion_server_ip = var.bastion_server_ip
+
+  elasticsearch_endpoint = module.govwifi_elasticsearch.endpoint
 }
 
 module "api" {
