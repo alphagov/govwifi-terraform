@@ -110,8 +110,9 @@ resource "aws_cloudwatch_event_target" "trigger_smoke_tests" {
   role_arn = aws_iam_role.govwifi_codebuild.arn
 }
 
+# Enable scheduled smoke tests in production environment only
 resource "aws_cloudwatch_event_rule" "smoke_tests_schedule_rule" {
-  is_enabled          = false
+  is_enabled          = var.env == "wifi" ? true : false
   name                = "smoke-tests-scheduled-build"
   schedule_expression = "cron(0/15 * * * ? *)"
 }
