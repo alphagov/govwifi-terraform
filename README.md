@@ -190,7 +190,7 @@ make <environment-name> terraform terraform_cmd="import <name_of_terraform_resou
 #### Confirm SNS subscriptions
 At present confirming SNS subscriptions needs to be done manually. To do this follow the steps below:
 1. Ensure you have fully created the infrastructure for the [Logging API](https://github.com/alphagov/govwifi-logging-api).
-1. Ensure the Logging API app has been deployed to the new environment via our [CI/CD pipeline](https://govwifi-dev-docs.cloudapps.digital/infrastructure/continuous-delivery.html#govwifi-concourse).
+1. Ensure the Logging API app has been deployed to the new environment via our [CI/CD pipeline](https://docs.google.com/document/d/1ORrF2HwrqUu3tPswSlB0Duvbi3YHzvESwOqEY9-w6IQ/).
 1. Login to the AWS Console and navigate to the Cloudwatch section. Locate the User API logs.
 1. Search the logs for the word "SubscriptionConfirmation"
 1. The result will be a long string which begins similarly to:
