@@ -138,7 +138,7 @@ resource "aws_cloudwatch_event_rule" "daily_median_metrics" {
    "containerOverrides": [
      {
        "name": "admin",
-       "command": ["bundle", "exec", "rake", "cleanup:metrics"]
+       "command": ["bundle", "exec", "rake", "elasticsearch:publish_metrics"]
      }
    ]
  }
