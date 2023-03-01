@@ -236,6 +236,7 @@ module "govwifi_admin" {
 
   admin_docker_image   = format("%s/admin:production", local.docker_image_path)
   rails_env            = "production"
+  app_env              = "production"
   sentry_current_env   = "production"
   ecr_repository_count = 1
 
@@ -310,6 +311,7 @@ module "api" {
 
   db_hostname               = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
   rack_env                  = "production"
+  app_env                   = "production"
   sentry_current_env        = "production"
   radius_server_ips         = local.frontend_radius_ips
   subnet_ids                = module.backend.backend_subnet_ids

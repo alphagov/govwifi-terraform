@@ -107,6 +107,9 @@ variable "rr_db_host" {
 variable "rr_db_name" {
 }
 
+variable "app_env" {
+}
+
 variable "user_db_host" {
 }
 

@@ -83,7 +83,7 @@ module "dublin_backend" {
   }
 
   source        = "../../govwifi-backend"
-  env           = "staging"
+  env           = "alpaca"
   env_name      = local.env_name
   env_subdomain = local.env_subdomain
 
@@ -102,7 +102,7 @@ module "dublin_backend" {
 
   bastion_instance_type     = "t2.micro"
   bastion_server_ip         = module.london_backend.bastion_public_ip
-  bastion_ssh_key_name      = "staging-bastion-20200717"
+  bastion_ssh_key_name      = "govwifi-alpaca-bastion-20230120"
   enable_bastion_monitoring = false
   aws_account_id            = local.aws_account_id
 
@@ -120,7 +120,7 @@ module "dublin_backend" {
   rr_storage_gb    = 0
 
   user_db_replica_count  = 1
-  user_replica_source_db = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-staging-user-db"
+  user_replica_source_db = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-alpaca-user-db"
   user_rr_instance_type  = "db.t2.small"
 
   # TODO This should happen inside the module
@@ -168,7 +168,7 @@ module "dublin_keys" {
 
   source = "../../govwifi-keys"
 
-  govwifi_bastion_key_name = "staging-bastion-20200717"
+  govwifi_bastion_key_name = "govwifi-alpaca-bastion-20230120"
   govwifi_bastion_key_pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDL5wGVJ8aXL0QUhIvfLV2BMLC9Tk74jnChC40R9ipzK0AuatcaXdj0PEm8sh8sHlXEmdmVDq/4s8XaEkF7MDl38qbjxxHRTpCgcTrYzJGad3xgr1+zhpD8Kfnepex/2pR7z7kOCv7EDx4vRTc8vu1ttcmJiniBmgjc1xVk1A5aB72GxffZrow7B0iopP16vEPvllUjsDoOaeLJukDzsbZaP2RRYBqIA4qXunfJpuuu/o+T+YR4LkTB+9UBOOGrX50T80oTtJMKD9ndQ9CC9sqlrOzE9GiZz9db7D9iOzIZoTT6dBbgEOfCGmkj7WS2NjF+D/pEN/edkIuNGvE+J/HqQ179Xm/VCx5Kr6ARG+xk9cssCQbEFwR46yitaPA7B4mEiyD9XvUW2tUeVKdX5ybUFqV++2c5rxTczuH4gGlEGixIqPeltRvkVrN6qxnrbDAXE2bXymcnEN6BshwGKR+3OUKTS8c53eWmwiol6xwCp8VUI8/66tC/bCTmeur07z2LfQsIo745GzPuinWfUm8yPkZOD3LptkukO1aIfgvuNmlUKTwKSLIIwwsqTZ2FcK39A8g3Iq3HRV+4JwOowLJcylRa3QcSH9wdjd69SqPrZb0RhW0BN1mTX2tEBl1ryUUpKsqpMbvjl28tn6MGsU/sRhBLqliduOukGubD29LlAQ== "
 
   create_production_bastion_key = 0
@@ -195,8 +195,8 @@ module "dublin_frontend" {
   aws_region_name    = local.dublin_aws_region_name
   route53_zone_id    = data.aws_route53_zone.main.zone_id
   vpc_cidr_block     = local.dublin_frontend_vpc_cidr_block
-  rack_env           = "staging"
-  sentry_current_env = "secondary-staging"
+  rack_env           = "alpaca"
+  sentry_current_env = "secondary-alpaca"
 
   backend_vpc_id = module.dublin_backend.backend_vpc_id
 
@@ -212,12 +212,12 @@ module "dublin_frontend" {
   ssh_key_name = var.ssh_key_name
 
   frontend_docker_image = format(
-    "%s/frontend:staging",
+    "%s/frontend:alpaca",
     replace(local.docker_image_path, local.london_aws_region, local.dublin_aws_region)
   )
 
   raddb_docker_image = format(
-    "%s/raddb:staging",
+    "%s/raddb:alpaca",
     replace(local.docker_image_path, local.london_aws_region, local.dublin_aws_region)
   )
 
@@ -249,8 +249,8 @@ module "dublin_api" {
   }
 
   source        = "../../govwifi-api"
-  env           = "staging"
-  env_name      = "staging"
+  env           = "alpaca"
+  env_name      = "alpaca"
   env_subdomain = local.env_subdomain
 
   backend_elb_count      = 1
@@ -284,9 +284,9 @@ module "dublin_api" {
   ## TODO This should depend on the resource
   user_rr_hostname = "users-rr.${lower(local.dublin_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
 
-  rack_env                = "staging"
+  rack_env                = "alpaca"
   app_env                 = "staging"
-  sentry_current_env      = "secondary-staging"
+  sentry_current_env      = "secondary-alpaca"
   radius_server_ips       = local.frontend_radius_ips
   subnet_ids              = module.dublin_backend.backend_subnet_ids
   private_subnet_ids      = module.dublin_backend.backend_private_subnet_ids
@@ -334,7 +334,7 @@ module "dublin_route53_notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-staging-dublin"
+  topic_name = "govwifi-alpaca-dublin"
   emails     = [var.notification_email]
 }
 
@@ -345,6 +345,6 @@ module "dublin_notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-staging"
+  topic_name = "govwifi-alpaca"
   emails     = [var.notification_email]
 }
