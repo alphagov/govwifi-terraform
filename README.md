@@ -172,21 +172,6 @@ This should then copy the state file to s3, which will be used for all operation
 
 ### Manual Steps Needed to Set Up a New Environment
 
-#### Create RADIUS EIPs
-We currently need to create the Radius EIPs manually and then import them into terraform using the following command:
-```
-make <environment-name> terraform terraform_cmd="import module.frontend.aws_eip.radius_eips[0] <ip_address>"
-```
-Create six new EIPs (see here for more information [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html#using-instance-addressing-eips-allocating)). Three in the eu-west-1 region (Ireland) and three in the eu-west-2 (London) region. These values then need to be added to the govwifi-build repo under the `non-encrypted` directory for your environment (see [here](https://github.com/alphagov/govwifi-build/blob/21bf25b34ed12995b3246016b0193cf46e2c8d2d/non-encrypted/secrets-to-copy/govwifi/wifi-london/variables.auto.tfvars#L33-L37) for an example).
-
-#### Create Prometheus & Grafana EIPs
-Follow the process outlined above to create the Prometheus & Grafana EIPs manually. Create three new EIPs, one in the eu-west-1 region, two in the eu-west-2 region. These values then need to be added to the govwifi-build repo under the non-encrypted variables directory for your environment (see [here](https://github.com/alphagov/govwifi-build/blob/21bf25b34ed12995b3246016b0193cf46e2c8d2d/non-encrypted/secrets-to-copy/govwifi/staging-london-temp/variables.auto.tfvars#L29-L33) for an example).
-
-After this is done import them into terraform using the following command:
-```
-make <environment-name> terraform terraform_cmd="import <name_of_terraform_resource> <ip_address>"
-```
-
 #### Configure SES Rulesets
 Terraform currently does not provide a way to do this for us.
 1. Login to the AWS console and ensure you are in the eu-west-1 region (Ireland).
