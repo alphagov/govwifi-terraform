@@ -187,23 +187,6 @@ After this is done import them into terraform using the following command:
 make <environment-name> terraform terraform_cmd="import <name_of_terraform_resource> <ip_address>"
 ```
 
-#### Confirm SNS subscriptions
-At present confirming SNS subscriptions needs to be done manually. To do this follow the steps below:
-1. Ensure you have fully created the infrastructure for the [Logging API](https://github.com/alphagov/govwifi-logging-api).
-1. Ensure the Logging API app has been deployed to the new environment via our [CI/CD pipeline](https://docs.google.com/document/d/1ORrF2HwrqUu3tPswSlB0Duvbi3YHzvESwOqEY9-w6IQ/).
-1. Login to the AWS Console and navigate to the Cloudwatch section. Locate the User API logs.
-1. Search the logs for the word "SubscriptionConfirmation"
-1. The result will be a long string which begins similarly to:
-```
-{
-  "Type" : "SubscriptionConfirmation",
-  "MessageId" : "165545c9-2a5c-472c-8df2-7ff2be2b3b1b",
-  "Token" : "2336412f37...",
-```
-1. Copy the value for `Token`
-1. Go to SNS, select the subscription you need to confirm, select the "Confirm Subscription" button and paste the token into the input field.
-1. You can find detailed information about this process in [AWS's documentation](https://docs.aws.amazon.com/sns/latest/dg/sns-message-and-json-formats.html).
-
 #### Configure SES Rulesets
 Terraform currently does not provide a way to do this for us.
 1. Login to the AWS console and ensure you are in the eu-west-1 region (Ireland).
