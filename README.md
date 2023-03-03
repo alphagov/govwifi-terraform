@@ -45,8 +45,8 @@ For historical use of secrets please see: [GovWifi build](https://github.com/alp
 Initialise terraform if running for the first time:
 
 ```
-make <ENV> init-backend
-make <ENV> plan
+gds aws <ENV> -- make <ENV> init-backend
+gds aws <ENV> -- make <ENV> plan
 ```
 
 Example ENVs are: `wifi`, `wifi-london` and `staging`.
@@ -54,8 +54,8 @@ Example ENVs are: `wifi`, `wifi-london` and `staging`.
 ## Running terraform
 
 ```
-make <ENV> plan
-make <ENV> apply
+gds aws <ENV> -- make <ENV> plan
+gds aws <ENV> -- make <ENV> apply
 ```
 
 ### Running terraform target
@@ -67,7 +67,7 @@ We've incorporated this functionality into our `make` commands. **Note**: this s
 To retrieve a module name, run a `terraform plan` and copy the module name (EXCLUDING "module.") from the Terraform output:
 
 ```bash
-$ make staging plan
+$ gds aws <ENV> -- make staging plan
 ...
 
 An execution plan has been generated and is shown below.
@@ -85,14 +85,14 @@ In this case, the module name would be `api.aws_iam_role_policy.some_policy`
 To `plan`/`apply` a specific resource use the standard `make <ENV> plan | apply` followed by a space separated list of one or more modules:
 
 ```
-$ make <ENV> plan modules="backend.some.resource api.some.resource"
-$ make <ENV> apply modules="frontend.some.resource"
+$ gds aws <ENV> -- make <ENV> plan modules="backend.some.resource api.some.resource"
+$ gds aws <ENV> -- make <ENV> apply modules="frontend.some.resource"
 ```
 
 If combining other Terraform commands (e.g., `-var` or `-replace`) with targeting a resource, use the `terraform_target` command:
 
 ```bash
-$ make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
+$ gds aws <ENV> -- make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
 ```
 
 #### Deriving module names
@@ -184,6 +184,9 @@ This should then copy the state file to s3, which will be used for all operation
 
 ### Manual Steps Needed to Set Up a New Environment
 
+#### Add DKIM Authentication
+Ensure you are in the eu-west-1 region (Ireland) and follow the instructions here(https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-authentication-dkim-easy-setup-domain.html) to verify your new subdomain (e.g. staging.wifi.service.gov.uk)
+
 #### Activate SES Rulesets
 The SES ruleset must be manually activated. 
 1. Login to the AWS console and ensure you are in the eu-west-1 region (Ireland).
@@ -191,8 +194,9 @@ The SES ruleset must be manually activated.
 1. Select  “GovWifiRuleSet” from the list
 1. Select the "Set as active" button
 
-#### Configure SES to Send Email
-Ensure you are in the eu-west-1 region (Ireland) and follow the instructions here(https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-authentication-dkim-easy-setup-domain.html) to verify your new subdomain (e.g. staging.wifi.service.gov.uk)
+#### Setting Up The Deployment Pipelines
+
+
 
 ## Rotating ELB Certificates
 
