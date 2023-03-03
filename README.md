@@ -172,11 +172,12 @@ This should then copy the state file to s3, which will be used for all operation
 
 ### Manual Steps Needed to Set Up a New Environment
 
-#### Configure SES Rulesets
-Terraform currently does not provide a way to do this for us.
+#### Activate SES Rulesets
+The SES ruleset must be manually activated. 
 1. Login to the AWS console and ensure you are in the eu-west-1 region (Ireland).
 1. Go to the SES section and select "Email receiving”.
-1. Select “Create rule set” and enter the name “GovWifiRuleSet”.
+1. Select  “GovWifiRuleSet” from the list
+1. Select the "Set as active" button
 
 #### Configure SES to Send Email
 Ensure you are in the eu-west-1 region (Ireland) and follow the instructions here(https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-authentication-dkim-easy-setup-domain.html) to verify your new subdomain (e.g. staging.wifi.service.gov.uk)
