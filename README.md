@@ -194,8 +194,36 @@ The SES ruleset must be manually activated.
 1. Select  “GovWifiRuleSet” from the list
 1. Select the "Set as active" button
 
-#### Setting Up The Deployment Pipelines
+#### Setting Up Deployment Pipelines For A New GovWifi Environment
 
+Our deploy pipelines exist in a separate account. You can access it with the following command:
+
+` gds aws govwifi-tools -l`
+
+In order to deploy applications you will need to create a new set of pipelines for that environment.
+- There are set of template terraform files for creating pipelines for a new environment in govwifi-terraform/tools/pipeline-templates. You can copy these across manually and change the names or you can use the commands below. ** All commands are run from the govwifi-terraform root directory **
+- Copy all the pipeline terraform template files in `govwifi-terraform/tools/pipeline-templates` to the govwifi-deploy directory:
+
+```
+for filename in tools/pipeline-templates/*your-env-name*;  do cp -Rp $filename ./govwifi-deploy/$(basename $filename) ; done
+
+```
+
+- Update the names of the terraform resources in the template files to match your new environment
+
+```
+for filename in ./govwifi-deploy/*your-env-name* ; do sed -i '' 's/your-env-name/<ENV_NAME>/g' $filename ; done
+```
+
+- Change the names of the files to match your new environment (change  **<NEW-ENV-NAME>** to your new environment name e.g. "dev")
+
+```
+for filename in ./govwifi-deploy/*your-env-name* ; do mv $filename ${filename/your-env-name/<NEW-ENV-NAME>}  ; done
+```
+
+##### Updating Other Pipeline files:
+
+You will also need to add 
 
 
 ## Rotating ELB Certificates
