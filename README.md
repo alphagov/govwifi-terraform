@@ -125,6 +125,18 @@ It should look like this, `module.backend.aws_instance.management`:
 ## Bootstrapping terraform
 You will need to run terraform in the **eu-west-2 (London) region** first. If you try to run terraform in the eu-west-1 region first, you will encounter errors because the Dublin Terraform looks up outputs from the London region statefile.
 
+### Create The Access Logs S3 Bucket
+
+This holds information related to the terraform state, and must be created manually before the initial terraform run in a new environment. You will need to create two S3 buckets. One in eu-west-1 and one in eu-west-2. The bucket name must match this naming convention:
+
+`govwifi-<ENV>-<AWS-REGION-NAME>-accesslogs`
+
+An example command for creating the bucket in the Staging environment for the London region would be:
+
+```
+gds aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-london-accesslogs --region eu-west-2 
+```
+
 ### Setting Up Remote State
 We use remote state, but there is a chicken and egg problem of creating a state bucket in which to store the remote state. When you are first creating a new environment (or migrating an environment not using remote state to use remote state) you will need to do the following
 
@@ -145,12 +157,12 @@ The first time terraform is run in a new environment the replication configurati
 Now run
 
 ```
-make <ENV> plan
+gds aws <ENV> -- make <ENV> plan
 ```
 And then
 
 ```
-make <ENV> apply
+gds aws <ENV> -- make <ENV> apply
 ```
 
 This should create the remote state bucket for you if migrating, or create the
@@ -159,13 +171,13 @@ entire infrastructure with a local state file if creating a new env
 Then uncomment the backend section in main.tf and run
 
 ```
-make <ENV> init-backend
+gds aws <ENV> -- make <ENV> init-backend
 ```
 
 Then run
 
 ```
-make <ENV> apply
+gds aws <ENV> -- make <ENV> apply
 ```
 
 This should then copy the state file to s3, which will be used for all operations. Once you have run terraform in both regions, and the S3 buckets used for the access log replication have been created, uncomment the replication configuration sections in govwifi-terraform/terraform-state/accesslogs.tf and govwifi-terraform/terraform-state/tfstate.tf.
