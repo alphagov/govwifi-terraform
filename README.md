@@ -159,6 +159,23 @@ The APP_ENV environment variable for any new GovWifi environment should be set t
 
 There is work planned to improve this process, and make the apps more environment agnostic.
 
+#### Update Govwifi-Build
+
+##### Add A Directory For Your New Environment
+We keep sensitive (but non secret information) in a private repo called govwifi-build(https://github.com/alphagov/govwifi-build). This folder is only accessible to GovWifi team members.  If you create a new GovWifi environment you will need to add new directory of the same name [here](https://github.com/alphagov/govwifi-build/tree/master/non-encrypted/secrets-to-copy/govwifi). 
+Instructions
+- Make a copy of the staging directory and rename it to your environment name
+- Replace any references to `staging` in the newly created directory with your new environment name.
+[See here for an example commit](https://github.com/alphagov/govwifi-build/pull/541/files#diff-3382ad2da7f814e1bbd3a3ae321be41d7e23db80734611bb4ac90ab30d690cc5).
+
+##### Add An SSH Key That Will Be Used By Your New Environment
+
+- Generate an ssh keypair.
+- Add encrypted versions of the files to the govwifi-build/passwords/keys/ using the instructions [here](https://govwifi-dev-docs.cloudapps.digital/infrastructure/secrets.html#adding-editing-a-secret).
+- Update the terraform for your environment:
+  - With the name of the key and **public** key file in the dublin-keys module in the dublin.tf file of your environment [See here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R171-R172).
+  - Update name of key in dublin_backend module of dublin.tf, [see here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R105).
+  - Update the `ssh_key_name` variable in the variables.ft with the name of the ssh key [see here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-481c8f75e7c6c7ff9da71e734bc80ea24feff6f398f07b81ce8bd0439d9e8c8eR3)
 
 ### Prepare The AWS Environment
 If you are running terraform in a brand new AWS account, then you will need to ensure the following steps have been completed before terraform will execute without error.
@@ -232,6 +249,10 @@ gds aws <ENV> -- make <ENV> apply
 
 This should then copy the state file to s3, which will be used for all operations. Once you have run terraform in both regions, and the S3 buckets used for the access log replication have been created, uncomment the replication configuration sections in govwifi-terraform/terraform-state/accesslogs.tf and govwifi-terraform/terraform-state/tfstate.tf.
 
+After you have finished terraforming follow the manual steps below to complete the setup. 
+
+** NOTE: There is currently a bug within AWS that means that terraform can get stuck "Creating" RDS instances. If this happens, wait 2 hours and try another terraform apply **
+
 ### Manual Steps Needed to Set Up a New Environment
 
 #### Add DKIM Authentication
@@ -283,7 +304,14 @@ You will also need to do the following in the tools account:
   - Add appropriate codepipeline permissions [see here for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-02cf364873b2fce26391e6e2b6d9ed222ce8e8f23f7d745e5c8024b02a932389).
   - Allow your new environment to access the KMS keys used by Codepipeline [see here for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-8a01e39d3fd4d4d2ee124f9f0c45495bb36677f5384040c59ff023b3f517032d).
   
+#### Restoring The Databases
 
+Follow the instructions [here](https://govwifi-dev-docs.cloudapps.digital/infrastructure/database-restore.html#restoring-databases) to restore the databases.
+
+** NOTE: If you are setting up a new environment and the `app_env` variable has been set to `staging` then copy the databases from the pre-existing staging environment and leave any references to `staging` in the database names unchanged. For example the user database name would be left as `govwifi_staging_users`. The `app_env` value in terraform MUST match the database environment reference otherwise the GovWifi applications will fail to start. **
+
+
+---
 
 ## Rotating ELB Certificates
 
