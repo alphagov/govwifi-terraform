@@ -223,7 +223,16 @@ for filename in ./govwifi-deploy/*your-env-name* ; do mv $filename ${filename/yo
 
 ##### Updating Other Pipeline files:
 
-You will also need to add 
+You will also need to do the following in the tools account: 
+
+- Add the new environment's account number to AWS Secrets Manager, and then add it to terraform, [see here for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-d94ff418330c275e25ef2b45b9d7d2dd4a9ef3720db62dd38073bd72773562d4). 
+- Add your new AWS account ID as a local variable in the govwifi-deploy module, [see here for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-80629d600c5574b9e7d4dc7ba991ce39068d32cabd1046130d5e8e4827460f77). 
+- An ECR repository for your new environment,  [see here for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-62eed9657e3fa19b6a5801b47b549ab70711b54c5997c50fb90a395653cccf9d).
+- Give the GovWifi Tools account permission to deploy things in your new environment
+  - Add appropriate S3 access: [see here for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-d94ff418330c275e25ef2b45b9d7d2dd4a9ef3720db62dd38073bd72773562d4).
+  - Add appropriate codepipeline permissions [see here for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-02cf364873b2fce26391e6e2b6d9ed222ce8e8f23f7d745e5c8024b02a932389).
+  - Allow your new environment to access the KMS keys used by Codepipeline [see here for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-8a01e39d3fd4d4d2ee124f9f0c45495bb36677f5384040c59ff023b3f517032d).
+  
 
 
 ## Rotating ELB Certificates
