@@ -123,7 +123,22 @@ It should look like this, `module.backend.aws_instance.management`:
 | module  | backend | aws_instance | management |
 
 ## Bootstrapping terraform
-You will need to run terraform in the **eu-west-2 (London) region** first. If you try to run terraform in the eu-west-1 region first, you will encounter errors because the Dublin Terraform looks up outputs from the London region statefile.
+
+### Prepare The AWS Environment
+If you are running terraform in a brand new AWS account, then you will need to ensure the following steps have been completed before terraform will execute without error.
+
+#### AWS Secret Manager
+Ensure all required secrets have been entered into AWS Secrets manager in region eu-west-2 of your of your new account ([replicate over any secrets needed by resources in eu-west-1](https://docs.aws.amazon.com/secretsmanager/latest/userguide/create-manage-multi-region-secrets.html)). The name of the credentials in Secrets Manager MUST match the names of the secrets that already exist in the code. 
+
+There is work planned to autogenerate the bulk of these secrets, however at present this is a manual process, which generally takes around 2 hours. You can look at the secrets in pre-existing environments for a guide. 
+
+#### Increase The Default AWS Quotas
+Terraform needs to create a larger number of resources than AWS allows out of the box. Luckily it is easy to get these limits increased. 
+- [Follow the instructions from AWS to request an increase](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html).
+- Increase the quotas in your new account so they match the following
+  - Elastic IPs 22
+  - VPCs per Region 10
+
 
 ### Create The Access Logs S3 Bucket
 
