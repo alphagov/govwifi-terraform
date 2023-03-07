@@ -38,7 +38,7 @@ Sensitive credentials are stored in AWS Secrets Manager in the format of `<servi
 
 `service` will be the GovWifi service (admin, radius, user-signup, logging) related to that secret. If the secret is not specific to a GovWifi service, use the AWS service or product it relates to (e.g., rds, s3, grafana).
 
-For historical use of secrets please see: [GovWifi build](https://github.com/alphagov/govwifi-build)
+For historical use of secrets  please see: [GovWifi build](https://github.com/alphagov/govwifi-build). This is now used to store non secret but sensitive information such as IP ranges.
 
 ## Running terraform for the first time
 
@@ -124,6 +124,42 @@ It should look like this, `module.backend.aws_instance.management`:
 
 ## Bootstrapping terraform
 
+### Creating The Terraform For A Brand New GovWifi Environment
+Follow the steps below to create a brand new GovWifi environment:
+
+#### Duplicate & Rename All The Files Used For Our Staging Environment
+Edit, then run following command from the root of the govwifi-terraform directory to copy all the files you need for a new environment (replace `<NEW-ENV-NAME>` with the name of your new environment e.g. `foo`):
+
+
+```
+cp -Rp govwifi/staging govwifi/<NEW-ENV-NAME>
+
+```
+
+#### Change The Terraform Resource names
+Edit then run the command below to update the terraform resource names (replace `<NEW-ENV-NAME>` with the name of your new environment e.g. `foo`):
+
+```
+for filename in ./govwifi/<NEW-ENV-NAME>/* ; do sed -i '' 's/staging/<NEW-ENV-NAME>/g' $filename ; done
+```
+
+#### Add The New Environment To The Makefile
+Add the new environment to the Makefile. [See here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-76ed074a9305c04054cdebb9e9aad2d818052b07091de1f20cad0bbac34ffb52).
+
+#### Update Application Environment Variables 
+
+Do a search for `app_env` in the london.tf and dublin.f files for your new environment. Set this variable to `staging` anywhere you encounter it [See this commit for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R288).
+
+Also set the `user_db_name` variable in the london_admin module of the london.tf file for your environment to `govwifi_staging_users` [see here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88R189).
+
+
+Due to the way the GovWifi Ruby applications have been built the apps will expect to be running in one of 
+
+The APP_ENV environment variable for any new GovWifi environment should be set to `staging`, unless this is a real diaster recovery of production. The `dev` setting is only used when the app containers are run on a developers local machine.
+
+There is work planned to improve this process, and make the apps more environment agnostic.
+
+
 ### Prepare The AWS Environment
 If you are running terraform in a brand new AWS account, then you will need to ensure the following steps have been completed before terraform will execute without error.
 
@@ -138,7 +174,6 @@ Terraform needs to create a larger number of resources than AWS allows out of th
 - Increase the quotas in your new account so they match the following
   - Elastic IPs 22
   - VPCs per Region 10
-
 
 ### Create The Access Logs S3 Bucket
 
