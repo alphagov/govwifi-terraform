@@ -207,13 +207,20 @@ gds aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-lond
 ### Setting Up Remote State
 We use remote state, but there is a chicken and egg problem of creating a state bucket in which to store the remote state. When you are first creating a new environment (or migrating an environment not using remote state to use remote state) you will need to do the following
 
-Comment out the section
+#### Manually Create S3 State Bucket 
+gds aws <ENV> -- aws s3api create-bucket --bucket govwifi-<ENV>-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
+
+#### Initialize The Backend
+
 ```
-terraform {
-  backend          "s3"             {}
-}
+gds aws <ENV> -- make <ENV> init-backend
 ```
-in the main.tf file of the environment to be migrated. Then comment out the lines related to replication configuration in govwifi-terraform/terraform-state/accesslogs.tf and govwifi-terraform/terraform-state/tfstate.tf.
+
+#### Import S3 State bucket 
+gds-cli aws <ENV> -- make <ENV> terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-<env>-tfstate-eu-west-2"
+
+
+Then comment out the lines related to replication configuration in govwifi-terraform/terraform-state/accesslogs.tf and govwifi-terraform/terraform-state/tfstate.tf.
 ```
 replication_configuration{
   ....
@@ -221,33 +228,24 @@ replication_configuration{
 ```
 The first time terraform is run in a new environment the replication configuration lines need to be commented out because the replication bucket in eu-west-1 will not yet exist. Leaving these lines uncommented will cause an error.
 
+
 Now run
 
 ```
 gds aws <ENV> -- make <ENV> plan
 ```
+
+For example
+
+```
+gds aws govwifi-development -- make alpaca plan
+```
+
 And then
 
 ```
 gds aws <ENV> -- make <ENV> apply
 ```
-
-This should create the remote state bucket for you if migrating, or create the
-entire infrastructure with a local state file if creating a new env
-
-Then uncomment the backend section in main.tf and run
-
-```
-gds aws <ENV> -- make <ENV> init-backend
-```
-
-Then run
-
-```
-gds aws <ENV> -- make <ENV> apply
-```
-
-This should then copy the state file to s3, which will be used for all operations. Once you have run terraform in both regions, and the S3 buckets used for the access log replication have been created, uncomment the replication configuration sections in govwifi-terraform/terraform-state/accesslogs.tf and govwifi-terraform/terraform-state/tfstate.tf.
 
 After you have finished terraforming follow the manual steps below to complete the setup. 
 
