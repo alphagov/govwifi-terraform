@@ -255,6 +255,15 @@ After you have finished terraforming follow the manual steps below to complete t
 
 ### Manual Steps Needed to Set Up a New Environment
 
+#### DNS Setup
+- Create a hosted zone in your new environment in the following format `<your_new_env>.wifi.service.gov.uk` (for example `foobar.wifi.service.gov.uk` )
+- Copy the NS records for the newly created hosted zone.
+- Log into the GovWifi Production AWS account `gds aws govwifi -l`
+- In the production account in Route53 go to the `wifi.service.gov.uk` hosted zone.
+- Add a NS record for your new environment with the copied NS records. 
+- Validate DNS delegation is complete:
+  - Verify DNS delegation is complete ` dig -t NS <your_env>.wifi.service.gov.uk`  The result should match the your new environments NS records.
+
 #### Add DKIM Authentication
 Ensure you are in the eu-west-1 region (Ireland) and follow the instructions here(https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-authentication-dkim-easy-setup-domain.html) to verify your new subdomain (e.g. staging.wifi.service.gov.uk)
 
