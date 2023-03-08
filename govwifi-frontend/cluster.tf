@@ -1,14 +1,5 @@
 # Create ECS Cluster
 
-resource "aws_ecs_cluster" "frontend_cluster" {
-  name = "${var.env_name}-frontend-cluster"
-
-  setting {
-    name  = "containerInsights"
-    value = "enabled"
-  }
-}
-
 resource "aws_ecs_cluster" "frontend_fargate" {
   name = "frontend-fargate"
 
@@ -354,24 +345,6 @@ resource "aws_ecs_task_definition" "frontend_fargate" {
   }
 ]
 EOF
-}
-
-resource "aws_ecs_service" "frontend_service" {
-  name            = "frontend-service-${var.env_name}"
-  cluster         = aws_ecs_cluster.frontend_cluster.id
-  task_definition = aws_ecs_task_definition.radius_task.arn
-  desired_count   = var.radius_instance_count
-
-  ordered_placement_strategy {
-    type  = "spread"
-    field = "instanceId"
-  }
-
-  # TODO: Terraform has problems tagging this service due to ARN
-  # issues in production, so avoid this by ignoring tag changes
-  lifecycle {
-    ignore_changes = [tags_all]
-  }
 }
 
 resource "aws_ecs_service" "load_balanced_frontend_service" {
