@@ -192,7 +192,7 @@ Terraform needs to create a larger number of resources than AWS allows out of th
   - Elastic IPs 22
   - VPCs per Region 10
 
-### Create The Access Logs S3 Bucket
+#### Create The Access Logs S3 Bucket
 
 This holds information related to the terraform state, and must be created manually before the initial terraform run in a new environment. You will need to create two S3 buckets. One in eu-west-1 and one in eu-west-2. The bucket name must match this naming convention:
 
@@ -249,7 +249,7 @@ gds aws <ENV> -- make <ENV> apply
 
 After you have finished terraforming follow the manual steps below to complete the setup. 
 
-** NOTE: There is currently a bug within AWS that means that terraform can get stuck "Creating" RDS instances. If this happens, wait 2 hours and try another terraform apply **
+**NOTE: There is currently a bug within AWS that means that terraform can get stuck "Creating" RDS instances. If this happens, wait 2 hours and try another terraform apply**
 
 ### Manual Steps Needed to Set Up a New Environment
 
@@ -279,7 +279,7 @@ Our deploy pipelines exist in a separate account. You can access it with the fol
 ` gds aws govwifi-tools -l`
 
 In order to deploy applications you will need to create a new set of pipelines for that environment.
-- There are set of template terraform files for creating pipelines for a new environment in govwifi-terraform/tools/pipeline-templates. You can copy these across manually and change the names or you can use the commands below. ** All commands are run from the govwifi-terraform root directory **
+- There are set of template terraform files for creating pipelines for a new environment in govwifi-terraform/tools/pipeline-templates. You can copy these across manually and change the names or you can use the commands below. **All commands are run from the govwifi-terraform root directory**
 - Copy all the pipeline terraform template files in `govwifi-terraform/tools/pipeline-templates` to the govwifi-deploy directory:
 
 ```
@@ -315,8 +315,28 @@ You will also need to do the following in the tools account:
 
 Follow the instructions [here](https://govwifi-dev-docs.cloudapps.digital/infrastructure/database-restore.html#restoring-databases) to restore the databases.
 
-** NOTE: If you are setting up a new environment and the `app_env` variable has been set to `staging` then copy the databases from the pre-existing staging environment and leave any references to `staging` in the database names unchanged. For example the user database name would be left as `govwifi_staging_users`. The `app_env` value in terraform MUST match the database environment reference otherwise the GovWifi applications will fail to start. **
+**NOTE: If you are setting up a new environment and the `app_env` variable has been set to `staging` then copy the databases from the pre-existing staging environment and leave any references to `staging` in the database names unchanged. For example the user database name would be left as `govwifi_staging_users`. The `app_env` value in terraform MUST match the database environment reference otherwise the GovWifi applications will fail to start.**
 
+---
+## Updating task definitions 
+
+This affects the following apps: 
+admin
+authentication-api
+user-api
+logging-api apps
+
+Once the task definitions for the above apps have been created by terraform, they are then managed by Codepipeline.  When the pipelines run for the first time after their initial creation, they store a copy of the task definition for that application in memory. If you create a new version of a task definition, **Codepipeline will still use the previous one AND CONTINUE to deploy the old one**. To get Codepipeline to use new task definitions you need to recreate the  pipelines. This is a flaw on AWS's part. Instructions for a work around are below:
+ 
+- First apply your task definition change.
+- Remove the "ignore_task" attribute for the service you are modifying. For example if you were changing the admin task [you would remove the task_definition element in this array](https://github.com/alphagov/govwifi-terraform/blob/5482ac674b74b946b66040e158101bd4aa703a44/govwifi-admin/cluster.tf#L207). For example change the line so it reads `ignore_changes = [tags_all, task_definition]`)  
+- Using terraform destroy pipeline for the particular application you are changing the task definition for. For example, if you were changing the task definition for the admin pipeline, [comment out this entire file](https://github.com/alphagov/govwifi-terraform/blob/5482ac674b74b946b66040e158101bd4aa703a44/govwifi-deploy/alpaca-codepipeline-admin.tf). 
+  - Run terraform the govwifi tools account with `gds aws govwifi-tools -- make govwifi-tools apply`
+- Recreate the pipeline  using terraform 
+  - Uncomment previously commented lines
+	- Run terraform in tools again
+	- Warning: The pipelines will run as soon as they are created. But will not deploy to production without manual approval. [See the pipeline documentation for more information](https://docs.google.com/document/d/1ORrF2HwrqUu3tPswSlB0Duvbi3YHzvESwOqEY9-w6IQ/edit#heading=h.j6kp1kgy7mfw). 
+  - The new task definition should now be picked up.
 
 ---
 
