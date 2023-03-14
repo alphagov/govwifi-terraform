@@ -45,8 +45,8 @@ For historical use of secrets  please see: [GovWifi build](https://github.com/al
 Initialise terraform if running for the first time:
 
 ```
-gds aws <ENV> -- make <ENV> init-backend
-gds aws <ENV> -- make <ENV> plan
+gds-cli aws <ENV> -- make <ENV> init-backend
+gds-cli aws <ENV> -- make <ENV> plan
 ```
 
 Example ENVs are: `wifi`, `wifi-london` and `staging`.
@@ -54,8 +54,8 @@ Example ENVs are: `wifi`, `wifi-london` and `staging`.
 ## Running terraform
 
 ```
-gds aws <ENV> -- make <ENV> plan
-gds aws <ENV> -- make <ENV> apply
+gds-cli aws <ENV> -- make <ENV> plan
+gds-cli aws <ENV> -- make <ENV> apply
 ```
 
 ### Running terraform target
@@ -67,7 +67,7 @@ We've incorporated this functionality into our `make` commands. **Note**: this s
 To retrieve a module name, run a `terraform plan` and copy the module name (EXCLUDING "module.") from the Terraform output:
 
 ```bash
-$ gds aws <ENV> -- make staging plan
+$ gds-cli aws <ENV> -- make staging plan
 ...
 
 An execution plan has been generated and is shown below.
@@ -85,14 +85,14 @@ In this case, the module name would be `api.aws_iam_role_policy.some_policy`
 To `plan`/`apply` a specific resource use the standard `make <ENV> plan | apply` followed by a space separated list of one or more modules:
 
 ```
-$ gds aws <ENV> -- make <ENV> plan modules="backend.some.resource api.some.resource"
-$ gds aws <ENV> -- make <ENV> apply modules="frontend.some.resource"
+$ gds-cli aws <ENV> -- make <ENV> plan modules="backend.some.resource api.some.resource"
+$ gds-cli aws <ENV> -- make <ENV> apply modules="frontend.some.resource"
 ```
 
 If combining other Terraform commands (e.g., `-var` or `-replace`) with targeting a resource, use the `terraform_target` command:
 
 ```bash
-$ gds aws <ENV> -- make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
+$ gds-cli aws <ENV> -- make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
 ```
 
 #### Deriving module names
@@ -201,19 +201,19 @@ This holds information related to the terraform state, and must be created manua
 An example command for creating the bucket in the Staging environment for the London region would be:
 
 ```
-gds aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-london-accesslogs --region eu-west-2 
+gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-london-accesslogs --region eu-west-2 
 ```
 
 ### Setting Up Remote State
 We use remote state, but there is a chicken and egg problem of creating a state bucket in which to store the remote state. When you are first creating a new environment (or migrating an environment not using remote state to use remote state) you will need to do the following
 
 #### Manually Create S3 State Bucket 
-gds aws <ENV> -- aws s3api create-bucket --bucket govwifi-<ENV>-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
+gds-cli aws <ENV> -- aws s3api create-bucket --bucket govwifi-<ENV>-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
 
 #### Initialize The Backend
 
 ```
-gds aws <ENV> -- make <ENV> init-backend
+gds-cli aws <ENV> -- make <ENV> init-backend
 ```
 
 #### Import S3 State bucket 
@@ -232,19 +232,19 @@ The first time terraform is run in a new environment the replication configurati
 Now run
 
 ```
-gds aws <ENV> -- make <ENV> plan
+gds-cli aws <ENV> -- make <ENV> plan
 ```
 
 For example
 
 ```
-gds aws govwifi-development -- make alpaca plan
+gds-cli aws govwifi-development -- make alpaca plan
 ```
 
 And then
 
 ```
-gds aws <ENV> -- make <ENV> apply
+gds-cli aws <ENV> -- make <ENV> apply
 ```
 
 After you have finished terraforming follow the manual steps below to complete the setup. 
@@ -256,7 +256,7 @@ After you have finished terraforming follow the manual steps below to complete t
 #### DNS Setup
 - Create a hosted zone in your new environment in the following format `<your_new_env>.wifi.service.gov.uk` (for example `foobar.wifi.service.gov.uk` )
 - Copy the NS records for the newly created hosted zone.
-- Log into the GovWifi Production AWS account `gds aws govwifi -l`
+- Log into the GovWifi Production AWS account `gds-cli aws govwifi -l`
 - In the production account in Route53 go to the `wifi.service.gov.uk` hosted zone.
 - Add a NS record for your new environment with the copied NS records. 
 - Validate DNS delegation is complete:
@@ -276,7 +276,7 @@ The SES ruleset must be manually activated.
 
 Our deploy pipelines exist in a separate account. You can access it with the following command:
 
-` gds aws govwifi-tools -l`
+` gds-cli aws govwifi-tools -l`
 
 In order to deploy applications you will need to create a new set of pipelines for that environment.
 - There are set of template terraform files for creating pipelines for a new environment in govwifi-terraform/tools/pipeline-templates. You can copy these across manually and change the names or you can use the commands below. **All commands are run from the govwifi-terraform root directory**
@@ -331,7 +331,7 @@ Once the task definitions for the above apps have been created by terraform, the
 - First apply your task definition change.
 - Remove the "ignore_task" attribute for the service you are modifying. For example if you were changing the admin task [you would remove the task_definition element in this array](https://github.com/alphagov/govwifi-terraform/blob/5482ac674b74b946b66040e158101bd4aa703a44/govwifi-admin/cluster.tf#L207). For example change the line so it reads `ignore_changes = [tags_all, task_definition]`)  
 - Using terraform destroy pipeline for the particular application you are changing the task definition for. For example, if you were changing the task definition for the admin pipeline, [comment out this entire file](https://github.com/alphagov/govwifi-terraform/blob/5482ac674b74b946b66040e158101bd4aa703a44/govwifi-deploy/alpaca-codepipeline-admin.tf). 
-  - Run terraform the govwifi tools account with `gds aws govwifi-tools -- make govwifi-tools apply`
+  - Run terraform the govwifi tools account with `gds-cli aws govwifi-tools -- make govwifi-tools apply`
 - Recreate the pipeline  using terraform 
   - Uncomment previously commented lines
 	- Run terraform in tools again
