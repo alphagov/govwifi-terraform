@@ -194,8 +194,8 @@ There is work planned to autogenerate the bulk of these secrets, however at pres
 Terraform needs to create a larger number of resources than AWS allows out of the box. Luckily it is easy to get these limits increased. 
 - [Follow the instructions from AWS to request an increase](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html).
 - Increase the quotas in your new account so they match the following
-  - Elastic IPs 22
-  - VPCs per Region 10
+  - **22** Elastic IPs
+  - **10** VPCs per Region
 
 #### Create The Access Logs S3 Bucket
 
@@ -213,7 +213,10 @@ gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-
 We use remote state, but there is a chicken and egg problem of creating a state bucket in which to store the remote state. When you are first creating a new environment (or migrating an environment not using remote state to use remote state) you will need to do the following
 
 #### Manually Create S3 State Bucket 
+
+```
 gds-cli aws <ENV> -- aws s3api create-bucket --bucket govwifi-<ENV>-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
+```
 
 #### Initialize The Backend
 
@@ -222,8 +225,10 @@ gds-cli aws <ENV> -- make <ENV> init-backend
 ```
 
 #### Import S3 State bucket 
-gds-cli aws <ENV> -- make <ENV> terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-<env>-tfstate-eu-west-2"
 
+```
+gds-cli aws <ENV> -- make <ENV> terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-<env>-tfstate-eu-west-2"
+```
 
 Then comment out the lines related to replication configuration in govwifi-terraform/terraform-state/accesslogs.tf and govwifi-terraform/terraform-state/tfstate.tf.
 ```
