@@ -210,12 +210,17 @@ gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-
 ```
 
 ### Setting Up Remote State
-We use remote state, but there is a chicken and egg problem of creating a state bucket in which to store the remote state. When you are first creating a new environment (or migrating an environment not using remote state to use remote state) you will need to do the following
+We use remote state, but there is a chicken and egg problem of creating a state bucket in which to store the remote state. When you are first creating a new environment (or migrating an environment not using remote state to use remote state) you will need to run the following commands. Anywhere you see the `<ENV>` replace this with the name of your environment e.g. `staging`.
 
 #### Manually Create S3 State Bucket 
 
 ```
 gds-cli aws <ENV> -- aws s3api create-bucket --bucket govwifi-<ENV>-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
+```
+For example:
+
+```
+gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
 ```
 
 #### Initialize The Backend
