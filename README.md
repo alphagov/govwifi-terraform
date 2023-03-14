@@ -128,7 +128,7 @@ It should look like this, `module.backend.aws_instance.management`:
 Follow the steps below to create a brand new GovWifi environment:
 
 #### Duplicate & Rename All The Files Used For Our Staging Environment
-Edit, then run following command from the root of the govwifi-terraform directory to copy all the files you need for a new environment (replace `<NEW-ENV-NAME>` with the name of your new environment e.g. `foo`):
+Edit, then run the following command from the root of the govwifi-terraform directory to copy all the files you need for a new environment (replace `<NEW-ENV-NAME>` with the name of your new environment e.g. `foo`):
 
 
 ```
@@ -153,9 +153,14 @@ Do a search for `app_env` in the london.tf and dublin.f files for your new envir
 Also set the `user_db_name` variable in the london_admin module of the london.tf file for your environment to `govwifi_staging_users` [see here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88R189).
 
 
-Due to the way the GovWifi Ruby applications have been built the apps will expect to be running in one of 
+Due to the way the GovWifi Ruby applications have been built the apps will expect to be running in one of the following environments:
+- production
+- staging
+- development
 
-The APP_ENV environment variable for any new GovWifi environment should be set to `staging`, unless this is a real diaster recovery of production. The `dev` setting is only used when the app containers are run on a developers local machine.
+This is based on the way the Ruby configuration files are set up. You can see an example [here](https://github.com/alphagov/govwifi-admin/blob/1ed0271fcb800b228d9e421772f1983784777883/config/database.yml).
+
+The APP_ENV environment variable for any new GovWifi environment should be set to `staging`, unless this is a real diaster recovery of production (in which case set the APP_ENV to `production`). The `dev` setting is only used when the app containers are run on a developers' local machine.
 
 There is work planned to improve this process, and make the apps more environment agnostic.
 
@@ -321,10 +326,10 @@ Follow the instructions [here](https://govwifi-dev-docs.cloudapps.digital/infras
 ## Updating task definitions 
 
 This affects the following apps: 
-admin
-authentication-api
-user-api
-logging-api apps
+[admin](https://github.com/alphagov/govwifi-admin)
+[authentication-api](https://github.com/alphagov/govwifi-authentication-api)
+[user-api](https://github.com/alphagov/govwifi-user-signup-api)
+[logging-api](https://github.com/alphagov/govwifi-logging-api)
 
 Once the task definitions for the above apps have been created by terraform, they are then managed by Codepipeline.  When the pipelines run for the first time after their initial creation, they store a copy of the task definition for that application in memory. If you create a new version of a task definition, **Codepipeline will still use the previous one AND CONTINUE to deploy the old one**. To get Codepipeline to use new task definitions you need to recreate the  pipelines. This is a flaw on AWS's part. Instructions for a work around are below:
  
