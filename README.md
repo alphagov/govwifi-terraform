@@ -326,10 +326,10 @@ Follow the instructions [here](https://govwifi-dev-docs.cloudapps.digital/infras
 ## Updating task definitions 
 
 This affects the following apps: 
-[admin](https://github.com/alphagov/govwifi-admin)
-[authentication-api](https://github.com/alphagov/govwifi-authentication-api)
-[user-api](https://github.com/alphagov/govwifi-user-signup-api)
-[logging-api](https://github.com/alphagov/govwifi-logging-api)
+- [admin](https://github.com/alphagov/govwifi-admin)
+- [authentication-api](https://github.com/alphagov/govwifi-authentication-api)
+- [user-api](https://github.com/alphagov/govwifi-user-signup-api)
+- [logging-api](https://github.com/alphagov/govwifi-logging-api)
 
 Once the task definitions for the above apps have been created by terraform, they are then managed by Codepipeline.  When the pipelines run for the first time after their initial creation, they store a copy of the task definition for that application in memory. If you create a new version of a task definition, **Codepipeline will still use the previous one AND CONTINUE to deploy the old one**. To get Codepipeline to use new task definitions you need to recreate the  pipelines. This is a flaw on AWS's part. Instructions for a work around are below:
  
