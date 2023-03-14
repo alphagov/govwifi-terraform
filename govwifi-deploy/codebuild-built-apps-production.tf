@@ -33,6 +33,11 @@ resource "aws_codebuild_project" "govwifi_codebuild_built_app_production" {
     }
 
     environment_variable {
+      name  = "ACCEPTANCE_TESTS_PROJECT_NAME"
+      value = aws_codebuild_project.govwifi_codebuild_acceptance_tests.name
+    }
+
+    environment_variable {
       name  = "STAGE"
       value = "production"
     }
