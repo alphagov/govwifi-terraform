@@ -2,7 +2,7 @@ resource "aws_codebuild_project" "govwifi_codebuild_project_push_image_to_ecr_al
   for_each      = toset(var.deployed_app_names)
   name          = "${each.key}-push-image-to-ecr-alpaca"
   description   = "This project builds the API docker images and pushes them to ECR ${each.key}"
-  build_timeout = "12"
+  build_timeout = "20"
   service_role  = aws_iam_role.govwifi_codebuild.arn
 
   artifacts {
