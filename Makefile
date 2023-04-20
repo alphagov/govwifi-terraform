@@ -14,6 +14,9 @@ staging:
 alpaca:
 	$(eval export DEPLOY_ENV=alpaca)
 	$(eval export REPO=alpaca)
+recovery:
+	$(eval export DEPLOY_ENV=recovery)
+	$(eval export REPO=recovery)
 wifi-london:
 	$(eval export DEPLOY_ENV=wifi-london)
 	$(eval export REPO=latest)
