@@ -11,7 +11,7 @@ resource "aws_lambda_function" "slack_alert" {
 
   environment {
     variables = {
-      URL = data.aws_secretsmanager_secret_version.slack_alert_url.secret_string
+      URL = data.aws_secretsmanager_secret_version.slack_alert_url[0].secret_string
     }
   }
 
