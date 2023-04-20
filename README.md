@@ -206,7 +206,7 @@ This holds information related to the terraform state, and must be created manua
 An example command for creating the bucket in the Staging environment for the London region would be:
 
 ```
-gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-london-accesslogs --region eu-west-2 
+gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-london-accesslogs --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
 ```
 
 ### Setting Up Remote State
