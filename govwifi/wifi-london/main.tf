@@ -531,3 +531,17 @@ module "govwifi-ecs-update-service" {
 
   aws_account_id = local.aws_account_id
 }
+
+module "govwifi_sync_certs" {
+  providers = {
+    aws = aws.main
+  }
+
+  source = "../../govwifi-sync-certs"
+
+  env            = local.env
+  aws_account_id = local.aws_account_id
+  aws_region     = var.aws_region
+  region_name    = var.aws_region_name
+
+}
