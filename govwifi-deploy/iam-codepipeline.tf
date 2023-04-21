@@ -31,10 +31,10 @@ resource "aws_iam_role_policy" "codepipeline_global_policy" {
                 "s3:*"
             ],
             "Resource": [
-								"${aws_s3_bucket.codepipeline_bucket.arn}",
-								"${aws_s3_bucket.codepipeline_bucket.arn}/*",
-								"${aws_s3_bucket.codepipeline_bucket_ireland.arn}",
-								"${aws_s3_bucket.codepipeline_bucket_ireland.arn}/*"
+                "${aws_s3_bucket.codepipeline_bucket.arn}",
+                "${aws_s3_bucket.codepipeline_bucket.arn}/*",
+                "${aws_s3_bucket.codepipeline_bucket_ireland.arn}",
+                "${aws_s3_bucket.codepipeline_bucket_ireland.arn}/*"
             ]
         },
         {
@@ -50,13 +50,15 @@ resource "aws_iam_role_policy" "codepipeline_global_policy" {
                 "sts:AssumeRole"
             ],
             "Resource": [
-								"arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-crossaccount-tools-deploy",
-								"arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-codebuild-role",
+                "arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-crossaccount-tools-deploy",
+                "arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-codebuild-role",
                 "arn:aws:iam::${local.aws_alpaca_account_id}:role/govwifi-crossaccount-tools-deploy",
-								"arn:aws:iam::${local.aws_alpaca_account_id}:role/govwifi-codebuild-role",
-								"arn:aws:iam::${local.aws_production_account_id}:role/govwifi-crossaccount-tools-deploy",
-								"arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role"
-							],
+                "arn:aws:iam::${local.aws_alpaca_account_id}:role/govwifi-codebuild-role",
+                "arn:aws:iam::${local.aws_recovery_account_id}:role/govwifi-crossaccount-tools-deploy",
+                "arn:aws:iam::${local.aws_recovery_account_id}:role/govwifi-codebuild-role",
+                "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-crossaccount-tools-deploy",
+                "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role"
+             ],
             "Effect": "Allow"
         }
     ]

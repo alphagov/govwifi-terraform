@@ -32,10 +32,11 @@ resource "aws_kms_key" "codepipeline_key" {
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-										"arn:aws:iam::${local.aws_alpaca_account_id}:root",
-										"arn:aws:iam::${local.aws_staging_account_id}:root",
-								 		"arn:aws:iam::${local.aws_production_account_id}:root"
-									]
+                  "arn:aws:iam::${local.aws_alpaca_account_id}:root",
+                  "arn:aws:iam::${local.aws_recovery_account_id}:root",
+                  "arn:aws:iam::${local.aws_staging_account_id}:root",
+                  "arn:aws:iam::${local.aws_production_account_id}:root"
+		]
             },
             "Action": [
                 "kms:Encrypt",
@@ -57,10 +58,11 @@ resource "aws_kms_key" "codepipeline_key" {
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-										"arn:aws:iam::${local.aws_alpaca_account_id}:root",
-										"arn:aws:iam::${local.aws_staging_account_id}:root",
-										"arn:aws:iam::${local.aws_production_account_id}:root"
-									]
+                   "arn:aws:iam::${local.aws_alpaca_account_id}:root",
+                   "arn:aws:iam::${local.aws_recovery_account_id}:root",
+                   "arn:aws:iam::${local.aws_staging_account_id}:root",
+                   "arn:aws:iam::${local.aws_production_account_id}:root"
+                ]
             },
             "Action": [
                 "kms:CreateGrant",
@@ -122,10 +124,11 @@ resource "aws_kms_key" "codepipeline_key_ireland" {
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-										"arn:aws:iam::${local.aws_alpaca_account_id}:root",
-										"arn:aws:iam::${local.aws_staging_account_id}:root",
-								 		"arn:aws:iam::${local.aws_production_account_id}:root"
-									]
+                  "arn:aws:iam::${local.aws_alpaca_account_id}:root",
+                  "arn:aws:iam::${local.aws_recovery_account_id}:root",
+                  "arn:aws:iam::${local.aws_staging_account_id}:root",
+                  "arn:aws:iam::${local.aws_production_account_id}:root"
+                ]
             },
             "Action": [
                 "kms:Encrypt",
@@ -147,10 +150,11 @@ resource "aws_kms_key" "codepipeline_key_ireland" {
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-										"arn:aws:iam::${local.aws_alpaca_account_id}:root",
-										"arn:aws:iam::${local.aws_staging_account_id}:root",
-										"arn:aws:iam::${local.aws_production_account_id}:root"
-									]
+                  "arn:aws:iam::${local.aws_alpaca_account_id}:root",
+                  "arn:aws:iam::${local.aws_recovery_account_id}:root",
+                  "arn:aws:iam::${local.aws_staging_account_id}:root",
+                  "arn:aws:iam::${local.aws_production_account_id}:root"
+                ]
             },
             "Action": [
                 "kms:CreateGrant",
