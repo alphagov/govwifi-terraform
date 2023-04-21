@@ -45,17 +45,19 @@ resource "aws_s3_bucket_policy" "codepipeline_bucket_policy" {
                       "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role",
                       "arn:aws:iam::${local.aws_alpaca_account_id}:role/govwifi-crossaccount-tools-deploy",
                       "arn:aws:iam::${local.aws_alpaca_account_id}:role/govwifi-codebuild-role",
+                      "arn:aws:iam::${local.aws_recovery_account_id}:role/govwifi-crossaccount-tools-deploy",
+                      "arn:aws:iam::${local.aws_recovery_account_id}:role/govwifi-codebuild-role",
                       "${aws_iam_role.govwifi_codepipeline_global_role.arn}",
                       "${aws_iam_role.govwifi_codebuild_convert.arn}"
-									]
+                ]
             },
             "Action": [
                 "s3:GetObject",
                 "s3:ListBucket"
             ],
             "Resource": [
-								"${aws_s3_bucket.codepipeline_bucket.arn}/*", "${aws_s3_bucket.codepipeline_bucket.arn}"
-							]
+                    "${aws_s3_bucket.codepipeline_bucket.arn}/*", "${aws_s3_bucket.codepipeline_bucket.arn}"
+            ]
         }
     ]
 }
@@ -96,22 +98,24 @@ resource "aws_s3_bucket_policy" "codepipeline_bucket_policy_ireland" {
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-										"arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-crossaccount-tools-deploy",
-										"arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-codebuild-role",
-										"arn:aws:iam::${local.aws_production_account_id}:role/govwifi-crossaccount-tools-deploy",
-										"arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role",
+                    "arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-crossaccount-tools-deploy",
+                    "arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-codebuild-role",
+                    "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-crossaccount-tools-deploy",
+                    "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role",
                     "arn:aws:iam::${local.aws_alpaca_account_id}:role/govwifi-crossaccount-tools-deploy",
                     "arn:aws:iam::${local.aws_alpaca_account_id}:role/govwifi-codebuild-role",
-										"${aws_iam_role.govwifi_codepipeline_global_role.arn}",
-										"${aws_iam_role.govwifi_codebuild_convert.arn}"
-									]
+                    "arn:aws:iam::${local.aws_recovery_account_id}:role/govwifi-crossaccount-tools-deploy",
+                    "arn:aws:iam::${local.aws_recovery_account_id}:role/govwifi-codebuild-role",
+                    "${aws_iam_role.govwifi_codepipeline_global_role.arn}",
+                    "${aws_iam_role.govwifi_codebuild_convert.arn}"
+                ]
             },
             "Action": [
                 "s3:*"
             ],
             "Resource": [
-								"${aws_s3_bucket.codepipeline_bucket_ireland.arn}/*", "${aws_s3_bucket.codepipeline_bucket_ireland.arn}"
-							]
+                    "${aws_s3_bucket.codepipeline_bucket_ireland.arn}/*", "${aws_s3_bucket.codepipeline_bucket_ireland.arn}"
+            ]
         }
     ]
 }

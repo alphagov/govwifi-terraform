@@ -1,3 +1,86 @@
+### Begin Recovery
+
+resource "aws_ecr_repository" "govwifi_ecr_repo_deployed_apps_recovery" {
+  for_each = toset(var.deployed_app_names)
+  name     = "govwifi/${each.key}/recovery"
+}
+
+resource "aws_ecr_repository_policy" "govwifi_ecr_repo_policy_deployed_apps_recovery" {
+  for_each   = toset(var.deployed_app_names)
+  repository = aws_ecr_repository.govwifi_ecr_repo_deployed_apps_recovery[each.key].name
+  policy     = data.aws_iam_policy_document.govwifi_ecr_repo_policy_recovery.json
+}
+
+resource "aws_ecr_repository" "govwifi_frontend_recovery" {
+  for_each = toset(var.frontend_docker_images)
+  name     = "govwifi/recovery/${each.key}"
+}
+
+resource "aws_ecr_repository_policy" "govwifi_frontend_policy_recovery" {
+  for_each   = toset(var.frontend_docker_images)
+  repository = aws_ecr_repository.govwifi_frontend_recovery[each.key].name
+  policy     = data.aws_iam_policy_document.govwifi_ecr_repo_policy_recovery.json
+}
+
+resource "aws_ecr_repository" "govwifi_frontend_recovery_ire" {
+  provider = aws.dublin
+  for_each = toset(var.frontend_docker_images)
+  name     = "govwifi/recovery/${each.key}"
+}
+
+resource "aws_ecr_repository_policy" "govwifi_frontend_policy_recovery_ire" {
+  provider   = aws.dublin
+  for_each   = toset(var.frontend_docker_images)
+  repository = aws_ecr_repository.govwifi_frontend_recovery[each.key].name
+  policy     = data.aws_iam_policy_document.govwifi_ecr_repo_policy_recovery.json
+}
+
+resource "aws_ecr_repository" "safe_restarter_ecr_recovery" {
+  name = "govwifi/recovery/safe-restarter"
+}
+
+resource "aws_ecr_repository_policy" "govwifi_ecr_saferestater_policy_recovery" {
+  repository = aws_ecr_repository.safe_restarter_ecr_recovery.name
+  policy     = data.aws_iam_policy_document.govwifi_ecr_repo_policy_recovery.json
+}
+
+resource "aws_ecr_repository" "database_backup_ecr_recovery" {
+  name = "govwifi/recovery/database-backup"
+}
+
+resource "aws_ecr_repository_policy" "govwifi_ecr_database_backup_policy_recovery" {
+  repository = aws_ecr_repository.database_backup_ecr_recovery.name
+  policy     = data.aws_iam_policy_document.govwifi_ecr_repo_policy_recovery.json
+}
+
+data "aws_iam_policy_document" "govwifi_ecr_repo_policy_recovery" {
+  statement {
+    sid = "AllowPushPull"
+
+    effect = "Allow"
+
+    actions = [
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:BatchGetImage",
+      "ecr:CompleteLayerUpload",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:InitiateLayerUpload",
+      "ecr:PutImage",
+      "ecr:UploadLayerPart"
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${local.aws_recovery_account_id}:root"]
+    }
+
+  }
+
+}
+
+
+### End Recovery
+
 ### Begin Alpaca
 
 resource "aws_ecr_repository" "govwifi_ecr_repo_deployed_apps_alpaca" {
