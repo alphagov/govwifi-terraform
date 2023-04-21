@@ -429,6 +429,10 @@ module "govwifi_prometheus" {
 
   fe_admin_in = module.frontend.fe_admin_in
 
+  aws_region = var.aws_region
+
+  aws_account_id = local.aws_account_id
+
   wifi_frontend_subnet       = module.frontend.frontend_subnet_id
   london_radius_ip_addresses = var.london_radius_ip_addresses
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
@@ -445,6 +449,7 @@ module "govwifi_grafana" {
   env_name                   = local.env_name
   env_subdomain              = local.env_subdomain
   aws_region                 = var.aws_region
+  aws_account_id             = local.aws_account_id
   critical_notifications_arn = module.critical_notifications.topic_arn
 
   route53_zone_id = data.aws_route53_zone.main.zone_id

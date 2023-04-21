@@ -33,3 +33,9 @@ variable "dublin_radius_ip_addresses" {
   default = []
 }
 
+variable "aws_region" {
+}
+
+variable "aws_account_id" {
+}
+

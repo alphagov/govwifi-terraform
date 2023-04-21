@@ -50,3 +50,62 @@ resource "aws_iam_role_policy" "grafana_instance_policy" {
 EOF
 
 }
+
+data "aws_iam_policy_document" "grafana_assume_role" {
+  count = (var.aws_region == "eu-west-2" ? 1 : 0)
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["dlm.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+resource "aws_iam_role" "dlm_grafana_lifecycle_role" {
+  count              = (var.aws_region == "eu-west-2" ? 1 : 0)
+  name               = "grafana-dlm-lifecycle-role"
+  assume_role_policy = data.aws_iam_policy_document.grafana_assume_role[0].json
+}
+
+data "aws_iam_policy_document" "grafana_dlm_lifecycle" {
+  count = (var.aws_region == "eu-west-2" ? 1 : 0)
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "ec2:CreateSnapshot",
+      "ec2:CreateSnapshots",
+      "ec2:DeleteSnapshot",
+      "ec2:DescribeInstances",
+      "ec2:DescribeVolumes",
+      "ec2:DescribeSnapshots",
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    effect    = "Allow"
+    actions   = ["ec2:CreateTags"]
+    resources = ["arn:aws:ec2:*::snapshot/*"]
+  }
+}
+
+resource "aws_iam_policy" "grafana_dlm_lifecycle" {
+  count  = (var.aws_region == "eu-west-2" ? 1 : 0)
+  name   = "GrafanaDLMlifecyclePolicy"
+  path   = "/"
+  policy = data.aws_iam_policy_document.grafana_dlm_lifecycle[0].json
+}
+
+resource "aws_iam_policy_attachment" "grafana_dlm_lifecycle" {
+  count      = (var.aws_region == "eu-west-2" ? 1 : 0)
+  name       = aws_iam_policy.grafana_dlm_lifecycle[0].name
+  roles      = [aws_iam_role.dlm_grafana_lifecycle_role[0].name]
+  policy_arn = aws_iam_policy.grafana_dlm_lifecycle[0].arn
+}
+

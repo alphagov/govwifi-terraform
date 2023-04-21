@@ -23,13 +23,13 @@ data "aws_secretsmanager_secret" "gw_user" {
 }
 
 data "aws_secretsmanager_secret_version" "slack_alert_url" {
-  count = (var.create_slack_alert == 1 ? 1 : 0)
+  count     = (var.create_slack_alert == 1 ? 1 : 0)
   secret_id = data.aws_secretsmanager_secret.slack_alert_url[0].id
 }
 
 data "aws_secretsmanager_secret" "slack_alert_url" {
   count = (var.create_slack_alert == 1 ? 1 : 0)
-  name = "smoketests/slack-alert-url"
+  name  = "smoketests/slack-alert-url"
 }
 
 
