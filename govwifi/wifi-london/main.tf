@@ -506,6 +506,8 @@ module "smoke_tests" {
   source = "../../govwifi-smoke-tests"
 
   aws_account_id             = local.aws_account_id
+  db_hostname                = "db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
+  user_db_hostname           = "users-db.${lower(var.aws_region_name)}.${local.env_subdomain}.service.gov.uk"
   env_subdomain              = local.env_subdomain
   env                        = local.env_name
   smoketests_vpc_cidr        = var.smoketests_vpc_cidr
@@ -515,7 +517,7 @@ module "smoke_tests" {
   smoketest_subnet_public_b  = var.smoketest_subnet_public_b
   aws_region                 = var.aws_region
   create_slack_alert         = 1
-
+  govwifi_phone_number       = "+447537417417"
 }
 
 module "govwifi-ecs-update-service" {

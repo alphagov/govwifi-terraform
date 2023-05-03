@@ -50,7 +50,6 @@ resource "aws_codebuild_project" "smoke_tests" {
       value = data.aws_secretsmanager_secret_version.google_api_token_data.secret_string
     }
 
-
     environment_variable {
       name  = "RADIUS_KEY"
       value = data.aws_secretsmanager_secret_version.radius_key.secret_string
@@ -66,6 +65,60 @@ resource "aws_codebuild_project" "smoke_tests" {
       value = var.env_subdomain
     }
 
+    environment_variable {
+      name  = "GOVWIFI_PHONE_NUMBER"
+      value = var.govwifi_phone_number
+    }
+
+    environment_variable {
+      name  = "NOTIFY_GO_TEMPLATE_ID"
+      value = local.notify_go_template_id
+    }
+
+    environment_variable {
+      name  = "NOTIFY_SMOKETEST_API_KEY"
+      value = data.aws_secretsmanager_secret_version.notify_smoketest_api_key.secret_string
+    }
+
+    environment_variable {
+      name  = "SESSION_DB_PASSWORD"
+      value = jsondecode(data.aws_secretsmanager_secret_version.session_db.secret_string)["password"]
+    }
+
+    environment_variable {
+      name  = "SESSION_DB_USERNAME"
+      value = jsondecode(data.aws_secretsmanager_secret_version.session_db.secret_string)["username"]
+    }
+
+    environment_variable {
+      name  = "SESSION_DB_NAME"
+      value = "govwifi_${var.env}"
+    }
+
+    environment_variable {
+      name  = "SESSION_DB_HOST"
+      value = var.db_hostname
+    }
+
+    environment_variable {
+      name  = "USER_DB_PASSWORD"
+      value = jsondecode(data.aws_secretsmanager_secret_version.users_db.secret_string)["password"]
+    }
+
+    environment_variable {
+      name  = "USER_DB_USERNAME"
+      value = jsondecode(data.aws_secretsmanager_secret_version.users_db.secret_string)["username"]
+    }
+
+    environment_variable {
+      name  = "USER_DB_NAME"
+      value = "govwifi_${var.env}_users"
+    }
+
+    environment_variable {
+      name  = "USER_DB_HOST"
+      value = var.user_db_hostname
+    }
   }
 
   source {

@@ -32,7 +32,13 @@ data "aws_secretsmanager_secret" "slack_alert_url" {
   name = "smoketests/slack-alert-url"
 }
 
+data "aws_secretsmanager_secret_version" "notify_smoketest_api_key" {
+  secret_id = data.aws_secretsmanager_secret.notify_smoketest_api_key.id
+}
 
+data "aws_secretsmanager_secret" "notify_smoketest_api_key" {
+  name = "smoketests/notify_smoketest_api_key"
+}
 
 data "aws_secretsmanager_secret_version" "gw_pass" {
   secret_id = data.aws_secretsmanager_secret.gw_pass.id
@@ -79,8 +85,6 @@ data "aws_secretsmanager_secret" "radius_key" {
   name = "deploy/radius_key"
 }
 
-
-
 data "aws_secretsmanager_secret_version" "radius_ips" {
   secret_id = data.aws_secretsmanager_secret.radius_ips.id
 }
@@ -103,4 +107,20 @@ data "aws_secretsmanager_secret_version" "tools_kms_key" {
 
 data "aws_secretsmanager_secret" "tools_kms_key" {
   name = "tools/codepipeline-kms-key-arn"
+}
+
+data "aws_secretsmanager_secret_version" "session_db" {
+  secret_id = data.aws_secretsmanager_secret.session_db.id
+}
+
+data "aws_secretsmanager_secret" "session_db" {
+  name = "rds/session-db/credentials"
+}
+
+data "aws_secretsmanager_secret_version" "users_db" {
+  secret_id = data.aws_secretsmanager_secret.users_db.id
+}
+
+data "aws_secretsmanager_secret" "users_db" {
+  name = "rds/users-db/credentials"
 }

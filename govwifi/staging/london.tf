@@ -389,6 +389,8 @@ module "london_smoke_tests" {
   source = "../../govwifi-smoke-tests"
 
   aws_account_id             = local.aws_account_id
+  db_hostname                = "db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
+  user_db_hostname           = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
   env_subdomain              = local.env_subdomain
   env                        = local.env_name
   smoketests_vpc_cidr        = var.smoketests_vpc_cidr
@@ -398,7 +400,7 @@ module "london_smoke_tests" {
   smoketest_subnet_public_b  = var.smoketest_subnet_public_b
   aws_region                 = local.london_aws_region
   create_slack_alert         = 0
-
+  govwifi_phone_number       = "+447537417039"
 }
 
 module "london_sync_certs" {
