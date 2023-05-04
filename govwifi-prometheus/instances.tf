@@ -53,6 +53,13 @@ resource "aws_instance" "prometheus_instance" {
     Name = "${title(var.env_name)} Prometheus-Server"
   }
 
+  root_block_device {
+
+    tags = {
+      Name = "${title(var.env_name)} Prometheus Root Volume"
+    }
+  }
+
   lifecycle {
     create_before_destroy = true
 

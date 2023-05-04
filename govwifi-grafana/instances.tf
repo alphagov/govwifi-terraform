@@ -48,6 +48,12 @@ resource "aws_instance" "grafana_instance" {
     Name = "${title(var.env_name)} Grafana-Server"
   }
 
+  root_block_device {
+    tags = {
+      Name = "${title(var.env_name)} Grafana Root Volume"
+    }
+  }
+
   lifecycle {
     create_before_destroy = true
 

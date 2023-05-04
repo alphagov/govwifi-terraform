@@ -76,3 +76,6 @@ variable "critical_notifications_arn" {
   description = "Arn of the critical-nofications sns topic"
   type        = string
 }
+
+variable "aws_account_id" {
+}
