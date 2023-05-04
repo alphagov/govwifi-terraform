@@ -60,7 +60,7 @@ resource "aws_codepipeline" "recovery_user_signup_api_pipeline" {
   }
 
   stage {
-    name = "Deploy-to-Alpaca"
+    name = "Deploy-to-recovery"
 
     action {
       name            = "Deploy-to-eu-west-2"
@@ -82,10 +82,10 @@ resource "aws_codepipeline" "recovery_user_signup_api_pipeline" {
   }
 
   stage {
-    name = "Alpaca-Smoketests"
+    name = "recovery-Smoketests"
 
     action {
-      name            = "Alpaca-Smoketests"
+      name            = "recovery-Smoketests"
       category        = "Test"
       owner           = "AWS"
       provider        = "CodeBuild"
