@@ -27,3 +27,6 @@ variable "smoketest_subnet_public_b" {
 
 variable "create_slack_alert" {
 }
+
+variable "govwifi_phone_number" {
+}
