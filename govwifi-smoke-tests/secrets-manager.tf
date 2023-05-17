@@ -14,14 +14,6 @@ data "aws_secretsmanager_secret" "docker_hub_username" {
   name = "deploy/docker_hub_username"
 }
 
-data "aws_secretsmanager_secret_version" "gw_user" {
-  secret_id = data.aws_secretsmanager_secret.gw_user.id
-}
-
-data "aws_secretsmanager_secret" "gw_user" {
-  name = "deploy/gw_user"
-}
-
 data "aws_secretsmanager_secret_version" "slack_alert_url" {
   count     = (var.create_slack_alert == 1 ? 1 : 0)
   secret_id = data.aws_secretsmanager_secret.slack_alert_url[0].id
@@ -32,7 +24,13 @@ data "aws_secretsmanager_secret" "slack_alert_url" {
   name  = "smoketests/slack-alert-url"
 }
 
+data "aws_secretsmanager_secret_version" "gw_user" {
+  secret_id = data.aws_secretsmanager_secret.gw_user.id
+}
 
+data "aws_secretsmanager_secret" "gw_user" {
+  name = "deploy/gw_user"
+}
 
 data "aws_secretsmanager_secret_version" "gw_pass" {
   secret_id = data.aws_secretsmanager_secret.gw_pass.id
@@ -42,13 +40,36 @@ data "aws_secretsmanager_secret" "gw_pass" {
   name = "deploy/gw_pass"
 }
 
-
 data "aws_secretsmanager_secret_version" "gw_2fa_secret" {
   secret_id = data.aws_secretsmanager_secret.gw_2fa_secret.id
 }
 
 data "aws_secretsmanager_secret" "gw_2fa_secret" {
   name = "deploy/gw_2fa_secret"
+}
+
+data "aws_secretsmanager_secret_version" "gw_super_admin_user" {
+  secret_id = data.aws_secretsmanager_secret.gw_super_admin_user.id
+}
+
+data "aws_secretsmanager_secret" "gw_super_admin_user" {
+  name = "deploy/gw_super_admin_user"
+}
+
+data "aws_secretsmanager_secret_version" "gw_super_admin_pass" {
+  secret_id = data.aws_secretsmanager_secret.gw_super_admin_pass.id
+}
+
+data "aws_secretsmanager_secret" "gw_super_admin_pass" {
+  name = "deploy/gw_super_admin_pass"
+}
+
+data "aws_secretsmanager_secret_version" "gw_super_admin_2fa_secret" {
+  secret_id = data.aws_secretsmanager_secret.gw_super_admin_2fa_secret.id
+}
+
+data "aws_secretsmanager_secret" "gw_super_admin_2fa_secret" {
+  name = "deploy/gw_super_admin_2fa_secret"
 }
 
 
