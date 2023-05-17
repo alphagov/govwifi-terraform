@@ -41,6 +41,22 @@ resource "aws_codebuild_project" "smoke_tests" {
     }
 
     environment_variable {
+      name  = "GW_SUPER_ADMIN_USER"
+      value = data.aws_secretsmanager_secret_version.gw_super_admin_user.secret_string
+    }
+
+    environment_variable {
+      name  = "GW_SUPER_ADMIN_PASS"
+      value = data.aws_secretsmanager_secret_version.gw_super_admin_pass.secret_string
+    }
+
+    environment_variable {
+      name  = "GW_SUPER_ADMIN_2FA_SECRET"
+      value = data.aws_secretsmanager_secret_version.gw_super_admin_2fa_secret.secret_string
+    }
+
+
+    environment_variable {
       name  = "GOOGLE_API_CREDENTIALS"
       value = data.aws_secretsmanager_secret_version.google_api_credentials.secret_string
     }
