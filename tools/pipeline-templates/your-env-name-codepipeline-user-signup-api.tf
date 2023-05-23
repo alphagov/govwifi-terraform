@@ -60,7 +60,7 @@ resource "aws_codepipeline" "your-env-name_user_signup_api_pipeline" {
   }
 
   stage {
-    name = "Deploy-to-Alpaca"
+    name = "Deploy-to-your-env-name"
 
     action {
       name            = "Deploy-to-eu-west-2"
@@ -82,10 +82,10 @@ resource "aws_codepipeline" "your-env-name_user_signup_api_pipeline" {
   }
 
   stage {
-    name = "Alpaca-Smoketests"
+    name = "your-env-name-Smoketests"
 
     action {
-      name            = "Alpaca-Smoketests"
+      name            = "your-env-name-Smoketests"
       category        = "Test"
       owner           = "AWS"
       provider        = "CodeBuild"

@@ -10,6 +10,16 @@ resource "aws_s3_bucket" "emailbucket" {
   }
 }
 
+resource "aws_s3_bucket" "emailloggingbucket" {
+  bucket        = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
+
+  tags = {
+    Name     = "${title(var.env_name)} Email Access Logs Bucket"
+    Region   = title(var.aws_region_name)
+    Category = "Email Accesslogs"
+  }
+}
+
 resource "aws_s3_bucket_policy" "emailbucket" {
   bucket = aws_s3_bucket.emailbucket.id
 
@@ -54,7 +64,7 @@ EOF
 resource "aws_s3_bucket_logging" "emailbucket" {
   bucket = aws_s3_bucket.emailbucket.id
 
-  target_bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
+  target_bucket = aws_s3_bucket.emailloggingbucket.id
   target_prefix = "user-emails"
 }
 
@@ -143,7 +153,7 @@ EOF
 resource "aws_s3_bucket_logging" "admin_emailbucket" {
   bucket = aws_s3_bucket.admin_emailbucket.id
 
-  target_bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
+  target_bucket = aws_s3_bucket.emailloggingbucket.id
   target_prefix = "admin-emails"
 }
 
