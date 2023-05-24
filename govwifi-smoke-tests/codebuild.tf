@@ -82,6 +82,25 @@ resource "aws_codebuild_project" "smoke_tests" {
       value = var.env_subdomain
     }
 
+    environment_variable {
+      name  = "GOVWIFI_PHONE_NUMBER"
+      value = var.govwifi_phone_number
+    }
+
+    environment_variable {
+      name = "SMOKETEST_PHONE_NUMBER"
+      value = local.smoketest_phone_number
+    }
+
+    environment_variable {
+      name  = "NOTIFY_GO_TEMPLATE_ID"
+      value = local.notify_go_template_id
+    }
+
+    environment_variable {
+      name  = "NOTIFY_SMOKETEST_API_KEY"
+      value = data.aws_secretsmanager_secret_version.notify_smoketest_api_key.secret_string
+    }
   }
 
   source {

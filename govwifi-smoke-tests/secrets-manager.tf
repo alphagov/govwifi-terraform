@@ -72,6 +72,13 @@ data "aws_secretsmanager_secret" "gw_super_admin_2fa_secret" {
   name = "deploy/gw_super_admin_2fa_secret"
 }
 
+data "aws_secretsmanager_secret_version" "notify_smoketest_api_key" {
+  secret_id = data.aws_secretsmanager_secret.notify_smoketest_api_key.id
+}
+
+data "aws_secretsmanager_secret" "notify_smoketest_api_key" {
+  name = "smoketests/notify_smoketest_api_key"
+}
 
 data "aws_secretsmanager_secret_version" "google_api_credentials" {
   secret_id = data.aws_secretsmanager_secret.google_api_credentials.id
