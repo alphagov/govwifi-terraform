@@ -26,7 +26,7 @@ Our services include:
 - A Prometheus server to scrape metrics from the FreeRADIUS Prometheus Exporters which exposes FreeRADIUS server data
 
 We manage our infrastructure via:
-- Terraform, split across this repository and [govwifi-terraform](https://github.com/alphagov/govwifi-terraform)
+- Terraform, split across this repository and [govwifi-build](https://github.com/alphagov/govwifi-build)
 - The [safe restarter](https://github.com/alphagov/govwifi-safe-restarter), which uses a [CanaryRelease](https://martinfowler.com/bliki/CanaryRelease.html) strategy to increase the stability of the frontends
 
 Other repositories:
@@ -148,11 +148,6 @@ Add the new environment to the Makefile. [See here for an example commit](https:
 
 #### Update Application Environment Variables 
 
-Do a search for `app_env` in the london.tf and dublin.f files for your new environment. Set this variable to `staging` anywhere you encounter it [See this commit for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R288).
-
-Also set the `user_db_name` variable in the london_admin module of the london.tf file for your environment to `govwifi_staging_users` [see here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88R189).
-
-
 Due to the way the GovWifi Ruby applications have been built the apps will expect to be running in one of the following environments:
 - production
 - staging
@@ -162,7 +157,11 @@ This is based on the way the Ruby configuration files are set up. You can see an
 
 The APP_ENV environment variable for any new GovWifi environment should be set to `staging`, unless this is a real diaster recovery of production (in which case set the APP_ENV to `production`). The `dev` setting is only used when the app containers are run on a developers' local machine.
 
-There is work planned to improve this process, and make the apps more environment agnostic.
+> There is work planned to improve this process, and make the apps more environment agnostic.
+
+Do a search for `app_env` in the london.tf and dublin.f files for your new environment. Set this variable to `staging` anywhere you encounter it [See this commit for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R288).
+
+Also set the `user_db_name` variable in the london_admin module of the london.tf file for your environment to `govwifi_staging_users`. To see an example [open the london.tf file in the commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88), click on the `Load diff` and navigate to a **line 189**.
 
 #### Update Govwifi-Build
 
@@ -170,12 +169,34 @@ There is work planned to improve this process, and make the apps more environmen
 We keep sensitive (but non secret information) in a private repo called govwifi-build(https://github.com/alphagov/govwifi-build). This folder is only accessible to GovWifi team members.  If you create a new GovWifi environment you will need to add new directory of the same name [here](https://github.com/alphagov/govwifi-build/tree/master/non-encrypted/secrets-to-copy/govwifi). 
 Instructions
 - Make a copy of the staging directory and rename it to your environment name
+
+```
+cp -Rp non-encrypted/secrets-to-copy/govwifi/staging non-encrypted/secrets-to-copy/govwifi/<NEW-ENV-NAME>
+```
+
 - Replace any references to `staging` in the newly created directory with your new environment name.
 [See here for an example commit](https://github.com/alphagov/govwifi-build/pull/541/files#diff-3382ad2da7f814e1bbd3a3ae321be41d7e23db80734611bb4ac90ab30d690cc5).
 
+```
+for filename in ./non-encrypted/secrets-to-copy/govwifi/<NEW-ENV-NAME>/* ; do sed -i '' 's/staging/<NEW-ENV-NAME>/g' $filename ; done
+```
+
 ##### Add An SSH Key That Will Be Used By Your New Environment
 
-- Generate an ssh keypair.
+- Generate an ssh keypair:
+
+```
+ssh-keygen -C "govwifi-developers@digital.cabinet-office.gov.uk"
+```
+
+Use the following format when prompted for the file name:
+
+```
+./govwifi-<NEW-ENV-NAME>-bastion-yyyymmdd
+```
+
+Use an empty passphrase.
+
 - Add encrypted versions of the files to the govwifi-build/passwords/keys/ using the instructions [here](https://govwifi-dev-docs.cloudapps.digital/infrastructure/secrets.html#adding-editing-a-secret).
 - Update the terraform for your environment:
   - With the name of the key and **public** key file in the dublin-keys module in the dublin.tf file of your environment [See here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R171-R172).
