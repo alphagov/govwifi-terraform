@@ -39,18 +39,19 @@ resource "aws_s3_bucket_policy" "codepipeline_bucket_policy" {
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-										"arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-crossaccount-tools-deploy",
-										"arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-codebuild-role",
-										"arn:aws:iam::${local.aws_production_account_id}:role/govwifi-crossaccount-tools-deploy",
-										"arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role",
-                    "arn:aws:iam::${local.aws_alpaca_account_id}:role/govwifi-crossaccount-tools-deploy",
-                    "arn:aws:iam::${local.aws_alpaca_account_id}:role/govwifi-codebuild-role",
-										"${aws_iam_role.govwifi_codepipeline_global_role.arn}",
-										"${aws_iam_role.govwifi_codebuild_convert.arn}"
+                      "arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-crossaccount-tools-deploy",
+                      "arn:aws:iam::${local.aws_staging_account_id}:role/govwifi-codebuild-role",
+                      "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-crossaccount-tools-deploy",
+                      "arn:aws:iam::${local.aws_production_account_id}:role/govwifi-codebuild-role",
+                      "arn:aws:iam::${local.aws_alpaca_account_id}:role/govwifi-crossaccount-tools-deploy",
+                      "arn:aws:iam::${local.aws_alpaca_account_id}:role/govwifi-codebuild-role",
+                      "${aws_iam_role.govwifi_codepipeline_global_role.arn}",
+                      "${aws_iam_role.govwifi_codebuild_convert.arn}"
 									]
             },
             "Action": [
-                "s3:*"
+                "s3:GetObject",
+                "s3:ListBucket"
             ],
             "Resource": [
 								"${aws_s3_bucket.codepipeline_bucket.arn}/*", "${aws_s3_bucket.codepipeline_bucket.arn}"
@@ -61,11 +62,6 @@ resource "aws_s3_bucket_policy" "codepipeline_bucket_policy" {
 POLICY
 
 }
-
-
-
-
-
 
 resource "aws_s3_bucket" "codepipeline_bucket_ireland" {
   provider = aws.dublin

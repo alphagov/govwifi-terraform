@@ -216,7 +216,8 @@ resource "aws_iam_policy" "crossaccount_tools" {
         {
             "Effect": "Allow",
             "Action": [
-                "s3:*"
+                "s3:GetObject",
+                "s3:ListBucket"
             ],
             "Resource": [
                 "arn:aws:s3:::govwifi-codepipeline-bucket",

@@ -40,6 +40,21 @@ resource "aws_iam_policy" "govwifi_codebuild_role_policy" {
         },
         {
             "Action": [
+                "s3:GetBucketAcl",
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:GetObjectVersion",
+                "s3:PutObject"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+              "${aws_s3_bucket.smoke_tests_bucket.arn}",
+              "${aws_s3_bucket.smoke_tests_bucket.arn}/*"
+            ],
+            "Sid": "SmoketestsStoreLogsPolicy"
+        },
+        {
+            "Action": [
                 "codecommit:GitPull"
             ],
             "Effect": "Allow",
@@ -48,47 +63,15 @@ resource "aws_iam_policy" "govwifi_codebuild_role_policy" {
         },
         {
             "Action": [
-                "s3:GetObject",
-                "s3:GetObjectVersion"
-            ],
-            "Effect": "Allow",
-            "Resource": "*",
-            "Sid": "S3GetObjectPolicy"
-        },
-        {
-            "Action": [
-                "s3:PutObject"
-            ],
-            "Effect": "Allow",
-            "Resource": "*",
-            "Sid": "S3PutObjectPolicy"
-        },
-        {
-            "Action": [
                 "ecr:BatchCheckLayerAvailability",
                 "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage"
+                "ecr:BatchGetImage",
+                "ecr:GetAuthorizationToken"
+
             ],
             "Effect": "Allow",
             "Resource": "*",
             "Sid": "ECRPullPolicy"
-        },
-        {
-            "Action": [
-                "ecr:GetAuthorizationToken"
-            ],
-            "Effect": "Allow",
-            "Resource": "*",
-            "Sid": "ECRAuthPolicy"
-        },
-        {
-            "Action": [
-                "s3:GetBucketAcl",
-                "s3:GetBucketLocation"
-            ],
-            "Effect": "Allow",
-            "Resource": "*",
-            "Sid": "S3BucketIdentity"
         }
     ],
     "Version": "2012-10-17"
@@ -120,9 +103,7 @@ resource "aws_iam_policy" "crossaccount_tools" {
             "Effect": "Allow",
             "Action": [
                 "s3:Get*",
-                "s3:List*",
-                "s3:PutObject",
-                "s3:PutObjectAcl"
+                "s3:List*"
             ],
             "Resource": [
                 "arn:aws:s3:::govwifi-codepipeline-bucket",
