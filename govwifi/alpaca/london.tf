@@ -280,6 +280,7 @@ module "london_api" {
   low_cpu_threshold = 0.3
 
   elasticsearch_endpoint = module.london_elasticsearch.endpoint
+  smoke_test_ips         = module.london_smoke_tests.eip_public_ips
 }
 
 module "london_route53_notifications" {
