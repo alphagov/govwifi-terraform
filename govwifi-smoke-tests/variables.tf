@@ -30,3 +30,8 @@ variable "create_slack_alert" {
 
 variable "govwifi_phone_number" {
 }
+
+variable "radius_ip_addresses" {
+  description = "List of all external radius IP addresses"
+  type        = list(string)
+}

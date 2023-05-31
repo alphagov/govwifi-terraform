@@ -403,6 +403,7 @@ module "london_smoke_tests" {
   aws_region                 = local.london_aws_region
   create_slack_alert         = 0
   govwifi_phone_number       = "+447537417039"
+  radius_ip_addresses = concat(module.london_frontend.eip_public_ips, module.dublin_frontend.eip_public_ips)
 }
 
 module "london_sync_certs" {

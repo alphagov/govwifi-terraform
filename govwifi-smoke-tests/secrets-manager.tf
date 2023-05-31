@@ -107,16 +107,6 @@ data "aws_secretsmanager_secret" "radius_key" {
   name = "deploy/radius_key"
 }
 
-
-
-data "aws_secretsmanager_secret_version" "radius_ips" {
-  secret_id = data.aws_secretsmanager_secret.radius_ips.id
-}
-
-data "aws_secretsmanager_secret" "radius_ips" {
-  name = "deploy/radius_ips"
-}
-
 data "aws_secretsmanager_secret_version" "tools_account" {
   secret_id = data.aws_secretsmanager_secret.tools_account.id
 }

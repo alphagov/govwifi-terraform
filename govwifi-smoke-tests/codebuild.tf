@@ -74,7 +74,7 @@ resource "aws_codebuild_project" "smoke_tests" {
 
     environment_variable {
       name  = "RADIUS_IPS"
-      value = data.aws_secretsmanager_secret_version.radius_ips.secret_string
+      value = join(",", var.radius_ip_addresses)
     }
 
     environment_variable {
@@ -114,12 +114,12 @@ resource "aws_codebuild_project" "smoke_tests" {
 
     # IDs of the two PRIVATE subnets
     subnets = [
-      "${aws_subnet.smoke_tests_private_a.id}",
-      "${aws_subnet.smoke_tests_private_b.id}",
+      aws_subnet.smoke_tests_private_a.id,
+      aws_subnet.smoke_tests_private_b.id,
     ] #
 
     security_group_ids = [
-      "${aws_vpc.smoke_tests.default_security_group_id}"
+      aws_vpc.smoke_tests.default_security_group_id
     ] #The default vpc security group goes here. Lets all traffic in and out (this is what all the codebuild jobs do anyway)
   }
 

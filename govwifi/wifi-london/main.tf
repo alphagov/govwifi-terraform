@@ -521,6 +521,7 @@ module "smoke_tests" {
   aws_region                 = var.aws_region
   create_slack_alert         = 1
   govwifi_phone_number       = "+447537417417"
+  radius_ip_addresses = concat(var.london_radius_ip_addresses, var.dublin_radius_ip_addresses)
 }
 
 module "govwifi-ecs-update-service" {
