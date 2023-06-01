@@ -506,7 +506,8 @@ module "govwifi_elasticsearch" {
 
 module "smoke_tests" {
   providers = {
-    aws = aws.main
+    aws        = aws.main
+    aws.dublin = aws.dublin
   }
 
   source = "../../govwifi-smoke-tests"
@@ -522,6 +523,10 @@ module "smoke_tests" {
   aws_region                 = var.aws_region
   create_slack_alert         = 1
   govwifi_phone_number       = "+447537417417"
+
+  depends_on = [
+    module.frontend
+  ]
 }
 
 module "govwifi-ecs-update-service" {

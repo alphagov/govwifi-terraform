@@ -117,6 +117,25 @@ data "aws_secretsmanager_secret" "radius_ips" {
   name = "deploy/radius_ips"
 }
 
+data "aws_secretsmanager_secret_version" "radius_ips_dublin" {
+  provider  = aws.dublin
+  secret_id = data.aws_secretsmanager_secret.radius_ips_dublin.id
+}
+
+data "aws_secretsmanager_secret" "radius_ips_dublin" {
+  provider = aws.dublin
+
+  name = "smoke_tests/radius_ips/dublin"
+}
+
+data "aws_secretsmanager_secret_version" "radius_ips_london" {
+  secret_id = data.aws_secretsmanager_secret.radius_ips_london.id
+}
+
+data "aws_secretsmanager_secret" "radius_ips_london" {
+  name = "smoke_tests/radius_ips/london"
+}
+
 data "aws_secretsmanager_secret_version" "tools_account" {
   secret_id = data.aws_secretsmanager_secret.tools_account.id
 }

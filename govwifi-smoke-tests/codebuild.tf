@@ -74,7 +74,7 @@ resource "aws_codebuild_project" "smoke_tests" {
 
     environment_variable {
       name  = "RADIUS_IPS"
-      value = data.aws_secretsmanager_secret_version.radius_ips.secret_string
+      value = "${data.aws_secretsmanager_secret_version.radius_ips_dublin.secret_string},${data.aws_secretsmanager_secret_version.radius_ips_london.secret_string}"
     }
 
     environment_variable {
