@@ -346,6 +346,7 @@ module "api" {
   low_cpu_threshold = 10
 
   elasticsearch_endpoint = module.govwifi_elasticsearch.endpoint
+  smoke_test_ips         = module.smoke_tests.eip_public_ips
 }
 
 module "critical_notifications" {

@@ -191,3 +191,8 @@ variable "alb_permitted_cidr_blocks" {
 
 variable "app_env" {
 }
+
+variable "smoke_test_ips" {
+  type    = list(string)
+  default = []
+}
