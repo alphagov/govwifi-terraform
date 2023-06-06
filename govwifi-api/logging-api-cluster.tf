@@ -72,9 +72,6 @@ resource "aws_ecs_task_definition" "logging_api_task" {
           "name": "S3_PUBLISHED_LOCATIONS_IPS_OBJECT_KEY",
           "value": "ips-and-locations.json"
         },{
-          "name": "SMOKE_TEST_IPS",
-          "value": "${join(",", var.smoke_test_ips)}"
-        },{
           "name": "VOLUMETRICS_ENDPOINT",
           "value": "https://${var.elasticsearch_endpoint}"
         }

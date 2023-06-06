@@ -553,6 +553,9 @@ resource "aws_ecs_task_definition" "logging_api_scheduled_task" {
         },{
           "name": "VOLUMETRICS_ENDPOINT",
           "value": "https://${var.elasticsearch_endpoint}"
+        },{
+          "name": "SMOKE_TEST_IPS",
+          "value": "${join(",", var.smoke_test_ips)}"
         }
       ],
       "secrets": [
