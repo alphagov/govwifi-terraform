@@ -388,7 +388,8 @@ module "london_elasticsearch" {
 
 module "london_smoke_tests" {
   providers = {
-    aws = aws.london
+    aws        = aws.london
+    aws.dublin = aws.dublin
   }
 
   source = "../../govwifi-smoke-tests"
@@ -404,6 +405,10 @@ module "london_smoke_tests" {
   aws_region                 = local.london_aws_region
   create_slack_alert         = 0
   govwifi_phone_number       = "+447537417039"
+
+  depends_on = [
+    module.london_frontend
+  ]
 }
 
 module "london_sync_certs" {
