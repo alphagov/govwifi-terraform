@@ -34,7 +34,7 @@ Other repositories:
 
 ## Secrets
 
-Sensitive credentials are stored in AWS Secrets Manager in the format of `<service>/<item>` (`<item>` must be hyphenated not underscored).
+Secret credentials are stored in AWS Secrets Manager in the format of `<service>/<item>` (`<item>` must be hyphenated not underscored).
 
 `service` will be the GovWifi service (admin, radius, user-signup, logging) related to that secret. If the secret is not specific to a GovWifi service, use the AWS service or product it relates to (e.g., rds, s3, grafana).
 
@@ -188,7 +188,14 @@ If you are running terraform in a brand new AWS account, then you will need to e
 #### AWS Secret Manager
 Ensure all required secrets have been entered into AWS Secrets manager in region eu-west-2 of your of your new account ([replicate over any secrets needed by resources in eu-west-1](https://docs.aws.amazon.com/secretsmanager/latest/userguide/create-manage-multi-region-secrets.html)). The name of the credentials in Secrets Manager MUST match the names of the secrets that already exist in the code. 
 
-There is work planned to autogenerate the bulk of these secrets, however at present this is a manual process, which generally takes around 2 hours. You can look at the secrets in pre-existing environments for a guide. 
+##### Auto-generating the database secrets in a new AWS environment
+
+The code will automatically generate RDS secrets for the admin, sessions and user databases. To allow this uncomment the blocks of code beginning with `COMMENT BELOW IN IF CREATING A NEW ENVIRONMENT FROM SCRATCH` and ending with `END CREATING A NEW ENVIRONMENT FROM SCRATCH` in the following files:
+- govwifi-admin/secrets-manager.tf
+- govwifi-backend/secrets-manager.tf
+
+**Note:**
+There is work planned to autogenerate the bulk of these secrets, however at present this is a manual process (apart from the databases), which generally takes around 2 hours. You can look at the secrets in pre-existing environments for a guide. 
 
 #### Increase The Default AWS Quotas
 Terraform needs to create a larger number of resources than AWS allows out of the box. Luckily it is easy to get these limits increased. 

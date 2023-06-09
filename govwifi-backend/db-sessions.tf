@@ -32,6 +32,13 @@ resource "aws_db_instance" "db" {
   tags = {
     Name = "${title(var.env_name)} DB"
   }
+
+  lifecycle {
+    ignore_changes = [
+      username,
+      password
+    ]
+  }
 }
 
 resource "aws_db_instance" "read_replica" {

@@ -76,6 +76,13 @@ resource "aws_db_instance" "admin_db" {
   tags = {
     Name = "${title(var.env_name)} DB for govwifi-admin"
   }
+
+  lifecycle {
+    ignore_changes = [
+      username,
+      password
+    ]
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_cpualarm" {
