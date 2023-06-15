@@ -186,7 +186,7 @@ module "london_admin" {
   rr_db_name = "govwifi_recovery"
 
   user_db_host = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
-  user_db_name = "govwifi_staging_users"
+  user_db_name = "govwifi_recovery_users"
 
   critical_notifications_arn = module.london_notifications.topic_arn
   capacity_notifications_arn = module.london_notifications.topic_arn
@@ -318,8 +318,10 @@ module "london_prometheus" {
     aws = aws.london
   }
 
-  source   = "../../govwifi-prometheus"
-  env_name = local.env_name
+  source         = "../../govwifi-prometheus"
+  env_name       = local.env_name
+  aws_region     = local.london_aws_region
+  aws_account_id = local.aws_account_id
 
   ssh_key_name = var.ssh_key_name
 
@@ -362,7 +364,8 @@ module "london_grafana" {
     module.london_prometheus.eip_public_ip,
     module.dublin_prometheus.eip_public_ip
   ]
-
+  aws_account_id = local.aws_account_id
+  
 }
 
 module "london_elasticsearch" {
@@ -383,7 +386,8 @@ module "london_elasticsearch" {
 
 module "london_smoke_tests" {
   providers = {
-    aws = aws.london
+    aws        = aws.london
+    aws.dublin = aws.dublin
   }
 
   source = "../../govwifi-smoke-tests"
@@ -398,7 +402,11 @@ module "london_smoke_tests" {
   smoketest_subnet_public_b  = var.smoketest_subnet_public_b
   aws_region                 = local.london_aws_region
   create_slack_alert         = 0
+  govwifi_phone_number       = "+447537417039"
 
+  depends_on = [
+    module.london_frontend
+  ]
 }
 
 module "london_sync_certs" {
