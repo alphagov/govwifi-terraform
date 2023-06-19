@@ -45,8 +45,8 @@ For historical use of secrets  please see: [GovWifi build](https://github.com/al
 Initialise terraform if running for the first time:
 
 ```
-gds-cli aws <ENV> -- make <ENV> init-backend
-gds-cli aws <ENV> -- make <ENV> plan
+gds-cli aws <gds-cli-env-name> -- make <ENV> init-backend
+gds-cli aws <gds-cli-env-name> -- make <ENV> plan
 ```
 
 Example ENVs are: `wifi`, `wifi-london` and `staging`.
@@ -54,8 +54,8 @@ Example ENVs are: `wifi`, `wifi-london` and `staging`.
 ## Running terraform
 
 ```
-gds-cli aws <ENV> -- make <ENV> plan
-gds-cli aws <ENV> -- make <ENV> apply
+gds-cli aws <gds-cli-env-name> -- make <ENV> plan
+gds-cli aws <gds-cli-env-name> -- make <ENV> apply
 ```
 
 ### Running terraform target
@@ -67,7 +67,7 @@ We've incorporated this functionality into our `make` commands. **Note**: this s
 To retrieve a module name, run a `terraform plan` and copy the module name (EXCLUDING "module.") from the Terraform output:
 
 ```bash
-$ gds-cli aws <ENV> -- make staging plan
+$ gds-cli aws <gds-cli-env-name> -- make staging plan
 ...
 
 An execution plan has been generated and is shown below.
@@ -85,14 +85,14 @@ In this case, the module name would be `api.aws_iam_role_policy.some_policy`
 To `plan`/`apply` a specific resource use the standard `make <ENV> plan | apply` followed by a space separated list of one or more modules:
 
 ```
-$ gds-cli aws <ENV> -- make <ENV> plan modules="backend.some.resource api.some.resource"
-$ gds-cli aws <ENV> -- make <ENV> apply modules="frontend.some.resource"
+$ gds-cli aws <gds-cli-env-name> -- make <ENV> plan modules="backend.some.resource api.some.resource"
+$ gds-cli aws <gds-cli-env-name> -- make <ENV> apply modules="frontend.some.resource"
 ```
 
 If combining other Terraform commands (e.g., `-var` or `-replace`) with targeting a resource, use the `terraform_target` command:
 
 ```bash
-$ gds-cli aws <ENV> -- make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
+$ gds-cli aws <gds-cli-env-name> -- make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
 ```
 
 #### Deriving module names
@@ -203,10 +203,20 @@ This holds information related to the terraform state, and must be created manua
 
 `govwifi-<ENV>-<AWS-REGION-NAME>-accesslogs`
 
-An example command for creating the bucket in the Staging environment for the London region would be:
+An example commands for creating buckets in the Staging environment for the London and Dublin regions would be:
 
 ```
 gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-london-accesslogs --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
+```
+
+```
+gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-dublin-accesslogs --region eu-west-1 --create-bucket-configuration LocationConstraint=eu-west-1
+```
+
+Use the following command to validate new buckets have been created:
+
+```
+gds-cli aws govwifi-<NEW-ENV-NAME> -- aws s3api list-buckets
 ```
 
 ### Setting Up Remote State
@@ -215,8 +225,9 @@ We use remote state, but there is a chicken and egg problem of creating a state 
 #### Manually Create S3 State Bucket 
 
 ```
-gds-cli aws <ENV> -- aws s3api create-bucket --bucket govwifi-<ENV>-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
+gds-cli aws <gds-cli-env-name> -- aws s3api create-bucket --bucket govwifi-<ENV>-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
 ```
+
 For example:
 
 ```
@@ -226,13 +237,25 @@ gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-
 #### Initialize The Backend
 
 ```
-gds-cli aws <ENV> -- make <ENV> init-backend
+gds-cli aws <gds-cli-env-name> -- make <ENV> init-backend
+```
+
+For example:
+
+```
+gds-cli aws govwifi-staging -- make staging init-backend
 ```
 
 #### Import S3 State bucket 
 
 ```
-gds-cli aws <ENV> -- make <ENV> terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-<env>-tfstate-eu-west-2"
+gds-cli aws <gds-cli-env-name> -- make <ENV> terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-<ENV>-tfstate-eu-west-2"
+```
+
+For example:
+
+```
+gds-cli aws govwifi-staging -- make staging terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-staging-tfstate-eu-west-2"
 ```
 
 Then comment out the lines related to replication configuration in govwifi-terraform/terraform-state/accesslogs.tf and govwifi-terraform/terraform-state/tfstate.tf.
@@ -247,7 +270,7 @@ The first time terraform is run in a new environment the replication configurati
 Now run
 
 ```
-gds-cli aws <ENV> -- make <ENV> plan
+gds-cli aws <gds-cli-env-name> -- make <ENV> plan
 ```
 
 For example
@@ -259,7 +282,7 @@ gds-cli aws govwifi-development -- make alpaca plan
 And then
 
 ```
-gds-cli aws <ENV> -- make <ENV> apply
+gds-cli aws <gds-cli-env-name> -- make <ENV> apply
 ```
 
 After you have finished terraforming follow the manual steps below to complete the setup. 
