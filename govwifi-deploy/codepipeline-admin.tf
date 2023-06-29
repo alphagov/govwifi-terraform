@@ -36,11 +36,11 @@ resource "aws_codepipeline" "admin_pipeline" {
       output_artifacts = ["SourceArtifact"]
 
       configuration = {
-        RepositoryName = "govwifi/admin/staging"
+        RepositoryName     = "govwifi/admin/staging"
+        ImageTagMutability = "MUTABLE"
       }
     }
   }
-
   stage {
     name = "admin-convert-imagedetail"
 
