@@ -1,7 +1,7 @@
 resource "aws_codebuild_project" "smoke_tests" {
   name          = "govwifi-smoke-tests"
   description   = "This project runs the govwifi tests at regular intervals"
-  build_timeout = "5"
+  build_timeout = "10"
   service_role  = aws_iam_role.govwifi_codebuild.arn
 
   artifacts {
