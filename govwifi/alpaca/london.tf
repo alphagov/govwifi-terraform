@@ -144,6 +144,9 @@ module "london_frontend" {
   prometheus_security_group_id = module.london_prometheus.prometheus_security_group_id
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
+
+  fidus_ips = var.fidus_ips
+
 }
 
 module "london_admin" {
@@ -335,6 +338,7 @@ module "london_prometheus" {
   dublin_radius_ip_addresses = module.dublin_frontend.eip_public_ips
 
   grafana_ip = module.london_grafana.eip_public_ip
+
 }
 
 module "london_grafana" {
@@ -366,6 +370,9 @@ module "london_grafana" {
     module.london_prometheus.eip_public_ip,
     module.dublin_prometheus.eip_public_ip
   ]
+
+  fidus_ips = var.fidus_ips
+
 
 }
 

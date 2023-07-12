@@ -251,6 +251,8 @@ module "frontend" {
   prometheus_security_group_id = module.govwifi_prometheus.prometheus_security_group_id
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
+
+  fidus_ips = var.fidus_ips
 }
 
 module "api" {
@@ -387,6 +389,7 @@ module "govwifi_prometheus" {
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
 
   grafana_ip = var.grafana_ip
+
 }
 
 # Cross region VPC peering

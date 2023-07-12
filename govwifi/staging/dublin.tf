@@ -240,6 +240,7 @@ module "dublin_frontend" {
   prometheus_security_group_id = module.dublin_prometheus.prometheus_security_group_id
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
+  fidus_ips = var.fidus_ips
 
 }
 

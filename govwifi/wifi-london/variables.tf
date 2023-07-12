@@ -105,3 +105,6 @@ variable "smoketest_subnet_public_a" {
 
 variable "smoketest_subnet_public_b" {
 }
+
+variable "fidus_ips" {
+}
