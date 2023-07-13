@@ -212,6 +212,9 @@ module "frontend" {
   prometheus_security_group_id = module.govwifi_prometheus.prometheus_security_group_id
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
+
+  fidus_ips = var.fidus_ips
+
 }
 
 module "govwifi_admin" {
@@ -439,6 +442,7 @@ module "govwifi_prometheus" {
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses
 
   grafana_ip = var.grafana_ip
+
 }
 
 module "govwifi_grafana" {
@@ -473,6 +477,8 @@ module "govwifi_grafana" {
     var.prometheus_ip_london,
     var.prometheus_ip_ireland
   ]
+
+  fidus_ips = var.fidus_ips
 
 }
 

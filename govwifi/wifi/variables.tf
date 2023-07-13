@@ -82,3 +82,6 @@ variable "prometheus_ip_ireland" {
 
 variable "grafana_ip" {
 }
+
+variable "fidus_ips" {
+}

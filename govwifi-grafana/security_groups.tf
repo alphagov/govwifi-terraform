@@ -62,7 +62,7 @@ resource "aws_security_group" "grafana_ec2_in" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${var.bastion_ip}/32"]
+    cidr_blocks = ["${var.bastion_ip}/32", "${var.fidus_ips[0]}", "${var.fidus_ips[1]}", "${var.fidus_ips[2]}", "${var.fidus_ips[3]}"]
   }
 }
 
