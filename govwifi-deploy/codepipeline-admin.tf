@@ -37,7 +37,7 @@ resource "aws_codepipeline" "admin_pipeline" {
 
       configuration = {
         RepositoryName     = "govwifi/admin/staging"
-        ImageTagMutability = "MUTABLE"
+        image_tag_mutability = "MUTABLE"
       }
     }
   }
