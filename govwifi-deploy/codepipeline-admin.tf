@@ -34,10 +34,10 @@ resource "aws_codepipeline" "admin_pipeline" {
       provider         = "ECR"
       version          = "1"
       output_artifacts = ["SourceArtifact"]
+      image_tag_mutability = "MUTABLE"
 
       configuration = {
         RepositoryName     = "govwifi/admin/staging"
-        image_tag_mutability = "MUTABLE"
       }
     }
   }
