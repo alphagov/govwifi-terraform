@@ -102,6 +102,3 @@ variable "prometheus_ip_ireland" {
 variable "prometheus_security_group_id" {
   type = string
 }
-
-variable "fidus_ips" {
-}

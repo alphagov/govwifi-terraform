@@ -79,7 +79,3 @@ variable "critical_notifications_arn" {
 
 variable "aws_account_id" {
 }
-
-variable "fidus_ips" {
-}
-
