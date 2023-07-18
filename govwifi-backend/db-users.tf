@@ -32,6 +32,14 @@ resource "aws_db_instance" "users_db" {
   tags = {
     Name = "${title(var.env)} Users DB"
   }
+
+  lifecycle {
+    ignore_changes = [
+      username,
+      password
+    ]
+  }
+
 }
 
 resource "aws_db_instance" "users_read_replica" {
@@ -62,6 +70,13 @@ resource "aws_db_instance" "users_read_replica" {
 
   tags = {
     Name = "${title(var.env_name)} DB Read Replica"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      username,
+      password
+    ]
   }
 }
 
