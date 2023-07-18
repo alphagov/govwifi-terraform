@@ -144,7 +144,6 @@ module "london_frontend" {
   prometheus_security_group_id = module.london_prometheus.prometheus_security_group_id
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
-  fidus_ips = var.fidus_ips
 }
 
 module "london_admin" {
@@ -368,7 +367,6 @@ module "london_grafana" {
     module.dublin_prometheus.eip_public_ip
   ]
   aws_account_id = local.aws_account_id
-  fidus_ips = var.fidus_ips
 
 }
 

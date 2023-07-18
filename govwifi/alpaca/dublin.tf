@@ -241,8 +241,6 @@ module "dublin_frontend" {
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 
-  fidus_ips = var.fidus_ips
-
 }
 
 module "dublin_api" {
@@ -329,7 +327,6 @@ module "dublin_prometheus" {
   dublin_radius_ip_addresses = module.dublin_frontend.eip_public_ips
 
   grafana_ip = module.london_grafana.eip_public_ip
-
 }
 
 module "dublin_route53_notifications" {
