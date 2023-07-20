@@ -69,7 +69,7 @@ data "aws_secretsmanager_secret" "tools_account" {
 
 #Generate new database credentials if new environment, otherwise ignore
 resource "random_password" "admin_password" {
-  length  = 33
+  length  = 32
   special = false
 }
 

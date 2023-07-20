@@ -81,7 +81,7 @@ data "aws_secretsmanager_secret" "users_db_credentials" {
 
 
 resource "random_password" "sessions_db_password" {
-  length  = 33
+  length  = 32
   special = false
 }
 
