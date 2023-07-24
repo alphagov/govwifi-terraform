@@ -196,7 +196,7 @@ module "dublin_frontend" {
   route53_zone_id    = data.aws_route53_zone.main.zone_id
   vpc_cidr_block     = local.dublin_frontend_vpc_cidr_block
   rack_env           = "alpaca"
-  sentry_current_env = "secondary-alpaca"
+  sentry_current_env = "alpaca"
 
   backend_vpc_id = module.dublin_backend.backend_vpc_id
 
@@ -286,7 +286,7 @@ module "dublin_api" {
 
   rack_env                = "alpaca"
   app_env                 = "staging"
-  sentry_current_env      = "secondary-alpaca"
+  sentry_current_env      = "alpaca"
   radius_server_ips       = local.frontend_radius_ips
   subnet_ids              = module.dublin_backend.backend_subnet_ids
   private_subnet_ids      = module.dublin_backend.backend_private_subnet_ids
