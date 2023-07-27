@@ -107,7 +107,7 @@ module "london_frontend" {
   route53_zone_id    = data.aws_route53_zone.main.zone_id
   vpc_cidr_block     = "10.102.0.0/16"
   rack_env           = "alpaca"
-  sentry_current_env = "secondary-alpaca"
+  sentry_current_env = "alpaca"
 
   backend_vpc_id = module.london_backend.backend_vpc_id
 
