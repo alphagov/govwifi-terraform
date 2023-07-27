@@ -117,7 +117,6 @@ module "backend" {
   administrator_cidrs = var.administrator_cidrs
   frontend_radius_ips = local.frontend_radius_ips
 
-  bastion_ami                = "ami-096cb92bb3580c759"
   bastion_instance_type      = "t2.micro"
   bastion_ssh_key_name       = "govwifi-bastion-key-20210630"
   enable_bastion_monitoring  = true

@@ -50,6 +50,8 @@ chown -R nobody /srv/prometheus
 run-until-success apt-get update  --yes
 run-until-success apt-get upgrade --yes
 
+# Turn on unattended upgrades
+dpkg-reconfigure -f noninteractive unattended-upgrades
 
 # We want to make sure that the journal does not write to syslog
 # This would fill up the disk, with logs we already have in the journal
@@ -115,32 +117,10 @@ EOF
 sed -i s/\ trust-ad// /etc/resolv.conf
 
 # Install awslogs
-# Steps required are install pre-reqs for python 3.5.n, install & build python 3.5 cos awslogs script only supports python < 3.5
-# Legacy - instance has this already - The install script requires the issue file to start with the string "Ubuntu"
-# Legacy - default - sudo echo "Ubuntu Linux 20.04 LTS - Authorized uses only. All activity may be monitored and reported. \d \t @ \n" > /etc/issue
-
-# Install python 3.5 prerequisites
-run-until-success sudo apt-get install --yes build-essential checkinstall
-run-until-success sudo apt-get install --yes libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
-
-# Install python 3.5.n source
-cd /usr/src
-run-until-success sudo wget https://www.python.org/ftp/python/3.5.9/Python-3.5.9.tgz
-sudo tar xzf Python-3.5.9.tgz
-
-# Build python
-cd Python-3.5.9/
-sudo ./configure --enable-optimizations
-sudo make altinstall
 
 # Retrieve and run awslogs install script
 cd /
 run-until-success sudo curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
-
-# Legacy possibly - Try to circumvent pip install error with waiting for 10 seconds.
-# sleep 10
-sudo python3.5 ./awslogs-agent-setup.py -n -r eu-west-2 -c ./initial-awslogs.conf
-
 
 # Install Docker and Send Logs to cloudwatch
 logger 'Installing and configuring docker'
