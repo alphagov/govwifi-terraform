@@ -1,7 +1,22 @@
-# Using custom ubuntu AMI id, as the micro size is only supported for paravirtual images.
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu-pro-server/images/hvm-ssd/ubuntu-jammy-22.04-amd64-pro-server-20230726"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
+}
+
 resource "aws_instance" "management" {
   count         = var.enable_bastion
-  ami           = "ami-04287c76136434aaf"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = var.bastion_instance_type
   key_name      = var.bastion_ssh_key_name
   subnet_id     = aws_subnet.wifi_backend_subnet[data.aws_availability_zones.zones.names[0]].id
