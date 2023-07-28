@@ -98,7 +98,6 @@ module "dublin_backend" {
 
   # Instance-specific setup -------------------------------
   enable_bastion = 0
-  bastion_ami    = "ami-08bac620dc84221eb"
 
   bastion_instance_type     = "t2.micro"
   bastion_server_ip         = module.london_backend.bastion_public_ip

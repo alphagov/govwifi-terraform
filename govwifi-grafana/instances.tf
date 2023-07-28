@@ -3,7 +3,7 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "name"
-    values = ["ubuntu-pro-server/images/hvm-ssd/ubuntu-focal-20.04-amd64-pro-server-20230324.1"]
+    values = ["ubuntu-pro-server/images/hvm-ssd/ubuntu-jammy-22.04-amd64-pro-server-20230726"]
   }
 
   filter {
@@ -49,6 +49,7 @@ resource "aws_instance" "grafana_instance" {
   }
 
   root_block_device {
+    volume_size = 30
     tags = {
       Name = "${title(var.env_name)} Grafana Root Volume"
     }
@@ -57,7 +58,7 @@ resource "aws_instance" "grafana_instance" {
   lifecycle {
     create_before_destroy = true
 
-    ignore_changes = [user_data, volume_tags]
+    ignore_changes = [volume_tags]
   }
 }
 

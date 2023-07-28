@@ -119,7 +119,6 @@ module "backend" {
   # eu-west-1, CIS Ubuntu Linux 16.04 LTS Benchmark v1.0.0.4 - Level 1
   # bastion-ami = "ami-51d3e928"
   # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS
-  bastion_ami               = "ami-08bac620dc84221eb"
   bastion_instance_type     = "t2.micro"
   bastion_ssh_key_name      = "govwifi-bastion-key-20210630"
   enable_bastion_monitoring = true

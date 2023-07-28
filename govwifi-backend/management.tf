@@ -1,7 +1,7 @@
 # Using custom ubuntu AMI id, as the micro size is only supported for paravirtual images.
 resource "aws_instance" "management" {
   count         = var.enable_bastion
-  ami           = var.bastion_ami
+  ami           = "ami-04287c76136434aaf"
   instance_type = var.bastion_instance_type
   key_name      = var.bastion_ssh_key_name
   subnet_id     = aws_subnet.wifi_backend_subnet[data.aws_availability_zones.zones.names[0]].id
@@ -16,6 +16,14 @@ resource "aws_instance" "management" {
   monitoring           = var.enable_bastion_monitoring
 
   depends_on = [aws_iam_instance_profile.bastion_instance_profile]
+
+
+  root_block_device {
+    volume_size = 30
+    tags = {
+      Name = "${title(var.env_name)} Bastion Root Volume"
+    }
+  }
 
   user_data = <<DATA
 Content-Type: multipart/mixed; boundary="==BOUNDARY=="
@@ -54,21 +62,8 @@ sudo apt-get install -yq --autoremove \
     mc \
     awscli
 
-# Allow auto-updates for everything, not just security
-sudo sed -i -e 's/\/\/\t"$${distro_id}:$${distro_codename}-updates";/\t"$${distro_id}:$${distro_codename}-updates";/g' /etc/apt/apt.conf.d/50unattended-upgrades
-# Install updates in the background while the machine is running
-sudo sed -i -e 's/\/\/Unattended-Upgrade::InstallOnShutdown "true";/Unattended-Upgrade::InstallOnShutdown "false";/g' /etc/apt/apt.conf.d/50unattended-upgrades
-# Reboot automatically (and instantly) when required
-sudo sed -i -e 's/\/\/Unattended-Upgrade::Automatic-Reboot "false";/Unattended-Upgrade::Automatic-Reboot "true";/g' /etc/apt/apt.conf.d/50unattended-upgrades
-
-# Set up periodic run of upgrades
-cat <<'EOF' > ./periodic-updates-setup
-APT::Periodic::Update-Package-Lists "1";
-APT::Periodic::Download-Upgradeable-Packages "1";
-APT::Periodic::AutocleanInterval "7";
-APT::Periodic::Unattended-Upgrade "1";
-EOF
-sudo cp ./periodic-updates-setup /etc/apt/apt.conf.d/10periodic
+# Turn on unattended upgrades
+sudo dpkg-reconfigure -f noninteractive unattended-upgrades
 
 --==BOUNDARY==
 MIME-Version: 1.0
@@ -118,37 +113,11 @@ log_stream_name = {instance_id}
 EOF
 
 # Install awslogs
-# Steps required are install pre-reqs for python 3.5.n, install & build python 3.5 cos awslogs script only supports python < 3.5
-
-PYTHON_MAIN_VERSION=3.5
-PYTHON_VERSION=$PYTHON_MAIN_VERSION.10
-
-function run-until-success() {
-  until $*
-  do
-    logger "Executing $* failed. Sleeping..."
-    sleep 5
-  done
-}
-
-# Install python $PYTHON_VERSION prerequisites
-run-until-success sudo apt-get install --yes build-essential checkinstall
-run-until-success sudo apt-get install --yes libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
-
-# Install python $PYTHON_VERSION source
-cd /usr/src
-run-until-success sudo wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz
-sudo tar xzf Python-$PYTHON_VERSION.tgz
-
-# Build python
-cd Python-$PYTHON_VERSION/
-sudo ./configure --enable-optimizations
-sudo make altinstall
 
 # Retrieve and run awslogs install script
 cd /
 run-until-success sudo curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
-sudo python$PYTHON_MAIN_VERSION ./awslogs-agent-setup.py -n -r ${var.aws_region} -c ./initial-awslogs.conf
+sudo python3 ./awslogs-agent-setup.py -n -r ${var.aws_region} -c ./initial-awslogs.conf
 
 --==BOUNDARY==--
 DATA

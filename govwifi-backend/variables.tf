@@ -32,9 +32,6 @@ variable "enable_bastion" {
   default = 1
 }
 
-variable "bastion_ami" {
-}
-
 variable "bastion_instance_type" {
 }
 
