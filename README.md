@@ -282,8 +282,6 @@ gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-
 
 #### Initialize The Backend
 
-**NOTE:** Before running the command below you may need to edit the `Makefile` file and remove the `delete-secret` parameter from the `terraform` command.
-
 ```
 gds-cli aws <account-name> -- make <ENV> init-backend
 ```
@@ -306,8 +304,12 @@ replication_configuration{
   ....
 }
 ```
+
 The first time terraform is run in a new environment the replication configuration lines need to be commented out because the replication bucket in eu-west-1 will not yet exist. Leaving these lines uncommented will cause an error.
 
+#### Plan and apply terraform 
+
+**NOTE:** Before running the command below you may need to edit the `Makefile` file and remove the `delete-secret` parameter from the `terraform` command.
 
 Now run
 
