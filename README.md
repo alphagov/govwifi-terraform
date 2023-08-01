@@ -282,7 +282,7 @@ gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-
 
 #### Initialize The Backend
 
-**NOTE: Before running the command below you may need to edit the `Makefile` file and remove the `delete-secret` parameter from the `terraform` command.**
+**NOTE:** Before running the command below you may need to edit the `Makefile` file and remove the `delete-secret` parameter from the `terraform` command.
 
 ```
 gds-cli aws <account-name> -- make <ENV> init-backend
