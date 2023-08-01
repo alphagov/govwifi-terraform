@@ -400,9 +400,9 @@ You will also need to do the following in the tools account:
 **NOTE:**
 - In the BCP scenario for the Production environment change the Bastion instance type to `m4.xlarge` and allocate `100GB` of `gp3` storage with `12000IOPS` and `500mbps` provisioned. You can complete this via the AWS Console. You need to make all the storage changes at the same time, otherwise, you will get a notification that further changes can be done in 6 hours.
 
-More info about expanding Linux storage [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/recognize-expanded-volume-linux.html)
+  More info about expanding Linux storage [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/recognize-expanded-volume-linux.html)
 
-Remember to complete the volume size expansion on the Bastion level as well. SSH to the Bastion and run the following commands:
+  Remember to complete the volume size expansion on the Bastion level as well. SSH to the Bastion and run the following commands:
 ```
 	lsblk
 	sudo growpart /dev/xvda 1
