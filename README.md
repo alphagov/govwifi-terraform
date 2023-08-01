@@ -42,7 +42,7 @@ For historical use of secrets  please see: [GovWifi build](https://github.com/al
 
 ## Running terraform for the first time
 
-Initialise terraform if running for the first time:
+Initialize terraform if running for the first time:
 
 ```
 gds-cli aws <account-name> -- make <ENV> init-backend
@@ -227,7 +227,7 @@ Terraform needs to create a larger number of resources than AWS allows out of th
   - **10** VPCs per Region
 
 #### DNS Setup
-- Create a hosted zone in your new environment in the following format `<your_new_env>.wifi.service.gov.uk` (for example `foobar.wifi.service.gov.uk` )
+- Create a hosted zone in your new environment in the following format `<ENV>.wifi.service.gov.uk` (for example `foobar.wifi.service.gov.uk` )
 
 ```
   gds aws <account-name> -- \
@@ -239,10 +239,10 @@ Terraform needs to create a larger number of resources than AWS allows out of th
 
 - Copy the NS records for the newly created hosted zone.
 - Log into the GovWifi Production AWS account `gds-cli aws govwifi -l`
-- In the production account in Route53 go to the `wifi.service.gov.uk` hosted zone.
-- Add a NS record for your new environment with the copied NS records. 
+- In the GovWifi Production account in the Route53 go to the `wifi.service.gov.uk` hosted zone.
+- Add the NS records for your new environment with the copied NS records. 
 - Validate DNS delegation is complete:
-  - Verify DNS delegation is complete ` dig -t NS <your_env>.wifi.service.gov.uk`  The result should match the your new environments NS records.
+  - Verify DNS delegation is complete ` dig -t NS <ENV>.wifi.service.gov.uk`  The result should match the your new environments NS records.
 
 #### Create The Access Logs S3 Bucket
 
@@ -411,7 +411,7 @@ You will also need to do the following in the tools account:
 
 - In the BCP scenario for the Production environment change the RDS instance type for the `session` database to the `m4.xlarge` and allocate `400GB` of `gp3` storage which gives you `12000IOPS` and `500mbps`. You may need to consider disabling the Multi-AZ setup while restoring data.
 
-- If you are setting up a new environment and the `app_env` variable has been set to `staging` then copy the databases from the pre-existing staging environment and leave any references to `staging` in the database names unchanged. For example the user database name would be left as `govwifi_staging_users`. The `app_env` value in terraform MUST match the database environment reference otherwise the GovWifi applications will fail to start.**
+- If you are setting up a new environment and the `app_env` variable has been set to `staging` then copy the databases from the pre-existing staging environment and leave any references to `staging` in the database names unchanged. For example the user database name would be left as `govwifi_staging_users`. The `app_env` value in terraform MUST match the database environment reference otherwise the GovWifi applications will fail to start.
 
 Follow the instructions [here](https://govwifi-dev-docs.cloudapps.digital/infrastructure/database-restore.html#restoring-databases) to restore the databases.
 
