@@ -333,7 +333,7 @@ After you have finished terraforming follow the manual steps below to complete t
 
 #### Validate that all components are created.
 
-Run the terraform `plan`` and `apply`` again. Ensure all components are create. Investigate further if required.
+Run the terraform `plan` and `apply` again. Ensure all components are create. Investigate further if required.
 
 ### Manual Steps Needed to Set Up a New Environment
 
