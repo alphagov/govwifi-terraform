@@ -329,7 +329,7 @@ gds-cli aws <account-name> -- make <ENV> apply
 
 After you have finished terraforming follow the manual steps below to complete the setup. 
 
-**NOTE: There is currently a bug within the AWS that means that terraform can get stuck on the "Creating" RDS instances step. While building the new Env in the Recovery account it took 30 minutes to create RDS instances. However, the User-DB's Read-Replica was not created during the first `terraform apply` run. Please run `terraform apply` once again. It may run for further 30 minutes. Validate the User-DB's Read-Replica status using the AWS Console.**
+**NOTE:** There is currently a bug within the AWS that means that terraform can get stuck on the "Creating" RDS instances step. While building the new Env in the Recovery account it took 30 minutes to create RDS instances. However, the User-DB's Read-Replica was not created during the first `terraform apply` run. Please run `terraform apply` once again. It may run for further 30 minutes. Validate the User-DB's Read-Replica status using the AWS Console.
 
 #### Validate that all components are created.
 
