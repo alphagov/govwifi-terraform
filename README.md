@@ -233,11 +233,11 @@ Terraform needs to create a larger number of resources than AWS allows out of th
 - Create a hosted zone in your new environment in the following format `<your_new_env>.wifi.service.gov.uk` (for example `foobar.wifi.service.gov.uk` )
 
 ```
-gds aws <account-name> -- \
- aws route53 create-hosted-zone \
-    --name "<ENV>.wifi.service.gov.uk" \
-    --hosted-zone-config "Comment=\"\",PrivateZone=false" \
-    --caller-reference "govwifi-$(date)"
+  gds aws <account-name> -- \
+  aws route53 create-hosted-zone \
+      --name "<ENV>.wifi.service.gov.uk" \
+      --hosted-zone-config "Comment=\"\",PrivateZone=false" \
+      --caller-reference "govwifi-$(date)"
 ```
 
 - Copy the NS records for the newly created hosted zone.
