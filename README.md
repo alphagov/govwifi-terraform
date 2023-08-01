@@ -297,7 +297,7 @@ gds-cli aws govwifi-staging -- make staging init-backend
 
 #### Import S3 State bucket
 
-**NOTE: Before running the below command you may need to edit the `Makefile` file and remove `delete-secret` parameter from the `terraform` command.**
+**NOTE: Before running the command below you may need to edit the `Makefile` file and remove the `delete-secret` parameter from the `terraform` command.**
 
 ```
 gds-cli aws <account-name> -- make <ENV> terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-<env>-tfstate-eu-west-2"
