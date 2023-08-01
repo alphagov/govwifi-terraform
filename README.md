@@ -282,6 +282,8 @@ gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-
 
 #### Initialize The Backend
 
+**NOTE: Before running the command below you may need to edit the `Makefile` file and remove the `delete-secret` parameter from the `terraform` command.**
+
 ```
 gds-cli aws <account-name> -- make <ENV> init-backend
 ```
@@ -293,8 +295,6 @@ gds-cli aws govwifi-staging -- make staging init-backend
 ```
 
 #### Import S3 State bucket
-
-**NOTE: Before running the command below you may need to edit the `Makefile` file and remove the `delete-secret` parameter from the `terraform` command.**
 
 ```
 gds-cli aws <account-name> -- make <ENV> terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-<env>-tfstate-eu-west-2"
