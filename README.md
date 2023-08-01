@@ -329,13 +329,19 @@ gds-cli aws <account-name> -- make <ENV> apply
 
 After you have finished terraforming follow the manual steps below to complete the setup. 
 
-**NOTE: There is currently a bug within the AWS that means that terraform can get stuck on the "Creating" RDS instances step. While building the new Env in the Recovery account it took 30 minutes to create RDS instances. However, the User-DB's Read-Replica was not created during the first `terraform apply` run. Please run `terraform apply` once again.**
+**NOTE: There is currently a bug within the AWS that means that terraform can get stuck on the "Creating" RDS instances step. While building the new Env in the Recovery account it took 30 minutes to create RDS instances. However, the User-DB's Read-Replica was not created during the first `terraform apply` run. Please run `terraform apply` once again. It may run for further 30 minutes. Validate the User-DB's Read-Replica status using the AWS Console.**
 
 #### Validate that all components are created.
 
-Run the terraform plan and apply again. Ensure all components are create. Investigate further if necessary.
+Run the terraform `plan`` and `apply`` again. Ensure all components are create. Investigate further if required.
 
 ### Manual Steps Needed to Set Up a New Environment
+
+#### Update AWS Secrets Manager entries for all RDS instances
+When all RDS instances are created you need to use the AWS console to check configuration details of newly deployed instances. You need to use this information to update AWS Secrets for all databases' secrets. Following values need to be updated: 
+- rds/database_name/credentials/host
+- rds/database_name/credentials/dbname
+- rds/database_name/credentials/dbInstanceIdentifier
 
 #### Add DKIM Authentication
 Ensure you are in the eu-west-1 region (Ireland) and follow the instructions here(https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-authentication-dkim-easy-setup-domain.html) to verify your new subdomain (e.g. staging.wifi.service.gov.uk)
