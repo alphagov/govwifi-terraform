@@ -229,6 +229,24 @@ Terraform needs to create a larger number of resources than AWS allows out of th
   - **22** Elastic IPs
   - **10** VPCs per Region
 
+#### DNS Setup
+- Create a hosted zone in your new environment in the following format `<your_new_env>.wifi.service.gov.uk` (for example `foobar.wifi.service.gov.uk` )
+
+```
+gds aws <account-name> -- \
+ aws route53 create-hosted-zone \
+    --name "<ENV>.wifi.service.gov.uk" \
+    --hosted-zone-config "Comment=\"\",PrivateZone=false" \
+    --caller-reference "govwifi-$(date)"
+```
+
+- Copy the NS records for the newly created hosted zone.
+- Log into the GovWifi Production AWS account `gds-cli aws govwifi -l`
+- In the production account in Route53 go to the `wifi.service.gov.uk` hosted zone.
+- Add a NS record for your new environment with the copied NS records. 
+- Validate DNS delegation is complete:
+  - Verify DNS delegation is complete ` dig -t NS <your_env>.wifi.service.gov.uk`  The result should match the your new environments NS records.
+
 #### Create The Access Logs S3 Bucket
 
 This holds information related to the terraform state, and must be created manually before the initial terraform run in a new environment. You will need to create two S3 buckets. One in eu-west-1 and one in eu-west-2. The bucket name must match this naming convention:
@@ -277,7 +295,9 @@ For example:
 gds-cli aws govwifi-staging -- make staging init-backend
 ```
 
-#### Import S3 State bucket 
+#### Import S3 State bucket
+
+**NOTE: Before running the below command you may need to edit the `Makefile` file and remove `delete-secret` parameter from the `terraform` command.**
 
 ```
 gds-cli aws <account-name> -- make <ENV> terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-<env>-tfstate-eu-west-2"
@@ -315,15 +335,6 @@ After you have finished terraforming follow the manual steps below to complete t
 **NOTE: There is currently a bug within AWS that means that terraform can get stuck "Creating" RDS instances. If this happens, wait 2 hours and try another terraform apply**
 
 ### Manual Steps Needed to Set Up a New Environment
-
-#### DNS Setup
-- Create a hosted zone in your new environment in the following format `<your_new_env>.wifi.service.gov.uk` (for example `foobar.wifi.service.gov.uk` )
-- Copy the NS records for the newly created hosted zone.
-- Log into the GovWifi Production AWS account `gds-cli aws govwifi -l`
-- In the production account in Route53 go to the `wifi.service.gov.uk` hosted zone.
-- Add a NS record for your new environment with the copied NS records. 
-- Validate DNS delegation is complete:
-  - Verify DNS delegation is complete ` dig -t NS <your_env>.wifi.service.gov.uk`  The result should match the your new environments NS records.
 
 #### Add DKIM Authentication
 Ensure you are in the eu-west-1 region (Ireland) and follow the instructions here(https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-authentication-dkim-easy-setup-domain.html) to verify your new subdomain (e.g. staging.wifi.service.gov.uk)
