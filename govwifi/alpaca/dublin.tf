@@ -349,3 +349,17 @@ module "dublin_notifications" {
   topic_name = "govwifi-alpaca"
   emails     = [var.notification_email]
 }
+
+module "dublin_sync_certs" {
+  providers = {
+    aws = aws.dublin
+  }
+
+  source = "../../govwifi-sync-certs"
+
+  env            = local.env
+  aws_account_id = local.aws_account_id
+  aws_region     = local.dublin_aws_region
+  region_name    = local.dublin_aws_region_name
+
+}
