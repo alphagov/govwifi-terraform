@@ -26,7 +26,7 @@ Our services include:
 - A Prometheus server to scrape metrics from the FreeRADIUS Prometheus Exporters which exposes FreeRADIUS server data
 
 We manage our infrastructure via:
-- Terraform, split across this repository and [govwifi-terraform](https://github.com/alphagov/govwifi-terraform)
+- Terraform, split across this repository and [govwifi-build](https://github.com/alphagov/govwifi-build)
 - The [safe restarter](https://github.com/alphagov/govwifi-safe-restarter), which uses a [CanaryRelease](https://martinfowler.com/bliki/CanaryRelease.html) strategy to increase the stability of the frontends
 
 Other repositories:
@@ -42,11 +42,11 @@ For historical use of secrets  please see: [GovWifi build](https://github.com/al
 
 ## Running terraform for the first time
 
-Initialise terraform if running for the first time:
+Initialize terraform if running for the first time:
 
 ```
-gds-cli aws <ENV> -- make <ENV> init-backend
-gds-cli aws <ENV> -- make <ENV> plan
+gds-cli aws <account-name> -- make <ENV> init-backend
+gds-cli aws <account-name> -- make <ENV> plan
 ```
 
 Example ENVs are: `wifi`, `wifi-london` and `staging`.
@@ -54,8 +54,8 @@ Example ENVs are: `wifi`, `wifi-london` and `staging`.
 ## Running terraform
 
 ```
-gds-cli aws <ENV> -- make <ENV> plan
-gds-cli aws <ENV> -- make <ENV> apply
+gds-cli aws <account-name> -- make <ENV> plan
+gds-cli aws <account-name> -- make <ENV> apply
 ```
 
 ### Running terraform target
@@ -67,7 +67,7 @@ We've incorporated this functionality into our `make` commands. **Note**: this s
 To retrieve a module name, run a `terraform plan` and copy the module name (EXCLUDING "module.") from the Terraform output:
 
 ```bash
-$ gds-cli aws <ENV> -- make staging plan
+$ gds-cli aws <account-name> -- make staging plan
 ...
 
 An execution plan has been generated and is shown below.
@@ -85,14 +85,14 @@ In this case, the module name would be `api.aws_iam_role_policy.some_policy`
 To `plan`/`apply` a specific resource use the standard `make <ENV> plan | apply` followed by a space separated list of one or more modules:
 
 ```
-$ gds-cli aws <ENV> -- make <ENV> plan modules="backend.some.resource api.some.resource"
-$ gds-cli aws <ENV> -- make <ENV> apply modules="frontend.some.resource"
+$ gds-cli aws <account-name> -- make <ENV> plan modules="backend.some.resource api.some.resource"
+$ gds-cli aws <account-name> -- make <ENV> apply modules="frontend.some.resource"
 ```
 
 If combining other Terraform commands (e.g., `-var` or `-replace`) with targeting a resource, use the `terraform_target` command:
 
 ```bash
-$ gds-cli aws <ENV> -- make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
+$ gds-cli aws <account-name> -- make <ENV> terraform_target terraform_cmd="<plan | apply> -replace <your command>"
 ```
 
 #### Deriving module names
@@ -148,11 +148,6 @@ Add the new environment to the Makefile. [See here for an example commit](https:
 
 #### Update Application Environment Variables 
 
-Do a search for `app_env` in the london.tf and dublin.f files for your new environment. Set this variable to `staging` anywhere you encounter it [See this commit for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R288).
-
-Also set the `user_db_name` variable in the london_admin module of the london.tf file for your environment to `govwifi_staging_users` [see here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88R189).
-
-
 Due to the way the GovWifi Ruby applications have been built the apps will expect to be running in one of the following environments:
 - production
 - staging
@@ -162,7 +157,11 @@ This is based on the way the Ruby configuration files are set up. You can see an
 
 The APP_ENV environment variable for any new GovWifi environment should be set to `staging`, unless this is a real diaster recovery of production (in which case set the APP_ENV to `production`). The `dev` setting is only used when the app containers are run on a developers' local machine.
 
-There is work planned to improve this process, and make the apps more environment agnostic.
+> There is work planned to improve this process, and make the apps more environment agnostic.
+
+Do a search for `app_env` in the london.tf and dublin.f files for your new environment. Set this variable to `staging` anywhere you encounter it [See this commit for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R288).
+
+Also set the `user_db_name` variable in the london_admin module of the london.tf file for your environment to `govwifi_staging_users`. To see an example [open the london.tf file in the commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88), click on the `Load diff` and navigate to a **line 189**.
 
 #### Update Govwifi-Build
 
@@ -170,16 +169,42 @@ There is work planned to improve this process, and make the apps more environmen
 We keep sensitive (but non secret information) in a private repo called govwifi-build(https://github.com/alphagov/govwifi-build). This folder is only accessible to GovWifi team members.  If you create a new GovWifi environment you will need to add new directory of the same name [here](https://github.com/alphagov/govwifi-build/tree/master/non-encrypted/secrets-to-copy/govwifi). 
 Instructions
 - Make a copy of the staging directory and rename it to your environment name
+
+```
+cp -Rp non-encrypted/secrets-to-copy/govwifi/staging non-encrypted/secrets-to-copy/govwifi/<NEW-ENV-NAME>
+```
+
 - Replace any references to `staging` in the newly created directory with your new environment name.
 [See here for an example commit](https://github.com/alphagov/govwifi-build/pull/541/files#diff-3382ad2da7f814e1bbd3a3ae321be41d7e23db80734611bb4ac90ab30d690cc5).
 
+```
+for filename in ./non-encrypted/secrets-to-copy/govwifi/<NEW-ENV-NAME>/* ; do sed -i '' 's/staging/<NEW-ENV-NAME>/g' $filename ; done
+```
+
 ##### Add An SSH Key That Will Be Used By Your New Environment
 
-- Generate an ssh keypair.
+- Generate an ssh keypair:
+
+```
+ssh-keygen -C "govwifi-developers@digital.cabinet-office.gov.uk"
+```
+
+Use the following format when prompted for the file name:
+
+```
+./govwifi-<NEW-ENV-NAME>-bastion-yyyymmdd
+```
+
+Use an empty passphrase.
+
 - Add encrypted versions of the files to the govwifi-build/passwords/keys/ using the instructions [here](https://govwifi-dev-docs.cloudapps.digital/infrastructure/secrets.html#adding-editing-a-secret).
 - Update the terraform for your environment:
-  - With the name of the key and **public** key file in the dublin-keys module in the dublin.tf file of your environment [See here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R171-R172).
+  - With the name of the key in in the dublin-keys module in the dublin.tf file of your environment [See here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R171).
+  - With the **public** key file in the dublin-keys module in the dublin.tf file of your environment [See here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R177).
   - Update name of key in dublin_backend module of dublin.tf, [see here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R105).
+  - With the name of the key in in the london-keys module in the london.tf file. To see an example [open the london.tf file in the commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88), click on the `Load diff` and navigate to a **line 24**.
+  - With the **public** key file in the london-keys module in the london.tf file. To see an example [open the london.tf file in the commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88), click on the `Load diff` and navigate to a **line 30**.
+  - To see an example [open the london.tf file in the commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88), click on the `Load diff` and navigate to a **line 55**.
   - Update the `ssh_key_name` variable in the variables.ft with the name of the ssh key [see here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-481c8f75e7c6c7ff9da71e734bc80ea24feff6f398f07b81ce8bd0439d9e8c8eR3)
 
 ### Prepare The AWS Environment
@@ -194,9 +219,6 @@ The code will automatically generate RDS secrets for the admin, sessions and use
 - govwifi-admin/secrets-manager.tf
 - govwifi-backend/secrets-manager.tf
 
-**Note:**
-There is work planned to autogenerate the bulk of these secrets, however at present this is a manual process (apart from the databases), which generally takes around 2 hours. You can look at the secrets in pre-existing environments for a guide. 
-
 #### Increase The Default AWS Quotas
 Terraform needs to create a larger number of resources than AWS allows out of the box. Luckily it is easy to get these limits increased. 
 - [Follow the instructions from AWS to request an increase](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html).
@@ -204,16 +226,44 @@ Terraform needs to create a larger number of resources than AWS allows out of th
   - **22** Elastic IPs
   - **10** VPCs per Region
 
+#### DNS Setup
+- Create a hosted zone in your new environment in the following format `<ENV>.wifi.service.gov.uk` (for example `foobar.wifi.service.gov.uk` )
+
+```
+  gds aws <account-name> -- \
+  aws route53 create-hosted-zone \
+      --name "<ENV>.wifi.service.gov.uk" \
+      --hosted-zone-config "Comment=\"\",PrivateZone=false" \
+      --caller-reference "govwifi-$(date)"
+```
+
+- Copy the NS records for the newly created hosted zone.
+- Log into the GovWifi Production AWS account `gds-cli aws govwifi -l`
+- In the GovWifi Production account in the Route53 go to the `wifi.service.gov.uk` hosted zone.
+- Add the NS records for your new environment with the copied NS records. 
+- Validate DNS delegation is complete:
+  - Verify DNS delegation is complete ` dig -t NS <ENV>.wifi.service.gov.uk`  The result should match the your new environments NS records.
+
 #### Create The Access Logs S3 Bucket
 
 This holds information related to the terraform state, and must be created manually before the initial terraform run in a new environment. You will need to create two S3 buckets. One in eu-west-1 and one in eu-west-2. The bucket name must match this naming convention:
 
 `govwifi-<ENV>-<AWS-REGION-NAME>-accesslogs`
 
-An example command for creating the bucket in the Staging environment for the London region would be:
+An example commands for creating buckets in the Staging environment for the London and Dublin regions would be:
 
 ```
 gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-london-accesslogs --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
+```
+
+```
+gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-dublin-accesslogs --region eu-west-1 --create-bucket-configuration LocationConstraint=eu-west-1
+```
+
+Use the following command to validate if the new buckets have been created:
+
+```
+gds-cli aws govwifi-<NEW-ENV-NAME> -- aws s3api list-buckets
 ```
 
 ### Setting Up Remote State
@@ -222,7 +272,7 @@ We use remote state, but there is a chicken and egg problem of creating a state 
 #### Manually Create S3 State Bucket 
 
 ```
-gds-cli aws <ENV> -- aws s3api create-bucket --bucket govwifi-<ENV>-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
+gds-cli aws <account-name> -- aws s3api create-bucket --bucket govwifi-<ENV>-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
 ```
 For example:
 
@@ -233,13 +283,19 @@ gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-
 #### Initialize The Backend
 
 ```
-gds-cli aws <ENV> -- make <ENV> init-backend
+gds-cli aws <account-name> -- make <ENV> init-backend
 ```
 
-#### Import S3 State bucket 
+For example:
 
 ```
-gds-cli aws <ENV> -- make <ENV> terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-<env>-tfstate-eu-west-2"
+gds-cli aws govwifi-staging -- make staging init-backend
+```
+
+#### Import S3 State bucket
+
+```
+gds-cli aws <account-name> -- make <ENV> terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-<env>-tfstate-eu-west-2"
 ```
 
 Then comment out the lines related to replication configuration in govwifi-terraform/terraform-state/accesslogs.tf and govwifi-terraform/terraform-state/tfstate.tf.
@@ -248,13 +304,17 @@ replication_configuration{
   ....
 }
 ```
+
 The first time terraform is run in a new environment the replication configuration lines need to be commented out because the replication bucket in eu-west-1 will not yet exist. Leaving these lines uncommented will cause an error.
 
+#### Plan and apply terraform 
+
+**NOTE:** Before running the command below you may need to edit the `Makefile` file and remove the `delete-secret` parameter from the `terraform` command.
 
 Now run
 
 ```
-gds-cli aws <ENV> -- make <ENV> plan
+gds-cli aws <account-name> -- make <ENV> plan
 ```
 
 For example
@@ -266,23 +326,24 @@ gds-cli aws govwifi-development -- make alpaca plan
 And then
 
 ```
-gds-cli aws <ENV> -- make <ENV> apply
+gds-cli aws <account-name> -- make <ENV> apply
 ```
 
 After you have finished terraforming follow the manual steps below to complete the setup. 
 
-**NOTE: There is currently a bug within AWS that means that terraform can get stuck "Creating" RDS instances. If this happens, wait 2 hours and try another terraform apply**
+**NOTE:** There is currently a bug within the AWS that means that terraform can get stuck on the "Creating" RDS instances step. While building the new Env in the Recovery account it took 30 minutes to create RDS instances. However, the User-DB's Read-Replica was not created during the first `terraform apply` run. Please run `terraform apply` once again. It may run for further 30 minutes. Validate the User-DB's Read-Replica status using the AWS Console.
+
+#### Validate that all components are created.
+
+Run the terraform `plan` and `apply` again. Ensure all components are create. Investigate further if required.
 
 ### Manual Steps Needed to Set Up a New Environment
 
-#### DNS Setup
-- Create a hosted zone in your new environment in the following format `<your_new_env>.wifi.service.gov.uk` (for example `foobar.wifi.service.gov.uk` )
-- Copy the NS records for the newly created hosted zone.
-- Log into the GovWifi Production AWS account `gds-cli aws govwifi -l`
-- In the production account in Route53 go to the `wifi.service.gov.uk` hosted zone.
-- Add a NS record for your new environment with the copied NS records. 
-- Validate DNS delegation is complete:
-  - Verify DNS delegation is complete ` dig -t NS <your_env>.wifi.service.gov.uk`  The result should match the your new environments NS records.
+#### Update AWS Secrets Manager entries for all RDS instances
+When all RDS instances are created you need to use the AWS console to check configuration details of newly deployed instances. You need to use this information to update AWS Secrets for all databases' secrets. Following values need to be updated: 
+- rds/database_name/credentials/host
+- rds/database_name/credentials/dbname
+- rds/database_name/credentials/dbInstanceIdentifier
 
 #### Add DKIM Authentication
 Ensure you are in the eu-west-1 region (Ireland) and follow the instructions here(https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-email-authentication-dkim-easy-setup-domain.html) to verify your new subdomain (e.g. staging.wifi.service.gov.uk)
@@ -298,7 +359,7 @@ The SES ruleset must be manually activated.
 
 Our deploy pipelines exist in a separate account. You can access it with the following command:
 
-` gds-cli aws govwifi-tools -l`
+`gds-cli aws govwifi-tools -l`
 
 In order to deploy applications you will need to create a new set of pipelines for that environment.
 - There are set of template terraform files for creating pipelines for a new environment in govwifi-terraform/tools/pipeline-templates. You can copy these across manually and change the names or you can use the commands below. **All commands are run from the govwifi-terraform root directory**
@@ -335,11 +396,60 @@ You will also need to do the following in the tools account:
   
 #### Restoring The Databases
 
+**NOTE:**
+- In a BCP scenario for the Production environment change the Bastion instance type to `m4.xlarge` and allocate `100GB` of `gp3` storage with `12000IOPS` and `500mbps` provisioned. You can complete this via the AWS Console. You need to make all the storage changes at the same time, otherwise, you will get a notification that further changes can be done in 6 hours.
+
+  More info about expanding Linux storage [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/recognize-expanded-volume-linux.html).
+
+  Remember to complete the volume size expansion on the Bastion level as well. SSH to the Bastion and run the following commands:
+```
+	lsblk
+	sudo growpart /dev/xvda 1
+	sudo resize2fs /dev/xvda1
+```
+
+- If you are attempting to recover the production environment change the RDS instance type for the `session` database to the `m4.xlarge` and allocate `400GB` of `gp3` storage which gives you `12000IOPS` and `500mbps`. You may need to consider disabling the Multi-AZ setup while restoring data.
+
+- For an environment other than the Production ensure RDS database names are:
+  - For the Users Database is set as `govwifi_staging_users`
+  - For the Session Database is set as `govwifi_<ENV>`
+  - For the Admin Database is set as `govwifi_staging_users`
+
+- If you are setting up a new environment and the `app_env` variable has been set to `staging` then copy the databases from the pre-existing staging environment and leave any references to `staging` in the database names unchanged. For example the user database name would be left as `govwifi_staging_users`. The `app_env` value in terraform MUST match the database environment reference otherwise the GovWifi applications will fail to start.
+
 Follow the instructions [here](https://govwifi-dev-docs.cloudapps.digital/infrastructure/database-restore.html#restoring-databases) to restore the databases.
 
-**NOTE: If you are setting up a new environment and the `app_env` variable has been set to `staging` then copy the databases from the pre-existing staging environment and leave any references to `staging` in the database names unchanged. For example the user database name would be left as `govwifi_staging_users`. The `app_env` value in terraform MUST match the database environment reference otherwise the GovWifi applications will fail to start.**
-
 ---
+## Application deployment 
+
+### Deploy terraform to the Tools account
+
+Run the following commands to initialize terraform for GovWifi-Tools account:
+
+`gds aws govwifi-tools -- make govwifi-tools run-terraform-init`
+
+Run the terraform plan:
+
+`gds aws govwifi-tools -- make govwifi-tools plan`
+
+**Note:** You may receive the "Warning: Provider aws.dublin is undefined", this is expected.
+
+Run the terraform apply:
+
+`gds aws govwifi-tools -- make govwifi-tools apply`
+
+**Note:** If you receive an error, try to run the apply command once again.
+
+### Running CI/CD pipelines for the first time
+
+Login to the `GovWifi-Tools` account using the AWS Console:
+
+`gds-cli aws govwifi-tools -l`
+
+Run the AWS CodeBuild's Build Projects created for the new environment (e.g. admin-push-image-to-ecr-<ENV>). These will add the docker images to the appropriate ECR repositories.
+
+[Follow the deployment instructions](https://govwifi-dev-docs.cloudapps.digital/applications/deploying.html#core-services), refer to the document linked within the `Core services` section for detailed steps.
+
 ## Updating task definitions 
 
 This affects the following apps: 
