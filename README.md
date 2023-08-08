@@ -219,9 +219,6 @@ The code will automatically generate RDS secrets for the admin, sessions and use
 - govwifi-admin/secrets-manager.tf
 - govwifi-backend/secrets-manager.tf
 
-**Note:**
-There is work planned to autogenerate the bulk of these secrets, however at present this is a manual process (apart from the databases), which generally takes around 2 hours. You can look at the secrets in pre-existing environments for a guide. 
-
 #### Increase The Default AWS Quotas
 Terraform needs to create a larger number of resources than AWS allows out of the box. Luckily it is easy to get these limits increased. 
 - [Follow the instructions from AWS to request an increase](https://docs.aws.amazon.com/servicequotas/latest/userguide/request-quota-increase.html).
