@@ -430,7 +430,7 @@ Run the following commands to initialize terraform for GovWifi-Tools account:
 
 Run the terraform plan:
 
-`	gds aws govwifi-tools -- make govwifi-tools plan`
+`gds aws govwifi-tools -- make govwifi-tools plan`
 
 **Note:** You may receive the "Warning: Provider aws.dublin is undefined", this is expected.
 
