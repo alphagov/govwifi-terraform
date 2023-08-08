@@ -359,7 +359,7 @@ The SES ruleset must be manually activated.
 
 Our deploy pipelines exist in a separate account. You can access it with the following command:
 
-` gds-cli aws govwifi-tools -l`
+`gds-cli aws govwifi-tools -l`
 
 In order to deploy applications you will need to create a new set of pipelines for that environment.
 - There are set of template terraform files for creating pipelines for a new environment in govwifi-terraform/tools/pipeline-templates. You can copy these across manually and change the names or you can use the commands below. **All commands are run from the govwifi-terraform root directory**
@@ -396,7 +396,6 @@ You will also need to do the following in the tools account:
   
 #### Restoring The Databases
 
-
 **NOTE:**
 - In a BCP scenario for the Production environment change the Bastion instance type to `m4.xlarge` and allocate `100GB` of `gp3` storage with `12000IOPS` and `500mbps` provisioned. You can complete this via the AWS Console. You need to make all the storage changes at the same time, otherwise, you will get a notification that further changes can be done in 6 hours.
 
@@ -412,9 +411,9 @@ You will also need to do the following in the tools account:
 - If you are attempting to recover the production environment change the RDS instance type for the `session` database to the `m4.xlarge` and allocate `400GB` of `gp3` storage which gives you `12000IOPS` and `500mbps`. You may need to consider disabling the Multi-AZ setup while restoring data.
 
 - For an environment other than the Production ensure RDS database names are:
-* For the Users Database is set as `govwifi_staging_users`
-* For the Session Database is set as `govwifi_<ENV>`
-* For the Admin Database is set as `govwifi_staging_users`
+  - For the Users Database is set as `govwifi_staging_users`
+  - For the Session Database is set as `govwifi_<ENV>`
+  - For the Admin Database is set as `govwifi_staging_users`
 
 - If you are setting up a new environment and the `app_env` variable has been set to `staging` then copy the databases from the pre-existing staging environment and leave any references to `staging` in the database names unchanged. For example the user database name would be left as `govwifi_staging_users`. The `app_env` value in terraform MUST match the database environment reference otherwise the GovWifi applications will fail to start.
 
@@ -422,6 +421,26 @@ Follow the instructions [here](https://govwifi-dev-docs.cloudapps.digital/infras
 
 ---
 ## Application deployment 
+
+### Deploy terraform to the Tools account
+
+Run the following commands to initialize terraform for GovWifi-Tools account:
+`gds aws govwifi-tools -- make govwifi-tools run-terraform-init`
+
+Run the terraform plan:
+`	gds aws govwifi-tools -- make govwifi-tools plan`
+
+**Note:** You may receive the "Warning: Provider aws.dublin is undefined", this is expected.
+
+Run the terraform apply:
+`gds aws govwifi-tools -- make govwifi-tools apply`
+
+**Note:** If you receive an error, try to run the apply command once again.
+
+### Running CI/CD pipelines for the first time
+
+
+
 
 Follow the instructions captured [here](https://govwifi-dev-docs.cloudapps.digital/applications/deploying.html#core-services), refer to the document linked within the `Core services` section for detailed steps.
 
