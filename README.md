@@ -425,24 +425,30 @@ Follow the instructions [here](https://govwifi-dev-docs.cloudapps.digital/infras
 ### Deploy terraform to the Tools account
 
 Run the following commands to initialize terraform for GovWifi-Tools account:
+
 `gds aws govwifi-tools -- make govwifi-tools run-terraform-init`
 
 Run the terraform plan:
+
 `	gds aws govwifi-tools -- make govwifi-tools plan`
 
 **Note:** You may receive the "Warning: Provider aws.dublin is undefined", this is expected.
 
 Run the terraform apply:
+
 `gds aws govwifi-tools -- make govwifi-tools apply`
 
 **Note:** If you receive an error, try to run the apply command once again.
 
 ### Running CI/CD pipelines for the first time
 
+Login to the `GovWifi-Tools` account using the AWS Console:
 
+`gds-cli aws govwifi-tools -l`
 
+Run the AWS CodeBuild's Build Projects created for the new environment (e.g. admin-push-image-to-ecr-<ENV>). These will add the docker images to the appropriate ECR repositories.
 
-Follow the instructions captured [here](https://govwifi-dev-docs.cloudapps.digital/applications/deploying.html#core-services), refer to the document linked within the `Core services` section for detailed steps.
+[Follow the deployment instructions](https://govwifi-dev-docs.cloudapps.digital/applications/deploying.html#core-services), refer to the document linked within the `Core services` section for detailed steps.
 
 ## Updating task definitions 
 
