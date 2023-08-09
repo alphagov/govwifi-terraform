@@ -408,3 +408,16 @@ module "london_smoke_tests" {
     module.london_frontend
   ]
 }
+
+module "london_sync_certs" {
+  providers = {
+    aws = aws.london
+  }
+
+  source = "../../govwifi-sync-certs"
+
+  env            = local.env
+  aws_account_id = local.aws_account_id
+  aws_region     = local.london_aws_region
+  region_name    = local.london_aws_region_name
+}
