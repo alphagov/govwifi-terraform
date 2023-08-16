@@ -421,3 +421,12 @@ module "london_sync_certs" {
   aws_region     = local.london_aws_region
   region_name    = local.london_aws_region_name
 }
+
+module "london_account_policy" {
+  providers = {
+    aws = aws.london
+  }
+
+  source = "../../govwifi-account-policy"
+  
+}

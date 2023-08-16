@@ -555,3 +555,12 @@ module "govwifi_sync_certs" {
   region_name    = var.aws_region_name
 
 }
+
+module "govwifi_account_policy" {
+  providers = {
+    aws = aws.main
+  }
+
+  source = "../../govwifi-account-policy"
+  
+}
