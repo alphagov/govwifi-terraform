@@ -40,3 +40,12 @@ module "govwifi_deploy" {
   built_app_names        = ["frontend", "safe-restarter", "database-backup"]
   frontend_docker_images = ["raddb", "frontend"]
 }
+
+module "govwifi_account_policy" {
+  providers = {
+    aws = aws.main
+  }
+
+  source = "../../govwifi-account-policy"
+  
+}
