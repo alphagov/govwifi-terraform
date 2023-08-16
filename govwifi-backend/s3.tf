@@ -43,18 +43,18 @@ resource "aws_s3_bucket_lifecycle_configuration" "rds_mysql_backup_bucket" {
   rule {
     id = "expiration"
 
-    noncurrent_version_transition {
-      noncurrent_days = 30
+    transition {
+      days = 30
       storage_class   = "STANDARD_IA"
     }
 
-    noncurrent_version_transition {
-      noncurrent_days = 60
+    transition {
+      days = 60
       storage_class   = "GLACIER"
     }
 
-    noncurrent_version_expiration {
-      noncurrent_days = 180
+    expiration {
+      days = 180
     }
 
     status = "Enabled"
