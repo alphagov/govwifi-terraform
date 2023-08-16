@@ -194,3 +194,40 @@ EOF
 
 }
 
+resource "aws_iam_role" "ec2_restart_role" {
+  name = "ec2-reboot-role-tf"
+  assume_role_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "scheduler.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+EOF
+}
+resource "aws_iam_role_policy" "ec2_reboot_policy" {
+  depends_on = [aws_iam_role.ec2_reboot_role]
+  name       = "ec2-reboot-role-policy-tf"
+  role       = aws_iam_role.ec2_reboot_role.name
+
+  policy = <<EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "ec2:RebootInstances",
+            "Resource": "arn:aws:ec2:*:${var.aws_account_id}:instance/*"
+        }
+    ]
+}
+
+
+}

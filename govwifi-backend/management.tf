@@ -265,3 +265,18 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
   alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "breaching"
 }
+
+resource "aws_scheduler_schedule" "reboot_ec2" {
+  name       = "ec2_reboot-tf"
+
+  flexible_time_window {
+    mode = "OFF"
+  }
+
+  schedule_expression = "cron(0 5 * * ? *)"
+
+  target {
+    arn      = "arn:aws:scheduler:::aws-sdk:ec2:rebootInstances"
+    role_arn = aws_iam_role.ec2_restart_role.arn
+  }
+}
