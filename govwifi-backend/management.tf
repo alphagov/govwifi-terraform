@@ -275,10 +275,18 @@ resource "aws_scheduler_schedule" "reboot_ec2" {
     mode = "OFF"
   }
 
-  schedule_expression = "cron(0 5 * * ? *)"
+  schedule_expression = "cron(5 1 * * ? *)"
 
   target {
     arn      = "arn:aws:scheduler:::aws-sdk:ec2:rebootInstances"
     role_arn = aws_iam_role.ec2_reboot_role[0].arn
+
+    # And this block will be passed to rebootInstances API
+    input = jsonencode({
+      InstanceIds = [
+        aws_instance.management[0].id
+      ]
+    })
+
   }
 }
