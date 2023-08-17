@@ -194,8 +194,9 @@ EOF
 
 }
 
-resource "aws_iam_role" "ec2_restart_role" {
-  name = "ec2-reboot-role-tf"
+resource "aws_iam_role" "ec2_reboot_role" {
+  count = (var.aws_region == "eu-west-2" ? 1 : 0)
+  name               = "${var.aws_region_name}-${var.env_name}-ec2-reboot-role-tf"
   assume_role_policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -212,12 +213,13 @@ resource "aws_iam_role" "ec2_restart_role" {
 EOF
 }
 resource "aws_iam_role_policy" "ec2_reboot_policy" {
-  depends_on = [aws_iam_role.ec2_reboot_role]
-  name       = "ec2-reboot-role-policy-tf"
-  role       = aws_iam_role.ec2_reboot_role.name
+  count = (var.aws_region == "eu-west-2" ? 1 : 0)
+  depends_on = [aws_iam_role.ec2_reboot_role[0]]
+  name       = "${var.aws_region_name}-${var.env_name}-ec2-reboot-role-policy-tf"
+  role       = aws_iam_role.ec2_reboot_role[0].name
 
   policy = <<EOF
-  {
+{
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -228,6 +230,6 @@ resource "aws_iam_role_policy" "ec2_reboot_policy" {
         }
     ]
 }
-
+EOF
 
 }

@@ -11,7 +11,7 @@ resource "aws_s3_bucket" "emailbucket" {
 }
 
 resource "aws_s3_bucket" "emailloggingbucket" {
-  bucket        = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
+  bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
 
   tags = {
     Name     = "${title(var.env_name)} Email Access Logs Bucket"

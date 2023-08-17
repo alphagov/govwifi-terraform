@@ -267,7 +267,9 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
 }
 
 resource "aws_scheduler_schedule" "reboot_ec2" {
-  name       = "ec2_reboot-tf"
+  count = (var.aws_region == "eu-west-2" ? 1 : 0)
+  depends_on = [aws_iam_role.ec2_reboot_role[0]]
+  name = "${var.aws_region_name}-${var.env_name}-ec2-reboot-tf"
 
   flexible_time_window {
     mode = "OFF"
@@ -277,6 +279,6 @@ resource "aws_scheduler_schedule" "reboot_ec2" {
 
   target {
     arn      = "arn:aws:scheduler:::aws-sdk:ec2:rebootInstances"
-    role_arn = aws_iam_role.ec2_restart_role.arn
+    role_arn = aws_iam_role.ec2_reboot_role[0].arn
   }
 }
