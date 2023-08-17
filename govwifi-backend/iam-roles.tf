@@ -194,9 +194,9 @@ EOF
 
 }
 
-resource "aws_iam_role" "ec2_reboot_role" {
+resource "aws_iam_role" "bastion_reboot_role" {
   count              = (var.aws_region == "eu-west-2" ? 1 : 0)
-  name               = "${var.aws_region_name}-${var.env_name}-ec2-reboot-role-tf"
+  name               = "${var.aws_region_name}-${var.env_name}-bastion-reboot-role"
   assume_role_policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -212,18 +212,18 @@ resource "aws_iam_role" "ec2_reboot_role" {
 }
 EOF
 }
-resource "aws_iam_role_policy" "ec2_reboot_policy" {
+resource "aws_iam_role_policy" "bastion_reboot_policy" {
   count      = (var.aws_region == "eu-west-2" ? 1 : 0)
-  depends_on = [aws_iam_role.ec2_reboot_role[0]]
-  name       = "${var.aws_region_name}-${var.env_name}-ec2-reboot-role-policy-tf"
-  role       = aws_iam_role.ec2_reboot_role[0].name
+  depends_on = [aws_iam_role.bastion_reboot_role[0]]
+  name       = "${var.aws_region_name}-${var.env_name}-bastion-reboot-role-policy"
+  role       = aws_iam_role.bastion_reboot_role[0].name
 
   policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "VisualEditor0",
+            "Sid": "bastionRebootPolicy",
             "Effect": "Allow",
             "Action": "ec2:RebootInstances",
             "Resource": "arn:aws:ec2:*:${var.aws_account_id}:instance/*"

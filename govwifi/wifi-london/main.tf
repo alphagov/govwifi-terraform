@@ -429,7 +429,8 @@ module "govwifi_prometheus" {
 
   fe_admin_in = module.frontend.fe_admin_in
 
-  aws_region = var.aws_region
+  aws_region      = var.aws_region
+  aws_region_name = var.aws_region_name
 
   aws_account_id = local.aws_account_id
 
@@ -449,6 +450,7 @@ module "govwifi_grafana" {
   env_name                   = local.env_name
   env_subdomain              = local.env_subdomain
   aws_region                 = var.aws_region
+  aws_region_name            = var.aws_region_name
   aws_account_id             = local.aws_account_id
   critical_notifications_arn = module.critical_notifications.topic_arn
 
@@ -562,5 +564,5 @@ module "govwifi_account_policy" {
   }
 
   source = "../../govwifi-account-policy"
-  
+
 }

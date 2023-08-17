@@ -15,6 +15,9 @@ variable "aws_region" {
   type        = string
 }
 
+variable "aws_region_name" {
+}
+
 variable "ssh_key_name" {
   description = "The SSH key name to use."
   type        = string

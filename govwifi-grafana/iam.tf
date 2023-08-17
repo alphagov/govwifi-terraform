@@ -109,3 +109,40 @@ resource "aws_iam_policy_attachment" "grafana_dlm_lifecycle" {
   policy_arn = aws_iam_policy.grafana_dlm_lifecycle[0].arn
 }
 
+resource "aws_iam_role" "grafana_reboot_role" {
+  name               = "${var.aws_region_name}-${var.env_name}-grafana-reboot-role"
+  assume_role_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "scheduler.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+EOF
+}
+resource "aws_iam_role_policy" "grafana_reboot_policy" {
+  depends_on = [aws_iam_role.grafana_reboot_role]
+  name       = "${var.aws_region_name}-${var.env_name}-grafana-reboot-role-policy"
+  role       = aws_iam_role.grafana_reboot_role.name
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "grafanaRebootPolicy",
+            "Effect": "Allow",
+            "Action": "ec2:RebootInstances",
+            "Resource": "arn:aws:ec2:*:${var.aws_account_id}:instance/*"
+        }
+    ]
+}
+EOF
+
+}

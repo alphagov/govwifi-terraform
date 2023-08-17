@@ -310,10 +310,11 @@ module "dublin_prometheus" {
     aws = aws.dublin
   }
 
-  source         = "../../govwifi-prometheus"
-  env_name       = local.env_name
-  aws_region     = local.dublin_aws_region
-  aws_account_id = local.aws_account_id
+  source          = "../../govwifi-prometheus"
+  env_name        = local.env_name
+  aws_region      = local.dublin_aws_region
+  aws_region_name = local.dublin_aws_region_name
+  aws_account_id  = local.aws_account_id
 
   ssh_key_name = var.ssh_key_name
 

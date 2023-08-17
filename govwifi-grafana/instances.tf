@@ -78,3 +78,26 @@ resource "aws_volume_attachment" "grafana_ebs_attach" {
   volume_id   = aws_ebs_volume.grafana_ebs.id
   instance_id = aws_instance.grafana_instance.id
 }
+
+resource "aws_scheduler_schedule" "reboot_grafana" {
+  depends_on = [aws_iam_role.grafana_reboot_role]
+  name       = "${var.aws_region_name}-${var.env_name}-grafana-reboot"
+
+  flexible_time_window {
+    mode = "OFF"
+  }
+
+  schedule_expression = "cron(5 1 * * ? *)"
+
+  target {
+    arn      = "arn:aws:scheduler:::aws-sdk:ec2:rebootInstances"
+    role_arn = aws_iam_role.grafana_reboot_role.arn
+
+    # And this block will be passed to rebootInstances API
+    input = jsonencode({
+      InstanceIds = [
+        aws_instance.grafana_instance.id
+      ]
+    })
+  }
+}
