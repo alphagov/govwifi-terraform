@@ -267,9 +267,9 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
 }
 
 resource "aws_scheduler_schedule" "reboot_ec2" {
-  count = (var.aws_region == "eu-west-2" ? 1 : 0)
+  count      = (var.aws_region == "eu-west-2" ? 1 : 0)
   depends_on = [aws_iam_role.ec2_reboot_role[0]]
-  name = "${var.aws_region_name}-${var.env_name}-ec2-reboot-tf"
+  name       = "${var.aws_region_name}-${var.env_name}-ec2-reboot-tf"
 
   flexible_time_window {
     mode = "OFF"

@@ -195,7 +195,7 @@ EOF
 }
 
 resource "aws_iam_role" "ec2_reboot_role" {
-  count = (var.aws_region == "eu-west-2" ? 1 : 0)
+  count              = (var.aws_region == "eu-west-2" ? 1 : 0)
   name               = "${var.aws_region_name}-${var.env_name}-ec2-reboot-role-tf"
   assume_role_policy = <<EOF
 {
@@ -213,7 +213,7 @@ resource "aws_iam_role" "ec2_reboot_role" {
 EOF
 }
 resource "aws_iam_role_policy" "ec2_reboot_policy" {
-  count = (var.aws_region == "eu-west-2" ? 1 : 0)
+  count      = (var.aws_region == "eu-west-2" ? 1 : 0)
   depends_on = [aws_iam_role.ec2_reboot_role[0]]
   name       = "${var.aws_region_name}-${var.env_name}-ec2-reboot-role-policy-tf"
   role       = aws_iam_role.ec2_reboot_role[0].name
