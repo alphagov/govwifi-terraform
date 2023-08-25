@@ -17,6 +17,15 @@ resource "aws_s3_bucket_versioning" "wordlist" {
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "wordlist" {
+  bucket = aws_s3_bucket.wordlist[0].id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 resource "aws_s3_object" "wordlist" {
   bucket = aws_s3_bucket.wordlist[0].bucket
   count  = var.create_wordlist_bucket ? 1 : 0

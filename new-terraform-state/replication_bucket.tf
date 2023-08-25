@@ -13,6 +13,15 @@ resource "aws_s3_bucket" "replication_state_bucket" {
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "replication_state_bucket" {
+  bucket = aws_s3_bucket.replication_state_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 resource "aws_s3_bucket_policy" "replication_state_bucket" {
   provider = aws.replication
 
