@@ -27,7 +27,7 @@ module "london_keys" {
   create_production_bastion_key = 0
 
   govwifi_key_name     = var.ssh_key_name
-  govwifi_key_name_pub = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/cSxMbS72i6FoirL80CP9GLU7fZ1mtwIg0hi8v8OuCKyR8JjYQejZpyCGSIb3KOXIQf51bUI2+GB8B+h+UpWwUIN5Ysepc4YKuTjped4Av7ybrHFsqkl+66/uQgDwGloU6UuksTiwLVK9sf2JcDztm8Bbef/5cunLfhR+yrvzebF9kK0tnZxORwS0gCXA0bdgoqCUfJHxogLaZV3A517bn60rHcdq55qgIjI4IxNxdKLcrWjwJPbgvqepX+YbeDWqXe6VoVkwCB+daM8SGMvmZyfu7fsJFkoga4D9ksGTKNFFlLPlp4RqEkYqHqZAX70XVg6z32yHZ99iP36wCYhw3AjhdUMDFpoXv2iPMkFNx+EyOC1DtQdrLa96QDPKk2FSmhE6kz0524TWogS/x/2zFtXZbyqhAfzoU36YgFm8RYeS6mSUkxP7IynKvHbjuMqsh34sWRRSl4OxDA8K2ps2Hu2O2lFM44Sr02TeKqnKJza07ZRcAl8AWjoyaarHZ6iHft7n4CjXHLy2CmstVCIsEfmv+aZvMe8qZ1tWSoE50/6XyDn9B1UMQNmSIX8InYvh0pXIA6q+Y7/PAROfOcT3rKLSUyFS6D/PGfbq/P8GbJIAImSGBhBs4GgawtR7+hIpjsQ2dWEXwzdWGFkvmWyai6SUkclBYJkQYd0VyQb61w== david.pye@GDS10381"
+  govwifi_key_name_pub = var.ssh_key_name_pub
 
 }
 
@@ -318,10 +318,11 @@ module "london_prometheus" {
     aws = aws.london
   }
 
-  source         = "../../govwifi-prometheus"
-  env_name       = local.env_name
-  aws_region     = local.london_aws_region
-  aws_account_id = local.aws_account_id
+  source          = "../../govwifi-prometheus"
+  env_name        = local.env_name
+  aws_region      = local.london_aws_region
+  aws_region_name = local.london_aws_region_name
+  aws_account_id  = local.aws_account_id
 
   ssh_key_name = var.ssh_key_name
 
@@ -345,6 +346,7 @@ module "london_grafana" {
   env_name                   = local.env_name
   env_subdomain              = local.env_subdomain
   aws_region                 = local.london_aws_region
+  aws_region_name            = local.london_aws_region_name
   aws_account_id             = local.aws_account_id
   critical_notifications_arn = module.london_notifications.topic_arn
 
@@ -428,5 +430,5 @@ module "london_account_policy" {
   }
 
   source = "../../govwifi-account-policy"
-  
+
 }

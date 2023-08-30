@@ -102,3 +102,40 @@ resource "aws_iam_policy" "prometheus_dlm_lifecycle" {
   policy = data.aws_iam_policy_document.prometheus_dlm_lifecycle[0].json
 }
 
+resource "aws_iam_role" "prometheus_reboot_role" {
+  name               = "${var.aws_region_name}-${var.env_name}-prometheus-reboot-role"
+  assume_role_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "scheduler.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+EOF
+}
+resource "aws_iam_role_policy" "prometheus_reboot_policy" {
+  depends_on = [aws_iam_role.prometheus_reboot_role]
+  name       = "${var.aws_region_name}-${var.env_name}-prometheus-reboot-role-policy"
+  role       = aws_iam_role.prometheus_reboot_role.name
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "prometheusRebootPolicy",
+            "Effect": "Allow",
+            "Action": "ec2:RebootInstances",
+            "Resource": "arn:aws:ec2:*:${var.aws_account_id}:instance/*"
+        }
+    ]
+}
+EOF
+
+}

@@ -194,3 +194,42 @@ EOF
 
 }
 
+resource "aws_iam_role" "bastion_reboot_role" {
+  count              = (var.aws_region == "eu-west-2" ? 1 : 0)
+  name               = "${var.aws_region_name}-${var.env_name}-bastion-reboot-role"
+  assume_role_policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "scheduler.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+EOF
+}
+resource "aws_iam_role_policy" "bastion_reboot_policy" {
+  count      = (var.aws_region == "eu-west-2" ? 1 : 0)
+  depends_on = [aws_iam_role.bastion_reboot_role[0]]
+  name       = "${var.aws_region_name}-${var.env_name}-bastion-reboot-role-policy"
+  role       = aws_iam_role.bastion_reboot_role[0].name
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "bastionRebootPolicy",
+            "Effect": "Allow",
+            "Action": "ec2:RebootInstances",
+            "Resource": "arn:aws:ec2:*:${var.aws_account_id}:instance/*"
+        }
+    ]
+}
+EOF
+
+}

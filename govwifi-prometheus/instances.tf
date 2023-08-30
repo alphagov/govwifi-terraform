@@ -101,3 +101,27 @@ resource "aws_eip_association" "prometheus_eip_assoc" {
   allocation_id = aws_eip.eip.id
 }
 
+resource "aws_scheduler_schedule" "reboot_prometheus" {
+  depends_on = [aws_iam_role.prometheus_reboot_role]
+  name       = "${var.aws_region_name}-${var.env_name}-prometheus-reboot"
+
+
+  flexible_time_window {
+    mode = "OFF"
+  }
+
+  schedule_expression = "cron(5 1 * * ? *)"
+
+  target {
+    arn      = "arn:aws:scheduler:::aws-sdk:ec2:rebootInstances"
+    role_arn = aws_iam_role.prometheus_reboot_role.arn
+
+    # And this block will be passed to rebootInstances API
+    input = jsonencode({
+      InstanceIds = [
+        aws_instance.prometheus_instance.id
+      ]
+    })
+  }
+}
+

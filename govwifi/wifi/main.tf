@@ -370,10 +370,11 @@ module "govwifi_prometheus" {
     aws = aws.main
   }
 
-  source         = "../../govwifi-prometheus"
-  env_name       = local.env_name
-  aws_region     = var.aws_region
-  aws_account_id = local.aws_account_id
+  source          = "../../govwifi-prometheus"
+  env_name        = local.env_name
+  aws_region      = var.aws_region
+  aws_region_name = var.aws_region_name
+  aws_account_id  = local.aws_account_id
 
   ssh_key_name = var.ssh_key_name
 

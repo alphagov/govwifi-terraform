@@ -265,3 +265,27 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
   alarm_actions      = [var.capacity_notifications_arn]
   treat_missing_data = "breaching"
 }
+
+resource "aws_scheduler_schedule" "reboot_bastion" {
+  count      = (var.aws_region == "eu-west-2" ? 1 : 0)
+  depends_on = [aws_iam_role.bastion_reboot_role[0]]
+  name       = "${var.aws_region_name}-${var.env_name}-bastion-reboot"
+
+  flexible_time_window {
+    mode = "OFF"
+  }
+
+  schedule_expression = "cron(5 1 * * ? *)"
+
+  target {
+    arn      = "arn:aws:scheduler:::aws-sdk:ec2:rebootInstances"
+    role_arn = aws_iam_role.bastion_reboot_role[0].arn
+
+    # And this block will be passed to rebootInstances API
+    input = jsonencode({
+      InstanceIds = [
+        aws_instance.management[0].id
+      ]
+    })
+  }
+}

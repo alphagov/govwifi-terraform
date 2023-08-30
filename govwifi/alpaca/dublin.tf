@@ -173,7 +173,7 @@ module "dublin_keys" {
   create_production_bastion_key = 0
 
   govwifi_key_name     = var.ssh_key_name
-  govwifi_key_name_pub = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDOxYtGJARr+ZUB9wMWMX/H+myTidFKx+qcBsXuri5zavQ6K4c0WhSkypXfET9BBtC1ZU77B98mftegxKdKcKmFbCVlv39pIX+xj2vjuCzHlzezI1vB4mdAXNhc8b4ArvFJ8lG2GLa1ZD8H/8akpv6EcplwyUv6ZgQMPl6wfMF6d0Qe/eOJ/bV570icX9NYLGkdLRbudkRc12krt6h451qp1vO7f2FQOnPR2cnyLGd/FxhrmAOqJsDk9CRNSwHJe1lsSCz6TkQk1bfCTxZ7g2hWSNRBdWPj0RJbbezy3X3/pz4cFL8mCC1esJ+nptUZ7CXeyirtCObIepniXIItwtdIVqixaMSjfagUGd0L1zFEVuH0bct3mh3u3TyVbNHP4o4pFHvG0sm5R1iDB8/xe2NJdxmAsn3JqeXdsQ6uI/oz31OueFRPyZI0VeDw7B4bhBMZ0w/ncrYJ9jFjfPvzhAVZgQX5Pxtp5MUCeU9+xIdAN2bESmIvaoSEwno7WJ4z61d83pLMFUuS9vNRW4ykgd1BzatLYSkLp/fn/wYNn6DBk7Da6Vs1Y/jgkiDJPGeFlEhW3rqOjTKrpKJBw6LBsMyI0BtkKoPoUTDlKSEX5JlNWBX2z5eSEhe+WEQjc4ZnbLUOKRB5+xNOGahVyk7/VF8ZaZ3/GXWY7MEfZ8TIBBcAjw== "
+  govwifi_key_name_pub = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC4q8NhyH2wtEj8CiqOn+4OFgrB6wZgdzB/qjEh1t7ATQwgkFii0vtsJIzTfOVyxLr0rF79TQCdy7RcVidnZJOoa6QYJRDUx61f2bSacDsiI04/6QSAzqYe0x12fDoRMZqU6GWN1tRY3HYGdLCSMo8QaYonpdiyuS2q+gzFl1V1pk2c3/VT0KhZMWPV1qh6y6uCV13CkiFEgRpqhWTxfagv38lCRFvgJVmNxXtwBME8lqAs7DRoxfD5WZ4oGWO+wCaw+3QgD6gGDMUxpLk1CtL0BVpZ73OGB1XW2atTf2Ugma1jLMvP5IIrEDhMfOEX4iFexRVZBTqIqmsFaHjTH6BRp0J5FJ4suDVIv9eMblgZEGomDmP/T3ZIUq+96Z5BcOLpW1dEdCswbXtzuw7F+hIceSbnYMefSJ/8mhjxTcvBrJK4pv/BKEx/1UBOYtcwu3PZ52oiQaFFxElJiFTa/SUTLAks50e90o7kIZo2z4eal2e5mvWLSNwjA5kCniATfTs= govwifi-developers@digital.cabinet-office.gov.uk"
 
 }
 
@@ -310,10 +310,11 @@ module "dublin_prometheus" {
     aws = aws.dublin
   }
 
-  source         = "../../govwifi-prometheus"
-  env_name       = local.env_name
-  aws_region     = local.dublin_aws_region
-  aws_account_id = local.aws_account_id
+  source          = "../../govwifi-prometheus"
+  env_name        = local.env_name
+  aws_region      = local.dublin_aws_region
+  aws_region_name = local.dublin_aws_region_name
+  aws_account_id  = local.aws_account_id
 
   ssh_key_name = var.ssh_key_name
 
