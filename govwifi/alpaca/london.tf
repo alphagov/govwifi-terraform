@@ -431,4 +431,9 @@ module "london_account_policy" {
 
   source = "../../govwifi-account-policy"
 
+  aws_region     = local.london_aws_region
+  env            = local.env
+  aws_account_id = local.aws_account_id
+  region_name    = local.london_aws_region_name
+
 }
