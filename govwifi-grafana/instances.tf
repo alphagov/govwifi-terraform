@@ -50,6 +50,7 @@ resource "aws_instance" "grafana_instance" {
 
   root_block_device {
     volume_size = 30
+    encrypted = true
     tags = {
       Name = "${title(var.env_name)} Grafana Root Volume"
     }
