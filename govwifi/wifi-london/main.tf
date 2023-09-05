@@ -565,4 +565,9 @@ module "govwifi_account_policy" {
 
   source = "../../govwifi-account-policy"
 
+  aws_region     = "eu-west-2"
+  env            = local.env
+  aws_account_id = local.aws_account_id
+  region_name    = "London"
+
 }
