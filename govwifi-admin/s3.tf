@@ -239,7 +239,8 @@ resource "aws_s3_bucket_versioning" "replication_admin_bucket" {
 }
 
 resource "aws_s3_bucket_public_access_block" "replication_admin_bucket" {
-  bucket = aws_s3_bucket.replication_admin_bucket.id
+  provider = aws.replication
+  bucket   = aws_s3_bucket.replication_admin_bucket.id
 
   block_public_acls       = true
   block_public_policy     = true
