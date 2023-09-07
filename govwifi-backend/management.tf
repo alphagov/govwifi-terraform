@@ -32,6 +32,11 @@ resource "aws_instance" "management" {
 
   depends_on = [aws_iam_instance_profile.bastion_instance_profile]
 
+  metadata_options {
+    http_endpoint               = "disabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
 
   root_block_device {
     volume_size = 30
