@@ -23,6 +23,11 @@ resource "aws_db_parameter_group" "db_parameters" {
     value = "FILE"
   }
 
+  parameter {
+      name  = "default_password_lifetime"
+      value = "365"
+  }
+
   tags = {
     Name = "${title(var.env_name)} DB parameter group for govwifi-admin"
   }
