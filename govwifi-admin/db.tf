@@ -24,8 +24,8 @@ resource "aws_db_parameter_group" "db_parameters" {
   }
 
   parameter {
-      name  = "default_password_lifetime"
-      value = "365"
+    name  = "default_password_lifetime"
+    value = "365"
   }
 
   tags = {

@@ -66,8 +66,18 @@ resource "aws_db_parameter_group" "user_db_parameters" {
   }
 
   parameter {
-      name  = "default_password_lifetime"
-      value = "365"
+    name  = "default_password_lifetime"
+    value = "365"
+  }
+
+  parameter {
+    name  = "password_reuse_interval"
+    value = "365"
+  }
+
+  parameter {
+    name  = "password_history"
+    value = "5"
   }
 
   tags = {
