@@ -16,11 +16,6 @@ resource "aws_s3_bucket_public_access_block" "replication_accesslogs_bucket" {
   restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket_acl" "replication_accesslogs_bucket" {
-  bucket = aws_s3_bucket.replication_accesslogs_bucket.id
-  acl    = "log-delivery-write"
-}
-
 resource "aws_s3_bucket_versioning" "replication_accesslogs_bucket" {
   bucket = aws_s3_bucket.replication_accesslogs_bucket.id
 
