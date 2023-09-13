@@ -10,6 +10,15 @@ resource "aws_s3_bucket" "emailbucket" {
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "emailbucket" {
+  bucket = aws_s3_bucket.emailbucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 resource "aws_s3_bucket" "emailloggingbucket" {
   bucket = "${lower(var.product_name)}-${var.env_name}-${lower(var.aws_region_name)}-accesslogs"
 
@@ -107,6 +116,15 @@ resource "aws_s3_bucket" "admin_emailbucket" {
     Region   = title(var.aws_region_name)
     Category = "Admin emails"
   }
+}
+
+resource "aws_s3_bucket_public_access_block" "admin_emailbucket" {
+  bucket = aws_s3_bucket.admin_emailbucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_bucket_policy" "admin_emailbucket" {

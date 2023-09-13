@@ -80,6 +80,15 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "accesslogs_bucket" {
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 resource "aws_s3_bucket_replication_configuration" "accesslogs_bucket" {
   depends_on = [
     aws_s3_bucket_versioning.accesslogs_bucket

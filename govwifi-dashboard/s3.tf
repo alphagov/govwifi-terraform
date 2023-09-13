@@ -14,6 +14,15 @@ resource "aws_s3_bucket_versioning" "metrics_bucket" {
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "metrics_bucket" {
+  bucket = aws_s3_bucket.metrics_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 resource "aws_s3_bucket" "export_data_bucket" {
   bucket = "govwifi-${var.env_name}-export-data-bucket"
 

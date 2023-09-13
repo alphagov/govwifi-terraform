@@ -7,6 +7,15 @@ resource "aws_s3_bucket" "frontend_cert_bucket" {
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "frontend_cert_bucket" {
+  bucket = aws_s3_bucket.frontend_cert_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 resource "aws_s3_bucket_server_side_encryption_configuration" "frontend_cert_bucket" {
   bucket = aws_s3_bucket.frontend_cert_bucket.id
 

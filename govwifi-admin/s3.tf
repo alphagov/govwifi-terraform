@@ -16,6 +16,15 @@ resource "aws_s3_bucket_versioning" "admin_bucket" {
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "admin_bucket" {
+  bucket = aws_s3_bucket.admin_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 resource "aws_s3_bucket" "product_page_data_bucket" {
   bucket        = "govwifi-${var.rails_env}-product-page-data"
   force_destroy = true
@@ -55,6 +64,15 @@ resource "aws_s3_bucket_versioning" "admin_mou_bucket" {
   versioning_configuration {
     status = "Enabled"
   }
+}
+
+resource "aws_s3_bucket_public_access_block" "admin_mou_bucket" {
+  bucket = aws_s3_bucket.admin_mou_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_bucket_policy" "admin_bucket_policy" {
@@ -218,6 +236,16 @@ resource "aws_s3_bucket_versioning" "replication_admin_bucket" {
   versioning_configuration {
     status = "Enabled"
   }
+}
+
+resource "aws_s3_bucket_public_access_block" "replication_admin_bucket" {
+  provider = aws.replication
+  bucket   = aws_s3_bucket.replication_admin_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_bucket_replication_configuration" "replication_admin_bucket" {
