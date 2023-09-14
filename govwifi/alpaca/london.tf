@@ -185,7 +185,7 @@ module "london_admin" {
   rr_db_name = "govwifi_alpaca"
 
   user_db_host = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
-  user_db_name = "govwifi_staging_users"
+  user_db_name = "govwifi_alpaca_users"
 
   critical_notifications_arn = module.london_notifications.topic_arn
   capacity_notifications_arn = module.london_notifications.topic_arn
