@@ -80,6 +80,31 @@ resource "aws_db_parameter_group" "user_db_parameters" {
     value = "5"
   }
 
+  parameter {
+    name  = "validate_password_length"
+    value = "14"
+  }
+
+  parameter {
+    name  = "validate_password_policy"
+    value = "STRONG"
+  }
+
+  parameter {
+    name  = "validate_password_special_char_count"
+    value = "1"
+  }
+
+  parameter {
+    name  = "validate_password_mixed_case_count"
+    value = "1"
+  }
+
+  parameter {
+    name  = "validate_password_number_count"
+    value = "1"
+  }
+
   tags = {
     Name = "${title(var.env_name)} User DB parameter group"
   }
