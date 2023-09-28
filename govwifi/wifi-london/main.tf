@@ -571,3 +571,14 @@ module "govwifi_account_policy" {
   region_name    = "London"
 
 }
+
+module "govwifi_githubpages" {
+  providers = {
+    aws = aws.main
+  }
+
+  source = "../../govwifi-githubpages"
+
+  env_subdomain     = local.env_subdomain
+
+}
