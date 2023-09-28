@@ -579,6 +579,7 @@ module "govwifi_githubpages" {
 
   source = "../../govwifi-githubpages"
 
-  env_subdomain     = local.env_subdomain
+  env_subdomain   = local.env_subdomain
+  route53_zone_id = data.aws_route53_zone.main.zone_id
 
 }
