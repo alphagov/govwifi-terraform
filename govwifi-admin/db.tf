@@ -82,7 +82,7 @@ resource "aws_db_instance" "admin_db" {
   allocated_storage           = var.db_storage_gb
   storage_type                = "gp2"
   engine                      = "mysql"
-  engine_version              = "5.7"
+  engine_version              = "8.3"
   auto_minor_version_upgrade  = true
   allow_major_version_upgrade = false
   apply_immediately           = true
@@ -104,8 +104,8 @@ resource "aws_db_instance" "admin_db" {
   deletion_protection         = true
 
   enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
-  option_group_name               = aws_db_option_group.mariadb_audit.name
-  parameter_group_name            = aws_db_parameter_group.db_parameters.name
+  option_group_name               = "default:mysql-8-0"
+  parameter_group_name            = aws_db_parameter_group.db_parameters_v8.name
 
   tags = {
     Name = "${title(var.env_name)} DB for govwifi-admin"

@@ -173,7 +173,7 @@ module "london_admin" {
 
   subnet_ids = module.london_backend.backend_subnet_ids
 
-  db_instance_type         = "db.t2.medium"
+  db_instance_type         = "db.t3.medium"
   db_storage_gb            = 120
   db_backup_retention_days = 1
   db_encrypt_at_rest       = true

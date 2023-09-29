@@ -241,7 +241,7 @@ module "govwifi_admin" {
 
   subnet_ids = module.backend.backend_subnet_ids
 
-  db_instance_type         = "db.t2.large"
+  db_instance_type         = "db.t3.large"
   db_storage_gb            = 120
   db_backup_retention_days = 1
   db_encrypt_at_rest       = true
