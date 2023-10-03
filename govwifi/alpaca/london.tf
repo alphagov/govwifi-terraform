@@ -167,7 +167,7 @@ module "london_admin" {
 
   admin_docker_image   = format("%s/admin:alpaca", local.docker_image_path)
   rails_env            = "alpaca"
-  app_env              = "alpaca"
+  app_env              = "staging"
   sentry_current_env   = "alpaca"
   ecr_repository_count = 1
 
