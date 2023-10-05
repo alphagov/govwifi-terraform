@@ -101,6 +101,11 @@ resource "aws_codebuild_project" "smoke_tests" {
       name  = "NOTIFY_SMOKETEST_API_KEY"
       value = data.aws_secretsmanager_secret_version.notify_smoketest_api_key.secret_string
     }
+
+    environment_variable {
+      name  = "NOTIFY_FIELD"
+      value = "${var.notify_field}"
+    }
   }
 
   source {
