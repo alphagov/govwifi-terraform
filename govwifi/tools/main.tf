@@ -54,3 +54,7 @@ module "govwifi_account_policy" {
   region_name    = "London"
 
 }
+
+module "govwifi_codebuild_terraform" {
+  source = "../../govwifi-codebuild-terraform"
+}
