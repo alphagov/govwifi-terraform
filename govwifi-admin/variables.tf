@@ -29,8 +29,9 @@ variable "ecr_repository_count" {
 }
 
 variable "rails_env" {
-  description = "E.g. staging"
+  description = "the Ruby environment, E.g. alpaca, staging"
 }
+
 
 variable "sentry_current_env" {
   description = "The environment that Sentry will log errors to: e.g. staging"

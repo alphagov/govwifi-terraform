@@ -406,6 +406,7 @@ module "london_smoke_tests" {
   aws_region                 = local.london_aws_region
   create_slack_alert         = 0
   govwifi_phone_number       = "+447537417039"
+  notify_field               = "govwifistaging"
 
   depends_on = [
     module.london_frontend

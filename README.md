@@ -411,9 +411,9 @@ You will also need to do the following in the tools account:
 - If you are attempting to recover the production environment change the RDS instance type for the `session` database to the `m4.xlarge` and allocate `400GB` of `gp3` storage which gives you `12000IOPS` and `500mbps`. You may need to consider disabling the Multi-AZ setup while restoring data.
 
 - For an environment other than the Production ensure RDS database names are:
-  - For the Users Database is set as `govwifi_staging_users`
+  - For the Users Database is set as `govwifi_<ENV>_users`
   - For the Session Database is set as `govwifi_<ENV>`
-  - For the Admin Database is set as `govwifi_staging_users`
+  - For the Admin Database is set as `govwifi_admin_staging`
 
 - If you are setting up a new environment and the `app_env` variable has been set to `staging` then copy the databases from the pre-existing staging environment and leave any references to `staging` in the database names unchanged. For example the user database name would be left as `govwifi_staging_users`. The `app_env` value in terraform MUST match the database environment reference otherwise the GovWifi applications will fail to start.
 

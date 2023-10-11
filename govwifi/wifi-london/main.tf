@@ -524,7 +524,7 @@ module "smoke_tests" {
   aws_region                 = var.aws_region
   create_slack_alert         = 1
   govwifi_phone_number       = "+447537417417"
-
+  notify_field               = "govwifi"
   depends_on = [
     module.frontend
   ]

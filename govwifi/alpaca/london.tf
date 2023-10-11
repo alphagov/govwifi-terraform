@@ -166,8 +166,8 @@ module "london_admin" {
   route53_zone_id = data.aws_route53_zone.main.zone_id
 
   admin_docker_image   = format("%s/admin:alpaca", local.docker_image_path)
-  rails_env            = "alpaca"
-  app_env              = "staging"
+  rails_env            = "alpaca" 
+  app_env              = "alpaca" ## used for db name.
   sentry_current_env   = "alpaca"
   ecr_repository_count = 1
 
@@ -185,7 +185,7 @@ module "london_admin" {
   rr_db_name = "govwifi_alpaca"
 
   user_db_host = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
-  user_db_name = "govwifi_staging_users"
+  user_db_name = "govwifi_alpaca_users"
 
   critical_notifications_arn = module.london_notifications.topic_arn
   capacity_notifications_arn = module.london_notifications.topic_arn
@@ -247,7 +247,7 @@ module "london_api" {
   user_rr_hostname = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
 
   rack_env                  = "alpaca"
-  app_env                   = "staging"
+  app_env                   = "alpaca"
   sentry_current_env        = "alpaca"
   radius_server_ips         = local.frontend_radius_ips
   subnet_ids                = module.london_backend.backend_subnet_ids
@@ -405,7 +405,7 @@ module "london_smoke_tests" {
   aws_region                 = local.london_aws_region
   create_slack_alert         = 0
   govwifi_phone_number       = "+447860003687"
-
+  notify_field               = "govwifidevelopment"
   depends_on = [
     module.london_frontend
   ]
