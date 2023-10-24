@@ -472,6 +472,12 @@ Once the task definitions for the above apps have been created by terraform, the
 
 ---
 
+## Connecting Notify To Your New GovWifi Environment
+
+[Detailed documentation on setting up Notify with GovWifi can be found in this google doc](https://docs.google.com/document/d/1fgCjuvmfEiVRCYdxGo7nYShI5sQZsLZqssate0Hdu6U/edit?pli=1#heading=h.jj72y88glvis) (you will need to be a member of the GovWifi Team to view it).
+
+---
+
 ## Rotating ELB Certificates
 
 To rotate the ELB ACM certificates, you need to create a new certificate in the
