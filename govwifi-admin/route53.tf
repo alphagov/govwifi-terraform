@@ -15,5 +15,5 @@ resource "aws_route53_record" "www" {
   name    = "www.${var.env_subdomain}.service.gov.uk"
   type    = "CNAME"
   ttl     = "300"
-  records = ["d2j0ojhs7n2cwa.cloudfront.net"]
+  records = ["alphagov.github.io."]
 }
