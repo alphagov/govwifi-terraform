@@ -1,35 +1,3 @@
-resource "aws_db_parameter_group" "db_parameters" {
-  name        = "${var.env_name}-admin-db-parameter-group"
-  family      = "mysql5.7"
-  description = "DB parameter configuration for govwifi-admin"
-
-  parameter {
-    name  = "slow_query_log"
-    value = 1
-  }
-
-  parameter {
-    name  = "general_log"
-    value = 0
-  }
-
-  parameter {
-    name  = "log_queries_not_using_indexes"
-    value = 1
-  }
-
-  parameter {
-    name  = "log_output"
-    value = "FILE"
-  }
-
-  tags = {
-    Name = "${title(var.env_name)} DB parameter group for govwifi-admin"
-  }
-}
-
-
-
 resource "aws_db_parameter_group" "db_parameters_v8" {
   name        = "${var.env_name}-mysql8-admin-db-parameter-group"
   family      = "mysql8.0"
@@ -57,24 +25,6 @@ resource "aws_db_parameter_group" "db_parameters_v8" {
 
   tags = {
     Name = "${title(var.env_name)} mysql 8 DB parameter group for govwifi-admin"
-  }
-}
-
-
-
-resource "aws_db_option_group" "mariadb_audit" {
-  name = "${var.env_name}-admin-db-audit"
-
-  option_group_description = "Mariadb audit configuration for govwifi-admin"
-  engine_name              = "mysql"
-  major_engine_version     = "5.7"
-
-  option {
-    option_name = "MARIADB_AUDIT_PLUGIN"
-  }
-
-  tags = {
-    Name = "${title(var.env_name)} DB Audit configuration for govwifi-admin"
   }
 }
 
