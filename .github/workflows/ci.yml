@@ -1,23 +1,46 @@
 name: govwifi-terraform-linting
 on: [push, pull_request]
 jobs:
-  test:
+  lint:
     runs-on: macos-latest
+
     steps:
+      - uses: actions/checkout@v3
+        name: Checkout source code
+
       - uses: Homebrew/actions/setup-homebrew@master
       - name: Install Required Packages
         run: |
-          brew install tfenv tflint grep findutils
+          brew install tfenv grep findutils
           tfenv install $(cat .terraform-version)
           tfenv use $(cat .terraform-version)
 
-      # - uses: actions/checkout@v2
-      # - name: lint
-        # run: |
-        #   GITHUB_TOKEN=${{ secrets.GH_TOKEN }} tflint --init
-        #   PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH" make lint
+      - uses: actions/cache@v3
+        name: Cache plugin dir
+        with:
+          path: ~/.tflint.d/plugins
+          key: ${{ runner.os  }}-tflint-${{ hashFiles('.tflint.hcl') }}
+  
+      - uses: terraform-linters/setup-tflint@v3
+        name: Setup TFLint
+        with:
+          tflint_version: v0.48.0
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Show terraform version
+        run: tfenv version-name
+
+      - name: Show lint version
+        run: tflint --version
+  
+      - name: Init TFLint
+        run: tflint --init
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          run: PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH" make lint
+
   validate:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: Homebrew/actions/setup-homebrew@master
       - name: Install Required Packages
