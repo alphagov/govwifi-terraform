@@ -31,5 +31,5 @@ variable "create_slack_alert" {
 variable "govwifi_phone_number" {
 }
 
-variable "notify_field" {    
+variable "notify_field" {
 }

@@ -61,7 +61,7 @@ resource "aws_instance" "prometheus_instance" {
 
   root_block_device {
     volume_size = 30
-    encrypted = true
+    encrypted   = true
     tags = {
       Name = "${title(var.env_name)} Prometheus Root Volume"
     }

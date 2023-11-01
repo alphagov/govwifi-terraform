@@ -104,7 +104,7 @@ resource "aws_codebuild_project" "smoke_tests" {
 
     environment_variable {
       name  = "NOTIFY_FIELD"
-      value = "${var.notify_field}"
+      value = var.notify_field
     }
   }
 
