@@ -106,6 +106,17 @@ resource "aws_codebuild_project" "smoke_tests" {
       name  = "NOTIFY_FIELD"
       value = var.notify_field
     }
+
+    environment_variable {
+      name  = "EAP_TLS_CLIENT_CERT"
+      value = data.aws_secretsmanager_secret_version.eap_tls_client_cert.secret_string
+    }
+
+    environment_variable {
+      name  = "EAP_TLS_CLIENT_KEY"
+      value = data.aws_secretsmanager_secret_version.eap_tls_client_key.secret_string
+    }
+
   }
 
   source {
