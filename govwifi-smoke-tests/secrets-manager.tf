@@ -80,6 +80,22 @@ data "aws_secretsmanager_secret" "notify_smoketest_api_key" {
   name = "smoketests/notify_smoketest_api_key"
 }
 
+data "aws_secretsmanager_secret_version" "eap_tls_client_cert" {
+  secret_id = data.aws_secretsmanager_secret.eap_tls_client_cert.id
+}
+
+data "aws_secretsmanager_secret" "eap_tls_client_cert" {
+  name = "smoke_tests/certificates/public"
+}
+
+data "aws_secretsmanager_secret_version" "eap_tls_client_key" {
+  secret_id = data.aws_secretsmanager_secret.eap_tls_client_key.id
+}
+
+data "aws_secretsmanager_secret" "eap_tls_client_key" {
+  name = "smoke_tests/certificates/private"
+}
+
 data "aws_secretsmanager_secret_version" "google_api_credentials" {
   secret_id = data.aws_secretsmanager_secret.google_api_credentials.id
 }
