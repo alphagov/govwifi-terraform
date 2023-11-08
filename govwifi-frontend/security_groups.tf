@@ -183,11 +183,48 @@ data "aws_ip_ranges" "route53_healthcheck" {
   regions = ["global", "eu-west-1", "us-east-1", "us-west-1"]
 }
 
+data "aws_ip_ranges" "eu_west_1_ec2" {
+  regions  = ["eu-west-1"]
+  services = ["ec2"]
+}
+
+data "aws_ip_ranges" "eu_west_2_ec2" {
+  regions  = ["eu-west-2"]
+  services = ["ec2"]
+}
+
+## define the max number of allowed rules
+variable "max_sg_rules" {
+  default = 60
+}
+
+locals {
+  chunks = chunklist(var.aws_region == "eu-west-2"? data.aws_ip_ranges.eu_west_2_ec2.cidr_blocks : data.aws_ip_ranges.eu_west_1_ec2.cidr_blocks, var.max_sg_rules)
+  chunks_map = { for i in range(length(local.chunks)): i => local.chunks[i] }
+}
+
+resource "aws_security_group" "load_balanced_frontend_healthcheck_service" {
+  for_each = local.chunks_map
+
+  name = "load-balanced-frontend-healthcheck-service-${var.aws_region}-${each.key}"
+  vpc_id      = aws_vpc.wifi_frontend.id
+  
+  tags = {
+    Name = "${title(var.env_name)} Frontend healthcheck service"
+  }
+  ingress {
+    description = "Healthcheck requests from load balancer"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks       = each.value
+  }
+}
+
 resource "aws_security_group" "load_balanced_frontend_service" {
   name        = "load-balanced-frontend-service"
   description = "Security group for the load balanced frontend service"
   vpc_id      = aws_vpc.wifi_frontend.id
-
   tags = {
     Name = "${title(var.env_name)} Frontend service"
   }
@@ -226,15 +263,12 @@ resource "aws_security_group" "load_balanced_frontend_service" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    description = "Healthcheck requests from load balancer"
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
-
-    # TODO This could be more explicit, but I don't know where the
-    # health check requests come from
-    cidr_blocks = ["0.0.0.0/0"]
+ ingress {
+   description = "Healthcheck requests from load balancer"
+   from_port   = 3000
+   to_port     = 3000
+   protocol    = "tcp"
+   security_groups = [ for i in aws_security_group.load_balanced_frontend_healthcheck_service: i.id ]
   }
 
   ingress {
