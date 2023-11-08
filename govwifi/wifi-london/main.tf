@@ -571,3 +571,15 @@ module "govwifi_account_policy" {
   region_name    = "London"
 
 }
+
+module "govwifi_docs" {
+  providers = {
+    aws = aws.main
+  }
+
+  source = "../../govwifi-docs"
+
+  aws_region      = "eu-west-2"
+  route53_zone_id = data.aws_route53_zone.main.zone_id
+
+}
