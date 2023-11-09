@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~> 1.1.8"
+  required_version = "~> 1.6.3"
 
   backend "s3" {
     # Interpolation is not allowed here.
