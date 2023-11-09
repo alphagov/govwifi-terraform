@@ -9,11 +9,3 @@ resource "aws_route53_record" "admin" {
     evaluate_target_health = true
   }
 }
-
-resource "aws_route53_record" "www" {
-  zone_id = var.route53_zone_id
-  name    = "www.${var.env_subdomain}.service.gov.uk"
-  type    = "CNAME"
-  ttl     = "300"
-  records = ["alphagov.github.io."]
-}

@@ -378,28 +378,6 @@ POLICY
 
 }
 
-resource "aws_iam_role" "test_staging_rds_role" {
-  name = "test-staging-rds-role"
-  path = "/"
-
-  assume_role_policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "monitoring.rds.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-POLICY
-
-}
-
 resource "aws_iam_role_policy" "SNSSuccessFeedback_oneClick_SNSSuccessFeedback_1479821088561" {
   name = "oneClick_SNSSuccessFeedback_1479821088561"
   role = "SNSSuccessFeedback"
