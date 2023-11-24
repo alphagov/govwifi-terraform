@@ -59,14 +59,14 @@ module "london_backend" {
   enable_bastion_monitoring = false
   aws_account_id            = local.aws_account_id
   db_instance_count         = 1
-  session_db_instance_type  = "db.t2.small"
+  session_db_instance_type  = "db.t3.small"
   session_db_storage_gb     = 20
   db_backup_retention_days  = 1
   db_encrypt_at_rest        = true
   db_maintenance_window     = "sat:01:42-sat:02:12"
   db_backup_window          = "04:42-05:42"
   db_replica_count          = 0
-  rr_instance_type          = "db.t2.large"
+  rr_instance_type          = "db.t3.large"
   rr_storage_gb             = 200
   # TODO This should happen inside the module
   user_rr_hostname           = "users-rr.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
@@ -79,7 +79,7 @@ module "london_backend" {
   # Passed to application
   # TODO This should happen inside the module
   user_db_hostname      = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
-  user_db_instance_type = "db.t2.small"
+  user_db_instance_type = "db.t3.small"
   user_db_storage_gb    = 20
 
   prometheus_ip_london  = module.london_prometheus.eip_public_ip
