@@ -13,6 +13,10 @@ provider "aws" {
       Environment = title(local.env_name)
     }
   }
+  /* As tags are computed, terraform always thinks have checked, re: issue https://github.com/hashicorp/terraform-provider-aws/issues/18311#issuecomment-1544330448 */
+  ignore_tags {
+    keys = ["Environment", "Staging"]
+  }
 }
 
 module "london_keys" {
@@ -57,7 +61,7 @@ module "london_backend" {
   aws_account_id            = local.aws_account_id
   db_instance_count         = 1
   session_db_instance_type  = "db.t2.small"
-  session_db_storage_gb     = 20
+  session_db_storage_gb     = 30
   db_backup_retention_days  = 1
   db_encrypt_at_rest        = true
   db_maintenance_window     = "sat:01:42-sat:02:12"

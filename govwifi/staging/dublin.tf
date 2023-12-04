@@ -14,6 +14,10 @@ provider "aws" {
       Environment = title(local.env_name)
     }
   }
+  /* As tags are computed, terraform always thinks have checked, re: issue https://github.com/hashicorp/terraform-provider-aws/issues/18311#issuecomment-1544330448 */
+  ignore_tags {
+    keys = ["Environment", "Staging"]
+  }
 }
 
 # Cross region peering
