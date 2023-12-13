@@ -187,7 +187,6 @@ resource "aws_security_group" "load_balanced_frontend_service" {
   name        = "load-balanced-frontend-service"
   description = "Security group for the load balanced frontend service"
   vpc_id      = aws_vpc.wifi_frontend.id
-
   tags = {
     Name = "${title(var.env_name)} Frontend service"
   }
@@ -226,15 +225,12 @@ resource "aws_security_group" "load_balanced_frontend_service" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    description = "Healthcheck requests from load balancer"
-    from_port   = 3000
-    to_port     = 3000
-    protocol    = "tcp"
-
-    # TODO This could be more explicit, but I don't know where the
-    # health check requests come from
-    cidr_blocks = ["0.0.0.0/0"]
+ ingress {
+   description = "Healthcheck requests from load balancer"
+   from_port   = 3000
+   to_port     = 3000
+   protocol    = "tcp"
+   cidr_blocks = [var.vpc_cidr_block]
   }
 
   ingress {
