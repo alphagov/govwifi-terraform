@@ -122,14 +122,14 @@ module "backend" {
   enable_bastion_monitoring  = true
   aws_account_id             = local.aws_account_id
   db_instance_count          = 1
-  session_db_instance_type   = "db.m4.xlarge"
+  session_db_instance_type   = "db.m5.xlarge"
   session_db_storage_gb      = 1000
   db_backup_retention_days   = 7
   db_encrypt_at_rest         = true
   db_maintenance_window      = "wed:01:42-wed:02:12"
   db_backup_window           = "03:05-04:05"
   db_replica_count           = 1
-  rr_instance_type           = "db.m4.xlarge"
+  rr_instance_type           = "db.m5.xlarge"
   rr_storage_gb              = 1000
   critical_notifications_arn = module.critical_notifications.topic_arn
   capacity_notifications_arn = module.capacity_notifications.topic_arn
@@ -141,7 +141,7 @@ module "backend" {
   # Passed to application
   user_db_hostname      = var.user_db_hostname
   user_rr_hostname      = var.user_rr_hostname
-  user_db_instance_type = "db.t2.medium"
+  user_db_instance_type = "db.t3.medium"
   user_db_storage_gb    = 1000
   user_db_replica_count = 1
 

@@ -3,7 +3,7 @@ resource "aws_db_instance" "db" {
   allocated_storage           = var.session_db_storage_gb
   storage_type                = "gp2"
   engine                      = "mysql"
-  engine_version              = "5.7"
+  engine_version              = "8.0"
   auto_minor_version_upgrade  = true
   allow_major_version_upgrade = false
   apply_immediately           = true
