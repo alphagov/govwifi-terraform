@@ -53,11 +53,11 @@ resource "aws_instance" "prometheus_instance" {
     Name = "${title(var.env_name)} Prometheus-Server"
   }
 
-  metadata_options {
-    http_endpoint               = "disabled"
-    http_tokens                 = "required"
-    http_put_response_hop_limit = 1
-  }
+  # metadata_options {
+  #   http_endpoint               = "disabled"
+  #   http_tokens                 = "required"
+  #   http_put_response_hop_limit = 1
+  # }
 
   root_block_device {
     volume_size = 30
