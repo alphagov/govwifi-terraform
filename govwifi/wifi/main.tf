@@ -125,7 +125,7 @@ module "backend" {
   aws_account_id            = local.aws_account_id
 
   db_instance_count        = 0
-  session_db_instance_type = "db.m4.xlarge"
+  session_db_instance_type = "db.m5.xlarge"
   session_db_storage_gb    = 1000
   db_backup_retention_days = 7
   db_encrypt_at_rest       = true
@@ -134,7 +134,7 @@ module "backend" {
 
   db_replica_count      = 0
   user_db_replica_count = 1
-  rr_instance_type      = "db.m3.medium"
+  rr_instance_type      = "db.m5.medium"
   rr_storage_gb         = 1000
 
   critical_notifications_arn = module.critical_notifications.topic_arn
@@ -145,7 +145,7 @@ module "backend" {
   db_monitoring_interval = 60
 
   # Passed to application
-  user_db_instance_type = "db.t2.medium"
+  user_db_instance_type = "db.t3.medium"
   user_db_hostname      = var.user_db_hostname
   user_db_storage_gb    = 20
   user_rr_hostname      = var.user_rr_hostname

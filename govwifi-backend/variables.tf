@@ -92,7 +92,7 @@ variable "rr_storage_gb" {
 }
 
 variable "user_rr_instance_type" {
-  default = "db.t2.medium"
+  default = "db.t3.medium"
 }
 
 variable "critical_notifications_arn" {
