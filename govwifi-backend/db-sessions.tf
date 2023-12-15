@@ -27,7 +27,7 @@ resource "aws_db_instance" "db" {
 
   enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
   option_group_name               = "default:mysql-8-0"
-  parameter_group_name            = aws_db_parameter_group.db_parameters[0].name
+  parameter_group_name            = "default.mysql8.0"
 
   tags = {
     Name = "${title(var.env_name)} DB"
