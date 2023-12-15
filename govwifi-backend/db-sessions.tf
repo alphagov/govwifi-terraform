@@ -51,7 +51,6 @@ resource "aws_db_instance" "read_replica" {
   apply_immediately           = true
   instance_class              = var.rr_instance_type
   identifier                  = "${var.env_name}-db-rr"
-  password                    = local.session_db_password
   backup_retention_period     = 0
   multi_az                    = false
   storage_encrypted           = var.db_encrypt_at_rest
