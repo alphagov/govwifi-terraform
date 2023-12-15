@@ -26,8 +26,8 @@ resource "aws_db_instance" "db" {
   deletion_protection         = true
 
   enabled_cloudwatch_logs_exports = ["audit", "error", "general", "slowquery"]
-  option_group_name               = aws_db_option_group.mariadb_audit.name
-  parameter_group_name            = aws_db_parameter_group.db_parameters[0].name
+  option_group_name               = "default:mysql-8-0"
+  parameter_group_name            = "default.mysql8.0"
 
   tags = {
     Name = "${title(var.env_name)} DB"
@@ -62,7 +62,7 @@ resource "aws_db_instance" "read_replica" {
   maintenance_window          = var.db_maintenance_window
   backup_window               = var.db_backup_window
   skip_final_snapshot         = true
-  option_group_name           = aws_db_option_group.mariadb_audit.name
+  option_group_name           = "default:mysql-8-0"
   parameter_group_name        = aws_db_parameter_group.rr_parameters.name
   deletion_protection         = true
 
