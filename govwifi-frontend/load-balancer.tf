@@ -47,6 +47,7 @@ resource "aws_lb_target_group" "main" {
   }
 }
 
+/*
 # TODO These EIPs are being used to test the network load balancer,
 # and can be replaced by the radius_eips once the network load
 # balancer is used behind these eips
@@ -63,3 +64,4 @@ resource "aws_eip" "test_radius_eips" {
     Region = title(var.aws_region_name)
   }
 }
+*/
