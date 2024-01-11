@@ -46,22 +46,3 @@ resource "aws_lb_target_group" "main" {
     type = "source_ip"
   }
 }
-
-/*
-# TODO These EIPs are being used to test the network load balancer,
-# and can be replaced by the radius_eips once the network load
-# balancer is used behind these eips
-resource "aws_eip" "test_radius_eips" {
-  count = var.radius_instance_count
-  vpc   = true
-
-  lifecycle {
-    prevent_destroy = true
-  }
-
-  tags = {
-    Name   = "${title(var.env_name)} Frontend Radius-${var.dns_numbering_base + count.index + 1}"
-    Region = title(var.aws_region_name)
-  }
-}
-*/
