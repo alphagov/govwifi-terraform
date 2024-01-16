@@ -1,7 +1,7 @@
 locals {
-  london_aws_region      = "eu-west-2"
-  london_aws_region_name = "London"
-  london_backend_vpc_cidr_block = "10.106.0.0/16"
+  london_aws_region              = "eu-west-2"
+  london_aws_region_name         = "London"
+  london_backend_vpc_cidr_block  = "10.106.0.0/16"
   london_frontend_vpc_cidr_block = "10.102.0.0/16"
 }
 

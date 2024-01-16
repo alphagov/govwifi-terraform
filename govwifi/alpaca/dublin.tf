@@ -1,7 +1,7 @@
 locals {
-  dublin_aws_region      = "eu-west-1"
-  dublin_aws_region_name = "Dublin"
-  dublin_backend_vpc_cidr_block = "10.104.0.0/16"
+  dublin_aws_region              = "eu-west-1"
+  dublin_aws_region_name         = "Dublin"
+  dublin_backend_vpc_cidr_block  = "10.104.0.0/16"
   dublin_frontend_vpc_cidr_block = "10.105.0.0/16"
 }
 
@@ -85,7 +85,7 @@ module "dublin_backend" {
   providers = {
     aws = aws.dublin
   }
-  
+
   source        = "../../govwifi-backend"
   env           = "alpaca"
   env_name      = local.env_name
@@ -243,7 +243,7 @@ module "dublin_frontend" {
   prometheus_security_group_id = module.dublin_prometheus.prometheus_security_group_id
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
-  
+
   london_backend_vpc_cidr = module.london_backend.vpc_cidr_block
 }
 

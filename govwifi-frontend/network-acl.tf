@@ -1,9 +1,9 @@
 
 resource "aws_default_network_acl" "frontend_london" {
-  count =var.aws_region == "eu-west-2" ? 1 : 0
+  count                  = var.aws_region == "eu-west-2" ? 1 : 0
   default_network_acl_id = aws_vpc.wifi_frontend.default_network_acl_id
-  subnet_ids = [for subnet in aws_subnet.wifi_frontend_subnet : subnet.id]
- 
+  subnet_ids             = [for subnet in aws_subnet.wifi_frontend_subnet : subnet.id]
+
   tags = {
     Name = "ACL GovWifi Frontend - ${var.env_name}"
   }
@@ -40,7 +40,7 @@ resource "aws_default_network_acl" "frontend_london" {
     protocol        = "-1"
     rule_no         = 99
     to_port         = 0
-  }  
+  }
   ingress {
     action          = "deny"
     cidr_block      = "172.16.0.0/12"
@@ -66,7 +66,7 @@ resource "aws_default_network_acl" "frontend_london" {
 
   ingress {
     action          = "allow"
-    cidr_block      =  var.vpc_cidr_block
+    cidr_block      = var.vpc_cidr_block
     from_port       = 0
     icmp_code       = 0
     icmp_type       = 0
@@ -89,10 +89,10 @@ resource "aws_default_network_acl" "frontend_london" {
 }
 
 resource "aws_default_network_acl" "frontend_dublin" {
-  count =var.aws_region == "eu-west-1" ? 1 : 0
+  count                  = var.aws_region == "eu-west-1" ? 1 : 0
   default_network_acl_id = aws_vpc.wifi_frontend.default_network_acl_id
-  subnet_ids = [for subnet in aws_subnet.wifi_frontend_subnet : subnet.id]
- 
+  subnet_ids             = [for subnet in aws_subnet.wifi_frontend_subnet : subnet.id]
+
   tags = {
     Name = "ACL GovWifi Frontend - ${var.env_name}"
   }
@@ -129,7 +129,7 @@ resource "aws_default_network_acl" "frontend_dublin" {
     protocol        = "-1"
     rule_no         = 99
     to_port         = 0
-  }  
+  }
   ingress {
     action          = "deny"
     cidr_block      = "172.16.0.0/12"
@@ -155,7 +155,7 @@ resource "aws_default_network_acl" "frontend_dublin" {
 
   ingress {
     action          = "allow"
-    cidr_block      =  var.vpc_cidr_block
+    cidr_block      = var.vpc_cidr_block
     from_port       = 0
     icmp_code       = 0
     icmp_type       = 0
