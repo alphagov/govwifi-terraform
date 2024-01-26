@@ -173,6 +173,7 @@ module "frontend" {
   aws_region_name    = var.aws_region_name
   route53_zone_id    = data.aws_route53_zone.main.zone_id
   vpc_cidr_block     = "10.85.0.0/16"
+  london_backend_vpc_cidr = module.backend.vpc_cidr_block
   rack_env           = "production"
   sentry_current_env = "production"
 
@@ -209,10 +210,8 @@ module "frontend" {
   prometheus_ip_ireland = var.prometheus_ip_ireland
 
   prometheus_security_group_id = module.govwifi_prometheus.prometheus_security_group_id
-
+  
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
-
-  london_backend_vpc_cidr = module.london_backend.vpc_cidr_block
 }
 
 module "govwifi_admin" {
