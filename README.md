@@ -197,7 +197,7 @@ Use the following format when prompted for the file name:
 
 Use an empty passphrase.
 
-- Add encrypted versions of the files to the govwifi-build/passwords/keys/ [using the instructions here](https://govwifi-dev-docs.cloudapps.digital/infrastructure/secrets.html#adding-editing-a-secret).
+- Add encrypted versions of the files to the govwifi-build/passwords/keys/ [using the instructions here](https://dev-docs.wifi.service.gov.uk/infrastructure/secrets.html#adding-editing-a-secret).
 - Update the terraform for your environment:
   - With the name of the key in in the dublin-keys module in the dublin.tf file of your environment [See here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R171).
   - With the **public** key file in the dublin-keys module in the dublin.tf file of your environment [See here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R172).
@@ -417,7 +417,7 @@ You will also need to do the following in the tools account:
 
 - If you are setting up a new environment and the `app_env` variable has been set to `staging` then copy the databases from the pre-existing staging environment and leave any references to `staging` in the database names unchanged. For example the user database name would be left as `govwifi_staging_users`. The `app_env` value in terraform MUST match the database environment reference otherwise the GovWifi applications will fail to start.
 
-Follow the instructions [here](https://govwifi-dev-docs.cloudapps.digital/infrastructure/database-restore.html#restoring-databases) to restore the databases.
+[Follow thees instructions to restore the databases](https://dev-docs.wifi.service.gov.uk/infrastructure/database-restore.html#restoring-databases).
 
 ---
 ## Application deployment 
@@ -448,7 +448,7 @@ Login to the `GovWifi-Tools` account using the AWS Console:
 
 Run the AWS CodeBuild's Build Projects created for the new environment (e.g. admin-push-image-to-ecr-<ENV>). These will add the docker images to the appropriate ECR repositories.
 
-[Follow the deployment instructions](https://govwifi-dev-docs.cloudapps.digital/applications/deploying.html#core-services), refer to the document linked within the `Core services` section for detailed steps.
+[Follow these deployment instructions](https://dev-docs.wifi.service.gov.uk/applications/deploying.html#core-services), refer to the document linked within the `Core services` section for detailed steps.
 
 ## Updating task definitions 
 
