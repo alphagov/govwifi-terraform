@@ -23,7 +23,7 @@ resource "aws_instance" "grafana_instance" {
   subnet_id     = var.backend_subnet_ids[0]
   user_data = templatefile("${path.module}/user_data.sh",
     {
-      grafana-log-group       = "${var.env_name}-grafana-log-group",
+      grafana_log_group       = "${var.env_name}-grafana-log-group",
       grafana_admin           = local.grafana_admin,
       google_client_secret    = local.google_client_secret,
       google_client_id        = local.google_client_id,
