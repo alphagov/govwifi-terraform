@@ -199,6 +199,10 @@ run-until-success docker pull grafana/grafana:${grafana_docker_version}
 # run Grafana Docker image
 logger "Starting docker for Grafana";
 run-until-success docker run \
+	--log-driver=awslogs \
+	--log-opt awslogs-create-group=true \
+	--log-opt awslogs-group=${grafana_log_group} \
+	--log-opt awslogs-stream=grafana-docker-logs \
   --interactive \
   --detach \
   --restart=always \
