@@ -1,6 +1,6 @@
 variable "ssh_key_name" {
   type    = string
-  default = "recovery-ec2-instances-20200717"
+  default = "recovery-bastion-20240119"
 }
 
 variable "notify_ips" {

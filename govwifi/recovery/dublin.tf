@@ -105,7 +105,7 @@ module "dublin_backend" {
 
   bastion_instance_type     = "t2.micro"
   bastion_server_ip         = module.london_backend.bastion_public_ip
-  bastion_ssh_key_name      = "recovery-bastion-20200717"
+  bastion_ssh_key_name      = "recovery-bastion-20240119"
   enable_bastion_monitoring = false
   aws_account_id            = local.aws_account_id
 
@@ -171,8 +171,8 @@ module "dublin_keys" {
 
   source = "../../govwifi-keys"
 
-  govwifi_bastion_key_name = "recovery-bastion-20200717"
-  govwifi_bastion_key_pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDL5wGVJ8aXL0QUhIvfLV2BMLC9Tk74jnChC40R9ipzK0AuatcaXdj0PEm8sh8sHlXEmdmVDq/4s8XaEkF7MDl38qbjxxHRTpCgcTrYzJGad3xgr1+zhpD8Kfnepex/2pR7z7kOCv7EDx4vRTc8vu1ttcmJiniBmgjc1xVk1A5aB72GxffZrow7B0iopP16vEPvllUjsDoOaeLJukDzsbZaP2RRYBqIA4qXunfJpuuu/o+T+YR4LkTB+9UBOOGrX50T80oTtJMKD9ndQ9CC9sqlrOzE9GiZz9db7D9iOzIZoTT6dBbgEOfCGmkj7WS2NjF+D/pEN/edkIuNGvE+J/HqQ179Xm/VCx5Kr6ARG+xk9cssCQbEFwR46yitaPA7B4mEiyD9XvUW2tUeVKdX5ybUFqV++2c5rxTczuH4gGlEGixIqPeltRvkVrN6qxnrbDAXE2bXymcnEN6BshwGKR+3OUKTS8c53eWmwiol6xwCp8VUI8/66tC/bCTmeur07z2LfQsIo745GzPuinWfUm8yPkZOD3LptkukO1aIfgvuNmlUKTwKSLIIwwsqTZ2FcK39A8g3Iq3HRV+4JwOowLJcylRa3QcSH9wdjd69SqPrZb0RhW0BN1mTX2tEBl1ryUUpKsqpMbvjl28tn6MGsU/sRhBLqliduOukGubD29LlAQ== "
+  govwifi_bastion_key_name = "recovery-bastion-20240119"
+  govwifi_bastion_key_pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/lfatLMsYqNJwCDeQEDb9s3ALdSvneh4VVUE76HxKfemFKYjbzBjzF742md9U+t2tT8X7Vr/xd4U1WoXuHOYUIN9d+WLULuVyM0X7SNAuvhQTPPFdc0rWM85Z0JSRH4dSdGf/Cqr3ifzD161ceh2E1ej8skUr5qYxwkxc3qy6aLmNulnuJo/emHbkjJX2FEsFj0T98UYow/RpJOB2siDwOajmCqkhfpskRwJb2gwLuLN2but6/Pq/UClPPOH+ckkqb0LO3Qdo86F6KOo3pVkRPZq4ctw6+RjHPFBMsKHhyzVnxllkHw4gS8ShUDmvCZU1XLB1+6B8f5xbrmQWpG1WhHiCZkXWtrMToujG5hWTATCiXf7KtV5WcBAy3unm11ThU4YFoNW+nLMko+JSaSMM1/CnsLxcAsHf3pq8zERZLAtfJJRdObwMYWPNCJ5seuCh+yxxkBq++DagKHU2+Btm1AS1yVCmgUuRScbbEtcIHLScrHG3WXBlrIWk8Iycybs= govwifi-developers@digital.cabinet-office.gov.uk"
 
   create_production_bastion_key = 0
 

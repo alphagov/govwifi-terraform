@@ -8,6 +8,9 @@ govwifi-tools: #The name "tools" would be the obvious choice here, but this is a
 	$(eval export DEPLOY_ENV=tools)
 	$(eval export REPO=tools)
 	$(eval export AWS_REGION=eu-west-2)
+recovery:
+	$(eval export DEPLOY_ENV=recovery)
+	$(eval export REPO=recovery)
 staging:
 	$(eval export DEPLOY_ENV=staging)
 	$(eval export REPO=staging)
