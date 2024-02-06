@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -ueo pipefail
+# set -ueo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -54,45 +54,69 @@ echo "allow 127/8" >> /tmp/chrony.conf
 mv /tmp/chrony.conf /etc/chrony/chrony.conf
 systemctl restart chrony
 
+# Install the AWS Cloudwatch Agent
+cd ~
+run-until-success wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+sudo dpkg -i -E ./amazon-cloudwatch-agent.deb
+
 # Inject the CloudWatch Logs configuration file contents
-sudo cat <<'EOF' > ./initial-awslogs.conf
-[general]
-state_file = /var/awslogs/state/agent-state
 
-[/var/log/syslog]
-file = /var/log/syslog
-log_group_name = ${grafana-log-group}
-log_stream_name = {instance_id}/var/log/syslog
-datetime_format = %b %d %H:%M:%S
-
-[/var/log/auth.log]
-file = /var/log/auth.log
-log_group_name = ${grafana-log-group}
-log_stream_name = {instance_id}/var/log/auth.log
-datetime_format = %b %d %H:%M:%S
-
-[/var/log/dmesg]
-file = /var/log/dmesg
-log_group_name = ${grafana-log-group}
-log_stream_name = {instance_id}/var/log/dmesg
-
-[/var/log/unattended-upgrades/unattended-upgrades.log]
-file = /var/log/unattended-upgrades/unattended-upgrades.log
-log_group_name = ${grafana-log-group}
-log_stream_name = {instance_id}/var/log/unattended-upgrades/unattended-upgrades.log
-datetime_format = %Y-%m-%d %H:%M:%S
-
-[/var/log/cloud-init-output.log]
-file = /var/log/cloud-init-output.log
-log_group_name = ${grafana-log-group}
-log_stream_name = {instance_id}/var/log/cloud-init-output.log
+sudo cat <<'EOF' > /opt/aws/amazon-cloudwatch-agent/bin/config.json
+{
+	"agent": {
+		"metrics_collection_interval": 60,
+    "region": "eu-west-2",
+		"run_as_user": "root"
+	},
+	"logs": {
+		"logs_collected": {
+			"files": {
+				"collect_list": [
+					{
+						"file_path": "/var/log/syslog",
+						"log_group_class": "STANDARD",
+						"log_group_name": "${grafana_log_group}",
+						"log_stream_name": "{instance_id}-syslog",
+						"retention_in_days": 30
+					},
+					{
+						"file_path": "/var/log/auth.log",
+						"log_group_class": "STANDARD",
+						"log_group_name": "${grafana_log_group}",
+						"log_stream_name": "{instance_id}-auth.log",
+						"retention_in_days": 30
+					},
+					{
+						"file_path": "/var/log/dmesg",
+						"log_group_class": "STANDARD",
+						"log_group_name": "${grafana_log_group}",
+						"log_stream_name": "{instance_id}-dmesg",
+						"retention_in_days": 30
+					},
+					{
+						"file_path": "/var/log/unattended-upgrades/unattended-upgrades.log",
+						"log_group_class": "STANDARD",
+						"log_group_name": "${grafana_log_group}",
+						"log_stream_name": "{instance_id}-unattended-upgrades.log",
+						"retention_in_days": 30
+					},
+					{
+						"file_path": "/var/log/cloud-init-output.log",
+						"log_group_class": "STANDARD",
+						"log_group_name": "${grafana_log_group}",
+						"log_stream_name": "{instance_id}-cloud-init-output.log",
+						"retention_in_days": 30
+					}
+				]
+			}
+		}
+	}
+}
 EOF
 
-# Install awslogs
-
-# Retrieve and run awslogs install script
-cd /
-run-until-success sudo curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
+# Start the Cloudwatch Agent
+cd
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
 
 # Install Docker and Send Logs to CloudWatch
 logger 'Installing and configuring docker'
@@ -175,6 +199,10 @@ run-until-success docker pull grafana/grafana:${grafana_docker_version}
 # run Grafana Docker image
 logger "Starting docker for Grafana";
 run-until-success docker run \
+	--log-driver=awslogs \
+	--log-opt awslogs-create-group=true \
+	--log-opt awslogs-group=${grafana_log_group} \
+	--log-opt awslogs-stream=grafana-docker-logs \
   --interactive \
   --detach \
   --restart=always \
@@ -201,5 +229,73 @@ run-until-success docker run \
 
 logger 'Installing awscli with apt-get'
 run-until-success apt-get install --yes awscli
+
+# AWS Cloudwatch Logs - broken metrics section, interpolation issues, \ is not the answer to escape chars in terraform!
+
+	# "metrics": {
+	# 	"aggregation_dimensions": [
+	# 		[
+	# 			"InstanceId"
+	# 		]
+	# 	],
+	# 	"append_dimensions": {
+	# 		"AutoScalingGroupName": "\$\{aws:AutoScalingGroupName\}",
+	# 		"ImageId": "\$\{aws:ImageId\}",
+	# 		"InstanceId": "\$\{aws:InstanceId\}",
+	# 		"InstanceType": "\$\{aws:InstanceType\}"
+	# 	},
+	# 	"metrics_collected": {
+	# 		"cpu": {
+	# 			"measurement": [
+	# 				"cpu_usage_idle",
+	# 				"cpu_usage_iowait",
+	# 				"cpu_usage_user",
+	# 				"cpu_usage_system"
+	# 			],
+	# 			"metrics_collection_interval": 60,
+	# 			"resources": [
+	# 				"*"
+	# 			],
+	# 			"totalcpu": false
+	# 		},
+	# 		"disk": {
+	# 			"measurement": [
+	# 				"used_percent",
+	# 				"inodes_free"
+	# 			],
+	# 			"metrics_collection_interval": 60,
+	# 			"resources": [
+	# 				"*"
+	# 			]
+	# 		},
+	# 		"diskio": {
+	# 			"measurement": [
+	# 				"io_time"
+	# 			],
+	# 			"metrics_collection_interval": 60,
+	# 			"resources": [
+	# 				"*"
+	# 			]
+	# 		},
+	# 		"mem": {
+	# 			"measurement": [
+	# 				"mem_used_percent"
+	# 			],
+	# 			"metrics_collection_interval": 60
+	# 		},
+	# 		"statsd": {
+	# 			"metrics_aggregation_interval": 60,
+	# 			"metrics_collection_interval": 10,
+	# 			"service_address": ":8125"
+	# 		},
+	# 		"swap": {
+	# 			"measurement": [
+	# 				"swap_used_percent"
+	# 			],
+	# 			"metrics_collection_interval": 60
+	# 		}
+	# 	}
+	# }
+
 
 reboot
