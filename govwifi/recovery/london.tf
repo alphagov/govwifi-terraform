@@ -173,7 +173,7 @@ module "london_admin" {
 
   admin_docker_image   = format("%s/admin:recovery", local.docker_image_path)
   rails_env            = "recovery"
-  app_env              = "recovery"
+  app_env              = "staging"
   sentry_current_env   = "recovery"
   ecr_repository_count = 1
 
@@ -253,7 +253,7 @@ module "london_api" {
   user_rr_hostname = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
 
   rack_env                  = "recovery"
-  app_env                   = "recovery"
+  app_env                   = "staging"
   sentry_current_env        = "recovery"
   radius_server_ips         = local.frontend_radius_ips
   subnet_ids                = module.london_backend.backend_subnet_ids

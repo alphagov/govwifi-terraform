@@ -289,7 +289,7 @@ module "dublin_api" {
   user_rr_hostname = "users-rr.${lower(local.dublin_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
 
   rack_env                = "recovery"
-  app_env                 = "recovery"
+  app_env                 = "staging"
   sentry_current_env      = "recovery"
   radius_server_ips       = local.frontend_radius_ips
   subnet_ids              = module.dublin_backend.backend_subnet_ids
