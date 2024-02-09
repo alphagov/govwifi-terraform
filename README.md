@@ -49,7 +49,7 @@ gds-cli aws <account-name> -- make <ENV> init-backend
 gds-cli aws <account-name> -- make <ENV> plan
 ```
 
-Example ENVs are: `wifi`, `wifi-london` and `staging`.
+Example ENVs are: `wifi`, `wifi-london`, `staging` and  `alpaca`.
 
 ## Running terraform
 
@@ -183,7 +183,7 @@ for filename in ./non-encrypted/secrets-to-copy/govwifi/<NEW-ENV-NAME>/* ; do se
 
 ##### Add An SSH Key That Will Be Used By Your New Environment
 
-- Generate an ssh keypair:
+###### Generate an ssh keypair:
 
 ```
 ssh-keygen -C "govwifi-developers@digital.cabinet-office.gov.uk"
@@ -197,15 +197,27 @@ Use the following format when prompted for the file name:
 
 Use an empty passphrase.
 
-- Add encrypted versions of the files to the govwifi-build/passwords/keys/ [using the instructions here](https://govwifi-dev-docs.cloudapps.digital/infrastructure/secrets.html#adding-editing-a-secret).
-- Update the terraform for your environment:
-  - With the name of the key in in the dublin-keys module in the dublin.tf file of your environment [See here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R171).
-  - With the **public** key file in the dublin-keys module in the dublin.tf file of your environment [See here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R172).
-  - Update name of key in dublin_backend module of dublin.tf, [see here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R105).
-  - With the name of the key in in the london-keys module in the london.tf file. To see an example [open the london.tf file in the commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88), click on the `Load diff` and navigate to a **line 24**.
-  - With the **public** key file in the london-keys module in the london.tf file. To see an example [open the london.tf file in the commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88), click on the `Load diff` and navigate to a **line 25**.
-  - To see an example [open the london.tf file in the commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88), click on the `Load diff` and navigate to a **line 55**.
-  - Update the `ssh_key_name` variable in the variables.ft with the name of the ssh key [see here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-481c8f75e7c6c7ff9da71e734bc80ea24feff6f398f07b81ce8bd0439d9e8c8eR3)  
+- Add encrypted versions of the files to the govwifi-build/passwords/keys/ [using the instructions here](https://dev-docs.wifi.service.gov.uk/infrastructure/secrets.html#getting-a-secret). (tip: `pass edit` also adds)
+
+##### Commit to build repo
+- ensure the changes are committed and pushed to a new branch.
+- Now in terraform go to .private and checkout branch with the updates made in previous step  `git checkout <branch_name>`
+
+###### Update terraform env specific modules.
+- Now we need to update terraform with the keys that have been created:
+  - In the dublin.tf file of the new environment `./govwifi/<env>`:
+    - In the **dublin-keys** module:
+      -  change the **govwifi_bastion_key_name** to match the new key name. [See here for an example commit for key_name](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R171)
+      -  change the **govwifi_bastion_key_pub** value to that of the new public key.  [here for an example commit for public key](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R172)
+    - In the **dublin_backend** module:
+      - change the **bastion_ssh_key_name** to that of the new key[To see an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R105).
+  - In the london.tf file of the new environment:
+    - In the **london-keys** module.
+      - Change the **govwifi_bastion_key_name** to match the new key name  To see an example [open the london.tf file in the commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88), click on the `Load diff` and navigate to a **line 24**.
+      - Change the **govwifi_bastion_key_pub** value to that of the new public key. To see an example [open the london.tf file in the commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88), click on the `Load diff` and navigate to a **line 25**.
+    - In **london_backend** module
+      - Change the **bastion_ssh_key_name**. To see an example [open the london.tf file in the commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88), click on the `Load diff` and navigate to a **line 55**.
+  - Update the **ssh_key_name** variable in the variables.tf with the name of the ssh key [see here for an example commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-481c8f75e7c6c7ff9da71e734bc80ea24feff6f398f07b81ce8bd0439d9e8c8eR3)  
 
 ### Prepare The AWS Environment
 If you are running terraform in a brand new AWS account, then you will need to ensure the following steps have been completed before terraform will execute without error.
@@ -328,6 +340,13 @@ And then
 ```
 gds-cli aws <account-name> -- make <ENV> apply
 ```
+
+If the message
+```
+var.administrator_cidrs
+  Enter a value:
+```
+appears, this indicates the variables in the .private folder haven't been updated, ensure [Commit to build reop](#commit-to-build-repo) step has been followed.
 
 After you have finished terraforming follow the manual steps below to complete the setup. 
 
