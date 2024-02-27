@@ -274,7 +274,7 @@ module "govwifi_admin" {
 
   elasticsearch_endpoint = module.govwifi_elasticsearch.endpoint
 
-  frontend_certs_s3_bucket_name = module.london_frontend.frontend_cert_s3_bucket_name  
+  frontend_certs_s3_bucket_name = module.frontend.frontend_cert_s3_bucket_name  
 }
 
 module "api" {
