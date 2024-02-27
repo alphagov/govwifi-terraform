@@ -94,7 +94,7 @@ resource "aws_iam_role_policy" "ecs_admin_instance_policy" {
         "s3:GetObjectAcl",
         "s3:DeleteObject"
       ],
-      "Resource": ["${var.frontend_certs_s3_bucket_name.arn}/*"]
+      "Resource": ["${var.frontend_certs_s3_bucket_name.arn}/trusted_certificates/*"]
     }
   ]
 }
