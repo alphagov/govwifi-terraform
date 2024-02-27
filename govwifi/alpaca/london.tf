@@ -211,6 +211,8 @@ module "london_admin" {
   notification_arn = module.london_notifications.topic_arn
 
   elasticsearch_endpoint = module.london_elasticsearch.endpoint
+
+  frontend_certs_s3_bucket_name = module.london_frontend.frontend_cert_s3_bucket_name
 }
 
 module "london_api" {
