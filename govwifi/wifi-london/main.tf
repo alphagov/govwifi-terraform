@@ -273,6 +273,8 @@ module "govwifi_admin" {
   bastion_server_ip = var.bastion_server_ip
 
   elasticsearch_endpoint = module.govwifi_elasticsearch.endpoint
+
+  frontend_certs_s3_bucket_name = module.london_frontend.frontend_cert_s3_bucket_name  
 }
 
 module "api" {
