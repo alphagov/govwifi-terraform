@@ -14,7 +14,10 @@ resource "aws_iam_role" "grafana_instance_role" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": "ec2.amazonaws.com"
+        "Service": [
+          "ec2.amazonaws.com",
+          "vpc-flow-logs.amazonaws.com"
+        ]
       },
       "Effect": "Allow",
       "Sid": ""
@@ -34,13 +37,24 @@ resource "aws_iam_role_policy" "grafana_instance_policy" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Effect": "Allow",
       "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogStreams"
+        "cloudwatch:*",
+        "ec2:DescribeVolumes",
+        "ec2:DescribeTags"
       ],
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
+      "Action": [
+        "logs:PutLogEvents",
+        "logs:DescribeLogStreams",
+        "logs:DescribeLogGroups",
+        "logs:CreateLogStream",
+        "logs:CreateLogGroup",
+        "logs:PutRetentionPolicy"
+      ],
+      "Effect": "Allow",
       "Resource": [
         "arn:aws:logs:*:*:*"
       ]
@@ -48,7 +62,6 @@ resource "aws_iam_role_policy" "grafana_instance_policy" {
   ]
 }
 EOF
-
 }
 
 data "aws_iam_policy_document" "grafana_assume_role" {
