@@ -1,7 +1,7 @@
 resource "aws_iam_role_policy" "ecs_admin_instance_policy" {
   name       = "${var.aws_region_name}-ecs-admin-instance-policy-${var.env_name}"
   role       = aws_iam_role.ecs_admin_instance_role.id
-  depends_on = [aws_s3_bucket.admin_bucket, var.frontend_certs_s3_bucket_name]
+  depends_on = [aws_s3_bucket.admin_bucket, var.frontend_cert_s3_bucket_name]
 
   policy = <<EOF
 {
@@ -94,7 +94,7 @@ resource "aws_iam_role_policy" "ecs_admin_instance_policy" {
         "s3:GetObjectAcl",
         "s3:DeleteObject"
       ],
-      "Resource": ["${var.frontend_certs_s3_bucket_name.arn}/trusted_certificates/*"]
+      "Resource": ["${var.frontend_cert_s3_bucket_arn}/trusted_certificates/*"]
     }
   ]
 }

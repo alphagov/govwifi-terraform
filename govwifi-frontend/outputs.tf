@@ -35,6 +35,11 @@ output "load_balanced_frontend_service_security_group_id" {
 }
 
 output "frontend_cert_s3_bucket_name" {
-  description = "Name (id) for the admin bucket"
+  description = "Name (id) for the frontend certs bucket"
   value       = aws_s3_bucket.frontend_cert_bucket.id
+}
+
+output "frontend_cert_s3_bucket_arn" {
+  description = "ARN for the frontend certs bucket"
+  value       = aws_s3_bucket.frontend_cert_bucket.arn
 }

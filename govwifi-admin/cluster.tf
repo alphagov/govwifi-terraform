@@ -85,7 +85,7 @@ resource "aws_ecs_task_definition" "admin_task" {
           "value": "organisations.yml"
         },{
           "name": "S3_TRUSTED_CERTS_BUCKET",
-          "value": "${var.frontend_certs_s3_bucket_name}"
+          "value": "${var.frontend_cert_s3_bucket_name}"
         },{
           "name": "S3_TRUSTED_CERTS_PATH_KEY",
           "value": "trusted_certificates"
