@@ -90,6 +90,9 @@ resource "aws_ecs_task_definition" "admin_task" {
           "name": "S3_TRUSTED_CERTS_PATH_KEY",
           "value": "trusted_certificates"
         },{
+          "name": "S3_ROOT_CERTS_PATH_KEY",
+          "value": "root_certificates"
+        },{
           "name": "S3_EMAIL_DOMAINS_OBJECT_KEY",
           "value": "domains.yml"
         },{
