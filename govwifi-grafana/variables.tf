@@ -82,3 +82,6 @@ variable "critical_notifications_arn" {
 
 variable "aws_account_id" {
 }
+
+variable "vpc_be_cidr_block" {
+}
