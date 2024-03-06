@@ -76,7 +76,8 @@ resource "aws_s3_bucket" "accesslogs_bucket" {
   tags = {
     Region   = title(var.aws_region_name)
     Product  = var.product_name
-    Category = "Accesslogs"
+    Category = "Email Accesslogs"
+    Name     = "Wifi Email Access Logs Bucket"
   }
 }
 
