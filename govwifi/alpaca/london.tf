@@ -3,7 +3,6 @@ locals {
   london_aws_region_name         = "London"
   london_backend_vpc_cidr_block  = "10.106.0.0/16"
   london_frontend_vpc_cidr_block = "10.102.0.0/16"
-  london_backend_vpc_cidr_block  = "10.106.0.0/16"
 }
 
 provider "aws" {
@@ -376,8 +375,8 @@ module "london_grafana" {
     module.london_prometheus.eip_public_ip,
     module.dublin_prometheus.eip_public_ip
   ]
-  
-  vpc_be_cidr_block  = local.london_backend_vpc_cidr_block
+
+  vpc_be_cidr_block = local.london_backend_vpc_cidr_block
 }
 
 module "london_elasticsearch" {

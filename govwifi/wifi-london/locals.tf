@@ -5,7 +5,7 @@ locals {
 
   product_name = "GovWifi"
 
-  backup_mysql_rds = true
+  backup_mysql_rds              = true
   london_backend_vpc_cidr_block = "10.84.0.0/16"
 }
 

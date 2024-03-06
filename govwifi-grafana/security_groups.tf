@@ -100,7 +100,7 @@ resource "aws_security_group" "grafana_ec2_out" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-# Cloudwatch Agent requires outbound to AWS
+  # Cloudwatch Agent requires outbound to AWS
   egress {
     description = "grafana_ec2_out_443"
     from_port   = 443

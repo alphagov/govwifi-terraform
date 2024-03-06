@@ -11,7 +11,7 @@ resource "aws_route53_record" "wifi_apex" {
   name    = "wifi.service.gov.uk"
   type    = "A"
   ttl     = "300"
-  records = ["185.199.108.153","185.199.109.153","185.199.110.153","185.199.111.153"]
+  records = ["185.199.108.153", "185.199.109.153", "185.199.110.153", "185.199.111.153"]
 }
 
 resource "aws_route53_record" "tech_docs" {
