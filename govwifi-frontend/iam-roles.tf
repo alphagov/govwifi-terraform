@@ -227,3 +227,85 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
     ]
   }
 }
+
+resource "aws_iam_role" "s3_replication_role" {
+  count = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
+  name  = "s3-replication-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Service = "s3.amazonaws.com"
+        },
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "s3_replication_attachment" {
+  count      = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
+  role       = aws_iam_role.s3_replication_role[0].name
+  policy_arn = aws_iam_policy.s3_replication_policy[0].arn
+}
+
+resource "aws_iam_policy" "s3_replication_policy" {
+  count       = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
+  name        = "s3-replication-policy"
+  description = "IAM policy for S3 frontend certs bucket replication"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObjectVersionForReplication",
+          "s3:GetObjectVersionAcl",
+          "s3:ListBucket",
+          "s3:GetReplicationConfiguration",
+          "s3:GetObjectVersionTagging"
+        ],
+        Resource = "${aws_s3_bucket_versioning.frontend_cert_bucket.id}"
+        Resource = [
+          "arn:aws:s3:::frontend-cert-london-*",
+          "arn:aws:s3:::frontend-cert-london-*/trusted_certificates/*",
+          "arn:aws:s3:::frontend-cert-dublin-*",
+          "arn:aws:s3:::frontend-cert-dublin-*/trusted_certificates/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObjectVersionForReplication",
+          "s3:GetObjectVersionAcl",
+          "s3:ListBucket",
+          "s3:GetReplicationConfiguration",
+          "s3:GetObjectVersionTagging",
+          "s3:ReplicateObject",
+          "s3:ReplicateDelete",
+          "s3:ReplicateTags"
+        ],
+        Resource = [
+          "arn:aws:s3:::frontend-cert-dublin-*",
+          "arn:aws:s3:::frontend-cert-dublin-*/trusted_certificates/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:DescribeKey",
+          "kms:GenerateDataKey",
+          "kms:Decrypt",
+          "kms:Encrypt"
+        ],
+        Resource = [
+          "${data.aws_kms_key.kms_s3_london[0].arn}",
+          "${data.aws_kms_key.kms_s3_dublin[0].arn}"
+        ]
+      }
+    ]
+  })
+}
