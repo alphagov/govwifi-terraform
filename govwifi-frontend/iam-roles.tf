@@ -229,16 +229,16 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
 }
 
 resource "aws_iam_role" "s3_replication_role" {
-  name               = "s3-replication-role"
+  name = "s3-replication-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
-        Effect    = "Allow",
+        Effect = "Allow",
         Principal = {
           Service = "s3.amazonaws.com"
         },
-        Action    = "sts:AssumeRole"
+        Action = "sts:AssumeRole"
       }
     ]
   })
@@ -246,14 +246,14 @@ resource "aws_iam_role" "s3_replication_role" {
 
 resource "aws_iam_policy" "s3_replication_policy" {
   name        = "s3-replication-policy"
-  description = "IAM policy for S3 fronend certs bucket replication"
-  
+  description = "IAM policy for S3 frontend certs bucket replication"
+
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "s3:GetObjectVersionForReplication",
           "s3:GetObjectVersionAcl",
           "s3:ListBucket",

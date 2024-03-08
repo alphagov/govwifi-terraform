@@ -67,7 +67,7 @@ POLICY
 
 resource "aws_s3_bucket_replication_configuration" "cert_replication_london_to_dublin" {
   # Must have bucket versioning enabled first
-  count = "${lower(var.aws_region_name)}" == "london"? 1 : 0
+  count      = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
   depends_on = [aws_s3_bucket_versioning.frontend_cert_bucket]
 
   role   = aws_iam_role.s3_replication_role.arn
@@ -83,7 +83,7 @@ resource "aws_s3_bucket_replication_configuration" "cert_replication_london_to_d
     status = "Enabled"
 
     destination {
-      bucket        = "arn:aws:s3:::frontend-cert-dublin-*"
+      bucket = "arn:aws:s3:::frontend-cert-dublin-*"
     }
   }
 }
