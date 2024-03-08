@@ -227,3 +227,53 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
     ]
   }
 }
+
+resource "aws_iam_role" "s3_replication_role" {
+  name               = "s3-replication-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect    = "Allow",
+        Principal = {
+          Service = "s3.amazonaws.com"
+        },
+        Action    = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "s3_replication_policy" {
+  name        = "s3-replication-policy"
+  description = "IAM policy for S3 fronend certs bucket replication"
+  
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = [
+          "s3:GetObjectVersionForReplication",
+          "s3:GetObjectVersionAcl",
+          "s3:ListBucket",
+          "s3:GetReplicationConfiguration"
+        ],
+        Resource = "${aws_s3_bucket_versioning.frontend_cert_bucket.id}"
+        Resource = [
+          "arn:aws:s3:::frontend-cert-london-*",
+          "arn:aws:s3:::frontend-cert-london-*/trusted_certificates/*",
+          "arn:aws:s3:::frontend-cert-dublin-*",
+          "arn:aws:s3:::frontend-cert-dublin-*/trusted_certificates/*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "s3_replication_attachment" {
+  role       = aws_iam_role.s3_replication_role.name
+  policy_arn = aws_iam_policy.s3_replication_policy.arn
+}
+
+

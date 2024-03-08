@@ -64,6 +64,30 @@ resource "aws_iam_policy" "govwifi_frontend_cert_bucket_access" {
 POLICY
 }
 
+
+resource "aws_s3_bucket_replication_configuration" "cert_replication_london_to_dublin" {
+  # Must have bucket versioning enabled first
+  count = "${lower(var.aws_region_name)}" == "london"? 1 : 0
+  depends_on = [aws_s3_bucket_versioning.frontend_cert_bucket]
+
+  role   = aws_iam_role.s3_replication_role.arn
+  bucket = aws_s3_bucket.frontend_cert_bucket.id
+
+  rule {
+    id = "Certificate replication"
+
+    filter {
+      prefix = "trusted_certificates/"
+    }
+
+    status = "Enabled"
+
+    destination {
+      bucket        = "arn:aws:s3:::frontend-cert-dublin-*"
+    }
+  }
+}
+
 resource "aws_iam_user_policy_attachment" "govwifi_sync_cert_access_policy_attachment" {
   user       = "govwifi-deploy-pipeline" # TODO This should reference the resource
   policy_arn = aws_iam_policy.govwifi_frontend_cert_bucket_access.arn
