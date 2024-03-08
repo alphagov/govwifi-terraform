@@ -188,6 +188,8 @@ module "dublin_frontend" {
     aws.us_east_1 = aws.us_east_1
   }
 
+  aws_account_id = local.aws_account_id
+
   source        = "../../govwifi-frontend"
   env_name      = local.env_name
   env_subdomain = local.env_subdomain
