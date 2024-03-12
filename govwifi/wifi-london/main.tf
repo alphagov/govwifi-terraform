@@ -170,11 +170,12 @@ module "frontend" {
   # LONDON
   aws_region = var.aws_region
 
-  aws_region_name    = var.aws_region_name
-  route53_zone_id    = data.aws_route53_zone.main.zone_id
-  vpc_cidr_block     = "10.85.0.0/16"
-  rack_env           = "production"
-  sentry_current_env = "production"
+  aws_region_name         = var.aws_region_name
+  route53_zone_id         = data.aws_route53_zone.main.zone_id
+  vpc_cidr_block          = "10.85.0.0/16"
+  london_backend_vpc_cidr = module.backend.vpc_cidr_block
+  rack_env                = "production"
+  sentry_current_env      = "production"
 
   backend_vpc_id = module.backend.backend_vpc_id
 
@@ -474,7 +475,7 @@ module "govwifi_grafana" {
     var.prometheus_ip_london,
     var.prometheus_ip_ireland
   ]
-  vpc_be_cidr_block  = local.london_backend_vpc_cidr_block
+  vpc_be_cidr_block = local.london_backend_vpc_cidr_block
 }
 
 module "govwifi_slack_alerts" {

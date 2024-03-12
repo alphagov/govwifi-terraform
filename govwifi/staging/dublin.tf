@@ -244,6 +244,7 @@ module "dublin_frontend" {
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 
+  london_backend_vpc_cidr = module.london_backend.vpc_cidr_block
 }
 
 module "dublin_api" {

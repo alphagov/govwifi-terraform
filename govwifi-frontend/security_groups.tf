@@ -225,12 +225,12 @@ resource "aws_security_group" "load_balanced_frontend_service" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
- ingress {
-   description = "Healthcheck requests from load balancer"
-   from_port   = 3000
-   to_port     = 3000
-   protocol    = "tcp"
-   cidr_blocks = [var.vpc_cidr_block]
+  ingress {
+    description = "Healthcheck requests from load balancer"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr_block]
   }
 
   ingress {

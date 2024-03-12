@@ -201,12 +201,13 @@ module "frontend" {
   env           = local.env
 
   # AWS VPC setup -----------------------------------------
-  aws_region         = var.aws_region
-  aws_region_name    = var.aws_region_name
-  route53_zone_id    = data.aws_route53_zone.main.zone_id
-  vpc_cidr_block     = "10.43.0.0/16"
-  rack_env           = "production"
-  sentry_current_env = "production"
+  aws_region              = var.aws_region
+  aws_region_name         = var.aws_region_name
+  route53_zone_id         = data.aws_route53_zone.main.zone_id
+  vpc_cidr_block          = "10.43.0.0/16"
+  london_backend_vpc_cidr = "10.42.0.0/16"
+  rack_env                = "production"
+  sentry_current_env      = "production"
 
   backend_vpc_id = module.backend.backend_vpc_id
 
