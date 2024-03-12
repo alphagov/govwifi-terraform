@@ -229,6 +229,7 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
 }
 
 resource "aws_iam_role" "s3_replication_role" {
+  count      = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
   name = "s3-replication-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -245,6 +246,7 @@ resource "aws_iam_role" "s3_replication_role" {
 }
 
 resource "aws_iam_policy" "s3_replication_policy" {
+  count      = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
   name        = "s3-replication-policy"
   description = "IAM policy for S3 frontend certs bucket replication"
 
@@ -272,8 +274,9 @@ resource "aws_iam_policy" "s3_replication_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "s3_replication_attachment" {
-  role       = aws_iam_role.s3_replication_role.name
-  policy_arn = aws_iam_policy.s3_replication_policy.arn
+  count      = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
+  role       = aws_iam_role.s3_replication_role[0].name
+  policy_arn = aws_iam_policy.s3_replication_policy[0].arn
 }
 
 

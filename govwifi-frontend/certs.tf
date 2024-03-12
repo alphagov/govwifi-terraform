@@ -70,7 +70,7 @@ resource "aws_s3_bucket_replication_configuration" "cert_replication_london_to_d
   count      = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
   depends_on = [aws_s3_bucket_versioning.frontend_cert_bucket]
 
-  role   = aws_iam_role.s3_replication_role.arn
+  role   = aws_iam_role.s3_replication_role[0].arn
   bucket = aws_s3_bucket.frontend_cert_bucket.id
 
   rule {
@@ -83,7 +83,8 @@ resource "aws_s3_bucket_replication_configuration" "cert_replication_london_to_d
     status = "Enabled"
 
     destination {
-      bucket = "arn:aws:s3:::frontend-cert-dublin-*"
+      bucket = "arn:aws:s3:::frontend-cert-dublin-20211215163024503400000001"
+      # bucket = "arn:aws:s3:::frontend-cert-dublin-*"
     }
   }
 }
