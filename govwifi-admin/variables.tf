@@ -131,3 +131,9 @@ variable "bastion_server_ip" {
 
 variable "elasticsearch_endpoint" {
 }
+
+variable "frontend_cert_s3_bucket_arn" {
+}
+
+variable "frontend_cert_s3_bucket_name"{
+}
