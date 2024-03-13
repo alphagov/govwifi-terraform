@@ -3,10 +3,10 @@ locals {
   env_subdomain = "wifi" # Environment specific subdomain to use under the service domain
   env           = "production"
 
-  product_name = "GovWifi"
+  product_name                   = "GovWifi"
   dublin_backend_vpc_cidr_block  = "10.42.0.0/16"
   dublin_frontend_vpc_cidr_block = "10.43.0.0/16"
-  london_backend_vpc_cidr_block = "10.84.0.0/16"
+  london_backend_vpc_cidr_block  = "10.84.0.0/16"
 }
 
 locals {
