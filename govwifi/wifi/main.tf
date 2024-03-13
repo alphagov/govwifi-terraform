@@ -110,7 +110,7 @@ module "backend" {
   aws_region      = var.aws_region
   aws_region_name = var.aws_region_name
   route53_zone_id = data.aws_route53_zone.main.zone_id
-  vpc_cidr_block  = "10.42.0.0/16"
+  vpc_cidr_block  = local.dublin_backend_vpc_cidr_block
 
   administrator_cidrs = var.administrator_cidrs
   frontend_radius_ips = local.frontend_radius_ips
@@ -204,8 +204,8 @@ module "frontend" {
   aws_region              = var.aws_region
   aws_region_name         = var.aws_region_name
   route53_zone_id         = data.aws_route53_zone.main.zone_id
-  vpc_cidr_block          = "10.43.0.0/16"
-  london_backend_vpc_cidr = "10.42.0.0/16"
+  vpc_cidr_block          = local.dublin_frontend_vpc_cidr_block
+  london_backend_vpc_cidr = local.london_backend_vpc_cidr_block
   rack_env                = "production"
   sentry_current_env      = "production"
 
