@@ -80,10 +80,23 @@ resource "aws_s3_bucket_replication_configuration" "cert_replication_london_to_d
       prefix = "trusted_certificates/"
     }
 
+    delete_marker_replication {
+      status = "Enabled"
+    }
+
+    replication_time {
+      status = "Enabled"
+      time {
+        minutes = 15
+      }
+    }
+
     status = "Enabled"
 
     destination {
       bucket = "arn:aws:s3:::frontend-cert-dublin-20211215163024503400000001"
+      storage_class = "STANDARD"
+
       # bucket = "arn:aws:s3:::frontend-cert-dublin-*"
     }
   }
