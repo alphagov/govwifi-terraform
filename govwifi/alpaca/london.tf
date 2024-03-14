@@ -1,6 +1,7 @@
 locals {
-  london_aws_region      = "eu-west-2"
-  london_aws_region_name = "London"
+  london_aws_region              = "eu-west-2"
+  london_aws_region_name         = "London"
+  london_backend_vpc_cidr_block  = "10.106.0.0/16"
   london_frontend_vpc_cidr_block = "10.102.0.0/16"
 }
 
@@ -50,7 +51,7 @@ module "london_backend" {
   aws_region      = local.london_aws_region
   route53_zone_id = data.aws_route53_zone.main.zone_id
   aws_region_name = local.london_aws_region_name
-  vpc_cidr_block  = "10.106.0.0/16"
+  vpc_cidr_block  = local.london_backend_vpc_cidr_block
 
   administrator_cidrs = var.administrator_cidrs
   frontend_radius_ips = local.frontend_radius_ips
@@ -148,6 +149,8 @@ module "london_frontend" {
   prometheus_security_group_id = module.london_prometheus.prometheus_security_group_id
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
+
+  london_backend_vpc_cidr = module.london_backend.vpc_cidr_block
 }
 
 module "london_admin" {
@@ -373,6 +376,7 @@ module "london_grafana" {
     module.dublin_prometheus.eip_public_ip
   ]
 
+  vpc_be_cidr_block = local.london_backend_vpc_cidr_block
 }
 
 module "london_elasticsearch" {

@@ -1,7 +1,7 @@
 locals {
-  dublin_aws_region      = "eu-west-1"
-  dublin_aws_region_name = "Dublin"
-
+  dublin_aws_region              = "eu-west-1"
+  dublin_aws_region_name         = "Dublin"
+  dublin_backend_vpc_cidr_block  = "10.104.0.0/16"
   dublin_frontend_vpc_cidr_block = "10.105.0.0/16"
 }
 
@@ -244,6 +244,7 @@ module "dublin_frontend" {
 
   radius_cidr_blocks = [for ip in local.frontend_radius_ips : "${ip}/32"]
 
+  london_backend_vpc_cidr = module.london_backend.vpc_cidr_block
 }
 
 module "dublin_api" {

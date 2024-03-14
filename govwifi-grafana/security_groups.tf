@@ -8,7 +8,7 @@ resource "aws_security_group" "grafana_alb_in" {
   }
 
   ingress {
-    description = ""
+    description = "grafana_alb_in_443"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
@@ -31,6 +31,7 @@ resource "aws_security_group" "grafana_alb_out" {
 }
 
 resource "aws_security_group_rule" "grafana_alb_out_egress" {
+  description              = "grafana_alb_out_3000"
   type                     = "egress"
   from_port                = 3000
   to_port                  = 3000
@@ -50,7 +51,7 @@ resource "aws_security_group" "grafana_ec2_in" {
   }
 
   ingress {
-    description     = ""
+    description     = "grafana_ec2_in_3000"
     from_port       = 3000
     to_port         = 3000
     protocol        = "tcp"
@@ -58,7 +59,7 @@ resource "aws_security_group" "grafana_ec2_in" {
   }
 
   ingress {
-    description = ""
+    description = "grafana_ec2_in_22"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -76,7 +77,7 @@ resource "aws_security_group" "grafana_ec2_out" {
   }
 
   egress {
-    description = ""
+    description = "grafana_ec2_out_22"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -84,7 +85,7 @@ resource "aws_security_group" "grafana_ec2_out" {
   }
 
   egress {
-    description = ""
+    description = "grafana_ec2_out_9090"
     from_port   = 9090
     to_port     = 9090
     protocol    = "tcp"
@@ -92,19 +93,19 @@ resource "aws_security_group" "grafana_ec2_out" {
   }
 
   egress {
-    description = ""
+    description = "grafana_ec2_out_80"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-# Cloudwatch Agent requires outbound to AWS
+  # Cloudwatch Agent requires outbound to AWS
   egress {
-    description = ""
+    description = "grafana_ec2_out_443"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.vpc_be_cidr_block]
   }
 }
