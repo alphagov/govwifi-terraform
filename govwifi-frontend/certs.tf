@@ -84,13 +84,6 @@ resource "aws_s3_bucket_replication_configuration" "cert_replication_london_to_d
       status = "Enabled"
     }
 
-    replication_time {
-      status = "Enabled"
-      time {
-        minutes = 15
-      }
-    }
-
     status = "Enabled"
 
     destination {
@@ -98,6 +91,20 @@ resource "aws_s3_bucket_replication_configuration" "cert_replication_london_to_d
       storage_class = "STANDARD"
 
       # bucket = "arn:aws:s3:::frontend-cert-dublin-*"
+      replication_time {
+        status = "Enabled"
+        time {
+          minutes = 15
+        }
+      }
+
+      metrics {
+      event_threshold {
+        minutes = 15
+      }
+        status = "Enabled"
+      }
+
     }
   }
 }
