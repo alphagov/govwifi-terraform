@@ -1,3 +1,16 @@
+data "aws_kms_key" "kms_s3_london" {
+  key_id = "arn:aws:kms:eu-west-2:${var.aws_account_id}:aws/s3"
+}
+
+data "aws_kms_key" "kms_s3_dublin" {
+  key_id = "arn:aws:kms:eu-west-1:${var.aws_account_id}:aws/s3"
+}
+
+data "aws_ssm_parameter" "dublin_bucket_name" {
+  aws.dublin
+  name = "/govwifi-terraform/frontend-certs-bucket"
+}
+
 resource "aws_s3_bucket" "frontend_cert_bucket" {
   bucket_prefix = "frontend-cert-${lower(var.aws_region_name)}-"
 
@@ -84,13 +97,16 @@ resource "aws_s3_bucket_replication_configuration" "cert_replication_london_to_d
       status = "Enabled"
     }
 
+    encryption_configuration {
+      replica_kms_key_id = data.aws_kms_key.kms_s3_dublin.arn
+    }
+
     status = "Enabled"
 
     destination {
-      bucket = "arn:aws:s3:::frontend-cert-dublin-20211215163024503400000001"
+      bucket = "${data.aws_ssm_parameter.dublin_bucket_name}"
       storage_class = "STANDARD"
 
-      # bucket = "arn:aws:s3:::frontend-cert-dublin-*"
       replication_time {
         status = "Enabled"
         time {

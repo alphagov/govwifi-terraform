@@ -96,12 +96,15 @@ module "london_frontend" {
   providers = {
     aws           = aws.london
     aws.us_east_1 = aws.us_east_1
+    aws.dublin = aws.dublin
   }
 
   source        = "../../govwifi-frontend"
   env_name      = local.env_name
   env_subdomain = local.env_subdomain
   env           = local.env
+  aws_account_id            = local.aws_account_id
+
 
   # AWS VPC setup -----------------------------------------
   # LONDON

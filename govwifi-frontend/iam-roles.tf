@@ -251,9 +251,6 @@ resource "aws_iam_role_policy_attachment" "s3_replication_attachment" {
   policy_arn = aws_iam_policy.s3_replication_policy[0].arn
 }
 
-
-
-### Old stuff not working
 resource "aws_iam_policy" "s3_replication_policy" {
   count      = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
   name        = "s3-replication-policy"
@@ -268,7 +265,8 @@ resource "aws_iam_policy" "s3_replication_policy" {
           "s3:GetObjectVersionForReplication",
           "s3:GetObjectVersionAcl",
           "s3:ListBucket",
-          "s3:GetReplicationConfiguration"
+          "s3:GetReplicationConfiguration",
+          "s3:GetObjectVersionTagging"
         ],
         Resource = "${aws_s3_bucket_versioning.frontend_cert_bucket.id}"
         Resource = [
@@ -277,84 +275,37 @@ resource "aws_iam_policy" "s3_replication_policy" {
           "arn:aws:s3:::frontend-cert-dublin-*",
           "arn:aws:s3:::frontend-cert-dublin-*/trusted_certificates/*"
         ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObjectVersionForReplication",
+          "s3:GetObjectVersionAcl",
+          "s3:ListBucket",
+          "s3:GetReplicationConfiguration",
+          "s3:GetObjectVersionTagging",
+          "s3:ReplicateObject",
+          "s3:ReplicateDelete",
+          "s3:ReplicateTags"
+        ],
+        Resource = [
+          "arn:aws:s3:::frontend-cert-dublin-*",
+          "arn:aws:s3:::frontend-cert-dublin-*/trusted_certificates/*"
+        ]
+      },
+      {
+          Effect = "Allow",
+          Action = [
+            "kms:DescribeKey",
+            "kms:GenerateDataKey",
+            "kms:Decrypt",
+            "kms:Encrypt"
+          ],
+          Resource = [
+            "${data.aws_kms_key.kms_s3_london.arn}",
+            "${data.aws_kms_key.kms_s3_dublin.arn}"
+          ]
       }
     ]
   })
 }
-
-
-
-# data "aws_iam_policy_document" "replication" {
-#   statement {
-#     effect = "Allow"
-
-#     actions = [
-#       "s3:GetReplicationConfiguration",
-#       "s3:ListBucket",
-#     ]
-
-#     resources = [aws_s3_bucket.source.arn]
-#   }
-
-#   statement {
-#     effect = "Allow"
-
-#     actions = [
-#       "s3:GetObjectVersionForReplication",
-#       "s3:GetObjectVersionAcl",
-#       "s3:GetObjectVersionTagging",
-#     ]
-
-#     resources = ["${aws_s3_bucket.source.arn}/*"]
-#   }
-
-#   statement {
-#     effect = "Allow"
-
-#     actions = [
-#       "s3:ReplicateObject",
-#       "s3:ReplicateDelete",
-#       "s3:ReplicateTags",
-#     ]
-
-#     resources = [ 
-#           "arn:aws:s3:::frontend-cert-london-*",
-#           "arn:aws:s3:::frontend-cert-london-*/trusted_certificates/*",
-#           "arn:aws:s3:::frontend-cert-dublin-*",
-#           "arn:aws:s3:::frontend-cert-dublin-*/trusted_certificates/*"]
-#   }
-# }
-
-
-
-# resource "aws_s3_bucket_replication_configuration" "replication" {
-#   # Must have bucket versioning enabled first
-#   depends_on = [aws_s3_bucket_versioning.source]
-
-#   role   = aws_iam_role.replication.arn
-#   bucket = aws_s3_bucket.source.id
-
-#   rule {
-#     id = "s3-replication-policy"
-
-#     filter {
-#       prefix = "foo"
-#     }
-
-#     status = "Enabled"
-
-#     destination {
-#       bucket        = aws_s3_bucket.destination.arn
-#       storage_class = "STANDARD"
-#     }
-#   }
-# }
-
-
-
-
-
-
-
-
-
