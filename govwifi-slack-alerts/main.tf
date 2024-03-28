@@ -33,7 +33,18 @@ resource "aws_cloudformation_stack" "aws_slack_chatbot" {
   template_body = <<-STACK
   {
     "Resources": {
-      "GovwifiSlackChatbot": {
+      "GovwifiSlackChatbotAlert": {
+      "Type" : "AWS::Chatbot::SlackChannelConfiguration",
+      "Properties" : {
+          "ConfigurationName" : "govwifi-alert-chat-configuration",
+          "IamRoleArn" : "${aws_iam_role.govwifi_wifi_london_aws_chatbot_role.arn}",
+          "LoggingLevel" : "NONE",
+          "SlackChannelId" : "${local.slack_alerts_cannel_id}",
+          "SlackWorkspaceId" : "${local.slack_workplace_id}",
+          "SnsTopicArns" : [ "${var.critical_notifications_topic_arn}", "${var.route53_critical_notifications_topic_arn}"]
+        }
+      },
+      "GovwifiSlackChatbotMonitor": {
       "Type" : "AWS::Chatbot::SlackChannelConfiguration",
       "Properties" : {
           "ConfigurationName" : "govwifi-monitoring-chat-configuration",
@@ -41,7 +52,7 @@ resource "aws_cloudformation_stack" "aws_slack_chatbot" {
           "LoggingLevel" : "NONE",
           "SlackChannelId" : "${local.slack_channel_id}",
           "SlackWorkspaceId" : "${local.slack_workplace_id}",
-          "SnsTopicArns" : [ "${var.critical_notifications_topic_arn}","${var.capacity_notifications_topic_arn}","${var.route53_critical_notifications_topic_arn}" ]
+          "SnsTopicArns" : [ "${var.capacity_notifications_topic_arn}" ]
         }
       }
     }
