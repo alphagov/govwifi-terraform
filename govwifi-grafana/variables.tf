@@ -80,6 +80,10 @@ variable "critical_notifications_arn" {
   type        = string
 }
 
+variable "capacity_notifications_arn" {
+    
+}
+
 variable "aws_account_id" {
 }
 

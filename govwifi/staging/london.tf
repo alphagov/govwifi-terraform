@@ -356,7 +356,8 @@ module "london_grafana" {
   aws_region                 = local.london_aws_region
   aws_region_name            = local.london_aws_region_name
   critical_notifications_arn = module.london_notifications.topic_arn
-
+  capacity_notifications_arn = module.capacity_notifications.topic_arn
+  
   route53_zone_id = data.aws_route53_zone.main.zone_id
 
   ssh_key_name = var.ssh_key_name

@@ -454,7 +454,8 @@ module "govwifi_grafana" {
   aws_region_name            = var.aws_region_name
   aws_account_id             = local.aws_account_id
   critical_notifications_arn = module.critical_notifications.topic_arn
-
+  capacity_notifications_arn = module.capacity_notifications.topic_arn
+  
   route53_zone_id = data.aws_route53_zone.main.zone_id
 
   ssh_key_name = var.ssh_key_name
