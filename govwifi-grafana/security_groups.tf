@@ -92,20 +92,12 @@ resource "aws_security_group" "grafana_ec2_out" {
     cidr_blocks = [for ip in var.prometheus_ips : "${ip}/32"]
   }
 
-  egress {
-    description = "grafana_ec2_out_80"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   # Cloudwatch Agent requires outbound to AWS
   egress {
     description = "grafana_ec2_out_443"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = [var.vpc_be_cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
