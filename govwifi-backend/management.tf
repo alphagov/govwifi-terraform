@@ -97,51 +97,80 @@ sudo /etc/init.d/ssh reload
 MIME-Version: 1.0
 Content-Type: text/x-shellscript; charset="us-ascii"
 #!/bin/bash
+# Install the AWS Cloudwatch Agent
+
+cd ~
+run-until-success wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+sudo dpkg -i -E ./amazon-cloudwatch-agent.deb
+
 # Inject the CloudWatch Logs configuration file contents
-sudo cat <<'EOF' > ./initial-awslogs.conf
-[general]
-state_file = /var/awslogs/state/agent-state
 
-[/var/log/syslog]
-file = /var/log/syslog
-log_group_name = ${var.env_name}-bastion/var/log/syslog
-log_stream_name = {instance_id}
-datetime_format = %b %d %H:%M:%S
+### log_group_name = ${var.env_name}-bastion/var/log/syslog
 
-[/var/log/auth.log]
-file = /var/log/auth.log
-log_group_name = ${var.env_name}-bastion/var/log/auth.log
-log_stream_name = {instance_id}
-datetime_format = %b %d %H:%M:%S
-
-[/var/log/dmesg]
-file = /var/log/dmesg
-log_group_name = ${var.env_name}-bastion/var/log/dmesg
-log_stream_name = {instance_id}
-
-[/var/log/unattended-upgrades/unattended-upgrades.log]
-file = /var/log/unattended-upgrades/unattended-upgrades.log
-log_group_name = ${var.env_name}-bastion/var/log/unattended-upgrades/unattended-upgrades.log
-log_stream_name = {instance_id}
-datetime_format = %Y-%m-%d %H:%M:%S
-
-[/var/log/cloud-init-output.log]
-file = /var/log/cloud-init-output.log
-log_group_name = ${var.env_name}-bastion/var/log/cloud-init-output.log
-log_stream_name = {instance_id}
-
+sudo cat <<'EOF' > /opt/aws/amazon-cloudwatch-agent/bin/config.json
+{
+	"agent": {
+		"metrics_collection_interval": 60,
+    "region": "eu-west-2",
+		"run_as_user": "root"
+	},
+	"logs": {
+		"logs_collected": {
+			"files": {
+				"collect_list": [
+					{
+						"file_path": "/var/log/syslog",
+						"log_group_class": "STANDARD",
+            "log_group_name": "${var.env_name}-bastion/var/log/syslog",
+            "log_stream_name": "{instance_id}",
+            "datetime_format": "%b %d %H:%M:%S",
+						"retention_in_days": 30
+					},
+					{
+						"file_path": "/var/log/auth.log",
+						"log_group_class": "STANDARD",
+            "log_group_name": "${var.env_name}-bastion/var/log/authlog",
+            "log_stream_name": "{instance_id}",
+            "datetime_format": "%b %d %H:%M:%S",
+						"retention_in_days": 30
+					},
+					{
+						"file_path": "/var/log/dmesg",
+						"log_group_class": "STANDARD",
+            "log_group_name": "${var.env_name}-bastion/var/log/dmesg",
+            "log_stream_name": "{instance_id}",
+            "datetime_format": "%b %d %H:%M:%S",
+						"retention_in_days": 30
+					},
+					{
+						"file_path": "/var/log/unattended-upgrades/unattended-upgrades.log",
+						"log_group_class": "STANDARD",
+						"log_group_name": "${var.env_name}-bastion/var/log/unattended-upgrades/unattended-upgrades.log",
+            "log_stream_name": "{instance_id}",
+            "datetime_format": "%b %d %H:%M:%S",
+						"retention_in_days": 30
+					},
+					{
+						"file_path": "/var/log/cloud-init-output.log",
+						"log_group_class": "STANDARD",
+						"log_group_name": "${var.env_name}-bastion/var/log/cloud-init-output.log",
+            "log_stream_name": "{instance_id}",
+            "datetime_format": "%b %d %H:%M:%S",
+						"retention_in_days": 30
+					}
+				]
+			}
+		}
+	}
+}
 EOF
 
-# Install awslogs
-
-# Retrieve and run awslogs install script
-cd /
-run-until-success sudo curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
-sudo python3 ./awslogs-agent-setup.py -n -r ${var.aws_region} -c ./initial-awslogs.conf
+# Start the Cloudwatch Agent
+cd
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
 
 --==BOUNDARY==--
 DATA
-
 
   tags = {
     Name = "${title(var.env_name)} Bastion - backend (${aws_vpc.wifi_backend.id})"
