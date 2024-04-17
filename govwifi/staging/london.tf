@@ -71,7 +71,7 @@ module "london_backend" {
   rr_storage_gb             = 200
   # TODO This should happen inside the module
   user_rr_hostname           = "users-rr.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
-  critical_notifications_arn = module.london_notifications.topic_arn
+  critical_notifications_arn = module.london_critical_notifications.topic_arn
   capacity_notifications_arn = module.london_notifications.topic_arn
 
   # Seconds. Set to zero to disable monitoring
@@ -137,8 +137,8 @@ module "london_frontend" {
   authentication_api_internal_dns_name = module.london_api.authentication_api_internal_dns_name
   logging_api_internal_dns_name        = one(module.london_api.logging_api_internal_dns_name)
 
-  notification_arn           = module.london_notifications.topic_arn
-  critical_notifications_arn = module.london_notifications.topic_arn
+  pagerduty_notifications_arn           = module.london_notifications.topic_arn
+  critical_notifications_arn = module.london_critical_notifications.topic_arn
 
   bastion_server_ip = module.london_backend.bastion_public_ip
 
@@ -194,7 +194,7 @@ module "london_admin" {
   user_db_host = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
   user_db_name = "govwifi_staging_users"
 
-  critical_notifications_arn = module.london_notifications.topic_arn
+  critical_notifications_arn = module.london_critical_notifications.topic_arn
   capacity_notifications_arn = module.london_notifications.topic_arn
 
   rds_monitoring_role = module.london_backend.rds_monitoring_role
@@ -209,7 +209,7 @@ module "london_admin" {
 
   bastion_server_ip = module.london_backend.bastion_public_ip
 
-  notification_arn = module.london_notifications.topic_arn
+  pagerduty_notifications_arn = module.london_notifications.topic_arn
 
   elasticsearch_endpoint = module.london_elasticsearch.endpoint
 }
@@ -237,7 +237,8 @@ module "london_api" {
 
   capacity_notifications_arn = module.london_notifications.topic_arn
   devops_notifications_arn   = module.london_notifications.topic_arn
-  notification_arn           = module.london_notifications.topic_arn
+  pagerduty_notifications_arn           = module.london_notifications.topic_arn
+  critical_notifications_arn = module.london_critical_notifications.topic_arn
 
   user_signup_docker_image      = format("%s/user-signup-api:staging", local.docker_image_path)
   logging_docker_image          = format("%s/logging-api:staging", local.docker_image_path)
@@ -307,8 +308,33 @@ module "london_notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-staging"
+  topic_name = "govwifi-staging-london-capacity"
   emails     = [var.notification_email]
+}
+
+module "london_critical_notifications" {
+  providers = {
+    aws = aws.london
+  }
+
+  source = "../../sns-notification"
+
+  topic_name = "govwifi-staging-london-critical"
+  emails     = [var.notification_email]
+}
+
+module "govwifi_slack_alerts" {
+  providers = {
+    aws = aws.london
+  }
+
+  source = "../../govwifi-slack-alerts"
+
+  critical_notifications_topic_arn         = module.london_critical_notifications.topic_arn
+  capacity_notifications_topic_arn         = module.london_notifications.topic_arn
+  route53_critical_notifications_topic_arn = module.london_route53_notifications.topic_arn
+  # set to 1 to create config for slack chat bot.
+  create_slack_alert = 0
 }
 
 module "london_dashboard" {
@@ -355,9 +381,8 @@ module "london_grafana" {
   env_subdomain              = local.env_subdomain
   aws_region                 = local.london_aws_region
   aws_region_name            = local.london_aws_region_name
-  critical_notifications_arn = module.london_notifications.topic_arn
-  capacity_notifications_arn = module.capacity_notifications.topic_arn
-  
+  capacity_notifications_arn = module.london_notifications.topic_arn
+
   route53_zone_id = data.aws_route53_zone.main.zone_id
 
   ssh_key_name = var.ssh_key_name

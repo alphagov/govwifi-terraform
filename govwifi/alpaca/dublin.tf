@@ -232,7 +232,7 @@ module "dublin_frontend" {
   authentication_api_internal_dns_name = module.dublin_api.authentication_api_internal_dns_name
   logging_api_internal_dns_name        = one(module.london_api.logging_api_internal_dns_name)
 
-  notification_arn           = module.dublin_notifications.topic_arn
+  pagerduty_notifications_arn           = module.dublin_notifications.topic_arn
   critical_notifications_arn = module.dublin_notifications.topic_arn
 
   bastion_server_ip = module.london_backend.bastion_public_ip
@@ -273,9 +273,10 @@ module "dublin_api" {
   safe_restart_enabled = 0
   event_rule_count     = 0
 
+  critical_notifications_arn = module.dublin_critical_notifications.topic_arn
   capacity_notifications_arn = module.dublin_notifications.topic_arn
   devops_notifications_arn   = module.dublin_notifications.topic_arn
-  notification_arn           = module.dublin_notifications.topic_arn
+  pagerduty_notifications_arn           = module.dublin_notifications.topic_arn
 
   user_signup_docker_image      = ""
   logging_docker_image          = ""
@@ -352,7 +353,18 @@ module "dublin_notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-alpaca"
+  topic_name = "govwifi-alpaca-dublin-capacity"
+  emails     = [var.notification_email]
+}
+
+module "dublin_critical_notifications" {
+  providers = {
+    aws = aws.dublin
+  }
+
+  source = "../../sns-notification"
+
+  topic_name = "govwifi-alpaca-dublin-critical"
   emails     = [var.notification_email]
 }
 

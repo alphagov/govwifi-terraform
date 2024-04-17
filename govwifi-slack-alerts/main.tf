@@ -3,10 +3,14 @@ terraform {
     aws = {
       source = "hashicorp/aws"
     }
+    awscc = {
+      source = "hashicorp/awscc"
+    }
   }
 }
 
 resource "aws_iam_role" "govwifi_wifi_london_aws_chatbot_role" {
+  count       = var.create_slack_alert
   name        = "govwifi-aws-chatbot-role"
   path        = "/"
   description = "Role to enable Amazon Chatbot to function."
@@ -27,35 +31,20 @@ resource "aws_iam_role" "govwifi_wifi_london_aws_chatbot_role" {
 POLICY
 }
 
-resource "aws_cloudformation_stack" "aws_slack_chatbot" {
-  name = "govwifi-monitoring-chat-configuration"
+resource "awscc_chatbot_slack_channel_configuration" "aws_slack_alert_chatbot" {
+  count              = var.create_slack_alert
+  configuration_name = "govwifi-chatbot-alert-configuration"
+  iam_role_arn       = aws_iam_role.govwifi_wifi_london_aws_chatbot_role[0].arn
+  slack_channel_id   = local.slack_alerts_channel_id
+  slack_workspace_id = local.slack_workplace_id
+  sns_topic_arns     = [var.critical_notifications_topic_arn, var.route53_critical_notifications_topic_arn]
+}
 
-  template_body = <<-STACK
-  {
-    "Resources": {
-      "GovwifiSlackChatbotAlert": {
-      "Type" : "AWS::Chatbot::SlackChannelConfiguration",
-      "Properties" : {
-          "ConfigurationName" : "govwifi-alert-chat-configuration",
-          "IamRoleArn" : "${aws_iam_role.govwifi_wifi_london_aws_chatbot_role.arn}",
-          "LoggingLevel" : "NONE",
-          "SlackChannelId" : "${local.slack_alerts_cannel_id}",
-          "SlackWorkspaceId" : "${local.slack_workplace_id}",
-          "SnsTopicArns" : [ "${var.critical_notifications_topic_arn}", "${var.route53_critical_notifications_topic_arn}"]
-        }
-      },
-      "GovwifiSlackChatbotMonitor": {
-      "Type" : "AWS::Chatbot::SlackChannelConfiguration",
-      "Properties" : {
-          "ConfigurationName" : "govwifi-monitoring-chat-configuration",
-          "IamRoleArn" : "${aws_iam_role.govwifi_wifi_london_aws_chatbot_role.arn}",
-          "LoggingLevel" : "NONE",
-          "SlackChannelId" : "${local.slack_channel_id}",
-          "SlackWorkspaceId" : "${local.slack_workplace_id}",
-          "SnsTopicArns" : [ "${var.capacity_notifications_topic_arn}" ]
-        }
-      }
-    }
-  }
-  STACK
+resource "awscc_chatbot_slack_channel_configuration" "aws_slack_monitor_chatbot" {
+  count              = var.create_slack_alert
+  configuration_name = "govwifi-slack-chatbot-monitoring-configuration"
+  iam_role_arn       = aws_iam_role.govwifi_wifi_london_aws_chatbot_role[0].arn
+  slack_channel_id   = local.slack_channel_id
+  slack_workspace_id = local.slack_workplace_id
+  sns_topic_arns     = [var.capacity_notifications_topic_arn]
 }

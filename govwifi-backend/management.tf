@@ -267,7 +267,7 @@ resource "aws_cloudwatch_metric_alarm" "bastion_statusalarm" {
   }
 
   alarm_description  = "This metric monitors the status of the bastion server."
-  alarm_actions      = [var.capacity_notifications_arn]
+  alarm_actions      = [var.critical_notifications_arn]
   treat_missing_data = "breaching"
 }
 

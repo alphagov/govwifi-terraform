@@ -54,7 +54,7 @@ resource "aws_cloudwatch_metric_alarm" "sessions_db_storage" {
   }
 
   alarm_description  = "Database is running low on free storage space. Investigate database logs for root cause."
-  alarm_actions      = [var.capacity_notifications_arn]
+  alarm_actions      = [var.critical_notifications_arn]
   treat_missing_data = "breaching"
 }
 
@@ -107,7 +107,7 @@ resource "aws_cloudwatch_metric_alarm" "sessions_rr_lagging" {
   namespace           = "AWS/RDS"
   period              = "60"
   statistic           = "Minimum"
-  threshold           = "30"
+  threshold           = "80"
 
   dimensions = {
     DBInstanceIdentifier = aws_db_instance.read_replica[0].identifier

@@ -201,7 +201,7 @@ module "frontend" {
   authentication_api_internal_dns_name = module.api.authentication_api_internal_dns_name
   logging_api_internal_dns_name        = one(module.api.logging_api_internal_dns_name)
 
-  notification_arn           = module.region_pagerduty.topic_arn
+  pagerduty_notifications_arn           = module.region_pagerduty.topic_arn
   critical_notifications_arn = module.critical_notifications.topic_arn
 
   bastion_server_ip = var.bastion_server_ip
@@ -258,7 +258,7 @@ module "govwifi_admin" {
 
   critical_notifications_arn = module.critical_notifications.topic_arn
   capacity_notifications_arn = module.capacity_notifications.topic_arn
-  notification_arn           = module.region_pagerduty.topic_arn
+  pagerduty_notifications_arn           = module.region_pagerduty.topic_arn
 
   rds_monitoring_role = module.backend.rds_monitoring_role
 
@@ -296,10 +296,12 @@ module "api" {
 
   vpc_endpoints_security_group_id = module.backend.vpc_endpoints_security_group_id
 
-  capacity_notifications_arn = module.capacity_notifications.topic_arn
   devops_notifications_arn   = module.devops_notifications.topic_arn
-  notification_arn           = module.region_pagerduty.topic_arn
-
+  capacity_notifications_arn = module.capacity_notifications.topic_arn
+  critical_notifications_arn = module.critical_notifications.topic_arn
+  pagerduty_notifications_arn           = module.region_pagerduty.topic_arn
+  
+  
   user_signup_docker_image      = format("%s/user-signup-api:production", local.docker_image_path)
   logging_docker_image          = format("%s/logging-api:production", local.docker_image_path)
   safe_restart_docker_image     = format("%s/safe-restarter:production", local.docker_image_path)
@@ -356,7 +358,7 @@ module "critical_notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-wifi-critical"
+  topic_name = "govwifi-prod-london-critical"
   emails     = [var.critical_notification_email]
 }
 
@@ -367,7 +369,7 @@ module "capacity_notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-wifi-capacity"
+  topic_name = "govwifi-prod-london-capacity"
   emails     = [var.capacity_notification_email]
 }
 
@@ -378,7 +380,7 @@ module "devops_notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-wifi-devops"
+  topic_name = "govwifi-prod-london-devops"
   emails     = [var.devops_notification_email]
 }
 
@@ -453,9 +455,8 @@ module "govwifi_grafana" {
   aws_region                 = var.aws_region
   aws_region_name            = var.aws_region_name
   aws_account_id             = local.aws_account_id
-  critical_notifications_arn = module.critical_notifications.topic_arn
   capacity_notifications_arn = module.capacity_notifications.topic_arn
-  
+
   route53_zone_id = data.aws_route53_zone.main.zone_id
 
   ssh_key_name = var.ssh_key_name
@@ -489,6 +490,7 @@ module "govwifi_slack_alerts" {
   critical_notifications_topic_arn         = module.critical_notifications.topic_arn
   capacity_notifications_topic_arn         = module.capacity_notifications.topic_arn
   route53_critical_notifications_topic_arn = module.route53_critical_notifications.topic_arn
+  create_slack_alert                       = 1 # set to 1 to create config for slack chat bot.
 }
 
 module "govwifi_elasticsearch" {
