@@ -99,10 +99,10 @@ module "london_frontend" {
     aws.us_east_1 = aws.us_east_1
   }
 
-  source        = "../../govwifi-frontend"
-  env_name      = local.env_name
-  env_subdomain = local.env_subdomain
-  env           = local.env
+  source         = "../../govwifi-frontend"
+  env_name       = local.env_name
+  env_subdomain  = local.env_subdomain
+  env            = local.env
   aws_account_id = local.aws_account_id
 
   # AWS VPC setup -----------------------------------------
@@ -139,8 +139,8 @@ module "london_frontend" {
   authentication_api_internal_dns_name = module.london_api.authentication_api_internal_dns_name
   logging_api_internal_dns_name        = one(module.london_api.logging_api_internal_dns_name)
 
-  pagerduty_notifications_arn           = module.london_notifications.topic_arn
-  critical_notifications_arn = module.london_critical_notifications.topic_arn
+  pagerduty_notifications_arn = module.london_notifications.topic_arn
+  critical_notifications_arn  = module.london_critical_notifications.topic_arn
 
   bastion_server_ip = module.london_backend.bastion_public_ip
 
@@ -237,10 +237,10 @@ module "london_api" {
 
   vpc_endpoints_security_group_id = module.london_backend.vpc_endpoints_security_group_id
 
-  capacity_notifications_arn = module.london_notifications.topic_arn
-  devops_notifications_arn   = module.london_notifications.topic_arn
-  pagerduty_notifications_arn           = module.london_notifications.topic_arn
-  critical_notifications_arn = module.london_critical_notifications.topic_arn
+  capacity_notifications_arn  = module.london_notifications.topic_arn
+  devops_notifications_arn    = module.london_notifications.topic_arn
+  pagerduty_notifications_arn = module.london_notifications.topic_arn
+  critical_notifications_arn  = module.london_critical_notifications.topic_arn
 
   user_signup_docker_image      = format("%s/user-signup-api:alpaca", local.docker_image_path)
   logging_docker_image          = format("%s/logging-api:alpaca", local.docker_image_path)

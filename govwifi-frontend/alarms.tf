@@ -19,7 +19,7 @@ resource "aws_cloudwatch_metric_alarm" "no_healthy_hosts" {
   alarm_actions = [
     var.critical_notifications_arn,
     var.pagerduty_notifications_arn
-    ]
+  ]
 }
 
 resource "aws_cloudwatch_metric_alarm" "radius_cannot_connect_to_api" {

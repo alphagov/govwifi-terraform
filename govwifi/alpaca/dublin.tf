@@ -105,7 +105,7 @@ module "dublin_backend" {
 
   bastion_instance_type     = "t2.micro"
   bastion_server_ip         = module.london_backend.bastion_public_ip
-  bastion_ssh_key_name      = "govwifi-alpaca-bastion-20230120"
+  bastion_ssh_key_name      = "alpaca-bastion-20230120"
   enable_bastion_monitoring = false
   aws_account_id            = local.aws_account_id
 
@@ -171,7 +171,7 @@ module "dublin_keys" {
 
   source = "../../govwifi-keys"
 
-  govwifi_bastion_key_name = "govwifi-alpaca-bastion-20230120"
+  govwifi_bastion_key_name = "alpaca-bastion-20230120"
   govwifi_bastion_key_pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDL5wGVJ8aXL0QUhIvfLV2BMLC9Tk74jnChC40R9ipzK0AuatcaXdj0PEm8sh8sHlXEmdmVDq/4s8XaEkF7MDl38qbjxxHRTpCgcTrYzJGad3xgr1+zhpD8Kfnepex/2pR7z7kOCv7EDx4vRTc8vu1ttcmJiniBmgjc1xVk1A5aB72GxffZrow7B0iopP16vEPvllUjsDoOaeLJukDzsbZaP2RRYBqIA4qXunfJpuuu/o+T+YR4LkTB+9UBOOGrX50T80oTtJMKD9ndQ9CC9sqlrOzE9GiZz9db7D9iOzIZoTT6dBbgEOfCGmkj7WS2NjF+D/pEN/edkIuNGvE+J/HqQ179Xm/VCx5Kr6ARG+xk9cssCQbEFwR46yitaPA7B4mEiyD9XvUW2tUeVKdX5ybUFqV++2c5rxTczuH4gGlEGixIqPeltRvkVrN6qxnrbDAXE2bXymcnEN6BshwGKR+3OUKTS8c53eWmwiol6xwCp8VUI8/66tC/bCTmeur07z2LfQsIo745GzPuinWfUm8yPkZOD3LptkukO1aIfgvuNmlUKTwKSLIIwwsqTZ2FcK39A8g3Iq3HRV+4JwOowLJcylRa3QcSH9wdjd69SqPrZb0RhW0BN1mTX2tEBl1ryUUpKsqpMbvjl28tn6MGsU/sRhBLqliduOukGubD29LlAQ== "
 
   create_production_bastion_key = 0
@@ -234,8 +234,8 @@ module "dublin_frontend" {
   authentication_api_internal_dns_name = module.dublin_api.authentication_api_internal_dns_name
   logging_api_internal_dns_name        = one(module.london_api.logging_api_internal_dns_name)
 
-  pagerduty_notifications_arn           = module.dublin_notifications.topic_arn
-  critical_notifications_arn = module.dublin_notifications.topic_arn
+  pagerduty_notifications_arn = module.dublin_notifications.topic_arn
+  critical_notifications_arn  = module.dublin_notifications.topic_arn
 
   bastion_server_ip = module.london_backend.bastion_public_ip
 
@@ -275,10 +275,10 @@ module "dublin_api" {
   safe_restart_enabled = 0
   event_rule_count     = 0
 
-  critical_notifications_arn = module.dublin_critical_notifications.topic_arn
-  capacity_notifications_arn = module.dublin_notifications.topic_arn
-  devops_notifications_arn   = module.dublin_notifications.topic_arn
-  pagerduty_notifications_arn           = module.dublin_notifications.topic_arn
+  critical_notifications_arn  = module.dublin_critical_notifications.topic_arn
+  capacity_notifications_arn  = module.dublin_notifications.topic_arn
+  devops_notifications_arn    = module.dublin_notifications.topic_arn
+  pagerduty_notifications_arn = module.dublin_notifications.topic_arn
 
   user_signup_docker_image      = ""
   logging_docker_image          = ""

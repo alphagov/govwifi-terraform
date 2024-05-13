@@ -21,9 +21,9 @@ resource "aws_cloudwatch_metric_alarm" "grafana_instance_status" {
 
 resource "aws_cloudwatch_metric_alarm" "grafana_system_status" {
 
-  alarm_name         = "${var.env_name}-grafana-system-status"
-  alarm_description  = "Alert in event of ${var.env_name}-grafana EC2 on system Status Check failure. Investigate Grafana CloudWatch logs for root cause."
-  alarm_actions      = [
+  alarm_name        = "${var.env_name}-grafana-system-status"
+  alarm_description = "Alert in event of ${var.env_name}-grafana EC2 on system Status Check failure. Investigate Grafana CloudWatch logs for root cause."
+  alarm_actions = [
     var.capacity_notifications_arn
   ]
   treat_missing_data = "breaching"

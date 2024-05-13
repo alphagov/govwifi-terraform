@@ -126,12 +126,12 @@ resource "aws_cloudwatch_metric_alarm" "db_storagealarm" {
   }
 
   alarm_description  = "This metric monitors the storage space available for the DB."
-  alarm_actions      = [var.capacity_notifications_arn]
+  alarm_actions      = [var.critical_notifications_arn]
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "db_burstbalancealarm" {
-  alarm_name          = "${var.env_name}-admin-db-burstbalanace-alarm"
+  alarm_name          = "${var.env_name}-admin-db-burst-balance-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "BurstBalance"

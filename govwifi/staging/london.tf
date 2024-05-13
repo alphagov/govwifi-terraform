@@ -26,7 +26,7 @@ module "london_keys" {
 
   source = "../../govwifi-keys"
 
-  govwifi_bastion_key_name = "bastion-20200717"
+  govwifi_bastion_key_name = "staging-bastion-20200717"
   govwifi_bastion_key_pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDL5wGVJ8aXL0QUhIvfLV2BMLC9Tk74jnChC40R9ipzK0AuatcaXdj0PEm8sh8sHlXEmdmVDq/4s8XaEkF7MDl38qbjxxHRTpCgcTrYzJGad3xgr1+zhpD8Kfnepex/2pR7z7kOCv7EDx4vRTc8vu1ttcmJiniBmgjc1xVk1A5aB72GxffZrow7B0iopP16vEPvllUjsDoOaeLJukDzsbZaP2RRYBqIA4qXunfJpuuu/o+T+YR4LkTB+9UBOOGrX50T80oTtJMKD9ndQ9CC9sqlrOzE9GiZz9db7D9iOzIZoTT6dBbgEOfCGmkj7WS2NjF+D/pEN/edkIuNGvE+J/HqQ179Xm/VCx5Kr6ARG+xk9cssCQbEFwR46yitaPA7B4mEiyD9XvUW2tUeVKdX5ybUFqV++2c5rxTczuH4gGlEGixIqPeltRvkVrN6qxnrbDAXE2bXymcnEN6BshwGKR+3OUKTS8c53eWmwiol6xwCp8VUI8/66tC/bCTmeur07z2LfQsIo745GzPuinWfUm8yPkZOD3LptkukO1aIfgvuNmlUKTwKSLIIwwsqTZ2FcK39A8g3Iq3HRV+4JwOowLJcylRa3QcSH9wdjd69SqPrZb0RhW0BN1mTX2tEBl1ryUUpKsqpMbvjl28tn6MGsU/sRhBLqliduOukGubD29LlAQ== "
 
   create_production_bastion_key = 0
@@ -56,7 +56,7 @@ module "london_backend" {
   frontend_radius_ips = local.frontend_radius_ips
 
   bastion_instance_type     = "t2.micro"
-  bastion_ssh_key_name      = "bastion-20200717"
+  bastion_ssh_key_name      = "staging-bastion-20200717"
   enable_bastion_monitoring = false
   aws_account_id            = local.aws_account_id
   db_instance_count         = 1
@@ -98,10 +98,11 @@ module "london_frontend" {
     aws.us_east_1 = aws.us_east_1
   }
 
-  source        = "../../govwifi-frontend"
-  env_name      = local.env_name
-  env_subdomain = local.env_subdomain
-  env           = local.env
+  source         = "../../govwifi-frontend"
+  env_name       = local.env_name
+  env_subdomain  = local.env_subdomain
+  env            = local.env
+  aws_account_id = local.aws_account_id
 
   # AWS VPC setup -----------------------------------------
   # LONDON
@@ -137,8 +138,8 @@ module "london_frontend" {
   authentication_api_internal_dns_name = module.london_api.authentication_api_internal_dns_name
   logging_api_internal_dns_name        = one(module.london_api.logging_api_internal_dns_name)
 
-  pagerduty_notifications_arn           = module.london_notifications.topic_arn
-  critical_notifications_arn = module.london_critical_notifications.topic_arn
+  pagerduty_notifications_arn = module.london_notifications.topic_arn
+  critical_notifications_arn  = module.london_critical_notifications.topic_arn
 
   bastion_server_ip = module.london_backend.bastion_public_ip
 
@@ -235,10 +236,10 @@ module "london_api" {
 
   vpc_endpoints_security_group_id = module.london_backend.vpc_endpoints_security_group_id
 
-  capacity_notifications_arn = module.london_notifications.topic_arn
-  devops_notifications_arn   = module.london_notifications.topic_arn
-  pagerduty_notifications_arn           = module.london_notifications.topic_arn
-  critical_notifications_arn = module.london_critical_notifications.topic_arn
+  capacity_notifications_arn  = module.london_notifications.topic_arn
+  devops_notifications_arn    = module.london_notifications.topic_arn
+  pagerduty_notifications_arn = module.london_notifications.topic_arn
+  critical_notifications_arn  = module.london_critical_notifications.topic_arn
 
   user_signup_docker_image      = format("%s/user-signup-api:staging", local.docker_image_path)
   logging_docker_image          = format("%s/logging-api:staging", local.docker_image_path)

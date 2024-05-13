@@ -77,7 +77,7 @@ variable "grafana_docker_version" {
 
 variable "capacity_notifications_arn" {
   description = "Arn of the capacity monitoring nofications sns topic"
-  type = string
+  type        = string
 }
 
 variable "aws_account_id" {

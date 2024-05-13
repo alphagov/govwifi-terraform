@@ -161,10 +161,10 @@ module "frontend" {
     aws.us_east_1 = aws.us_east_1
   }
 
-  source        = "../../govwifi-frontend"
-  env_name      = local.env_name
-  env_subdomain = local.env_subdomain
-  env           = local.env
+  source         = "../../govwifi-frontend"
+  env_name       = local.env_name
+  env_subdomain  = local.env_subdomain
+  env            = local.env
   aws_account_id = local.aws_account_id
 
   # AWS VPC setup -----------------------------------------
@@ -202,8 +202,8 @@ module "frontend" {
   authentication_api_internal_dns_name = module.api.authentication_api_internal_dns_name
   logging_api_internal_dns_name        = one(module.api.logging_api_internal_dns_name)
 
-  pagerduty_notifications_arn           = module.region_pagerduty.topic_arn
-  critical_notifications_arn = module.critical_notifications.topic_arn
+  pagerduty_notifications_arn = module.region_pagerduty.topic_arn
+  critical_notifications_arn  = module.critical_notifications.topic_arn
 
   bastion_server_ip = var.bastion_server_ip
 
@@ -257,9 +257,9 @@ module "govwifi_admin" {
   user_db_host = var.user_db_hostname
   user_db_name = "govwifi_production_users"
 
-  critical_notifications_arn = module.critical_notifications.topic_arn
-  capacity_notifications_arn = module.capacity_notifications.topic_arn
-  pagerduty_notifications_arn           = module.region_pagerduty.topic_arn
+  critical_notifications_arn  = module.critical_notifications.topic_arn
+  capacity_notifications_arn  = module.capacity_notifications.topic_arn
+  pagerduty_notifications_arn = module.region_pagerduty.topic_arn
 
   rds_monitoring_role = module.backend.rds_monitoring_role
 
@@ -297,12 +297,12 @@ module "api" {
 
   vpc_endpoints_security_group_id = module.backend.vpc_endpoints_security_group_id
 
-  devops_notifications_arn   = module.devops_notifications.topic_arn
-  capacity_notifications_arn = module.capacity_notifications.topic_arn
-  critical_notifications_arn = module.critical_notifications.topic_arn
-  pagerduty_notifications_arn           = module.region_pagerduty.topic_arn
-  
-  
+  devops_notifications_arn    = module.devops_notifications.topic_arn
+  capacity_notifications_arn  = module.capacity_notifications.topic_arn
+  critical_notifications_arn  = module.critical_notifications.topic_arn
+  pagerduty_notifications_arn = module.region_pagerduty.topic_arn
+
+
   user_signup_docker_image      = format("%s/user-signup-api:production", local.docker_image_path)
   logging_docker_image          = format("%s/logging-api:production", local.docker_image_path)
   safe_restart_docker_image     = format("%s/safe-restarter:production", local.docker_image_path)
@@ -392,7 +392,7 @@ module "route53_critical_notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-wifi-critical-london"
+  topic_name = "govwifi-prod-london-r53-critical"
   emails     = [var.critical_notification_email]
 }
 
