@@ -188,10 +188,12 @@ module "dublin_frontend" {
     aws.us_east_1 = aws.us_east_1
   }
 
-  source        = "../../govwifi-frontend"
-  env_name      = local.env_name
-  env_subdomain = local.env_subdomain
-  env           = local.env
+  source         = "../../govwifi-frontend"
+  env_name       = local.env_name
+  env_subdomain  = local.env_subdomain
+  env            = local.env
+  aws_account_id = local.aws_account_id
+
 
   # AWS VPC setup -----------------------------------------
   aws_region         = local.dublin_aws_region

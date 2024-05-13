@@ -27,7 +27,7 @@ module "london_keys" {
 
   source = "../../govwifi-keys"
 
-  govwifi_bastion_key_name = "govwifi-alpaca-bastion-20230120"
+  govwifi_bastion_key_name = "alpaca-bastion-20230120"
   govwifi_bastion_key_pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/cSxMbS72i6FoirL80CP9GLU7fZ1mtwIg0hi8v8OuCKyR8JjYQejZpyCGSIb3KOXIQf51bUI2+GB8B+h+UpWwUIN5Ysepc4YKuTjped4Av7ybrHFsqkl+66/uQgDwGloU6UuksTiwLVK9sf2JcDztm8Bbef/5cunLfhR+yrvzebF9kK0tnZxORwS0gCXA0bdgoqCUfJHxogLaZV3A517bn60rHcdq55qgIjI4IxNxdKLcrWjwJPbgvqepX+YbeDWqXe6VoVkwCB+daM8SGMvmZyfu7fsJFkoga4D9ksGTKNFFlLPlp4RqEkYqHqZAX70XVg6z32yHZ99iP36wCYhw3AjhdUMDFpoXv2iPMkFNx+EyOC1DtQdrLa96QDPKk2FSmhE6kz0524TWogS/x/2zFtXZbyqhAfzoU36YgFm8RYeS6mSUkxP7IynKvHbjuMqsh34sWRRSl4OxDA8K2ps2Hu2O2lFM44Sr02TeKqnKJza07ZRcAl8AWjoyaarHZ6iHft7n4CjXHLy2CmstVCIsEfmv+aZvMe8qZ1tWSoE50/6XyDn9B1UMQNmSIX8InYvh0pXIA6q+Y7/PAROfOcT3rKLSUyFS6D/PGfbq/P8GbJIAImSGBhBs4GgawtR7+hIpjsQ2dWEXwzdWGFkvmWyai6SUkclBYJkQYd0VyQb61w== david.pye@GDS10381"
 
   create_production_bastion_key = 0
@@ -57,7 +57,7 @@ module "london_backend" {
   frontend_radius_ips = local.frontend_radius_ips
 
   bastion_instance_type     = "t2.micro"
-  bastion_ssh_key_name      = "govwifi-alpaca-bastion-20230120"
+  bastion_ssh_key_name      = "alpaca-bastion-20230120"
   enable_bastion_monitoring = false
   aws_account_id            = local.aws_account_id
   db_instance_count         = 1
@@ -103,6 +103,7 @@ module "london_frontend" {
   env_name      = local.env_name
   env_subdomain = local.env_subdomain
   env           = local.env
+  aws_account_id = local.aws_account_id
 
   # AWS VPC setup -----------------------------------------
   # LONDON

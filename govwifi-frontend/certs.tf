@@ -1,3 +1,28 @@
+provider "aws" {
+  alias  = "eu-west-1"
+  region = "eu-west-1"
+}
+
+data "aws_kms_key" "kms_s3_london" {
+  # These values are only needed for the bucket replication. Therefore this should only run in London
+  count  = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
+  key_id = "alias/aws/s3"
+}
+
+data "aws_kms_key" "kms_s3_dublin" {
+  # These values are only needed for the bucket replication. Therefore this should only run in London, but refers to values in eu-west-1 (ireland)
+  count    = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
+  provider = aws.eu-west-1
+  key_id   = "alias/aws/s3"
+}
+
+data "aws_ssm_parameter" "dublin_bucket_name" {
+  # These values are only needed for the bucket replication. Therefore this should only run in London, but refers to values in eu-west-1 (ireland)
+  count    = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
+  provider = aws.eu-west-1
+  name     = "/govwifi-terraform/frontend-certs-bucket"
+}
+
 resource "aws_s3_bucket" "frontend_cert_bucket" {
   bucket_prefix = "frontend-cert-${lower(var.aws_region_name)}-"
 
@@ -62,6 +87,63 @@ resource "aws_iam_policy" "govwifi_frontend_cert_bucket_access" {
     ]
 }
 POLICY
+}
+
+
+resource "aws_s3_bucket_replication_configuration" "cert_replication_london_to_dublin" {
+  # Must have bucket versioning enabled first
+  count      = "${lower(var.aws_region_name)}" == "london" ? 1 : 0
+  depends_on = [aws_s3_bucket_versioning.frontend_cert_bucket]
+
+  role   = aws_iam_role.s3_replication_role[0].arn
+  bucket = aws_s3_bucket.frontend_cert_bucket.id
+
+  rule {
+    id = "Certificate replication"
+
+    filter {
+      prefix = "trusted_certificates/"
+    }
+
+    delete_marker_replication {
+      status = "Enabled"
+    }
+
+    status = "Enabled"
+
+    source_selection_criteria {
+      replica_modifications {
+        status = "Enabled"
+      }
+      sse_kms_encrypted_objects {
+        status = "Enabled"
+      }
+    }
+
+    destination {
+      bucket        = "arn:aws:s3:::${data.aws_ssm_parameter.dublin_bucket_name[0].value}"
+      storage_class = "STANDARD"
+
+      replication_time {
+        status = "Enabled"
+        time {
+          minutes = 15
+        }
+      }
+
+      metrics {
+        event_threshold {
+          minutes = 15
+        }
+        status = "Enabled"
+      }
+
+      encryption_configuration {
+        replica_kms_key_id = data.aws_kms_key.kms_s3_dublin[0].arn
+      }
+
+    }
+  }
 }
 
 resource "aws_iam_user_policy_attachment" "govwifi_sync_cert_access_policy_attachment" {

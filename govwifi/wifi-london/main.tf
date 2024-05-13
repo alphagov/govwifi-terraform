@@ -165,6 +165,7 @@ module "frontend" {
   env_name      = local.env_name
   env_subdomain = local.env_subdomain
   env           = local.env
+  aws_account_id = local.aws_account_id
 
   # AWS VPC setup -----------------------------------------
   # LONDON

@@ -29,7 +29,9 @@ resource "aws_iam_role_policy" "ecs_instance_policy" {
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents",
-        "logs:DescribeLogStreams"
+        "logs:DescribeLogStreams",
+        "logs:DescribeLogGroups",
+        "logs:PutRetentionPolicy"
       ],
       "Resource": [
         "arn:aws:logs:*:*:*"
@@ -61,7 +63,10 @@ resource "aws_iam_role" "ecs_instance_role" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": "ec2.amazonaws.com"
+        "Service": [
+          "ec2.amazonaws.com",
+          "vpc-flow-logs.amazonaws.com"
+        ]
       },
       "Effect": "Allow",
       "Sid": ""

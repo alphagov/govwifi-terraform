@@ -7,6 +7,9 @@ variable "env_subdomain" {
 variable "env" {
 }
 
+variable "aws_account_id" {
+}
+
 variable "route53_zone_id" {
 }
 
