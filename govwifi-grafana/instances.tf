@@ -63,6 +63,13 @@ resource "aws_instance" "grafana_instance" {
   }
 }
 
+resource "time_static" "instance_update" {
+  triggers = {
+    # Save the time that the instance is created, so it only changes/updates upon new instance creatation.
+    instance_id = aws_instance.grafana_instance.id
+  }
+}
+
 resource "aws_ebs_volume" "grafana_ebs" {
   size              = 40
   encrypted         = true
