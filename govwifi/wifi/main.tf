@@ -87,7 +87,7 @@ module "govwifi_keys" {
 
   create_production_bastion_key = 1
 
-  govwifi_bastion_key_name = "govwifi-bastion-key-20210630"
+  govwifi_bastion_key_name = "govwifi-bastion-key"
   govwifi_bastion_key_pub  = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDY/Q676Tp5CTpKWVksMPztERDdjWOrYFgVckF9IHGI2wC38ckWFiqawsEZBILUyNZgL/lnOtheN1UZtuGmUUkPxgtPw+YD6gMDcebhSX4wh9GM3JjXAIy9+V/WagQ84Pz10yIp+PlyzcQMu+RVRVzWyTYZUdgMsDt0tFdcgMgUc7FkC252CgtSZHpLXhnukG5KG69CoTO+kuak/k3vX5jwWjIgfMGZwIAq+F9XSIMAwylCmmdE5MetKl0Wx4EI/fm8WqSZXj+yeFRv9mQTus906AnNieOgOrgt4D24/JuRU1JTlZ35iNbOKcwlOTDSlTQrm4FA1sCllphhD/RQVYpMp6EV3xape626xwkucCC2gYnakxTZFHUIeWfC5aHGrqMOMtXRfW0xs+D+vzo3MCWepdIebWR5KVhqkbNUKHBG9e8oJbTYUkoyBZjC7LtI4fgB3+blXyFVuQoAzjf+poPzdPBfCC9eiUJrEHoOljO9yMcdkBfyW3c/o8Sd9PgNufc= bastion@govwifi"
 
   govwifi_key_name     = var.ssh_key_name
@@ -120,7 +120,7 @@ module "backend" {
   # bastion-ami = "ami-51d3e928"
   # eu-west-2 eu-west-2, CIS Ubuntu Linux 20.04 LTS
   bastion_instance_type     = "t2.micro"
-  bastion_ssh_key_name      = "govwifi-bastion-key-20210630"
+  bastion_ssh_key_name      = "govwifi-bastion-key"
   enable_bastion_monitoring = true
   aws_account_id            = local.aws_account_id
 
