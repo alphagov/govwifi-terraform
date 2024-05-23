@@ -92,6 +92,15 @@ resource "aws_security_group" "grafana_ec2_out" {
     cidr_blocks = [for ip in var.prometheus_ips : "${ip}/32"]
   }
 
+  # outbound 80 rule to allow package installs.
+  egress {
+    description = "grafana_ec2_out_80"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Cloudwatch Agent requires outbound to AWS
   egress {
     description = "grafana_ec2_out_443"
