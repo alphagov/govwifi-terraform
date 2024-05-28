@@ -14,7 +14,10 @@ resource "aws_iam_role" "prometheus_instance_role" {
     {
       "Action": "sts:AssumeRole",
       "Principal": {
-        "Service": "ec2.amazonaws.com"
+        "Service": [
+          "ec2.amazonaws.com",
+          "vpc-flow-logs.amazonaws.com"
+        ]
       },
       "Effect": "Allow",
       "Sid": ""
@@ -34,12 +37,23 @@ resource "aws_iam_role_policy" "prometheus_instance_policy" {
   "Version": "2012-10-17",
   "Statement": [
     {
+      "Action": [
+        "cloudwatch:*",
+        "ec2:DescribeVolumes",
+        "ec2:DescribeTags"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
       "Effect": "Allow",
       "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
         "logs:PutLogEvents",
-        "logs:DescribeLogStreams"
+        "logs:DescribeLogStreams",
+        "logs:DescribeLogGroups",
+        "logs:CreateLogStream",
+        "logs:CreateLogGroup",
+        "logs:PutRetentionPolicy"
       ],
       "Resource": [
         "arn:aws:logs:*:*:*"

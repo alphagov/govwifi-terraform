@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# set -ueo pipefail
-
 export DEBIAN_FRONTEND=noninteractive
 
 # set some vars frequently used but not passed by terraformed to make script easy to change if needed
@@ -17,7 +15,7 @@ symlink_folder=$drive_mount_point/volumes
 function run-until-success() {
   until $*
   do
-    logger -s "Executing $* failed. Sleeping..."
+    logger -s "Executing $* failed. Sleeping 5..."
     sleep 5
   done
 }
@@ -229,73 +227,5 @@ run-until-success docker run \
 
 logger 'Installing awscli with apt-get'
 run-until-success apt-get install --yes awscli
-
-# AWS Cloudwatch Logs - broken metrics section, interpolation issues, \ is not the answer to escape chars in terraform!
-
-	# "metrics": {
-	# 	"aggregation_dimensions": [
-	# 		[
-	# 			"InstanceId"
-	# 		]
-	# 	],
-	# 	"append_dimensions": {
-	# 		"AutoScalingGroupName": "\$\{aws:AutoScalingGroupName\}",
-	# 		"ImageId": "\$\{aws:ImageId\}",
-	# 		"InstanceId": "\$\{aws:InstanceId\}",
-	# 		"InstanceType": "\$\{aws:InstanceType\}"
-	# 	},
-	# 	"metrics_collected": {
-	# 		"cpu": {
-	# 			"measurement": [
-	# 				"cpu_usage_idle",
-	# 				"cpu_usage_iowait",
-	# 				"cpu_usage_user",
-	# 				"cpu_usage_system"
-	# 			],
-	# 			"metrics_collection_interval": 60,
-	# 			"resources": [
-	# 				"*"
-	# 			],
-	# 			"totalcpu": false
-	# 		},
-	# 		"disk": {
-	# 			"measurement": [
-	# 				"used_percent",
-	# 				"inodes_free"
-	# 			],
-	# 			"metrics_collection_interval": 60,
-	# 			"resources": [
-	# 				"*"
-	# 			]
-	# 		},
-	# 		"diskio": {
-	# 			"measurement": [
-	# 				"io_time"
-	# 			],
-	# 			"metrics_collection_interval": 60,
-	# 			"resources": [
-	# 				"*"
-	# 			]
-	# 		},
-	# 		"mem": {
-	# 			"measurement": [
-	# 				"mem_used_percent"
-	# 			],
-	# 			"metrics_collection_interval": 60
-	# 		},
-	# 		"statsd": {
-	# 			"metrics_aggregation_interval": 60,
-	# 			"metrics_collection_interval": 10,
-	# 			"service_address": ":8125"
-	# 		},
-	# 		"swap": {
-	# 			"measurement": [
-	# 				"swap_used_percent"
-	# 			],
-	# 			"metrics_collection_interval": 60
-	# 		}
-	# 	}
-	# }
-
 
 reboot
