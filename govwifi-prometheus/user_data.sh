@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
-set -ueo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
 function run-until-success() {
   until $*
   do
-    logger "Executing $* failed. Sleeping..."
+    logger "Executing $* failed. Sleeping 5..."
     sleep 5
   done
 }
@@ -78,49 +77,73 @@ echo "allow 127/8" >> /tmp/chrony.conf
 mv /tmp/chrony.conf /etc/chrony/chrony.conf
 systemctl restart chrony
 
+# Install the AWS Cloudwatch Agent
+cd ~
+run-until-success wget https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+sudo dpkg -i -E ./amazon-cloudwatch-agent.deb
+
 # Inject the CloudWatch Logs configuration file contents
-sudo cat <<'EOF' > ./initial-awslogs.conf
-[general]
-state_file = /var/awslogs/state/agent-state
 
-[/var/log/syslog]
-file = /var/log/syslog
-log_group_name = ${prometheus-log-group}
-log_stream_name = {instance_id}/var/log/syslog
-datetime_format = %b %d %H:%M:%S
-
-[/var/log/auth.log]
-file = /var/log/auth.log
-log_group_name = ${prometheus-log-group}
-log_stream_name = {instance_id}/var/log/auth.log
-datetime_format = %b %d %H:%M:%S
-
-[/var/log/dmesg]
-file = /var/log/dmesg
-log_group_name = ${prometheus-log-group}
-log_stream_name = {instance_id}/var/log/dmesg
-
-[/var/log/unattended-upgrades/unattended-upgrades.log]
-file = /var/log/unattended-upgrades/unattended-upgrades.log
-log_group_name = ${prometheus-log-group}
-log_stream_name = {instance_id}/var/log/unattended-upgrades/unattended-upgrades.log
-datetime_format = %Y-%m-%d %H:%M:%S
-
-[/var/log/cloud-init-output.log]
-file = /var/log/cloud-init-output.log
-log_group_name = ${prometheus-log-group}
-log_stream_name = {instance_id}/var/log/cloud-init-output.log
+sudo cat <<'EOF' > /opt/aws/amazon-cloudwatch-agent/bin/config.json
+{
+	"agent": {
+		"metrics_collection_interval": 60,
+    "region": "eu-west-2",
+		"run_as_user": "root"
+	},
+	"logs": {
+		"logs_collected": {
+			"files": {
+				"collect_list": [
+					{
+						"file_path": "/var/log/syslog",
+						"log_group_class": "STANDARD",
+						"log_group_name": "${prometheus-log-group}",
+						"log_stream_name": "{instance_id}-syslog",
+						"retention_in_days": 30
+					},
+					{
+						"file_path": "/var/log/auth.log",
+						"log_group_class": "STANDARD",
+						"log_group_name": "${prometheus-log-group}",
+						"log_stream_name": "{instance_id}-auth.log",
+						"retention_in_days": 30
+					},
+					{
+						"file_path": "/var/log/dmesg",
+						"log_group_class": "STANDARD",
+						"log_group_name": "${prometheus-log-group}",
+						"log_stream_name": "{instance_id}-dmesg",
+						"retention_in_days": 30
+					},
+					{
+						"file_path": "/var/log/unattended-upgrades/unattended-upgrades.log",
+						"log_group_class": "STANDARD",
+						"log_group_name": "${prometheus-log-group}",
+						"log_stream_name": "{instance_id}-unattended-upgrades.log",
+						"retention_in_days": 30
+					},
+					{
+						"file_path": "/var/log/cloud-init-output.log",
+						"log_group_class": "STANDARD",
+						"log_group_name": "${prometheus-log-group}",
+						"log_stream_name": "{instance_id}-cloud-init-output.log",
+						"retention_in_days": 30
+					}
+				]
+			}
+		}
+	}
+}
 EOF
+
+# Start the Cloudwatch Agent
+cd
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
 
 # Remove trust-ad from /etc/resolv.conf to avoid Go bug
 # This can probably be removed with Ubuntu/Prometheus is updated
 sed -i s/\ trust-ad// /etc/resolv.conf
-
-# Install awslogs
-
-# Retrieve and run awslogs install script
-cd /
-run-until-success sudo curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
 
 # Install Docker and Send Logs to cloudwatch
 logger 'Installing and configuring docker'
@@ -165,10 +188,12 @@ EOF
 logger 'Installing prometheus node exporter'
 run-until-success apt-get install --yes prometheus-node-exporter
 mkdir /etc/systemd/system/prometheus-node-exporter.service.d
+
 # Create an environment file for prometheus node exporter
 cat >  /etc/systemd/system/prometheus-node-exporter.service.d/prometheus-node-exporter.env <<EOF
 ARGS="--collector.ntp --collector.diskstats.ignored-devices=^(ram|loop|fd|(h|s|v|xv)d[a-z]|nvme\\d+n\\d+p)\\d+$ --collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run|var/lib/docker)($|/) --collector.netdev.ignored-devices=^lo$ --collector.textfile.directory=/var/lib/prometheus/node-exporter"
 EOF
+
 # Create an override file which will override prometheus node exporter service file
 cat > /etc/systemd/system/prometheus-node-exporter.service.d/10-override-args.conf <<EOF
 [Service]
@@ -182,7 +207,7 @@ logger 'Installing awscli'
 run-until-success apt-get install --yes awscli
 
 #Initialise a node_creation_time metric to enable the predict_linear function to handle new nodes
-echo "node_creation_time `date +%s`" > /var/lib/prometheus/node-exporter/node-creation-time.prom
+echo "node_creation_time $(date +%s)" > /var/lib/prometheus/node-exporter/node-creation-time.prom
 
 cat <<EOF > /usr/bin/instance-reboot-required-metric.sh
 #!/usr/bin/env bash
@@ -212,6 +237,5 @@ systemctl disable prometheus
 logger 'Enable Prometheus-Govwifi'
 systemctl enable --now prometheus-govwifi
 systemctl start prometheus-govwifi
-
 
 reboot

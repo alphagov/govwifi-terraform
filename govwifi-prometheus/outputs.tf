@@ -3,5 +3,5 @@ output "eip_public_ip" {
 }
 
 output "prometheus_security_group_id" {
-  value = aws_security_group.prometheus.id
+  value = aws_security_group.prometheus-ec2-in-out.id
 }
