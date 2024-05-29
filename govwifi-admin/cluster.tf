@@ -113,6 +113,12 @@ resource "aws_ecs_task_definition" "admin_task" {
         },{
           "name": "ELASTICSEARCH_ENDPOINT",
           "value": "https://${var.elasticsearch_endpoint}"
+        },{
+          "name": "S3_CERTIFICATES_BUCKET",
+          "value": "${var.frontend_cert_bucket}"
+        },{
+          "name": "S3_CERTIFICATES_OBJECT_KEY",
+          "value": "${var.trusted_certificates_key}"
         }
       ],
       "secrets": [
