@@ -48,6 +48,15 @@ resource "aws_iam_role_policy" "ecs_instance_policy" {
         "ec2:DescribeTags"
       ],
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": [
+        "${aws_s3_bucket.frontend_cert_bucket.arn}/*"
+      ]
     }
   ]
 }
