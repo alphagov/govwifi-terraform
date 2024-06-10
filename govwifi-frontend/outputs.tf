@@ -33,3 +33,11 @@ output "eip_public_ips" {
 output "load_balanced_frontend_service_security_group_id" {
   value = aws_security_group.load_balanced_frontend_service.id
 }
+
+output "frontend_certs_bucket_name" {
+  value = aws_s3_bucket.frontend_cert_bucket.bucket
+}
+
+output "trusted_certificates_key" {
+  value = var.trusted_certificates_key
+}
