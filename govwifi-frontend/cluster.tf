@@ -330,6 +330,9 @@ resource "aws_ecs_task_definition" "frontend_fargate" {
       },{
         "name": "AWS_REGION",
         "value": "${var.aws_region}"
+      },{
+        "name": "TRUSTED_CERTIFICATES_KEY",
+        "value": "${var.trusted_certificates_key}"
       }
     ],
     "image": "${local.raddb_image_new}",
