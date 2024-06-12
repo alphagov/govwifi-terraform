@@ -68,7 +68,7 @@ resource "aws_iam_role_policy" "ecs_admin_instance_policy" {
         "s3:GetObjectAcl",
         "s3:DeleteObject"
       ],
-      "Resource": ["${aws_s3_bucket.admin_mou_bucket.arn}/*"]
+      "Resource": ["${aws_s3_bucket.admin_mou_bucket.arn}/*", "arn:aws:s3:::${var.frontend_cert_bucket}/*"]
     },{
       "Effect": "Allow",
       "Action": [

@@ -275,6 +275,9 @@ module "govwifi_admin" {
   bastion_server_ip = var.bastion_server_ip
 
   elasticsearch_endpoint = module.govwifi_elasticsearch.endpoint
+
+  frontend_cert_bucket = module.frontend.frontend_certs_bucket_name
+  trusted_certificates_key = module.frontend.trusted_certificates_key
 }
 
 module "api" {

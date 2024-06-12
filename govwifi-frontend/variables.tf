@@ -59,6 +59,10 @@ variable "logging_api_internal_dns_name" {
 variable "enable_detailed_monitoring" {
 }
 
+variable "trusted_certificates_key" {
+  default = "trusted_certificates/certificates.zip"
+}
+
 variable "radiusd_params" {
   default = "-f"
 }
