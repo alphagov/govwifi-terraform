@@ -213,6 +213,9 @@ module "london_admin" {
   pagerduty_notifications_arn = module.london_notifications.topic_arn
 
   elasticsearch_endpoint = module.london_elasticsearch.endpoint
+
+  frontend_cert_bucket = module.london_frontend.frontend_certs_bucket_name
+  trusted_certificates_key = module.london_frontend.trusted_certificates_key
 }
 
 module "london_api" {
