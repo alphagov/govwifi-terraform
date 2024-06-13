@@ -1,5 +1,5 @@
 locals {
-  grafana_admin = jsondecode(data.aws_secretsmanager_secret_version.grafana_credentials.secret_string)["admin-pass"]
+  grafana_admin = "grafana/credentials"
 }
 
 locals {

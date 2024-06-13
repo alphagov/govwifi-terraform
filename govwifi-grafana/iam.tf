@@ -58,6 +58,19 @@ resource "aws_iam_role_policy" "grafana_instance_policy" {
       "Resource": [
         "arn:aws:logs:*:*:*"
       ]
+    },
+    {
+      "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Effect": "Allow",
+      "Resource": [
+        "arn:aws:secretsmanager:${var.aws_region}:${var.aws_account_id}:secret:grafana/credentials*"
+      ],
+      "Condition": {
+                "DateGreaterThan": {"aws:CurrentTime": "${time_static.instance_update.rfc3339}"},
+                "DateLessThan": {"aws:CurrentTime": "${timeadd(time_static.instance_update.rfc3339, "10m")}"}
+            }
     }
   ]
 }
