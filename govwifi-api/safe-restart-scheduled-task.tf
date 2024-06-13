@@ -13,11 +13,6 @@ resource "aws_cloudwatch_log_group" "safe_restart_log_group" {
   retention_in_days = 90
 }
 
-resource "aws_ecr_repository" "safe_restarter_ecr" {
-  count = var.ecr_repository_count
-  name  = "govwifi/safe-restarter"
-}
-
 resource "aws_ecs_task_definition" "safe_restart_task_definition" {
   count                    = var.safe_restart_enabled
   family                   = "safe-restart-task-${var.env_name}"

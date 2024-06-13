@@ -8,11 +8,6 @@ resource "aws_cloudwatch_log_group" "admin_log_group" {
   retention_in_days = 90
 }
 
-resource "aws_ecr_repository" "govwifi_admin_ecr" {
-  count = var.ecr_repository_count
-  name  = "govwifi/admin"
-}
-
 resource "aws_ecs_task_definition" "admin_task" {
   family                   = "admin-task-${var.env_name}"
   requires_compatibilities = ["FARGATE"]
