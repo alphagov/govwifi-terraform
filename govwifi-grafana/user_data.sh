@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# set -ueo pipefail
+
 export DEBIAN_FRONTEND=noninteractive
 
 # set some vars frequently used but not passed by terraformed to make script easy to change if needed
@@ -15,7 +17,7 @@ symlink_folder=$drive_mount_point/volumes
 function run-until-success() {
   until $*
   do
-    logger -s "Executing $* failed. Sleeping 5..."
+    logger -s "Executing $* failed. Sleeping..."
     sleep 5
   done
 }

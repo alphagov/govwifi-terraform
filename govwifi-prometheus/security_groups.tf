@@ -1,4 +1,4 @@
-resource "aws_security_group" "prometheus-ec2-in-out" {
+resource "aws_security_group" "prometheus" {
   name        = "prometheus-ec2-out-${var.env_name}"
   description = "Allows outbound traffic for the Prometheus server"
   vpc_id      = var.frontend_vpc_id

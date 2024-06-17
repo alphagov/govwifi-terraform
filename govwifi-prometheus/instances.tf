@@ -43,7 +43,7 @@ resource "aws_instance" "prometheus_instance" {
   monitoring              = false
 
   vpc_security_group_ids = [
-    aws_security_group.prometheus-ec2-in-out.id,
+    aws_security_group.prometheus.id,
     var.fe_admin_in,
   ]
 
