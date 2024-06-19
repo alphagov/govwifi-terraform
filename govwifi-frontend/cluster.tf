@@ -27,21 +27,6 @@ resource "aws_cloudwatch_log_group" "frontend" {
   retention_in_days = 90
 }
 
-resource "aws_ecr_repository" "govwifi_frontend_ecr" {
-  count = var.create_ecr
-  name  = "govwifi/frontend"
-}
-
-resource "aws_ecr_repository" "govwifi_frontend_base_ecr" {
-  count = var.create_ecr
-  name  = "govwifi/frontend-base"
-}
-
-resource "aws_ecr_repository" "govwifi_raddb_ecr" {
-  count = var.create_ecr
-  name  = "govwifi/raddb"
-}
-
 data "aws_caller_identity" "current" {}
 
 resource "aws_ecr_replication_configuration" "main" {

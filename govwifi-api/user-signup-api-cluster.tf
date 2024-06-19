@@ -5,11 +5,6 @@ resource "aws_cloudwatch_log_group" "user_signup_api_log_group" {
   retention_in_days = 90
 }
 
-resource "aws_ecr_repository" "user_signup_api_ecr" {
-  count = var.ecr_repository_count
-  name  = "govwifi/user-signup-api"
-}
-
 resource "aws_iam_role" "user_signup_api_task_role" {
   count = var.user_signup_enabled
   name  = "${var.env_name}-user-signup-api-task-role"

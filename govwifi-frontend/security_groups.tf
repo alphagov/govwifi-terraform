@@ -166,7 +166,6 @@ resource "aws_security_group" "fe_radius_in" {
     from_port   = 9812
     to_port     = 9812
     protocol    = "tcp"
-
     cidr_blocks = distinct(var.radius_cidr_blocks)
   }
 }
@@ -284,5 +283,13 @@ resource "aws_security_group" "vpc_endpoints" {
       aws_security_group.load_balanced_frontend_service.id,
       aws_security_group.fe_ecs_out.id
     ]
+  }
+  
+  ingress {
+    description = "Allow HTTPS to AWS Service CW"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr_block]
   }
 }

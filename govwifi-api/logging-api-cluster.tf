@@ -5,11 +5,6 @@ resource "aws_cloudwatch_log_group" "logging_api_log_group" {
   retention_in_days = 90
 }
 
-resource "aws_ecr_repository" "logging_api_ecr" {
-  count = var.ecr_repository_count
-  name  = "govwifi/logging-api"
-}
-
 resource "aws_ecs_task_definition" "logging_api_task" {
   count                    = var.logging_enabled
   family                   = "logging-api-task-${var.env_name}"
