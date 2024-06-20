@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "no_healthy_hosts" {
-  alarm_name          = "${var.env_name} frontend no healthy hosts"
+  alarm_name          = "${var.env_name} ${var.aws_region_name} frontend no healthy hosts"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "HealthyHostCount"
@@ -16,11 +16,14 @@ resource "aws_cloudwatch_metric_alarm" "no_healthy_hosts" {
 
   alarm_description = "Detect when there are no healthy frontend targets"
 
-  alarm_actions = [var.notification_arn]
+  alarm_actions = [
+    var.critical_notifications_arn,
+    var.pagerduty_notifications_arn
+  ]
 }
 
 resource "aws_cloudwatch_metric_alarm" "radius_cannot_connect_to_api" {
-  alarm_name          = "${var.env_name}-radius-cannot-connect-to-api"
+  alarm_name          = "${var.env_name}-${var.aws_region_name}-radius-cannot-connect-to-api"
   comparison_operator = "GreaterThanThreshold"
   threshold           = 0
   evaluation_periods  = 2
@@ -31,14 +34,14 @@ resource "aws_cloudwatch_metric_alarm" "radius_cannot_connect_to_api" {
   namespace           = aws_cloudwatch_log_metric_filter.radius_cannot_connect_to_api.metric_transformation[0].namespace
 
   alarm_actions = [
-    var.critical_notifications_arn,
+    var.critical_notifications_arn
   ]
 
   alarm_description = "FreeRADIUS cannot connect to the Logging and/or Authentication API. Investigate CloudWatch logs for root cause."
 }
 
 resource "aws_cloudwatch_metric_alarm" "eap_outer_and_inner_identities_are_the_same" {
-  alarm_name          = "EAP Outer and inner identities are the same"
+  alarm_name          = "${var.env_name}-${var.aws_region_name}-EAP Outer and inner identities are the same"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = aws_cloudwatch_log_metric_filter.outer_and_inner_identities_same.name
@@ -46,7 +49,7 @@ resource "aws_cloudwatch_metric_alarm" "eap_outer_and_inner_identities_are_the_s
   period              = "86400"
   statistic           = "Maximum"
   threshold           = "1.0"
-  alarm_description   = "WLC using the real identity for the anonymous identity"
+  alarm_description   = "WLC using the real identity for the anonymous identity - Radius Missconfiguration"
 
   alarm_actions = [var.critical_notifications_arn]
 }

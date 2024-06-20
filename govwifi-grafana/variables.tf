@@ -75,8 +75,8 @@ variable "grafana_docker_version" {
   default     = "10.2.2"
 }
 
-variable "critical_notifications_arn" {
-  description = "Arn of the critical-nofications sns topic"
+variable "capacity_notifications_arn" {
+  description = "Arn of the capacity monitoring nofications sns topic"
   type        = string
 }
 

@@ -18,6 +18,7 @@ resource "aws_cloudwatch_metric_alarm" "auth_ecs_cpu_alarm_high" {
 
   alarm_actions = [
     aws_appautoscaling_policy.ecs_policy_up_authentication_api.arn,
+    var.capacity_notifications_arn,
     var.devops_notifications_arn,
   ]
 
@@ -51,7 +52,7 @@ resource "aws_cloudwatch_metric_alarm" "auth_ecs_cpu_alarm_low" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "authentication_api_no_healthy_hosts" {
-  alarm_name          = "${var.env_name} authentication API no healthy hosts"
+  alarm_name          = "${var.env_name} ${var.aws_region_name} authentication API no healthy hosts"
   comparison_operator = "LessThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "HealthyHostCount"
@@ -68,12 +69,13 @@ resource "aws_cloudwatch_metric_alarm" "authentication_api_no_healthy_hosts" {
   alarm_description = "Load balancer detects no healthy authentication API targets. Investigate api cluster and CloudWatch logs for root cause."
 
   alarm_actions = compact([
-    var.notification_arn,
+    var.pagerduty_notifications_arn,
+    var.critical_notifications_arn
   ])
 }
 
 resource "aws_cloudwatch_metric_alarm" "api_alb_node_unhealthy" {
-  alarm_name          = "GovWifi - Production - api-alb-wifi Node Unhealthy"
+  alarm_name          = "${var.env_name}-api-alb-wifi Node Unhealthy"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "UnHealthyHostCount"
@@ -111,14 +113,15 @@ resource "aws_cloudwatch_metric_alarm" "user_signup_api_no_healthy_hosts" {
   alarm_description = "Load balancer detects no healthy user signup API targets. Investigate api ECS cluster and CloudWatch logs for root cause."
 
   alarm_actions = compact([
-    var.notification_arn,
+    var.pagerduty_notifications_arn,
+    var.critical_notifications_arn
   ])
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_signup_api_node_unhealthy" {
   count = var.user_signup_enabled
 
-  alarm_name          = "GovWifi - Production - user-signup-api-wifi Node Unhealthy"
+  alarm_name          = "${var.env_name}-user-signup-api-wifi Node Unhealthy"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "UnHealthyHostCount"
@@ -128,7 +131,10 @@ resource "aws_cloudwatch_metric_alarm" "user_signup_api_node_unhealthy" {
   threshold           = "0.0"
   alarm_description   = "Failure of any ALB Node in \"user-signup-api-wifi\" consistently for a 5 minute period\n\nCheck the end points of the ALB to see if there is an issue\nCheck the end points to see if there is an issue"
 
-  alarm_actions = [var.capacity_notifications_arn]
+  alarm_actions = [
+    var.devops_notifications_arn,
+    var.capacity_notifications_arn
+  ]
 
   dimensions = {
     TargetGroup  = aws_alb_target_group.user_signup_api_tg[0].arn_suffix
@@ -139,7 +145,7 @@ resource "aws_cloudwatch_metric_alarm" "user_signup_api_node_unhealthy" {
 resource "aws_cloudwatch_metric_alarm" "user_signup_api_cpu_usage_high" {
   count = var.user_signup_enabled
 
-  alarm_name          = "user signup CPU usage high (snowflake)"
+  alarm_name          = "${var.env_name}-user-signup-CPU-usage-high-(snowflake)"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "3"
   metric_name         = "CPUUtilization"
@@ -149,7 +155,10 @@ resource "aws_cloudwatch_metric_alarm" "user_signup_api_cpu_usage_high" {
   threshold           = "5.0"
   alarm_description   = "user signup CPU high"
 
-  alarm_actions = [var.capacity_notifications_arn]
+  alarm_actions = [
+    var.capacity_notifications_arn,
+    var.devops_notifications_arn,
+  ]
 
   dimensions = {
     ClusterName = aws_ecs_cluster.api_cluster.name

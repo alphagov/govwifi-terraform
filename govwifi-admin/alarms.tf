@@ -16,12 +16,13 @@ resource "aws_cloudwatch_metric_alarm" "admin_no_healthy_hosts" {
   alarm_description = "Load balancer detects no healthy admin targets. Investigate admin-api ECS cluster and CloudWatch logs for root cause."
 
   alarm_actions = compact([
-    var.notification_arn,
+    var.critical_notifications_arn,
+    var.pagerduty_notifications_arn,
   ])
 }
 
 resource "aws_cloudwatch_metric_alarm" "admin_node_unhealthy" {
-  alarm_name          = "GovWifi - Production - admin-alb-wifi Node Unhealthy"
+  alarm_name          = "${var.env_name}-admin-alb-wifi Node Unhealthy"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "UnHealthyHostCount"

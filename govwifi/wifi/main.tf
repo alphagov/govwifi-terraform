@@ -241,8 +241,8 @@ module "frontend" {
   authentication_api_internal_dns_name = module.api.authentication_api_internal_dns_name
   logging_api_internal_dns_name        = one(data.terraform_remote_state.london.outputs.logging_api_internal_dns_name)
 
-  notification_arn           = module.region_pagerduty.topic_arn
-  critical_notifications_arn = module.critical_notifications.topic_arn
+  pagerduty_notifications_arn = module.region_pagerduty.topic_arn
+  critical_notifications_arn  = module.critical_notifications.topic_arn
 
   bastion_server_ip = var.bastion_server_ip
 
@@ -275,15 +275,15 @@ module "api" {
 
   vpc_endpoints_security_group_id = module.backend.vpc_endpoints_security_group_id
 
-  user_signup_enabled  = 0
-  logging_enabled      = 0
-  alarm_count          = 0
-  safe_restart_enabled = 0
-  event_rule_count     = 0
-
-  capacity_notifications_arn = module.capacity_notifications.topic_arn
-  devops_notifications_arn   = module.devops_notifications.topic_arn
-  notification_arn           = module.region_pagerduty.topic_arn
+  user_signup_enabled         = 0
+  logging_enabled             = 0
+  alarm_count                 = 0
+  safe_restart_enabled        = 0
+  event_rule_count            = 0
+  devops_notifications_arn    = module.devops_notifications.topic_arn
+  critical_notifications_arn  = module.critical_notifications.topic_arn
+  capacity_notifications_arn  = module.capacity_notifications.topic_arn
+  pagerduty_notifications_arn = module.region_pagerduty.topic_arn
 
   logging_docker_image          = format("%s/logging-api:production", local.docker_image_path)
   safe_restart_docker_image     = format("%s/safe-restarter:production", local.docker_image_path)
@@ -320,7 +320,7 @@ module "critical_notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-wifi-critical"
+  topic_name = "govwifi-prod-dublin-critical"
   emails     = [var.critical_notification_email]
 }
 
@@ -331,7 +331,7 @@ module "capacity_notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-wifi-capacity"
+  topic_name = "govwifi-prod-dublin-capacity"
   emails     = [var.capacity_notification_email]
 }
 
@@ -342,7 +342,7 @@ module "devops_notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-wifi-devops"
+  topic_name = "govwifi-prod-dublin-devops"
   emails     = [var.devops_notification_email]
 }
 
@@ -353,7 +353,7 @@ module "route53_critical_notifications" {
 
   source = "../../sns-notification"
 
-  topic_name = "govwifi-wifi-critical"
+  topic_name = "govwifi-prod-dublin-r53-critical"
   emails     = [var.critical_notification_email]
 }
 

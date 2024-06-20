@@ -55,13 +55,13 @@ resource "aws_cloudwatch_metric_alarm" "user_db_storage" {
   }
 
   alarm_description  = "Database is running low on free storage space. Investigate database logs for root cause."
-  alarm_actions      = [var.capacity_notifications_arn]
+  alarm_actions      = [var.critical_notifications_arn]
   treat_missing_data = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "user_rr_burst_balance" {
   count               = var.user_db_replica_count
-  alarm_name          = "${var.env}-user-rr-burstbalanace-alarm"
+  alarm_name          = "${var.env}-user-rr-burst-balance-alarm"
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name         = "BurstBalance"
@@ -83,12 +83,12 @@ resource "aws_cloudwatch_metric_alarm" "user_rr_lagging" {
   count               = var.user_db_replica_count
   alarm_name          = "${var.env}-user-rr-lagging-alarm"
   comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "2"
+  evaluation_periods  = "5"
   metric_name         = "ReplicaLag"
   namespace           = "AWS/RDS"
   period              = "60"
-  statistic           = "Minimum"
-  threshold           = "600"
+  statistic           = "Maximum"
+  threshold           = "60"
 
   dimensions = {
     DBInstanceIdentifier = aws_db_instance.users_read_replica[0].identifier
