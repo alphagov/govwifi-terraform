@@ -334,8 +334,11 @@ module "govwifi_slack_alerts" {
 
   source = "../../govwifi-slack-alerts"
 
-  critical_notifications_topic_arn         = module.london_critical_notifications.topic_arn
-  capacity_notifications_topic_arn         = module.london_notifications.topic_arn
+  london_critical_notifications_topic_arn         = module.london_critical_notifications.topic_arn
+  london_capacity_notifications_topic_arn         = module.london_notifications.topic_arn
+  dublin_critical_notifications_topic_arn         = module.dublin_critical_notifications.topic_arn
+  dublin_capacity_notifications_topic_arn         = module.dublin_notifications.topic_arn
+
   route53_critical_notifications_topic_arn = module.london_route53_notifications.topic_arn
   # set to 1 to create config for slack chat bot.
   create_slack_alert = 0

@@ -137,8 +137,8 @@ module "backend" {
   rr_instance_type      = "db.m5.medium"
   rr_storage_gb         = 1000
 
-  critical_notifications_arn = module.critical_notifications.topic_arn
-  capacity_notifications_arn = module.capacity_notifications.topic_arn
+  critical_notifications_arn = module.dublin_critical_notifications.topic_arn
+  capacity_notifications_arn = module.dublin_capacity_notifications.topic_arn
   user_replica_source_db     = "arn:aws:rds:eu-west-2:${local.aws_account_id}:db:wifi-production-user-db"
 
   # Seconds. Set to zero to disable monitoring
@@ -242,7 +242,7 @@ module "frontend" {
   logging_api_internal_dns_name        = one(data.terraform_remote_state.london.outputs.logging_api_internal_dns_name)
 
   pagerduty_notifications_arn = module.region_pagerduty.topic_arn
-  critical_notifications_arn  = module.critical_notifications.topic_arn
+  critical_notifications_arn  = module.dublin_critical_notifications.topic_arn
 
   bastion_server_ip = var.bastion_server_ip
 
@@ -281,8 +281,8 @@ module "api" {
   safe_restart_enabled        = 0
   event_rule_count            = 0
   devops_notifications_arn    = module.devops_notifications.topic_arn
-  critical_notifications_arn  = module.critical_notifications.topic_arn
-  capacity_notifications_arn  = module.capacity_notifications.topic_arn
+  critical_notifications_arn  = module.dublin_critical_notifications.topic_arn
+  capacity_notifications_arn  = module.dublin_capacity_notifications.topic_arn
   pagerduty_notifications_arn = module.region_pagerduty.topic_arn
 
   logging_docker_image          = format("%s/logging-api:production", local.docker_image_path)
@@ -313,7 +313,7 @@ module "api" {
   low_cpu_threshold = 10
 }
 
-module "critical_notifications" {
+module "dublin_critical_notifications" {
   providers = {
     aws = aws.main
   }
@@ -324,7 +324,7 @@ module "critical_notifications" {
   emails     = [var.critical_notification_email]
 }
 
-module "capacity_notifications" {
+module "dublin_capacity_notifications" {
   providers = {
     aws = aws.main
   }
