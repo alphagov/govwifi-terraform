@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "admin_bucket" {
-  bucket        = "govwifi-${var.rails_env}-admin"
+  bucket        = "govwifi-${var.app_env}-admin"
   force_destroy = true
 
   tags = {
@@ -26,11 +26,11 @@ resource "aws_s3_bucket_public_access_block" "admin_bucket" {
 }
 
 resource "aws_s3_bucket" "product_page_data_bucket" {
-  bucket        = "govwifi-${var.rails_env}-product-page-data"
+  bucket        = "govwifi-${var.app_env}-product-page-data"
   force_destroy = true
 
   tags = {
-    Name   = "${title(var.rails_env)} Product page data"
+    Name   = "${title(var.app_env)} Product page data"
     Region = title(var.aws_region_name)
   }
 }
@@ -49,7 +49,7 @@ resource "aws_s3_bucket_versioning" "product_page_data_bucket" {
 }
 
 resource "aws_s3_bucket" "admin_mou_bucket" {
-  bucket        = "govwifi-${var.rails_env}-admin-mou"
+  bucket        = "govwifi-${var.app_env}-admin-mou"
   force_destroy = true
 
   tags = {
