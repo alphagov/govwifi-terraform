@@ -538,7 +538,7 @@ module "smoke_tests" {
   ]
 }
 
-module "govwifi-ecs-update-service" {
+module "london_govwifi-ecs-update-service" {
   providers = {
     aws = aws.main
   }
@@ -550,6 +550,11 @@ module "govwifi-ecs-update-service" {
   env_name = "wifi"
 
   aws_account_id = local.aws_account_id
+}
+
+moved {
+  from = module.govwifi-ecs-update-service
+  to   = module.london_govwifi-ecs-update-service
 }
 
 module "govwifi_sync_certs" {
