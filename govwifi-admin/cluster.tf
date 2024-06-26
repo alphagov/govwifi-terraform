@@ -38,7 +38,7 @@ resource "aws_ecs_task_definition" "admin_task" {
           "value": "${aws_db_instance.admin_db.address}"
         },{
           "name": "RAILS_ENV",
-          "value": "${var.app_env}"
+          "value": "${var.rails_env}"
         },{
           "name": "SENTRY_CURRENT_ENV",
           "value": "${var.sentry_current_env}"
@@ -114,6 +114,9 @@ resource "aws_ecs_task_definition" "admin_task" {
         },{
           "name": "S3_CERTIFICATES_OBJECT_KEY",
           "value": "${var.trusted_certificates_key}"
+        },{
+          "name": "FULLY_QUALIFIED_DOMAIN_NAME",
+          "value": "${aws_route53_record.admin.name}"
         }
       ],
       "secrets": [

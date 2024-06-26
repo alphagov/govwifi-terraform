@@ -119,7 +119,7 @@ data "aws_iam_policy_document" "allow_ssm" {
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "admin-ecsTaskExecutionRole-${var.rails_env}-${var.aws_region_name}"
+  name               = "admin-ecsTaskExecutionRole-${var.app_env}-${var.aws_region_name}"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
