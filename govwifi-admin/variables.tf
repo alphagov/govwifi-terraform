@@ -29,7 +29,7 @@ variable "ecr_repository_count" {
 }
 
 variable "rails_env" {
-  description = "the Ruby environment, E.g. alpaca, staging"
+  description = "the Ruby environment, E.g. production, development, test"
 }
 
 

@@ -175,7 +175,7 @@ module "london_admin" {
   route53_zone_id = data.aws_route53_zone.main.zone_id
 
   admin_docker_image   = format("%s/admin:alpaca", local.docker_image_path)
-  rails_env            = "alpaca"
+  rails_env            = "production"
   app_env              = "alpaca" ## used for db name.
   sentry_current_env   = "alpaca"
   ecr_repository_count = 1

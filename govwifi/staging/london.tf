@@ -174,7 +174,7 @@ module "london_admin" {
   route53_zone_id = data.aws_route53_zone.main.zone_id
 
   admin_docker_image   = format("%s/admin:staging", local.docker_image_path)
-  rails_env            = "staging"
+  rails_env            = "production"
   app_env              = "staging"
   sentry_current_env   = "staging"
   ecr_repository_count = 1
