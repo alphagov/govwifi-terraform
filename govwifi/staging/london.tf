@@ -408,6 +408,20 @@ module "london_grafana" {
   vpc_be_cidr_block = local.london_backend_vpc_cidr_block
 }
 
+module "london_govwifi-ecs-update-service" {
+  providers = {
+    aws = aws.london
+  }
+
+  source = "../../govwifi-ecs-update-service"
+
+  deployed_app_names = ["user-signup-api", "logging-api", "admin", "authentication-api"]
+
+  env_name = "staging"
+
+  aws_account_id = local.aws_account_id
+}
+
 module "london_elasticsearch" {
   providers = {
     aws = aws.london

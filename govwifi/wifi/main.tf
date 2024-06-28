@@ -447,7 +447,7 @@ resource "aws_route" "backend_to_frontend_route" {
   vpc_peering_connection_id = aws_vpc_peering_connection.dublin_frontend_to_london_backend.id
 }
 
-module "govwifi-ecs-update-service" {
+module "dublin_govwifi-ecs-update-service" {
   providers = {
     aws = aws.main
   }
@@ -459,6 +459,11 @@ module "govwifi-ecs-update-service" {
   env_name = "wifi"
 
   aws_account_id = local.aws_account_id
+}
+
+moved {
+  from = module.govwifi-ecs-update-service
+  to   = module.dublin_govwifi-ecs-update-service
 }
 
 module "govwifi_sync_certs" {

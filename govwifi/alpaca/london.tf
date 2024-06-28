@@ -409,6 +409,21 @@ module "govwifi_slack_alerts" {
   create_slack_alert = 0
 }
 
+module "london-govwifi-ecs-update-service" {
+  providers = {
+    aws = aws.london
+  }
+
+  source = "../../govwifi-ecs-update-service"
+
+  deployed_app_names = ["user-signup-api", "logging-api", "admin", "authentication-api"]
+
+  env_name = "alpaca"
+
+  aws_account_id = local.aws_account_id
+}
+
+
 module "london_elasticsearch" {
   providers = {
     aws = aws.london
