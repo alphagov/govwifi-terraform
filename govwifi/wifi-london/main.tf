@@ -538,7 +538,7 @@ module "smoke_tests" {
   ]
 }
 
-module "govwifi-ecs-update-service" {
+module "london_govwifi-ecs-update-service" {
   providers = {
     aws = aws.main
   }

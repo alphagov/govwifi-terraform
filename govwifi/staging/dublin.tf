@@ -370,6 +370,20 @@ module "dublin_critical_notifications" {
   emails     = [var.notification_email]
 }
 
+module "dublin_govwifi-ecs-update-service" {
+  providers = {
+    aws = aws.dublin
+  }
+
+  source = "../../govwifi-ecs-update-service"
+
+  deployed_app_names = ["authentication-api"]
+
+  env_name = "staging"
+
+  aws_account_id = local.aws_account_id
+}
+
 module "dublin_sync_certs" {
   providers = {
     aws = aws.dublin
