@@ -31,6 +31,9 @@ resource "aws_ecs_task_definition" "admin_task" {
       "name": "admin",
       "environment": [
         {
+          "name": "DEPLOY_ENV",
+          "value": "${var.app_env}"
+        },{
           "name": "DB_NAME",
           "value": "govwifi_admin_${var.app_env}"
         },{
