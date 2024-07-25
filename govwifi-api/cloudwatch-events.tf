@@ -11,7 +11,7 @@ resource "aws_cloudwatch_event_rule" "daily_user_deletion_event" {
   name                = "${var.env_name}-daily-user-deletion"
   description         = "Triggers daily 23:00 UTC"
   schedule_expression = "cron(0 10 * * ? *)"
-  is_enabled          = true
+  is_enabled          = false
 }
 
 resource "aws_cloudwatch_event_rule" "daily_smoke_test_cleanup_event" {
