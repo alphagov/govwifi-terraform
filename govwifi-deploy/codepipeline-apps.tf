@@ -97,7 +97,7 @@ resource "aws_codepipeline" "staging_prod_apps_pipeline" {
   }
 
   stage {
-    name = "Test-STAGING"
+    name = "Test_STAGING"
 
     action {
       name            = "Staging-Smoketests"
@@ -120,7 +120,7 @@ resource "aws_codepipeline" "staging_prod_apps_pipeline" {
 
 
   stage {
-    name = "Release-to-PRODUCTION"
+    name = "Release_PRODUCTION"
 
     action {
       name     = "Release-to-PRODUCTION"
