@@ -42,7 +42,7 @@ resource "aws_codepipeline" "staging_prod_apps_pipeline" {
           Repo   = local.app[each.key].repo
           Branch = local.branch
           OAuthToken = jsondecode(data.aws_secretsmanager_secret_version.github_token.secret_string)["token"]
-          PollForSourceChanges = false
+          PollForSourceChanges = true
       }
     }
   }
