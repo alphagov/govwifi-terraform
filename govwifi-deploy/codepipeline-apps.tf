@@ -1,6 +1,6 @@
 resource "aws_codepipeline" "staging_prod_apps_pipeline" {
   for_each      = toset(var.deployed_app_names)
-  name     = "STAGING-PROD-${each.key}-pipeline"
+  name     = "STAGING-PROD-${each.key}-app-pipeline"
   role_arn = aws_iam_role.govwifi_codepipeline_global_role.arn
 
   artifact_store {
@@ -29,7 +29,7 @@ resource "aws_codepipeline" "staging_prod_apps_pipeline" {
     name = "Source"
 
     action {
-      name             = "Github-${each.key}-Alpaca"
+      name             = "Github-${each.key}"
       category         = "Source"
       owner            = "ThirdParty"
       provider         = "GitHub"
@@ -42,31 +42,16 @@ resource "aws_codepipeline" "staging_prod_apps_pipeline" {
           Repo   = local.app[each.key].repo
           Branch = local.branch
           OAuthToken = jsondecode(data.aws_secretsmanager_secret_version.github_token.secret_string)["token"]
-          PollForSourceChanges = false
+          PollForSourceChanges = true
       }
     }
   }
-
-  #### halt stage just for testing to stop pipelines being kicked off.
-  stage {
-    name = "Do_not_auto_start"
-
-    action {
-      name     = "Manual_Start"
-      category = "Approval"
-      owner    = "AWS"
-      provider = "Manual"
-      region   = "eu-west-2"
-      version  = "1"
-    }
-  }
-  #### remove when live.
 
   stage {
     name = "Build_STAGING"
     
     action {
-      name            = "Build-push-${each.key}-staging"
+      name            = "Build-push-${each.key}-staging-ECR"
       category        = "Build"
       owner           = "AWS"
       provider        = "CodeBuild"
@@ -112,7 +97,7 @@ resource "aws_codepipeline" "staging_prod_apps_pipeline" {
   }
 
   stage {
-    name = "Test-STAGING"
+    name = "Test_STAGING"
 
     action {
       name            = "Staging-Smoketests"
@@ -135,7 +120,7 @@ resource "aws_codepipeline" "staging_prod_apps_pipeline" {
 
 
   stage {
-    name = "Release-to-PRODUCTION"
+    name = "Release_PRODUCTION"
 
     action {
       name     = "Release-to-PRODUCTION"

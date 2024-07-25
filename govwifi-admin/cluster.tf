@@ -31,6 +31,9 @@ resource "aws_ecs_task_definition" "admin_task" {
       "name": "admin",
       "environment": [
         {
+          "name": "DEPLOY_ENV",
+          "value": "${var.app_env}"
+        },{
           "name": "DB_NAME",
           "value": "govwifi_admin_${var.app_env}"
         },{
@@ -38,7 +41,7 @@ resource "aws_ecs_task_definition" "admin_task" {
           "value": "${aws_db_instance.admin_db.address}"
         },{
           "name": "RAILS_ENV",
-          "value": "${var.app_env}"
+          "value": "${var.rails_env}"
         },{
           "name": "SENTRY_CURRENT_ENV",
           "value": "${var.sentry_current_env}"
@@ -114,6 +117,9 @@ resource "aws_ecs_task_definition" "admin_task" {
         },{
           "name": "S3_CERTIFICATES_OBJECT_KEY",
           "value": "${var.trusted_certificates_key}"
+        },{
+          "name": "FULLY_QUALIFIED_DOMAIN_NAME",
+          "value": "${aws_route53_record.admin.name}"
         }
       ],
       "secrets": [
@@ -205,7 +211,7 @@ resource "aws_ecs_service" "admin_service" {
   # TODO: Terraform has problems tagging this service due to ARN
   # issues in production, so avoid this by ignoring tag changes
   lifecycle {
-    ignore_changes = [tags_all, task_definition]
+    ignore_changes = [tags_all]
   }
 }
 
