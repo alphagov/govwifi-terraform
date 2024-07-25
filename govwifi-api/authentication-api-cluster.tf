@@ -126,7 +126,7 @@ resource "aws_ecs_service" "authentication_api_service" {
   }
 
   lifecycle {
-    ignore_changes = [desired_count, task_definition]
+    ignore_changes = [desired_count]
   }
 
 }

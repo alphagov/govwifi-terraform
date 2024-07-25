@@ -15,3 +15,26 @@ data "aws_caller_identity" "current" {}
 locals {
   aws_account_id = data.aws_caller_identity.current.account_id
 }
+
+locals {
+    git_owner = "alphagov"
+    branch = "master"
+    app = {
+      admin = {
+        repo = "govwifi-admin"
+        regions = ["eu-west-2"]
+      }
+      logging-api = {
+          repo = "govwifi-logging-api"
+          regions = ["eu-west-2"]
+      }
+      authentication-api = {
+          repo = "govwifi-authentication-api"
+          regions = ["eu-west-1", "eu-west-2"]
+      }
+      user-signup-api ={
+          repo = "govwifi-user-signup-api"
+          regions = ["eu-west-2"]
+      }
+    }
+}
