@@ -29,7 +29,7 @@ resource "aws_codepipeline" "staging_prod_apps_pipeline" {
     name = "Source"
 
     action {
-      name             = "Github-${each.key}-Alpaca"
+      name             = "Github-${each.key}"
       category         = "Source"
       owner            = "ThirdParty"
       provider         = "GitHub"
@@ -51,7 +51,7 @@ resource "aws_codepipeline" "staging_prod_apps_pipeline" {
     name = "Build_STAGING"
     
     action {
-      name            = "Build-push-${each.key}-staging"
+      name            = "Build-push-${each.key}-staging-ECR"
       category        = "Build"
       owner           = "AWS"
       provider        = "CodeBuild"

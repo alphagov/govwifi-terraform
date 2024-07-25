@@ -28,7 +28,7 @@ resource "aws_codepipeline" "alpaca_deploy_apps_pipeline" {
   stage {
     name = "Source"
     action {
-      name             = "Github-${each.key}-Alpaca"
+      name             = "Github-${each.key}-source"
       category         = "Source"
       owner            = "ThirdParty"
       provider         = "GitHub"
