@@ -37,7 +37,7 @@ resource "awscc_chatbot_slack_channel_configuration" "aws_slack_alert_chatbot" {
   iam_role_arn       = aws_iam_role.govwifi_wifi_london_aws_chatbot_role[0].arn
   slack_channel_id   = local.slack_alerts_channel_id
   slack_workspace_id = local.slack_workplace_id
-  sns_topic_arns     = [var.critical_notifications_topic_arn, var.route53_critical_notifications_topic_arn]
+  sns_topic_arns     = [var.london_critical_notifications_topic_arn, var.dublin_critical_notifications_topic_arn, var.route53_critical_notifications_topic_arn]
 }
 
 resource "awscc_chatbot_slack_channel_configuration" "aws_slack_monitor_chatbot" {
@@ -46,5 +46,5 @@ resource "awscc_chatbot_slack_channel_configuration" "aws_slack_monitor_chatbot"
   iam_role_arn       = aws_iam_role.govwifi_wifi_london_aws_chatbot_role[0].arn
   slack_channel_id   = local.slack_channel_id
   slack_workspace_id = local.slack_workplace_id
-  sns_topic_arns     = [var.capacity_notifications_topic_arn]
+  sns_topic_arns     = [var.london_capacity_notifications_topic_arn, var.dublin_capacity_notifications_topic_arn]
 }

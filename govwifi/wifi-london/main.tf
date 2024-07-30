@@ -68,6 +68,16 @@ provider "aws" {
   }
 }
 
+data "terraform_remote_state" "dublin" {
+  backend = "s3"
+
+  config = {
+    bucket = "govwifi-wifi-dublin-tfstate"
+    key    = "dublin-tfstate"
+    region = "eu-west-1"
+  }
+}
+
 module "govwifi_keys" {
   providers = {
     aws = aws.main
@@ -131,8 +141,8 @@ module "backend" {
   db_replica_count           = 1
   rr_instance_type           = "db.m5.xlarge"
   rr_storage_gb              = 1000
-  critical_notifications_arn = module.critical_notifications.topic_arn
-  capacity_notifications_arn = module.capacity_notifications.topic_arn
+  critical_notifications_arn = module.london_critical_notifications.topic_arn
+  capacity_notifications_arn = module.london_capacity_notifications.topic_arn
   user_replica_source_db     = "wifi-production-user-db"
 
   # Seconds. Set to zero to disable monitoring
@@ -203,7 +213,7 @@ module "frontend" {
   logging_api_internal_dns_name        = one(module.api.logging_api_internal_dns_name)
 
   pagerduty_notifications_arn = module.region_pagerduty.topic_arn
-  critical_notifications_arn  = module.critical_notifications.topic_arn
+  critical_notifications_arn  = module.london_critical_notifications.topic_arn
 
   bastion_server_ip = var.bastion_server_ip
 
@@ -257,8 +267,8 @@ module "govwifi_admin" {
   user_db_host = var.user_db_hostname
   user_db_name = "govwifi_production_users"
 
-  critical_notifications_arn  = module.critical_notifications.topic_arn
-  capacity_notifications_arn  = module.capacity_notifications.topic_arn
+  critical_notifications_arn  = module.london_critical_notifications.topic_arn
+  capacity_notifications_arn  = module.london_capacity_notifications.topic_arn
   pagerduty_notifications_arn = module.region_pagerduty.topic_arn
 
   rds_monitoring_role = module.backend.rds_monitoring_role
@@ -301,8 +311,8 @@ module "api" {
   vpc_endpoints_security_group_id = module.backend.vpc_endpoints_security_group_id
 
   devops_notifications_arn    = module.devops_notifications.topic_arn
-  capacity_notifications_arn  = module.capacity_notifications.topic_arn
-  critical_notifications_arn  = module.critical_notifications.topic_arn
+  capacity_notifications_arn  = module.london_capacity_notifications.topic_arn
+  critical_notifications_arn  = module.london_critical_notifications.topic_arn
   pagerduty_notifications_arn = module.region_pagerduty.topic_arn
 
 
@@ -355,7 +365,7 @@ module "api" {
   smoke_test_ips         = module.smoke_tests.eip_public_ips
 }
 
-module "critical_notifications" {
+module "london_critical_notifications" {
   providers = {
     aws = aws.main
   }
@@ -366,7 +376,7 @@ module "critical_notifications" {
   emails     = [var.critical_notification_email]
 }
 
-module "capacity_notifications" {
+module "london_capacity_notifications" {
   providers = {
     aws = aws.main
   }
@@ -459,7 +469,7 @@ module "govwifi_grafana" {
   aws_region                 = var.aws_region
   aws_region_name            = var.aws_region_name
   aws_account_id             = local.aws_account_id
-  capacity_notifications_arn = module.capacity_notifications.topic_arn
+  capacity_notifications_arn = module.london_capacity_notifications.topic_arn
 
   route53_zone_id = data.aws_route53_zone.main.zone_id
 
@@ -491,8 +501,11 @@ module "govwifi_slack_alerts" {
 
   source = "../../govwifi-slack-alerts"
 
-  critical_notifications_topic_arn         = module.critical_notifications.topic_arn
-  capacity_notifications_topic_arn         = module.capacity_notifications.topic_arn
+  london_critical_notifications_topic_arn         = module.london_critical_notifications.topic_arn
+  london_capacity_notifications_topic_arn         = module.london_capacity_notifications.topic_arn
+  dublin_critical_notifications_topic_arn         = data.terraform_remote_state.dublin.outputs.dublin_critical_notifications_arn
+  dublin_capacity_notifications_topic_arn         = data.terraform_remote_state.dublin.outputs.dublin_capacity_notifications_arn
+
   route53_critical_notifications_topic_arn = module.route53_critical_notifications.topic_arn
   create_slack_alert                       = 1 # set to 1 to create config for slack chat bot.
 }
