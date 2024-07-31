@@ -286,7 +286,7 @@ module "govwifi_admin" {
 
   elasticsearch_endpoint = module.govwifi_elasticsearch.endpoint
 
-  frontend_cert_bucket = module.frontend.frontend_certs_bucket_name
+  frontend_cert_bucket     = module.frontend.frontend_certs_bucket_name
   trusted_certificates_key = module.frontend.trusted_certificates_key
 }
 
@@ -501,10 +501,10 @@ module "govwifi_slack_alerts" {
 
   source = "../../govwifi-slack-alerts"
 
-  london_critical_notifications_topic_arn         = module.london_critical_notifications.topic_arn
-  london_capacity_notifications_topic_arn         = module.london_capacity_notifications.topic_arn
-  dublin_critical_notifications_topic_arn         = data.terraform_remote_state.dublin.outputs.dublin_critical_notifications_arn
-  dublin_capacity_notifications_topic_arn         = data.terraform_remote_state.dublin.outputs.dublin_capacity_notifications_arn
+  london_critical_notifications_topic_arn = module.london_critical_notifications.topic_arn
+  london_capacity_notifications_topic_arn = module.london_capacity_notifications.topic_arn
+  dublin_critical_notifications_topic_arn = data.terraform_remote_state.dublin.outputs.dublin_critical_notifications_arn
+  dublin_capacity_notifications_topic_arn = data.terraform_remote_state.dublin.outputs.dublin_capacity_notifications_arn
 
   route53_critical_notifications_topic_arn = module.route53_critical_notifications.topic_arn
   create_slack_alert                       = 1 # set to 1 to create config for slack chat bot.
@@ -598,14 +598,27 @@ module "govwifi_account_policy" {
 
 }
 
+provider "aws" {
+  alias  = "useast"
+  region  = "us-east-1"
+
+  default_tags {
+    tags = {
+      Environment = "Production"
+    }
+  }
+}
+
 module "govwifi_docs" {
   providers = {
-    aws = aws.main
+    aws = aws.useast
   }
 
   source = "../../govwifi-docs"
 
-  aws_region      = "eu-west-2"
-  route53_zone_id = data.aws_route53_zone.main.zone_id
+  route53_zone_id            = data.aws_route53_zone.main.zone_id
+  critical_notifications_arn = module.route53_critical_notifications.topic_arn
+
+
 
 }
