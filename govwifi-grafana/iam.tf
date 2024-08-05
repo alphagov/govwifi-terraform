@@ -3,6 +3,11 @@ resource "aws_iam_instance_profile" "grafana_instance_profile" {
   role = aws_iam_role.grafana_instance_role.name
 }
 
+resource aws_iam_role_policy_attachment "grafana_instance_ssm" {
+    policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    role = aws_iam_role.grafana_instance_role.name
+}
+
 resource "aws_iam_role" "grafana_instance_role" {
   name = "${var.aws_region}-${var.env_name}-grafana-instance"
   path = "/"

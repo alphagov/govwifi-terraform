@@ -3,6 +3,12 @@ resource "aws_iam_instance_profile" "prometheus_instance_profile" {
   role = aws_iam_role.prometheus_instance_role.name
 }
 
+resource aws_iam_role_policy_attachment "prometheus_instance_ssm" {
+    policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    role = aws_iam_role.prometheus_instance_role.name
+}
+
+
 resource "aws_iam_role" "prometheus_instance_role" {
   name = "${data.aws_region.current.name}-${var.env_name}-prometheus-instance-role"
   path = "/"
