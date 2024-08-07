@@ -23,6 +23,12 @@ resource "aws_s3_bucket_versioning" "source" {
   }
 }
 
+# Push S3 notifications to EventBridge
+resource "aws_s3_bucket_notification" "codepipeline_bucket" {
+  bucket = aws_s3_bucket.codepipeline_bucket.id
+  eventbridge = true
+}
+
 resource "aws_s3_bucket_policy" "codepipeline_bucket_policy" {
   bucket = aws_s3_bucket.codepipeline_bucket.id
 
