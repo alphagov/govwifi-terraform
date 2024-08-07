@@ -600,7 +600,7 @@ module "govwifi_account_policy" {
 
 provider "aws" {
   alias  = "useast"
-  region  = "us-east-1"
+  region = "us-east-1"
 
   default_tags {
     tags = {

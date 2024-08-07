@@ -26,7 +26,7 @@ resource "aws_cloudwatch_metric_alarm" "product_pages" {
   alarm_description   = "Alarm for Product Pages Route 53 health check failure"
   actions_enabled     = true
   alarm_actions       = [var.critical_notifications_arn]
-  treat_missing_data = "missing"
+  treat_missing_data  = "missing"
 
   dimensions = {
     HealthCheckId = aws_route53_health_check.product_pages.id
@@ -34,12 +34,12 @@ resource "aws_cloudwatch_metric_alarm" "product_pages" {
 }
 
 resource "aws_route53_health_check" "product_pages" {
-  fqdn                  = "www.wifi.service.gov.uk"
-  port                  = 443
-  type                  = "HTTPS"
-  resource_path         = "/"
-  failure_threshold     = "3"
-  request_interval      = "30"
+  fqdn              = "www.wifi.service.gov.uk"
+  port              = 443
+  type              = "HTTPS"
+  resource_path     = "/"
+  failure_threshold = "3"
+  request_interval  = "30"
 
   tags = {
     Name = "Product pages healthcheck"
@@ -55,12 +55,12 @@ resource "aws_route53_record" "tech_docs" {
 }
 
 resource "aws_route53_health_check" "tech_docs" {
-  fqdn                  = "docs.wifi.service.gov.uk"
-  port                  = 443
-  type                  = "HTTPS"
-  resource_path         = "/"
-  failure_threshold     = "3"
-  request_interval      = "30"
+  fqdn              = "docs.wifi.service.gov.uk"
+  port              = 443
+  type              = "HTTPS"
+  resource_path     = "/"
+  failure_threshold = "3"
+  request_interval  = "30"
 
   tags = {
     Name = "Tech docs - offering GovWifi- healthcheck"
@@ -79,7 +79,7 @@ resource "aws_cloudwatch_metric_alarm" "tech_docs" {
   alarm_description   = "Alarm for Product Pages Route 53 health check failure"
   actions_enabled     = true
   alarm_actions       = [var.critical_notifications_arn]
-  treat_missing_data = "missing"
+  treat_missing_data  = "missing"
 
   dimensions = {
     HealthCheckId = aws_route53_health_check.tech_docs.id
@@ -95,12 +95,12 @@ resource "aws_route53_record" "dev_docs" {
 }
 
 resource "aws_route53_health_check" "dev_docs" {
-  fqdn                  = "dev-docs.wifi.service.gov.uk"
-  port                  = 443
-  type                  = "HTTPS"
-  resource_path         = "/"
-  failure_threshold     = "3"
-  request_interval      = "30"
+  fqdn              = "dev-docs.wifi.service.gov.uk"
+  port              = 443
+  type              = "HTTPS"
+  resource_path     = "/"
+  failure_threshold = "3"
+  request_interval  = "30"
 
   tags = {
     Name = "Dev docs healthcheck"
@@ -119,7 +119,7 @@ resource "aws_cloudwatch_metric_alarm" "dev_docs" {
   alarm_description   = "Alarm for Product Pages Route 53 health check failure"
   actions_enabled     = true
   alarm_actions       = [var.critical_notifications_arn]
-  treat_missing_data = "missing"
+  treat_missing_data  = "missing"
 
   dimensions = {
     HealthCheckId = aws_route53_health_check.dev_docs.id
