@@ -8,7 +8,9 @@ phases:
     - echo "AWS_REGION is $AWS_REGION "
     - echo "Source bucket is $SOURCE_BUCKET"
   build:
-    commands: -echo "list directory" - ls
+    commands:
+    - echo "list directory"
+    - ls
     #- aws cp --recursive ./ $SOURCE_BUCKET
   post_build:
     commands:
