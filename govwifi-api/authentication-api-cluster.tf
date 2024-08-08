@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "authentication_api_task" {
           "name": "DB_HOSTNAME",
           "value": "${var.user_rr_hostname}"
         },{
-          "name": "RACK_ENV",
+          "name": "DEPLOY_ENV",
           "value": "${var.rack_env}"
         },{
           "name": "SENTRY_CURRENT_ENV",
