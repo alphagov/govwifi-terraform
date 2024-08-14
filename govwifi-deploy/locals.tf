@@ -19,6 +19,7 @@ locals {
 locals {
     git_owner = "alphagov"
     branch = "master"
+    s3_source_dir = "source"
     app = {
       admin = {
         repo = "govwifi-admin"

@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+    - echo upload source to s3 for pipeline...
+    - aws --version
+    - SOURCE_FOLDER=s3://$SOURCE_BUCKET/$OBJ_DIR
+    - echo "AWS_REGION is $AWS_REGION "
+    - echo "Source bucket is $SOURCE_BUCKET"
+    - echo "Zip Directory $OBJ_DIR"
+  build:
+    commands:
+    - echo "Upload source to $SOURCE_FOLDER"
+    - zip -r ./app.zip .
+    - aws s3 cp ./app.zip $SOURCE_FOLDER
+  post_build:
+    commands:
+    - echo Get Source completed on `date`

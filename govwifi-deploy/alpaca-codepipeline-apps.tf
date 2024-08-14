@@ -28,20 +28,18 @@ resource "aws_codepipeline" "alpaca_deploy_apps_pipeline" {
   stage {
     name = "Source"
     action {
-      name             = "Github-${each.key}-Alpaca"
+      name             = "S3-${each.key}-Alpaca"
       category         = "Source"
-      owner            = "ThirdParty"
-      provider         = "GitHub"
+      owner            = "AWS"
+      provider         = "S3"
       version          = 1
       run_order        = 1
       output_artifacts = ["${each.key}-source-art"]
       
       configuration = {
-          Owner  = local.git_owner
-          Repo   = local.app[each.key].repo
-          Branch = local.branch
-          OAuthToken = jsondecode(data.aws_secretsmanager_secret_version.github_token.secret_string)["token"]
-          PollForSourceChanges = true
+          S3Bucket = aws_s3_bucket.codepipeline_bucket.bucket
+          S3ObjectKey = "${local.s3_source_dir}/${each.key}/app.zip"
+          PollForSourceChanges = false
       }
     }
   }
