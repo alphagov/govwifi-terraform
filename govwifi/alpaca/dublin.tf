@@ -302,10 +302,6 @@ module "dublin_api" {
 
   admin_app_data_s3_bucket_name = module.london_admin.app_data_s3_bucket_name
 
-  backend_sg_list = [
-    module.dublin_backend.be_admin_in,
-  ]
-
   alb_permitted_security_groups = [
     module.dublin_frontend.load_balanced_frontend_service_security_group_id
   ]

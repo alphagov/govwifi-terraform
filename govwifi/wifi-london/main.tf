@@ -340,9 +340,6 @@ module "api" {
 
   admin_app_data_s3_bucket_name = module.govwifi_admin.app_data_s3_bucket_name
 
-  backend_sg_list = [
-    module.backend.be_admin_in,
-  ]
 
   alb_permitted_security_groups = [
     module.frontend.load_balanced_frontend_service_security_group_id,
@@ -478,8 +475,6 @@ module "govwifi_grafana" {
   subnet_ids = module.backend.backend_subnet_ids
 
   backend_subnet_ids = module.backend.backend_subnet_ids
-
-  be_admin_in = module.backend.be_admin_in
 
   vpc_id = module.backend.backend_vpc_id
 

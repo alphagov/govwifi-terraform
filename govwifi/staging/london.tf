@@ -270,10 +270,6 @@ module "london_api" {
 
   admin_app_data_s3_bucket_name = module.london_admin.app_data_s3_bucket_name
 
-  backend_sg_list = [
-    module.london_backend.be_admin_in,
-  ]
-
   metrics_bucket_name     = module.london_dashboard.metrics_bucket_name
   export_data_bucket_name = module.london_dashboard.export_data_bucket_name
 
@@ -396,7 +392,6 @@ module "london_grafana" {
 
   subnet_ids         = module.london_backend.backend_subnet_ids
   backend_subnet_ids = module.london_backend.backend_subnet_ids
-  be_admin_in        = module.london_backend.be_admin_in
 
   vpc_id = module.london_backend.backend_vpc_id
 
