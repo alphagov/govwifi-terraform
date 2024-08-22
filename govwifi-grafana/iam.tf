@@ -28,6 +28,12 @@ EOF
 
 }
 
+
+resource "aws_iam_role_policy_attachment" "grafana_instance_ssm" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  role       = aws_iam_role.grafana_instance_role.id
+}
+
 resource "aws_iam_role_policy" "grafana_instance_policy" {
   name = "${var.aws_region}-${var.env_name}-grafana-instance-policy"
   role = aws_iam_role.grafana_instance_role.id
@@ -60,6 +66,19 @@ resource "aws_iam_role_policy" "grafana_instance_policy" {
       ]
     },
     {
+      "Effect": "Allow",
+      "Action": "ssm:StartSession",
+        "Resource": [
+          "arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:instance/${aws_instance.grafana_instance.id}",
+          "arn:aws:ssm:*:*:document/AWS-StartSSHSession"
+      ],
+      "Condition": {
+          "BoolIfExists": {
+              "ssm:SessionDocumentAccessCheck": "true"
+          }
+        }
+    },
+    {
       "Action": [
         "secretsmanager:GetSecretValue"
       ],
@@ -68,9 +87,9 @@ resource "aws_iam_role_policy" "grafana_instance_policy" {
         "arn:aws:secretsmanager:${var.aws_region}:${var.aws_account_id}:secret:grafana/credentials*"
       ],
       "Condition": {
-                "DateGreaterThan": {"aws:CurrentTime": "${time_static.instance_update.rfc3339}"},
-                "DateLessThan": {"aws:CurrentTime": "${timeadd(time_static.instance_update.rfc3339, "10m")}"}
-            }
+        "DateGreaterThan": {"aws:CurrentTime": "${time_static.instance_update.rfc3339}"},
+        "DateLessThan": {"aws:CurrentTime": "${timeadd(time_static.instance_update.rfc3339, "10m")}"}
+      }
     }
   ]
 }
