@@ -28,6 +28,11 @@ EOF
 
 }
 
+resource aws_iam_role_policy_attachment "prometheus_instance_ssm" {
+    policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    role = aws_iam_role.prometheus_instance_role.id
+}
+
 resource "aws_iam_role_policy" "prometheus_instance_policy" {
   name = "${data.aws_region.current.name}-${var.env_name}-prometheus-instance-policy"
   role = aws_iam_role.prometheus_instance_role.id
@@ -58,6 +63,19 @@ resource "aws_iam_role_policy" "prometheus_instance_policy" {
       "Resource": [
         "arn:aws:logs:*:*:*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "ssm:StartSession",
+      "Resource": [
+          "arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:instance/${aws_instance.prometheus_instance.id}",
+          "arn:aws:ssm:*:*:document/AWS-StartSSHSession"
+      ],
+      "Condition": {
+          "BoolIfExists": {
+              "ssm:SessionDocumentAccessCheck": "true"
+          }
+        }
     }
   ]
 }
