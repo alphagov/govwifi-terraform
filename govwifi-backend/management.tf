@@ -231,6 +231,19 @@ resource "aws_iam_role_policy" "bastion_instance_policy_pp" {
       "Resource": [
         "arn:aws:logs:*:*:*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "ssm:StartSession",
+        "Resource": [
+          "arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:instance/${aws_instance.management[0].id}",
+          "arn:aws:ssm:*:*:document/AWS-StartSSHSession"
+      ],
+      "Condition": {
+          "BoolIfExists": {
+              "ssm:SessionDocumentAccessCheck": "true"
+          }
+        }
     }
   ]
 }
