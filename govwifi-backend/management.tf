@@ -176,6 +176,12 @@ resource "aws_iam_role" "bastion_instance_role" {
 EOF
 }
 
+resource aws_iam_role_policy_attachment "bastion_instance_ssm" {
+    count      = var.enable_bastion
+    policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    role = aws_iam_role.bastion_instance_role[0].id
+}
+
 resource "aws_iam_role_policy" "bastion_instance_policy" {
   count      = var.enable_bastion
   name       = "${var.aws_region_name}-${var.env_name}-backend-bastion-instance-policy"
@@ -227,6 +233,19 @@ resource "aws_iam_role_policy" "bastion_instance_policy_pp" {
       "Resource": [
         "arn:aws:logs:*:*:*"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "ssm:StartSession",
+        "Resource": [
+          "arn:aws:ec2:${var.aws_region}:${var.aws_account_id}:instance/${aws_instance.management[0].id}",
+          "arn:aws:ssm:*:*:document/AWS-StartSSHSession"
+      ],
+      "Condition": {
+          "BoolIfExists": {
+              "ssm:SessionDocumentAccessCheck": "true"
+          }
+        }
     }
   ]
 }
