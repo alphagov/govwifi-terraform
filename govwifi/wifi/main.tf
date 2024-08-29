@@ -302,10 +302,6 @@ module "api" {
   user_rr_hostname         = var.user_rr_hostname
   rds_mysql_backup_bucket  = module.backend.rds_mysql_backup_bucket
 
-  backend_sg_list = [
-    module.backend.be_admin_in,
-  ]
-
   alb_permitted_security_groups = [
     module.frontend.load_balanced_frontend_service_security_group_id
   ]
