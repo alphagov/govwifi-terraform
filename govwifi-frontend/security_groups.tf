@@ -284,7 +284,7 @@ resource "aws_security_group" "vpc_endpoints" {
       aws_security_group.fe_ecs_out.id
     ]
   }
-  
+
   ingress {
     description = "Allow HTTPS to AWS Service CW"
     from_port   = 443

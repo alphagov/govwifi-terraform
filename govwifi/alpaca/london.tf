@@ -215,7 +215,7 @@ module "london_admin" {
 
   elasticsearch_endpoint = module.london_elasticsearch.endpoint
 
-  frontend_cert_bucket = module.london_frontend.frontend_certs_bucket_name
+  frontend_cert_bucket     = module.london_frontend.frontend_certs_bucket_name
   trusted_certificates_key = module.london_frontend.trusted_certificates_key
 }
 
@@ -397,10 +397,10 @@ module "govwifi_slack_alerts" {
 
   source = "../../govwifi-slack-alerts"
 
-  london_critical_notifications_topic_arn         = module.london_critical_notifications.topic_arn
-  london_capacity_notifications_topic_arn         = module.london_notifications.topic_arn
-  dublin_critical_notifications_topic_arn         = module.dublin_critical_notifications.topic_arn
-  dublin_capacity_notifications_topic_arn         = module.dublin_notifications.topic_arn
+  london_critical_notifications_topic_arn = module.london_critical_notifications.topic_arn
+  london_capacity_notifications_topic_arn = module.london_notifications.topic_arn
+  dublin_critical_notifications_topic_arn = module.dublin_critical_notifications.topic_arn
+  dublin_capacity_notifications_topic_arn = module.dublin_notifications.topic_arn
 
   route53_critical_notifications_topic_arn = module.london_route53_notifications.topic_arn
   # set to 1 to create config for slack chat bot.

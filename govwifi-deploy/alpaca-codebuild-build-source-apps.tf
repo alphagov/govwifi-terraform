@@ -74,7 +74,7 @@ resource "aws_codebuild_project" "govwifi_codebuild_get_source_apps_dev" {
 }
 
 resource "aws_codebuild_webhook" "govwifi_app_webhook_dev" {
-  for_each      = toset(var.deployed_app_names)
+  for_each     = toset(var.deployed_app_names)
   project_name = aws_codebuild_project.govwifi_codebuild_get_source_apps_dev[each.key].name
 
   build_type = "BUILD"
