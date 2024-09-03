@@ -118,9 +118,19 @@ resource "aws_s3_bucket_replication_configuration" "accesslogs_replication" {
   }
 }
 
+resource "aws_s3_bucket_ownership_controls" "accesslogs_bucket" {
+  bucket = aws_s3_bucket.accesslogs_bucket.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+
 resource "aws_s3_bucket_acl" "accesslogs_bucket" {
   bucket = aws_s3_bucket.accesslogs_bucket.id
   acl    = "log-delivery-write"
+
+  depends_on = [aws_s3_bucket_ownership_controls.accesslogs_bucket]
 }
 
 resource "aws_s3_bucket_versioning" "accesslogs_bucket" {

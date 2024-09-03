@@ -70,7 +70,17 @@ POLICY
 
 }
 
+# Resource to avoid error "AccessControlListNotSupported: The bucket does not allow ACLs"
+resource "aws_s3_bucket_ownership_controls" "smoke_tests_bucket_acl" {
+  bucket = aws_s3_bucket.smoke_tests_bucket.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
 resource "aws_s3_bucket_acl" "smoke_tests_bucket_acl" {
   bucket = aws_s3_bucket.smoke_tests_bucket.id
   acl    = "private"
+
+  depends_on = [aws_s3_bucket_ownership_controls.smoke_tests_bucket_acl]
 }

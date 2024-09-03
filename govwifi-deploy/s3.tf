@@ -2,9 +2,18 @@ resource "aws_s3_bucket" "codepipeline_bucket" {
   bucket = "govwifi-codepipeline-bucket"
 }
 
+resource "aws_s3_bucket_ownership_controls" "codepipeline_bucket" {
+  bucket = aws_s3_bucket.codepipeline_bucket.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
 resource "aws_s3_bucket_acl" "codepipeline_bucket_acl" {
   bucket = aws_s3_bucket.codepipeline_bucket.id
   acl    = "private"
+
+  depends_on = [aws_s3_bucket_ownership_controls.codepipeline_bucket]
 }
 
 resource "aws_s3_bucket_public_access_block" "codepipeline_bucket" {
@@ -25,7 +34,7 @@ resource "aws_s3_bucket_versioning" "source" {
 
 # Push S3 notifications to EventBridge
 resource "aws_s3_bucket_notification" "codepipeline_bucket" {
-  bucket = aws_s3_bucket.codepipeline_bucket.id
+  bucket      = aws_s3_bucket.codepipeline_bucket.id
   eventbridge = true
 }
 
