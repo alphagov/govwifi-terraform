@@ -203,36 +203,6 @@ resource "aws_iam_role_policy" "bastion_instance_policy" {
       "Resource": [
         "arn:aws:logs:*:*:*"
       ]
-    }
-  ]
-}
-EOF
-
-}
-
-resource "aws_iam_role_policy" "bastion_instance_policy_pp" {
-  count = var.enable_bastion
-  name  = "${var.aws_region_name}-${var.env_name}-backend-bastion-instance-policy"
-  role  = aws_iam_role.bastion_instance_role[0].id
-  depends_on = [
-    aws_iam_role.bastion_instance_role
-  ]
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogStreams"
-      ],
-      "Resource": [
-        "arn:aws:logs:*:*:*"
-      ]
     },
     {
       "Effect": "Allow",
