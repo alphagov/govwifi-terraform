@@ -22,6 +22,14 @@ data "aws_secretsmanager_secret" "notify_api_key" {
   name = "admin-api/notify-api-key"
 }
 
+data "aws_secretsmanager_secret_version" "notify_do_not_reply" {
+  secret_id = data.aws_secretsmanager_secret.notify_do_not_reply.id
+}
+
+data "aws_secretsmanager_secret" "notify_do_not_reply" {
+  name = "user-signup-api/notify-do-not-reply"
+}
+
 data "aws_secretsmanager_secret_version" "notify_bearer_token" {
   secret_id = data.aws_secretsmanager_secret.notify_bearer_token.id
 }
