@@ -158,7 +158,7 @@ resource "aws_security_group_rule" "permit_logging_api_ingress_to_vpc_endpoints"
   from_port = 443
   to_port   = 443
   protocol  = "tcp"
-
+  description = "Logging API"
   source_security_group_id = aws_security_group.logging_api_service.id
 }
 
@@ -169,7 +169,7 @@ resource "aws_security_group_rule" "permit_authentication_ingress_to_vpc_endpoin
   from_port = 443
   to_port   = 443
   protocol  = "tcp"
-
+  description = "Authentication API"
   source_security_group_id = aws_security_group.authentication_api_service.id
 }
 
@@ -180,6 +180,6 @@ resource "aws_security_group_rule" "permit_api_ingress_to_vpc_endpoints" {
   from_port = 443
   to_port   = 443
   protocol  = "tcp"
-
+  description = "User Signup API"
   source_security_group_id = aws_security_group.api_out.id
 }
