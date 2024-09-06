@@ -15,6 +15,12 @@ resource "aws_ecs_cluster_capacity_providers" "frontend_fargate" {
   capacity_providers = ["FARGATE"]
 }
 
+resource "aws_cloudwatch_log_group" "frontend_log_group" {
+  name = "${var.env_name}-frontend-docker-log-group"
+
+  retention_in_days = 90
+}
+
 resource "aws_cloudwatch_log_group" "frontend" {
   name = "frontend"
 
@@ -137,7 +143,7 @@ resource "aws_ecs_task_definition" "radius_task" {
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${aws_cloudwatch_log_group.frontend.name}",
+        "awslogs-group": "${aws_cloudwatch_log_group.frontend_log_group.name}",
         "awslogs-region": "${var.aws_region}",
         "awslogs-stream-prefix": "${var.env_name}-docker-logs"
       }
@@ -173,7 +179,7 @@ resource "aws_ecs_task_definition" "radius_task" {
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "${aws_cloudwatch_log_group.frontend.name}",
+        "awslogs-group": "${aws_cloudwatch_log_group.frontend_log_group.name}",
         "awslogs-region": "${var.aws_region}",
         "awslogs-stream-prefix": "${var.env_name}-docker-logs"
       }
