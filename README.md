@@ -250,7 +250,7 @@ This holds information related to the terraform state, and must be created manua
 
 `govwifi-<ENV>-<AWS-REGION-NAME>-accesslogs`
 
-An example commands for creating buckets in the Staging environment for the London and Dublin regions would be:
+Example commands for creating buckets in the Staging environment for the London and Dublin regions would be:
 
 ```
 gds-cli aws govwifi-staging -- aws s3api create-bucket --bucket govwifi-staging-london-accesslogs --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
@@ -363,26 +363,25 @@ Our deploy pipelines exist in a separate account. You can access it with the fol
 
 In order to deploy applications you will need to create a new set of pipelines for that environment.
 - There are set of template terraform files for creating pipelines for a new environment in govwifi-terraform/tools/pipeline-templates. You can copy these across manually and change the names or you can use the commands below. **All commands are run from the govwifi-terraform root directory**
-- Copy the pipeline terraform template files in `govwifi-terraform/tools/pipeline-templates` to the govwifi-deploy directory:
+- Copy the pipeline terraform template files in `govwifi-terraform/tools/pipeline-templates` to the govwifi-deploy directory using the command below:
 
 ```
 for filename in tools/pipeline-templates/*your-env-name*;  do cp -Rp $filename ./govwifi-deploy/$(basename $filename) ; done
 ```
 
-- Update the names of the terraform resources in the template files to match your new environment
+- Update the names of the terraform resources in the template files to match your new environment (replace <ENV_NAME> with the name of your environment e.g. dev)
 
 ```
 for filename in ./govwifi-deploy/*your-env-name* ; do sed -i '' 's/your-env-name/<ENV_NAME>/g' $filename ; done
 ```
 
-- Change the name of the file to match your new environment (change  **<NEW-ENV-NAME>** to your new environment name e.g. "dev")
+- Change the name of the files to match your new environment (change  **<NEW-ENV-NAME>** to your new environment name e.g. dev)
 
 ```
 for filename in ./govwifi-deploy/*your-env-name* ; do mv $filename ${filename/your-env-name/<NEW-ENV-NAME>}  ; done
 ```
 
-There are 2 file to do this for.
-To deploy the Codebuild and Code Pipeline the the new environment, replace "your-env-name" with your environment name, ensure the new account number is placed into the 'locals' file.
+Ensure a reference to the new account number is added to in the govwifi-tools AWS account and added to `govwifi-terraform/govwifi-deploy/locals.tf` file. [This commit shows an example] (https://github.com/alphagov/govwifi-terraform/commit/5482ac674b74b946b66040e158101bd4aa703a44#diff-80629d600c5574b9e7d4dc7ba991ce39068d32cabd1046130d5e8e4827460f77R9)
 
 ##### Updating Other Pipeline files:
 
