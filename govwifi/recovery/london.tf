@@ -175,7 +175,7 @@ module "london_admin" {
 
   admin_docker_image   = format("%s/admin:recovery", local.docker_image_path)
   rails_env            = "production"
-  app_env              = "staging"
+  app_env              = "recovery"
   sentry_current_env   = "recovery"
   ecr_repository_count = 1
 
@@ -423,6 +423,9 @@ module "london_govwifi-ecs-update-service" {
   env_name = "recovery"
 
   aws_account_id = local.aws_account_id
+
+  # This module requires an IAM role created by the govwifi-smoketests module
+  depends_on = [module.london_smoke_tests]
 }
 
 module "london_elasticsearch" {

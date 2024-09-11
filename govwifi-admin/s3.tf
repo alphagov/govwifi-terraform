@@ -50,6 +50,15 @@ resource "aws_s3_bucket_acl" "product_page_data_bucket" {
 
 }
 
+resource "aws_s3_bucket_public_access_block" "product_page_data_bucket" {
+  bucket = aws_s3_bucket.product_page_data_bucket.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
 resource "aws_s3_bucket_versioning" "product_page_data_bucket" {
   bucket = aws_s3_bucket.product_page_data_bucket.id
 

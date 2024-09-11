@@ -33,6 +33,7 @@ resource "aws_kms_key" "codepipeline_key" {
             "Principal": {
                 "AWS": [
 										"arn:aws:iam::${local.aws_alpaca_account_id}:root",
+										"arn:aws:iam::${local.aws_recovery_account_id}:root",
 										"arn:aws:iam::${local.aws_staging_account_id}:root",
 								 		"arn:aws:iam::${local.aws_production_account_id}:root"
 									]
@@ -58,6 +59,7 @@ resource "aws_kms_key" "codepipeline_key" {
             "Principal": {
                 "AWS": [
 										"arn:aws:iam::${local.aws_alpaca_account_id}:root",
+										"arn:aws:iam::${local.aws_recovery_account_id}:root",
 										"arn:aws:iam::${local.aws_staging_account_id}:root",
 										"arn:aws:iam::${local.aws_production_account_id}:root"
 									]
@@ -123,6 +125,7 @@ resource "aws_kms_key" "codepipeline_key_ireland" {
             "Principal": {
                 "AWS": [
 										"arn:aws:iam::${local.aws_alpaca_account_id}:root",
+										"arn:aws:iam::${local.aws_recovery_account_id}:root",
 										"arn:aws:iam::${local.aws_staging_account_id}:root",
 								 		"arn:aws:iam::${local.aws_production_account_id}:root"
 									]
@@ -148,6 +151,7 @@ resource "aws_kms_key" "codepipeline_key_ireland" {
             "Principal": {
                 "AWS": [
 										"arn:aws:iam::${local.aws_alpaca_account_id}:root",
+										"arn:aws:iam::${local.aws_recovery_account_id}:root",
 										"arn:aws:iam::${local.aws_staging_account_id}:root",
 										"arn:aws:iam::${local.aws_production_account_id}:root"
 									]
