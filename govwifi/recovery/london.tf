@@ -259,7 +259,7 @@ module "london_api" {
   user_rr_hostname = "users-db.${lower(local.london_aws_region_name)}.${local.env_subdomain}.service.gov.uk"
 
   rack_env                  = "recovery"
-  app_env                   = "staging"
+  app_env                   = "recovery"
   sentry_current_env        = "recovery"
   radius_server_ips         = local.frontend_radius_ips
   subnet_ids                = module.london_backend.backend_subnet_ids

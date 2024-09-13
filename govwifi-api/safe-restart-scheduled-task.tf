@@ -49,7 +49,7 @@ resource "aws_ecs_task_definition" "safe_restart_task_definition" {
       "environment": [
         {
           "name": "RACK_ENV",
-          "value": "${var.rack_env}"
+          "value": "staging"
         },{
           "name": "SENTRY_CURRENT_ENV",
           "value": "${var.sentry_current_env}"

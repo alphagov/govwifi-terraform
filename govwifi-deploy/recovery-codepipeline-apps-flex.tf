@@ -1,6 +1,6 @@
 resource "aws_codepipeline" "recovery_deploy_apps_pipeline" {
   for_each = toset(var.deployed_app_names)
-  name     = "DEV-recovery-${each.key}-app-pipeline"
+  name     = "RECOVERY-${each.key}-app-pipeline"
   role_arn = aws_iam_role.govwifi_codepipeline_global_role.arn
 
   artifact_store {
