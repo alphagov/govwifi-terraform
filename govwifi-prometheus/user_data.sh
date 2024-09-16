@@ -88,7 +88,6 @@ sudo cat <<'EOF' > /opt/aws/amazon-cloudwatch-agent/bin/config.json
 {
 	"agent": {
 		"metrics_collection_interval": 60,
-    "region": "eu-west-2",
 		"run_as_user": "root"
 	},
 	"logs": {
@@ -152,7 +151,7 @@ run-until-success apt-get install --yes docker.io
 cat <<EOF > /etc/systemd/system/docker.service.d/override.conf
 [Service]
 ExecStart=
-ExecStart=/usr/bin/dockerd --log-driver awslogs --log-opt awslogs-region=eu-west-2 --log-opt awslogs-group=${prometheus-log-group} --dns 10.0.0.2
+ExecStart=/usr/bin/dockerd --log-driver awslogs --log-opt --log-opt awslogs-group=${prometheus-log-group} --dns 10.0.0.2
 EOF
 
 # Reload systemctl daemon to pick up new override files
