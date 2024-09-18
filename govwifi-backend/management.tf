@@ -22,8 +22,6 @@ resource "aws_instance" "management" {
   subnet_id     = aws_subnet.wifi_backend_subnet[data.aws_availability_zones.zones.names[0]].id
 
   vpc_security_group_ids = [
-    aws_security_group.be_vpn_in.id,
-    aws_security_group.be_vpn_out.id,
     aws_security_group.be_ecs_out.id,
   ]
 
@@ -176,10 +174,10 @@ resource "aws_iam_role" "bastion_instance_role" {
 EOF
 }
 
-resource aws_iam_role_policy_attachment "bastion_instance_ssm" {
-    count      = var.enable_bastion
-    policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-    role = aws_iam_role.bastion_instance_role[0].id
+resource "aws_iam_role_policy_attachment" "bastion_instance_ssm" {
+  count      = var.enable_bastion
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  role       = aws_iam_role.bastion_instance_role[0].id
 }
 
 resource "aws_iam_role_policy" "bastion_instance_policy" {
