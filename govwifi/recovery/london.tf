@@ -462,7 +462,7 @@ module "london_smoke_tests" {
   smoketest_subnet_public_b  = var.smoketest_subnet_public_b
   aws_region                 = local.london_aws_region
   create_slack_alert         = 0
-  govwifi_phone_number       = "+447537417039"
+  govwifi_phone_number       = "+447860099144"
   notify_field               = "govwifirecovery"
 
   depends_on = [
