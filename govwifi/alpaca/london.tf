@@ -348,8 +348,6 @@ module "london_prometheus" {
 
   frontend_vpc_id = module.london_frontend.frontend_vpc_id
 
-  fe_admin_in = module.london_frontend.fe_admin_in
-
   wifi_frontend_subnet       = module.london_frontend.frontend_subnet_id
   london_radius_ip_addresses = module.london_frontend.eip_public_ips
   dublin_radius_ip_addresses = module.dublin_frontend.eip_public_ips

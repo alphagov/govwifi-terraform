@@ -378,8 +378,6 @@ module "govwifi_prometheus" {
 
   frontend_vpc_id = module.frontend.frontend_vpc_id
 
-  fe_admin_in = module.frontend.fe_admin_in
-
   wifi_frontend_subnet       = module.frontend.frontend_subnet_id
   london_radius_ip_addresses = var.london_radius_ip_addresses
   dublin_radius_ip_addresses = var.dublin_radius_ip_addresses

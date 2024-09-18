@@ -441,8 +441,6 @@ module "govwifi_prometheus" {
 
   frontend_vpc_id = module.frontend.frontend_vpc_id
 
-  fe_admin_in = module.frontend.fe_admin_in
-
   aws_region      = var.aws_region
   aws_region_name = var.aws_region_name
 
