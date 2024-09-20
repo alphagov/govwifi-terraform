@@ -52,7 +52,7 @@ rencrypt-passwords: .private ## Rencrypt passwords after adding a new gpg id to 
 unencrypt-secrets: .private update-secrets
 	scripts/unencrypt-secrets.sh unencrypt
 delete-secrets: .private
-	scripts/unencrypt-secrets.sh delete
+	# scripts/unencrypt-secrets.sh delete
 
 lint: lint-terraform
 format: format-terraform
