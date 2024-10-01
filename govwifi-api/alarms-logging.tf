@@ -18,6 +18,7 @@ resource "aws_cloudwatch_metric_alarm" "logging_ecs_cpu_alarm_high" {
 
   alarm_actions = [
     aws_appautoscaling_policy.ecs_policy_up_logging[0].arn,
+    var.capacity_notifications_arn
   ]
 
   treat_missing_data = "breaching"
