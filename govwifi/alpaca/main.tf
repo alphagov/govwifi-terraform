@@ -1,5 +1,5 @@
 terraform {
-  required_version = "~> 1.6.3"
+  required_version = "~> 1.9.6"
 
   backend "s3" {
     bucket = "govwifi-alpaca-tfstate-eu-west-2"
