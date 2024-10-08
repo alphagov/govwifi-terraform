@@ -45,3 +45,23 @@ resource "aws_s3_bucket_public_access_block" "export_data_bucket" {
   block_public_acls       = false
   block_public_policy     = false
 }
+
+
+resource "aws_s3_bucket_policy" "export_data_bucket_policy" {
+  bucket = aws_s3_bucket.export_data_bucket.id
+
+  policy = <<POLICY
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicAccess",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::${aws_s3_bucket.export_data_bucket.id}/*"
+        }
+    ]
+  }
+  POLICY
+}
