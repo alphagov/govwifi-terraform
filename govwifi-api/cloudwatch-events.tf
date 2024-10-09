@@ -87,6 +87,15 @@ resource "aws_cloudwatch_event_rule" "active_users_signup_survey_event" {
   is_enabled          = true
 }
 
+resource "aws_cloudwatch_event_rule" "inactive_user_followup_event" {
+  count               = var.event_rule_count
+  name                = "${var.env_name}-inactive-user-followup"
+  description         = "Triggers daily at 6:00PM UTC"
+  schedule_expression = "cron(0 18 * * ? *)"
+  is_enabled          = true
+}
+
+
 resource "aws_cloudwatch_event_rule" "sync_s3_to_elasticsearch_event" {
   count               = var.event_rule_count
   name                = "${var.env_name}-sync-s3-to-elasticsearch"
