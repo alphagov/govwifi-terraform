@@ -243,6 +243,9 @@ resource "aws_ecs_task_definition" "user_signup_api_scheduled_task" {
           "name": "NOTIFY_DO_NOT_REPLY",
           "valueFrom": "${data.aws_secretsmanager_secret.notify_do_not_reply.arn}"
         },{
+          "name": "NOTIFY_SUPPORT_REPLY",
+          "valueFrom": "${data.aws_secretsmanager_secret.notify_support_reply.arn}"
+        },{
           "name": "GOVNOTIFY_BEARER_TOKEN",
           "valueFrom": "${data.aws_secretsmanager_secret_version.notify_bearer_token.arn}:token::"
         },{
@@ -330,7 +333,6 @@ resource "aws_cloudwatch_event_target" "inactive_user_followup" {
       subnets = var.subnet_ids
 
       security_groups = concat(
-        var.backend_sg_list,
         [aws_security_group.api_in.id],
         [aws_security_group.api_out.id]
       )
@@ -343,7 +345,7 @@ resource "aws_cloudwatch_event_target" "inactive_user_followup" {
 {
   "containerOverrides": [
     {
-      "name": "user-signup-api",
+      "name": "inactive-user-followup",
       "command": ["bundle", "exec", "rake", "inactive_user_followup"]
     }
   ]

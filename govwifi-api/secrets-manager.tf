@@ -30,6 +30,14 @@ data "aws_secretsmanager_secret" "notify_do_not_reply" {
   name = "user-signup-api/notify-do-not-reply"
 }
 
+data "aws_secretsmanager_secret_version" "notify_support_reply" {
+  secret_id = data.aws_secretsmanager_secret.notify_support_reply.id
+}
+
+data "aws_secretsmanager_secret" "notify_support_reply" {
+  name = "user-signup-api/notify-support-reply"
+}
+
 data "aws_secretsmanager_secret_version" "notify_bearer_token" {
   secret_id = data.aws_secretsmanager_secret.notify_bearer_token.id
 }
