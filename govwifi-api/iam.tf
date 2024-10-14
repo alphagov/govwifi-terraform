@@ -42,7 +42,8 @@ data "aws_iam_policy_document" "secrets_manager_policy" {
       data.aws_secretsmanager_secret.authentication_api_sentry_dsn.arn,
       data.aws_secretsmanager_secret.user_signup_api_sentry_dsn.arn,
       data.aws_secretsmanager_secret.logging_api_sentry_dsn.arn,
-      data.aws_secretsmanager_secret.notify_do_not_reply.arn
+      data.aws_secretsmanager_secret.notify_do_not_reply.arn,
+      data.aws_secretsmanager_secret.notify_support_reply.arn
     ]
   }
 }
