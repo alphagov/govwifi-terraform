@@ -56,29 +56,6 @@ resource "aws_ses_receipt_rule" "all_mail_rule" {
   }
 }
 
-resource "aws_ses_receipt_rule" "newsite_mail_rule" {
-  name          = "${var.env_name}-newsite-mail-rule"
-  rule_set_name = aws_ses_receipt_rule_set.main.rule_set_name
-  enabled       = true
-  scan_enabled  = true
-  after         = aws_ses_receipt_rule.all_mail_rule.name
-
-  depends_on = [
-    aws_sns_topic.govwifi_email_notifications,
-    aws_s3_bucket.emailbucket,
-    aws_ses_receipt_rule.user_signup_rule,
-  ]
-
-  recipients = [
-    "newsite@${var.env_subdomain}.service.gov.uk",
-  ]
-
-  sns_action {
-    topic_arn = var.devops_notifications_arn
-    position  = 1
-  }
-}
-
 resource "aws_ses_receipt_rule" "admin_email_rule" {
   name          = "${var.env_name}-admin-email-rule"
   rule_set_name = aws_ses_receipt_rule_set.main.rule_set_name
