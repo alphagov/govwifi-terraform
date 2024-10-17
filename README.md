@@ -148,20 +148,7 @@ Add the new environment to the Makefile. [See here for an example commit](https:
 
 #### Update Application Environment Variables 
 
-Due to the way the GovWifi Ruby applications have been built the apps will expect to be running in one of the following environments:
-- production
-- staging
-- development
-
-This is based on the way the Ruby configuration files are set up. You can see an example [here](https://github.com/alphagov/govwifi-admin/blob/1ed0271fcb800b228d9e421772f1983784777883/config/database.yml).
-
-The APP_ENV environment variable for any new GovWifi environment should be set to `staging`, unless this is a real diaster recovery of production (in which case set the APP_ENV to `production`). The `dev` setting is only used when the app containers are run on a developers' local machine.
-
-> There is work planned to improve this process, and make the apps more environment agnostic.
-
-Do a search for `app_env` in the london.tf and dublin.f files for your new environment. Set this variable to `staging` anywhere you encounter it [See this commit for an example](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-9745914b44847dfa981046a838f8d8886ddf9454939ee465b8ea257950c5ca85R288).
-
-Also set the `user_db_name` variable in the london_admin module of the london.tf file for your environment to `govwifi_staging_users`. To see an example [open the london.tf file in the commit](https://github.com/alphagov/govwifi-terraform/pull/777/commits/5482ac674b74b946b66040e158101bd4aa703a44#diff-adf1083457d3aaad1753c8b333a2dbae1f1aff6f202d4b2390a983cef0389f88), click on the `Load diff` and navigate to a **line 189**.
+The APP_ENV environment variable for any new GovWifi environment should be set to the name of your environment (e.g. `recovery`), unless this is a real disaster recovery of production (in which case set the APP_ENV to `production`).
 
 #### Update Govwifi-Build
 
