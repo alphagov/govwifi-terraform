@@ -133,7 +133,11 @@ Edit, then run the following command from the root of the govwifi-terraform dire
 
 ```
 cp -Rp govwifi/staging govwifi/<NEW-ENV-NAME>
+```
 
+#### Let's remove the existing terraform state and provider directory so that we have a clean start
+```
+rm -rf ./govwifi/<NEW-ENV-NAME>/.terraform
 ```
 
 #### Change The Terraform Resource names
