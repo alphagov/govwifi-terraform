@@ -25,11 +25,12 @@ resource "aws_cloudwatch_metric_alarm" "no_healthy_hosts" {
 resource "aws_cloudwatch_metric_alarm" "radius_cannot_connect_to_api" {
   alarm_name          = "${var.env_name}-${var.aws_region_name}-radius-cannot-connect-to-api"
   comparison_operator = "GreaterThanThreshold"
-  threshold           = 0
-  evaluation_periods  = 2
+  threshold           = 10
+  evaluation_periods  = 5
+  datapoints_to_alarm = 3
   period              = "60"
   statistic           = "Sum"
-  treat_missing_data  = "breaching"
+  treat_missing_data  = "missing"
   metric_name         = aws_cloudwatch_log_metric_filter.radius_cannot_connect_to_api.metric_transformation[0].name
   namespace           = aws_cloudwatch_log_metric_filter.radius_cannot_connect_to_api.metric_transformation[0].namespace
 
