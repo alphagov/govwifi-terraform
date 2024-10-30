@@ -11,7 +11,7 @@
 #   modify the files to match the new environment name
 #   modify the Makefile to add the new environment and preserve the previous version temporarily
 #   generate a key pair and store in govwifi-build repo
-#   
+#   insert public key and key names into terraform files for the new environment
 
 # Ensure the correct number of arguments are passed
 if [ "$#" -ne 1 ]; then
@@ -49,6 +49,23 @@ TERRAFORM_SOURCE="$TERRAFORM_PATH/staging"
 
 # New env directory in terraform repo
 TERRAFORM_DESTINATION="$TERRAFORM_PATH/$NEW_ENV_NAME"
+
+# Check if new environment exists and prompt to overwrite
+
+if [ -d "$TERRAFORM_DESTINATION" ]; then
+    # Prompt for user confirmation
+    read -p "Directory $TERRAFORM_DESTINATION exists. Do you want to overwrite existing files? (y/n): " CONFIRM
+    if [[ "$CONFIRM" =~ ^[Yy]$ ]]; then
+        printf "Overwriting files in $TERRAFORM_DESTINATION\n\n"
+        # Add your file-overwriting logic here
+    else
+        printf "New environment creation canceled\n\n"
+        exit 1
+    fi
+else
+    printf "Directory $TERRAFORM_DESTINATION does not exist. Creating\n\n"
+    # Continue with the rest of the script
+fi
 
 # Create the build destination directory if it doesn't exist
 if [ ! -d "$BUILD_DESTINATION" ]; then
