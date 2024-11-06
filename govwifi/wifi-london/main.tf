@@ -244,7 +244,8 @@ module "govwifi_admin" {
   vpc_endpoints_security_group_id = module.backend.vpc_endpoints_security_group_id
 
   route53_zone_id = data.aws_route53_zone.main.zone_id
-
+  route53_zone_arn = data.aws_route53_zone.main.arn
+  
   admin_docker_image   = format("%s/admin:production", local.docker_image_path)
   rails_env            = "production"
   app_env              = "production"

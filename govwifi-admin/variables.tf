@@ -48,6 +48,11 @@ variable "route53_zone_id" {
   description = "Route53 zone to use for the domain name"
 }
 
+variable "route53_zone_arn" {
+  description = "Route53 zone arn to use with shield"
+}
+
+
 variable "instance_count" {
   description = "Number of EC2 hosts and ECS containers to be running"
 }
