@@ -1,16 +1,18 @@
 #!/bin/bash
 
 # Usage
-# Call this script with one argument (NEW_ENV_NAME) consisting of only lowercase alphabetic characters.
+# Call this script with one argument (NEW_ENV_NAME) consisting of only lowercase alphabetic characters
+# from the govwifi-terraform directory top level.
 # Example: scripts/myscript.sh recovery
 
 # Purpose
 # This script will
+#   check the env var PASSWORD_STORE_DIR is set and exit if false
 #   create new directories in govwifi-terraform & govwifi-build for a user supplied environment name
 #   copy staging files to the directories (correctly excluding .terraform directory structure)
 #   modify the files to match the new environment name
 #   modify the Makefile to add the new environment and preserve the previous version temporarily
-#   generate a key pair and store in govwifi-build repo
+#   generate a key pair and store in govwifi-build repo secrets
 #   insert public key and key names into terraform files for the new environment
 
 # Ensure the correct number of arguments are passed
@@ -25,9 +27,17 @@ if ! [[ $1 =~ ^[a-z]+$ ]]; then
     exit 1
 fi
 
-# Assign the provided parameter to NEW_ENV_NAME variable for further use
+# Assign the provided parameter to NEW_ENV_NAME variable
 NEW_ENV_NAME=$1
 printf "New environment name is: $NEW_ENV_NAME\n\n"
+while true; do
+    read -p "Is this correct? (y/n): " yn
+    case $yn in
+        [Yy]* ) printf "Confirmed. Proceeding...\n\n"; break;;  # Continue the script if confirmed
+        [Nn]* ) printf "Please set the correct environment name\n\n"; exit 1;;  # Exit if not confirmed
+        * ) printf "Please answer y or n\n";;  # Repeat the prompt if input is invalid
+    esac
+done
 
 BUILD_REPO="../govwifi-build"
 TERRAFORM_REPO="../govwifi-terraform"
@@ -50,21 +60,64 @@ TERRAFORM_SOURCE="$TERRAFORM_PATH/staging"
 # New env directory in terraform repo
 TERRAFORM_DESTINATION="$TERRAFORM_PATH/$NEW_ENV_NAME"
 
-# Check if new environment exists and prompt to overwrite
+# Check if PASSWORD_STORE_DIR is set
+if [ -z "$PASSWORD_STORE_DIR" ]; then
+    printf "The environment variable PASSWORD_STORE_DIR is not set\n\n"
+    read -p "Please set PASSWORD_STORE_DIR and rerun the script. Press any key to exit"
+    exit 1
+else
+    printf "PASSWORD_STORE_DIR is set to '$PASSWORD_STORE_DIR'. Continuing with the script...\n\n"
+fi
 
+# Set path to keys inside secrets
+SSH_KEYS_SECRET_PATH="keys"
+
+# Create key pair, $KEY_PATH includes path and key name
+KEY_NAME="govwifi-${NEW_ENV_NAME}-bastion-$(date +%Y%m%d)"
+KEY_PATH="${BUILD_REPO}/${KEY_NAME}"
+KEY_PUB_NAME="${KEY_NAME}.pub"
+PASSPHRASE=""
+
+ssh-keygen -t rsa -b 4096 -f $KEY_PATH -C "govwifi-developers@digital.cabinet-office.gov.uk"  -o -a 100 -P "$(echo -n "$PASSPHRASE\n" | sed 's/\\n/\n/')"
+if [ $? -eq 0 ]; then
+    printf "New key pair has been generated and saved in ${BUILD_REPO}\n"
+else
+    printf "Error: Failed to generate new key pair\n\n"
+fi
+
+# Encrypt keys and add to secrets
+printf "\n\n"
+pass insert -m ${SSH_KEYS_SECRET_PATH}/${KEY_NAME} < ${KEY_PATH}
+
+if [ $? -eq 0 ]; then
+    printf "key ${KEY_PATH} added\n\n"
+else
+    printf "Error: Failed to add new key\n\n"
+fi
+
+pass insert -m ${SSH_KEYS_SECRET_PATH}/${KEY_PUB_NAME} < ${BUILD_REPO}/${KEY_PUB_NAME}
+
+if [ $? -eq 0 ]; then
+    printf "key ${KEY_PATH}.pub added\n\n"
+else
+    printf "Error: Failed to add new pub key\n\n"
+fi
+
+pass find recovery
+
+printf "\n\n"
+
+# Check if new environment exists and prompt to overwrite
 if [ -d "$TERRAFORM_DESTINATION" ]; then
-    # Prompt for user confirmation
     read -p "Directory $TERRAFORM_DESTINATION exists. Do you want to overwrite existing files? (y/n): " CONFIRM
     if [[ "$CONFIRM" =~ ^[Yy]$ ]]; then
         printf "Overwriting files in $TERRAFORM_DESTINATION\n\n"
-        # Add your file-overwriting logic here
     else
         printf "New environment creation canceled\n\n"
         exit 1
     fi
 else
     printf "Directory $TERRAFORM_DESTINATION does not exist. Creating\n\n"
-    # Continue with the rest of the script
 fi
 
 # Create the build destination directory if it doesn't exist
@@ -77,7 +130,7 @@ printf "Working in $BUILD_PATH\n\n"
 cp -Rp $BUILD_SOURCE/* $BUILD_DESTINATION
 printf "Done\n\n"
 
-# Loop through the recovery files and replace 'govwifi' with the new environment nam
+# Loop through the environment files and replace 'govwifi' with the new environment nam
 printf "Updating environment references in $BUILD_DESTINATION file\n\n"
 
 for filename in "$BUILD_DESTINATION"/* ; do
@@ -113,25 +166,6 @@ if [ $? -eq 0 ]; then
 else
     printf "ERROR: Failed to modify Makefile with new environment\n\n"
 fi
-
-printf "finished\n\n"
-
-# Create key pair
-KEY_NAME="govwifi-${NEW_ENV_NAME}-bastion-$(date +%Y%m%d)"
-KEY_PATH="${BUILD_REPO}/${KEY_NAME}"
-
-printf "name: ${KEY_NAME}, full path: ${KEY_PATH}\n\n"
-PASSPHRASE=""
-ssh-keygen -t rsa -b 4096 -f $KEY_PATH -C "govwifi-developers@digital.cabinet-office.gov.uk"  -o -a 100 -P "$(echo -n "$PASSPHRASE\n" | sed 's/\\n/\n/')"
-if [ $? -eq 0 ]; then
-    printf "New key pair has been generated and saved in ${BUILD_REPO}\n\n"
-else
-    printf "Error: Failed to generate new key pair\n\n"
-fi
-
-# Encrypt keys and add to secrets                       TODO
-# PASSWORD_STORE_DIR="${BUILD_REPO}/passwords"
-# couldn't crack some local master password requirement programatically, moving on
 
 # Modify dublin.tf and london.tf with key name
 sed -i '' "s/$NEW_ENV_NAME-bastion-[0-9]*/$KEY_NAME/g" $TERRAFORM_DESTINATION/dublin.tf $TERRAFORM_DESTINATION/london.tf
