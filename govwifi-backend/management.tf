@@ -155,6 +155,20 @@ DATA
   }
 }
 
+locals {
+  log_group_names     = ["syslog","authlog","dmesg","unattended-upgrades/unattended-upgrades.log","cloud-init-output.log"]
+}
+
+resource "aws_cloudwatch_log_group" "bastion_logs" {
+  for_each = toset([
+    for v in local.log_group_names : v
+    if var.aws_region == "eu-west-2" && var.enable_bastion == 1
+  ])
+  name              = "${var.env_name}-bastion/var/log/${each.key}"
+  retention_in_days = 90
+}
+
+
 resource "aws_iam_role" "bastion_instance_role" {
   count = var.enable_bastion
   name  = "${var.aws_region_name}-${var.env_name}-backend-bastion-instance-role"
