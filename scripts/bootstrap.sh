@@ -99,6 +99,7 @@ pass insert -m ${SSH_KEYS_SECRET_PATH}/${KEY_PUB_NAME} < ${BUILD_REPO}/${KEY_PUB
 
 if [ $? -eq 0 ]; then
     printf "key ${KEY_PATH}.pub added\n\n"
+    rm ${KEY_PATH} ${BUILD_REPO}/${KEY_PUB_NAME}
 else
     printf "Error: Failed to add new pub key\n\n"
 fi
@@ -193,4 +194,9 @@ if [ $? -eq 0 ]; then
 else
     printf "Error: Failed to update key name in variables.tf\n\n"
 fi
-printf "finished\n\n"
+
+# DNS Setup
+printf "Creating initial DNS entry, you'll need to copy the NameServers lines\n\n"
+gds-cli aws govwifi-${NEW_ENV_NAME} -- aws route53 create-hosted-zone --name "${NEW_ENV_NAME}.wifi.service.gov.uk" --hosted-zone-config "Comment=\"\",PrivateZone=false" --caller-reference "govwifi-$(date)" | jq -r '.DelegationSet.NameServers[]'
+
+printf "\n\nscript finished\n\n"
