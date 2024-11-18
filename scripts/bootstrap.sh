@@ -14,6 +14,10 @@
 #   modify the Makefile to add the new environment and preserve the previous version temporarily
 #   generate a key pair and store in govwifi-build repo secrets
 #   insert public key and key names into terraform files for the new environment
+#   creates intitial DNS entry and outputs nameservers for production incorporation
+#   creates access logs' buckets
+#   creates state bucket
+
 
 # Ensure the correct number of arguments are passed
 if [ "$#" -ne 1 ]; then
@@ -198,5 +202,18 @@ fi
 # DNS Setup
 printf "Creating initial DNS entry, you'll need to copy the NameServers lines\n\n"
 gds-cli aws govwifi-${NEW_ENV_NAME} -- aws route53 create-hosted-zone --name "${NEW_ENV_NAME}.wifi.service.gov.uk" --hosted-zone-config "Comment=\"\",PrivateZone=false" --caller-reference "govwifi-$(date)" | jq -r '.DelegationSet.NameServers[]'
+
+# Let's create some required buckets
+
+# S3 Access Logs buckets
+gds-cli aws govwifi-${NEW_ENV_NAME} -- aws s3api create-bucket --bucket govwifi-${NEW_ENV_NAME}-london-accesslogs --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
+gds-cli aws govwifi-${NEW_ENV_NAME} -- aws s3api create-bucket --bucket govwifi-${NEW_ENV_NAME}-dublin-accesslogs --region eu-west-1 --create-bucket-configuration LocationConstraint=eu-west-1
+
+# Remote State bucket
+gds-cli aws govwifi-${NEW_ENV_NAME} -- aws s3api create-bucket --bucket govwifi-${NEW_ENV_NAME}-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
+
+# Check buckets
+gds-cli aws govwifi-${NEW_ENV_NAME} -- aws s3api list-buckets
+
 
 printf "\n\nscript finished\n\n"
