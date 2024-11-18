@@ -14,7 +14,8 @@
 #   modify the Makefile to add the new environment and preserve the previous version temporarily
 #   generate a key pair and store in govwifi-build repo secrets
 #   insert public key and key names into terraform files for the new environment
-#   creates intitial DNS entry and outputs nameservers for production incorporation
+#   creates intitial DNS entry and outputs nameservers for production incorporation to file: ns-records.json
+#   manipulates ns-records.json to insert real ns records
 #   creates access logs' buckets
 #   creates state bucket
 #   initialise terraform
@@ -202,9 +203,84 @@ fi
 
 # DNS Setup
 printf "Creating initial DNS entry, you'll need to copy the NameServers lines\n\n"
-gds-cli aws govwifi-${NEW_ENV_NAME} -- aws route53 create-hosted-zone --name "${NEW_ENV_NAME}.wifi.service.gov.uk" --hosted-zone-config "Comment=\"\",PrivateZone=false" --caller-reference "govwifi-$(date)" | jq -r '.DelegationSet.NameServers[]'
+gds-cli aws govwifi-${NEW_ENV_NAME} -- aws route53 create-hosted-zone --name "${NEW_ENV_NAME}.wifi.service.gov.uk" --hosted-zone-config "Comment=\"\",PrivateZone=false" --caller-reference "govwifi-$(date)" | jq -r '.DelegationSet.NameServers[]' > $TERRAFORM_REPO/ns-records.json
 
-# Let's create some required buckets
+# Extract NS values and dynamically create ns-records.json
+JSON_INPUT=$(cat <<EOF
+{
+    "Location": "https://route53.amazonaws.com/2013-04-01/hostedzone/Z008453713FV9IMQG86IV",
+    "HostedZone": {
+        "Id": "/hostedzone/Z008453713FV9IMQG86IV",
+        "Name": "${NEW_ENV_NAME}.wifi.service.gov.uk.",
+        "CallerReference": "govwifi-Fri 15 Nov 2024 16:13:12 GMT",
+        "Config": {
+            "Comment": "",
+            "PrivateZone": false
+        },
+        "ResourceRecordSetCount": 2
+    },
+    "ChangeInfo": {
+        "Id": "/change/C03932172NA3IPGZ0HVTN",
+        "Status": "PENDING",
+        "SubmittedAt": "2024-11-15T16:13:14.286000+00:00"
+    },
+    "DelegationSet": {
+        "NameServers": [
+            "ns-975.awsdns-57.net",
+            "ns-2034.awsdns-62.co.uk",
+            "ns-1040.awsdns-02.org",
+            "ns-64.awsdns-08.com"
+        ]
+    }
+}
+EOF
+)
+
+# Use jq to extract NS records
+NS_RECORDS=$(echo "$JSON_INPUT" | jq -r '.DelegationSet.NameServers[]')
+
+# Start creating the JSON file
+pwd
+cat <<EOF > ns-records.json
+{
+  "Comment": "Add NS records for ${NEW_ENV_NAME}.wifi.service.gov.uk",
+  "Changes": [
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "${NEW_ENV_NAME}.wifi.service.gov.uk.",
+        "Type": "NS",
+        "TTL": 172800,
+        "ResourceRecords": [
+EOF
+
+# Add each NS value as a separate ResourceRecord
+for ns in $NS_RECORDS; do
+  echo "          {\"Value\": \"$ns\"}," >> ns-records.json
+done
+
+# Remove the trailing comma from the last record and close the JSON file
+sed -i '' '$ s/,$//' ns-records.json
+cat <<EOF >> ns-records.json
+        ]
+      }
+    }
+  ]
+}
+EOF
+
+printf "ns-records.json has been generated successfully!\n\n"
+
+# Inject ns records into our domain
+
+HOSTED_ZONE_ID=`gds-cli aws govwifi -- aws route53 list-hosted-zones-by-name --dns-name wifi.service.gov.uk | jq -r '.HostedZones[].Id'`
+
+printf "hosted zone id = $HOSTED_ZONE_ID\n\n"
+
+# NOT YET PLEASE gds-cli aws govwifi -- aws route53 change-resource-record-sets --hosted-zone-id ${HOSTED_ZONE_ID} --change-batch file://ns-records.json
+
+
+# Phew! Now let's create some required buckets
 
 # S3 Access Logs buckets
 gds-cli aws govwifi-${NEW_ENV_NAME} -- aws s3api create-bucket --bucket govwifi-${NEW_ENV_NAME}-london-accesslogs --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
