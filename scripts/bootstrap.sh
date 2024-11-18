@@ -14,26 +14,30 @@
 #   modify the Makefile to add the new environment and preserve the previous version temporarily
 #   generate a key pair and store in govwifi-build repo secrets
 #   insert public key and key names into terraform files for the new environment
+#   uncomments 2 x secrets-manager.tf file code blocks
 #   creates intitial DNS entry and outputs nameservers for production incorporation to file: ns-records.json
-#   manipulates ns-records.json to insert real ns records
+#   manipulates ns-records.json to insert real ns records into Production domain wifi.service.gov.uk
 #   creates access logs' buckets
 #   creates state bucket
 #   initialise terraform
 
 
 # Ensure the correct number of arguments are passed
+
 if [ "$#" -ne 1 ]; then
     printf "Usage: $0 NEW_ENV_NAME\n\n"
     exit 1
 fi
 
 # Check if the input is alphabetic and no uppercase letters
+
 if ! [[ $1 =~ ^[a-z]+$ ]]; then
     printf "Error: The argument must be a single word consisting of only lowercase characters\n\n"
     exit 1
 fi
 
 # Assign the provided parameter to NEW_ENV_NAME variable
+
 NEW_ENV_NAME=$1
 printf "New environment name is: $NEW_ENV_NAME\n\n"
 while true; do
@@ -67,6 +71,7 @@ TERRAFORM_SOURCE="$TERRAFORM_PATH/staging"
 TERRAFORM_DESTINATION="$TERRAFORM_PATH/$NEW_ENV_NAME"
 
 # Check if PASSWORD_STORE_DIR is set
+
 if [ -z "$PASSWORD_STORE_DIR" ]; then
     printf "The environment variable PASSWORD_STORE_DIR is not set\n\n"
     read -p "Please set PASSWORD_STORE_DIR and rerun the script. Press any key to exit"
@@ -79,6 +84,7 @@ fi
 SSH_KEYS_SECRET_PATH="keys"
 
 # Create key pair, $KEY_PATH includes path and key name
+
 KEY_NAME="govwifi-${NEW_ENV_NAME}-bastion-$(date +%Y%m%d)"
 KEY_PATH="${BUILD_REPO}/${KEY_NAME}"
 KEY_PUB_NAME="${KEY_NAME}.pub"
@@ -92,6 +98,7 @@ else
 fi
 
 # Encrypt keys and add to secrets
+
 printf "\n\n"
 pass insert -m ${SSH_KEYS_SECRET_PATH}/${KEY_NAME} < ${KEY_PATH}
 
@@ -115,6 +122,7 @@ pass find recovery
 printf "\n\n"
 
 # Check if new environment exists and prompt to overwrite
+
 if [ -d "$TERRAFORM_DESTINATION" ]; then
     read -p "Directory $TERRAFORM_DESTINATION exists. Do you want to overwrite existing files? (y/n): " CONFIRM
     if [[ "$CONFIRM" =~ ^[Yy]$ ]]; then
@@ -128,16 +136,19 @@ else
 fi
 
 # Create the build destination directory if it doesn't exist
+
 if [ ! -d "$BUILD_DESTINATION" ]; then
     mkdir -p "$BUILD_DESTINATION"
 fi
 
 # Copy the secrets path to a new environment directory with the specified name
+
 printf "Working in $BUILD_PATH\n\n"
 cp -Rp $BUILD_SOURCE/* $BUILD_DESTINATION
 printf "Done\n\n"
 
 # Loop through the environment files and replace 'govwifi' with the new environment nam
+
 printf "Updating environment references in $BUILD_DESTINATION file\n\n"
 
 for filename in "$BUILD_DESTINATION"/* ; do
@@ -145,17 +156,20 @@ for filename in "$BUILD_DESTINATION"/* ; do
 done
 
 # Create the terraform destination directory if it doesn't exist
+
 if [ ! -d "$TERRAFORM_DESTINATION" ]; then
     mkdir -p "$TERRAFORM_DESTINATION"
 fi
 
 # Copy staging to a new environment directory with the specified name
+
 printf "Working in $TERRAFORM_PATH\n\n"
 cp -Rp $TERRAFORM_SOURCE/* $TERRAFORM_DESTINATION
 rm -rf $TERRAFORM_DESTINATION.
 printf "Done\n\n"
 
 # Loop through the recovery files and replace 'govwifi' with the new environment nam
+
 printf "Updating environment references in $TERRAFORM_DESTINATION file\n\n"
 
 for filename in "$TERRAFORM_DESTINATION"/* ; do
@@ -175,6 +189,7 @@ else
 fi
 
 # Modify dublin.tf and london.tf with key name
+
 sed -i '' "s/$NEW_ENV_NAME-bastion-[0-9]*/$KEY_NAME/g" $TERRAFORM_DESTINATION/dublin.tf $TERRAFORM_DESTINATION/london.tf
 
 if [ $? -eq 0 ]; then
@@ -184,6 +199,7 @@ else
 fi
 
 # Read and insert public key into dublin.tf and dublin.tf
+
 GOVWIFI_BASTION_KEY_PUB=`cat ${KEY_PATH}.pub`
 sed -i '' "s|govwifi_bastion_key_pub.*|govwifi_bastion_key_pub  = \"$GOVWIFI_BASTION_KEY_PUB\"|" $TERRAFORM_DESTINATION/dublin.tf $TERRAFORM_DESTINATION/london.tf
 
@@ -194,6 +210,7 @@ else
 fi
 
 # Correct variables.tf key name
+
 sed -i '' "s|$NEW_ENV_NAME-ec2-instances-[0-9]*|$KEY_NAME|" $TERRAFORM_DESTINATION/variables.tf
 if [ $? -eq 0 ]; then
     printf "New key name updated in variables.tf\n\n"
@@ -201,11 +218,38 @@ else
     printf "Error: Failed to update key name in variables.tf\n\n"
 fi
 
+# Auto-generate DB secrets - uncommenting secrets files
+
+TARGET_FILE="govwifi-admin/secrets-manager.tf"
+
+# Patterns to identify the block to uncomment
+START_PATTERN="# COMMENT BELOW IN IF CREATING A NEW ENVIRONMENT FROM SCRATCH"  # Marks the beginning of the block
+END_PATTERN="## END CREATING A NEW ENVIRONMENT FROM SCRATCH"      # Marks the end of the block
+
+# Use sed to uncomment the lines in the specified block
+sed -i '' "/$START_PATTERN/,/$END_PATTERN/ s/^#//" "$TARGET_FILE"
+
+echo "Uncommented block between '$START_PATTERN' and '$END_PATTERN' in $TARGET_FILE"
+
+TARGET_FILE="govwifi-backend/secrets-manager.tf"
+
+# Patterns to identify the block to uncomment
+START_PATTERN="# COMMENT BELOW IN IF CREATING A NEW ENVIRONMENT FROM SCRATCH"  # Marks the beginning of the block
+END_PATTERN="## END CREATING A NEW ENVIRONMENT FROM SCRATCH"      # Marks the end of the block
+
+# Use sed to uncomment the lines in the specified block
+sed -i '' "/$START_PATTERN/,/$END_PATTERN/ s/^#//" "$TARGET_FILE"
+
+echo "Uncommented block between '$START_PATTERN' and '$END_PATTERN' in $TARGET_FILE"
+
+
 # DNS Setup
+
 printf "Creating initial DNS entry, you'll need to copy the NameServers lines\n\n"
 gds-cli aws govwifi-${NEW_ENV_NAME} -- aws route53 create-hosted-zone --name "${NEW_ENV_NAME}.wifi.service.gov.uk" --hosted-zone-config "Comment=\"\",PrivateZone=false" --caller-reference "govwifi-$(date)" | jq -r '.DelegationSet.NameServers[]' > $TERRAFORM_REPO/ns-records.json
 
 # Extract NS values and dynamically create ns-records.json
+
 JSON_INPUT=$(cat <<EOF
 {
     "Location": "https://route53.amazonaws.com/2013-04-01/hostedzone/Z008453713FV9IMQG86IV",
@@ -239,7 +283,8 @@ EOF
 # Use jq to extract NS records
 NS_RECORDS=$(echo "$JSON_INPUT" | jq -r '.DelegationSet.NameServers[]')
 
-# Start creating the JSON file
+# Create the JSON file
+
 pwd
 cat <<EOF > ns-records.json
 {
@@ -255,11 +300,13 @@ cat <<EOF > ns-records.json
 EOF
 
 # Add each NS value as a separate ResourceRecord
+
 for ns in $NS_RECORDS; do
   echo "          {\"Value\": \"$ns\"}," >> ns-records.json
 done
 
 # Remove the trailing comma from the last record and close the JSON file
+
 sed -i '' '$ s/,$//' ns-records.json
 cat <<EOF >> ns-records.json
         ]
@@ -279,7 +326,6 @@ printf "hosted zone id = $HOSTED_ZONE_ID\n\n"
 
 # NOT YET PLEASE gds-cli aws govwifi -- aws route53 change-resource-record-sets --hosted-zone-id ${HOSTED_ZONE_ID} --change-batch file://ns-records.json
 
-
 # Phew! Now let's create some required buckets
 
 # S3 Access Logs buckets
@@ -288,9 +334,6 @@ gds-cli aws govwifi-${NEW_ENV_NAME} -- aws s3api create-bucket --bucket govwifi-
 
 # Remote State bucket
 gds-cli aws govwifi-${NEW_ENV_NAME} -- aws s3api create-bucket --bucket govwifi-${NEW_ENV_NAME}-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
-
-# Check buckets
-gds-cli aws govwifi-${NEW_ENV_NAME} -- aws s3api list-buckets
 
 # Initialise terraform and import S3 State bucket
 cd ${TERRAFORM_REPO}
