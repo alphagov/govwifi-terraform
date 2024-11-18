@@ -17,6 +17,7 @@
 #   creates intitial DNS entry and outputs nameservers for production incorporation
 #   creates access logs' buckets
 #   creates state bucket
+#   initialise terraform
 
 
 # Ensure the correct number of arguments are passed
@@ -215,5 +216,9 @@ gds-cli aws govwifi-${NEW_ENV_NAME} -- aws s3api create-bucket --bucket govwifi-
 # Check buckets
 gds-cli aws govwifi-${NEW_ENV_NAME} -- aws s3api list-buckets
 
+# Initialise terraform and import S3 State bucket
+cd ${TERRAFORM_REPO}
+gds-cli aws govwifi-${NEW_ENV_NAME} -- make ${NEW_ENV_NAME} init-backend
+#   gds-cli aws govwifi-${NEW_ENV_NAME} -- make ${NEW_ENV_NAME} terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-${NEW_ENV_NAME}-tfstate-eu-west-2"
 
 printf "\n\nscript finished\n\n"
