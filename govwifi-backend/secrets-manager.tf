@@ -43,8 +43,6 @@ resource "random_password" "users_db_username" {
 #   secret_id = aws_secretsmanager_secret.users_db_credentials[0].id
 # }
 
-## COMMENT BELOW IN IF CREATING A NEW ENVIRONMENT FROM SCRATCH
-
 # resource "aws_secretsmanager_secret_version" "users_db_creds_update_existing" {
 #   count      = (var.aws_region == "eu-west-2" ? 1 : 0)
 #   secret_id = aws_secretsmanager_secret.users_db_credentials[0].id
