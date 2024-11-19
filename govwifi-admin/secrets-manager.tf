@@ -105,7 +105,6 @@ resource "random_password" "admin_username" {
 #   secret_id = aws_secretsmanager_secret.admin_credentials.id
 # }
 
-## COMMENT BELOW IN IF CREATING A NEW ENVIRONMENT FROM SCRATCH
 #
 # resource "aws_secretsmanager_secret_version" "admin_creds_update_existing" {
 #   secret_id = aws_secretsmanager_secret.admin_credentials.id
