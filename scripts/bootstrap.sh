@@ -283,7 +283,7 @@ EOF
 # Use jq to extract NS records
 NS_RECORDS=$(echo "$JSON_INPUT" | jq -r '.DelegationSet.NameServers[]')
 
-# Create the JSON file
+# Create the JSON payload
 
 pwd
 cat <<EOF > ns-records.json
@@ -322,9 +322,7 @@ printf "ns-records.json has been generated successfully!\n\n"
 
 HOSTED_ZONE_ID=`gds-cli aws govwifi -- aws route53 list-hosted-zones-by-name --dns-name wifi.service.gov.uk | jq -r '.HostedZones[].Id'`
 
-printf "hosted zone id = $HOSTED_ZONE_ID\n\n"
-
-# NOT YET PLEASE gds-cli aws govwifi -- aws route53 change-resource-record-sets --hosted-zone-id ${HOSTED_ZONE_ID} --change-batch file://ns-records.json
+gds-cli aws govwifi -- aws route53 change-resource-record-sets --hosted-zone-id ${HOSTED_ZONE_ID} --change-batch file://ns-records.json
 
 # Phew! Now let's create some required buckets
 
@@ -335,9 +333,11 @@ gds-cli aws govwifi-${NEW_ENV_NAME} -- aws s3api create-bucket --bucket govwifi-
 # Remote State bucket
 gds-cli aws govwifi-${NEW_ENV_NAME} -- aws s3api create-bucket --bucket govwifi-${NEW_ENV_NAME}-tfstate-eu-west-2 --region eu-west-2 --create-bucket-configuration LocationConstraint=eu-west-2
 
-# Initialise terraform and import S3 State bucket
+# Initialise terraform
 cd ${TERRAFORM_REPO}
 gds-cli aws govwifi-${NEW_ENV_NAME} -- make ${NEW_ENV_NAME} init-backend
-#   gds-cli aws govwifi-${NEW_ENV_NAME} -- make ${NEW_ENV_NAME} terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-${NEW_ENV_NAME}-tfstate-eu-west-2"
+
+# To import state, this command might suffice:
+# gds-cli aws govwifi-${NEW_ENV_NAME} -- make ${NEW_ENV_NAME} terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-${NEW_ENV_NAME}-tfstate-eu-west-2"
 
 printf "\n\nscript finished\n\n"
