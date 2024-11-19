@@ -305,7 +305,7 @@ for ns in $NS_RECORDS; do
   echo "          {\"Value\": \"$ns\"}," >> ns-records.json
 done
 
-# Remove the trailing comma from the last record and close the JSON file
+# Remove the trailing comma from the last record and close the JSON payload file
 
 sed -i '' '$ s/,$//' ns-records.json
 cat <<EOF >> ns-records.json
@@ -318,11 +318,18 @@ EOF
 
 printf "ns-records.json has been generated successfully!\n\n"
 
-# Inject ns records into our domain
+# Inject ns records into our wifi.service.gov.uk domain
 
 HOSTED_ZONE_ID=`gds-cli aws govwifi -- aws route53 list-hosted-zones-by-name --dns-name wifi.service.gov.uk | jq -r '.HostedZones[].Id'`
 
 gds-cli aws govwifi -- aws route53 change-resource-record-sets --hosted-zone-id ${HOSTED_ZONE_ID} --change-batch file://ns-records.json
+
+if [ $? -eq 0 ]; then
+    printf "NS records inserted into Production successfully\n\n"
+else
+    printf "Error: Failed to insert new NS records into Productioney\n\n"
+fi
+
 
 # Phew! Now let's create some required buckets
 
