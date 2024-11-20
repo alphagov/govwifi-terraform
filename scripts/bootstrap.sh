@@ -74,7 +74,7 @@ TERRAFORM_DESTINATION="$TERRAFORM_PATH/$NEW_ENV_NAME"
 
 if [ -z "$PASSWORD_STORE_DIR" ]; then
     printf "The environment variable PASSWORD_STORE_DIR is not set\n\n"
-    read -p "Please set PASSWORD_STORE_DIR and rerun the script. Press any key to exit"
+    read -p "Please set the environment variable PASSWORD_STORE_DIR and rerun the script. Press any key to exit"
     exit 1
 else
     printf "PASSWORD_STORE_DIR is set to '$PASSWORD_STORE_DIR'. Continuing with the script...\n\n"
@@ -117,7 +117,7 @@ else
     printf "Error: Failed to add new pub key\n\n"
 fi
 
-pass find recovery
+pass find ${NEW_ENV_NAME}
 
 printf "\n\n"
 
@@ -223,7 +223,7 @@ fi
 TARGET_FILE="govwifi-admin/secrets-manager.tf"
 
 # Patterns to identify the block to uncomment
-START_PATTERN="# COMMENT BELOW IN IF CREATING A NEW ENVIRONMENT FROM SCRATCH"  # Marks the beginning of the block
+START_PATTERN="## COMMENT BELOW IN IF CREATING A NEW ENVIRONMENT FROM SCRATCH"  # Marks the beginning of the block
 END_PATTERN="## END CREATING A NEW ENVIRONMENT FROM SCRATCH"      # Marks the end of the block
 
 # Use sed to uncomment the lines in the specified block
@@ -346,5 +346,9 @@ gds-cli aws govwifi-${NEW_ENV_NAME} -- make ${NEW_ENV_NAME} init-backend
 
 # To import state, this command might suffice:
 # gds-cli aws govwifi-${NEW_ENV_NAME} -- make ${NEW_ENV_NAME} terraform terraform_cmd="import module.tfstate.aws_s3_bucket.state_bucket govwifi-${NEW_ENV_NAME}-tfstate-eu-west-2"
+
+# Let's clean up
+cd ${TERRAFORM_REPO}
+rm Makefile.old
 
 printf "\n\nscript finished\n\n"
