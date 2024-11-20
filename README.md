@@ -124,6 +124,43 @@ It should look like this, `module.backend.aws_instance.management`:
 
 ## Bootstrapping terraform
 
+There are two methods available, the manual method and the bootstrap.sh script.
+
+### Using the bootstrap.sh script
+
+The script is located in govwifi-terraform directory.
+It is called from the top level of this directory using:
+
+
+```
+scripts/bootstrap.sh [new environment name]
+```
+For example:
+```
+scripts/bootstrap.sh recovery
+```
+
+It can also be used with the 'tee' command to create a runfile preserving it's actions and outputs, e.g. name servers.
+
+
+```
+scripts/bootstrap.sh [new environment name] | tee [some file]
+```
+For example:
+```
+scripts/bootstrap.sh recovery | tee recovery.bootstrap
+```
+
+
+The script performs all the tasks starting from the section 'Bootstrapping terraform' upto and including the section 'Initialize The Backend'.
+
+The manual steps to replicate the script functionality are below. If you used the script successfully, the next step is:
+
+[Import S3 State bucket](#s3-state-bucket)
+
+
+
+
 ### Creating The Terraform For A Brand New GovWifi Environment
 Follow the steps below to create a brand new GovWifi environment:
 
@@ -278,7 +315,7 @@ For example:
 ```
 gds-cli aws govwifi-staging -- make staging init-backend
 ```
-
+<a name="s3-state-bucket"></a>
 #### Import S3 State bucket
 
 ```
