@@ -1,11 +1,11 @@
 version: 0.2
 phases:
-    pre_build:
-        commands:
-              - echo "$DOCKER_HUB_AUTHTOKEN_ENV" | docker login -u $(echo $DOCKER_HUB_USERNAME_ENV) --password-stdin
-    build:
-        commands:
-            - echo "Smoke-tests running"
-            - git clone https://github.com/alphagov/govwifi-smoke-tests.git
-            - cd govwifi-smoke-tests
-            - make test
+  pre_build:
+    commands:
+      - echo "$DOCKER_HUB_AUTHTOKEN_ENV" | docker login -u $(echo $DOCKER_HUB_USERNAME_ENV) --password-stdin
+  build:
+    commands:
+      - echo "Smoke-tests running"
+      - git clone https://github.com/GovWifi/govwifi-smoke-tests.git
+      - cd govwifi-smoke-tests
+      - make test
