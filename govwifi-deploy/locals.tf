@@ -17,7 +17,7 @@ locals {
 }
 
 locals {
-    git_owner = "alphagov"
+    git_owner = "GovWifi"
     branch = "master"
     s3_source_dir = "source"
     app = {
