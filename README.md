@@ -25,7 +25,7 @@ Our services include:
 - A Prometheus server to scrape metrics from the FreeRADIUS Prometheus Exporters which exposes FreeRADIUS server data
 
 We manage our infrastructure via:
-- Terraform, split across this repository and [govwifi-build](https://github.com/alphagov/govwifi-build)
+- Terraform, split across this repository and [govwifi-build](https://github.com/GovWifi/govwifi-build)
 - The [safe restarter](https://github.com/alphagov/govwifi-safe-restarter), which uses a [CanaryRelease](https://martinfowler.com/bliki/CanaryRelease.html) strategy to increase the stability of the frontends
 
 Other repositories:
@@ -37,7 +37,7 @@ Secret credentials are stored in AWS Secrets Manager in the format of `<service>
 
 `service` will be the GovWifi service (admin, radius, user-signup, logging) related to that secret. If the secret is not specific to a GovWifi service, use the AWS service or product it relates to (e.g., rds, s3, grafana).
 
-For historical use of secrets  please see: [GovWifi build](https://github.com/alphagov/govwifi-build). This is now used to store non secret but sensitive information such as IP ranges.
+For historical use of secrets  please see: [GovWifi build](https://github.com/GovWifi/govwifi-build). This is now used to store non secret but sensitive information such as IP ranges.
 
 ## Running terraform for the first time
 
@@ -189,7 +189,7 @@ The APP_ENV environment variable for any new GovWifi environment should be set t
 #### Update Govwifi-Build
 
 ##### Add A Directory For Your New Environment
-We keep sensitive (but non secret information) in a private repo called govwifi-build(https://github.com/alphagov/govwifi-build). This folder is only accessible to GovWifi team members.  If you create a new GovWifi environment you will need to add new directory of the same name [here](https://github.com/alphagov/govwifi-build/tree/master/non-encrypted/secrets-to-copy/govwifi).
+We keep sensitive (but non secret information) in a private repo called govwifi-build(https://github.com/GovWifi/govwifi-build). This folder is only accessible to GovWifi team members.  If you create a new GovWifi environment you will need to add new directory of the same name [here](https://github.com/GovWifi/govwifi-build/tree/master/non-encrypted/secrets-to-copy/govwifi).
 Instructions
 - Make a copy of the staging directory and rename it to your environment name
 
@@ -198,7 +198,7 @@ cp -Rp non-encrypted/secrets-to-copy/govwifi/staging non-encrypted/secrets-to-co
 ```
 
 - Replace any references to `staging` in the newly created directory with your new environment name.
-[See here for an example commit](https://github.com/alphagov/govwifi-build/pull/541/files#diff-3382ad2da7f814e1bbd3a3ae321be41d7e23db80734611bb4ac90ab30d690cc5).
+[See here for an example commit](https://github.com/GovWifi/govwifi-build/pull/541/files#diff-3382ad2da7f814e1bbd3a3ae321be41d7e23db80734611bb4ac90ab30d690cc5).
 
 ```
 for filename in ./non-encrypted/secrets-to-copy/govwifi/<NEW-ENV-NAME>/* ; do sed -i '' 's/staging/<NEW-ENV-NAME>/g' $filename ; done
