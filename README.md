@@ -26,10 +26,10 @@ Our services include:
 
 We manage our infrastructure via:
 - Terraform, split across this repository and [govwifi-build](https://github.com/GovWifi/govwifi-build)
-- The [safe restarter](https://github.com/alphagov/govwifi-safe-restarter), which uses a [CanaryRelease](https://martinfowler.com/bliki/CanaryRelease.html) strategy to increase the stability of the frontends
+- The [safe restarter](https://github.com/GovWifi/govwifi-safe-restarter), which uses a [CanaryRelease](https://martinfowler.com/bliki/CanaryRelease.html) strategy to increase the stability of the frontends
 
 Other repositories:
-- [Acceptance tests](https://github.com/alphagov/govwifi-acceptance-tests), which pulls together GovWifi end-to-end, from the various repositories, and runs tests against it.
+- [Acceptance tests](https://github.com/GovWifi/govwifi-acceptance-tests), which pulls together GovWifi end-to-end, from the various repositories, and runs tests against it.
 
 ## Secrets
 
